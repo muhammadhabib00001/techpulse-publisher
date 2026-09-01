@@ -1,0 +1,60 @@
+name: Automated Article Publishing Pipeline (Vertex AI + Google Drive)
+
+on:
+  schedule:
+    # Runs every Tuesday and Friday at 08:00 UTC
+    - cron: '0 8 * * 2,5'
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: 'Optional custom topic (leave blank to pull from Google Drive brief or default pool)'
+        required: false
+        default: ''
+      category:
+        description: 'Target Category (ai, cloud, security)'
+        required: false
+        default: 'ai'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js Runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci || npm install
+
+      - name: Run Vertex AI & Google Drive Content Engine
+        env:
+          GCP_CREDENTIALS_JSON: ${{ secrets.GCP_CREDENTIALS_JSON }}
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          GCP_REGION: ${{ secrets.GCP_REGION || 'us-central1' }}
+          GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
+          CUSTOM_TOPIC: ${{ github.event.inputs.topic }}
+          TARGET_CATEGORY: ${{ github.event.inputs.category }}
+        run: node scripts/publisher.js
+
+      - name: Commit & Push New Article to Main
+        run: |
+          git config --global user.name 'TechPulse Automated Publisher'
+          git config --global user.email 'automation@techpulsetrends.com'
+          git add articles/ sitemap.xml index.html categories.html category-*.html
+          if git diff --staged --quiet; then
+            echo "No new changes or articles generated to commit."
+          else
+            git commit -m "Auto-publish: New in-depth research article [skip ci]"
+            git push origin main
+          fi
