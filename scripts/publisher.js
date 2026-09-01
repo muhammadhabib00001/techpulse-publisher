@@ -737,6 +737,7 @@ function updateSiteIndex(articleData, author, category) {
   const dateFormatted = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   const heroImage = getRealHeroImage(articleData.title, category);
 
+  // 1. Sitemap update
   const sitemapPath = path.join(ROOT_DIR, 'sitemap.xml');
   if (fs.existsSync(sitemapPath)) {
     let sitemap = fs.readFileSync(sitemapPath, 'utf8');
@@ -749,8 +750,9 @@ function updateSiteIndex(articleData, author, category) {
     }
   }
 
+  // 2. Card snippet
   const cardSnippet = `
-          <!-- Auto-Published Article -->
+          <!-- Article: ${articleData.slug}.html -->
           <article class="card">
             <div class="card-img-wrap" style="aspect-ratio: 16/9; overflow: hidden;">
               <img src="${heroImage.url}" alt="${heroImage.alt}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
@@ -768,16 +770,18 @@ function updateSiteIndex(articleData, author, category) {
             </div>
           </article>`;
 
+  // 3. Guaranteed insertion into index.html
   const indexPath = path.join(ROOT_DIR, 'index.html');
   if (fs.existsSync(indexPath)) {
     let indexHtml = fs.readFileSync(indexPath, 'utf8');
     if (!indexHtml.includes(articleData.slug)) {
       indexHtml = indexHtml.replace('<div class="articles-grid">', '<div class="articles-grid">' + cardSnippet);
       fs.writeFileSync(indexPath, indexHtml, 'utf8');
-      console.log(`[INFO] Inserted article card into index.html`);
+      console.log(`[INFO] Successfully prepended article card to index.html`);
     }
   }
 
+  // 4. Guaranteed insertion into category page
   const categoryFile = `category-${category}.html`;
   const categoryPath = path.join(ROOT_DIR, categoryFile);
   if (fs.existsSync(categoryPath)) {
@@ -785,7 +789,7 @@ function updateSiteIndex(articleData, author, category) {
     if (!catHtml.includes(articleData.slug)) {
       catHtml = catHtml.replace('<div class="articles-grid">', '<div class="articles-grid">' + cardSnippet);
       fs.writeFileSync(categoryPath, catHtml, 'utf8');
-      console.log(`[INFO] Inserted article card into ${categoryFile}`);
+      console.log(`[INFO] Successfully prepended article card to ${categoryFile}`);
     }
   }
 }
