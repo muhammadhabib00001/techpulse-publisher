@@ -1,4 +1,45 @@
 /**
+ * Internal Linking Dictionary (Contextual Anchor Keywords -> Target URLs)
+ */
+const INTERNAL_LINK_MAP = [
+  { keyword: 'Zero Trust Cloud Security', url: '../articles/zero-trust-cloud-security.html' },
+  { keyword: 'Zero Trust', url: '../articles/zero-trust-cloud-security.html' },
+  { keyword: 'Agentic AI Workflows', url: '../articles/agentic-ai-workflows-2026.html' },
+  { keyword: 'Agentic AI', url: '../articles/agentic-ai-workflows-2026.html' },
+  { keyword: 'Autonomous Agent Architectures', url: '../articles/autonomous-agent-architectures.html' },
+  { keyword: 'Autonomous Agent', url: '../articles/autonomous-agent-architectures.html' },
+  { keyword: 'autonomous agents', url: '../articles/autonomous-agent-architectures.html' },
+  { keyword: 'multi-agent', url: '../articles/agentic-ai-workflows-2026.html' },
+  { keyword: 'Core Web Vitals', url: '../articles/web-performance-inp-guide.html' },
+  { keyword: 'Interaction to Next Paint', url: '../articles/web-performance-inp-guide.html' },
+  { keyword: 'INP', url: '../articles/web-performance-inp-guide.html' },
+  { keyword: 'Post-Quantum Cryptography', url: '../articles/post-quantum-cryptography-implementation-in-cloud-storage.html' },
+  { keyword: 'Cloud Storage', url: '../articles/post-quantum-cryptography-implementation-in-cloud-storage.html' },
+  { keyword: 'cloud architectures', url: '../category-cloud.html' },
+  { keyword: 'cloud regions', url: '../category-cloud.html' },
+  { keyword: 'edge computing', url: '../category-cloud.html' },
+  { keyword: 'Cybersecurity', url: '../category-security.html' },
+  { keyword: 'security postures', url: '../category-security.html' },
+  { keyword: 'Artificial Intelligence', url: '../category-ai.html' },
+  { keyword: 'AI Systems', url: '../category-ai.html' },
+  { keyword: 'Dr. Elena Vance', url: '../author/dr-elena-vance.html' },
+  { keyword: 'Marcus Reid', url: '../author/marcus-reid.html' }
+];
+
+/**
+ * Injects natural contextual internal links into HTML content without double-linking
+ */
+function injectInternalLinks(htmlContent, currentSlug) {
+  let processed = htmlContent;
+  const linkedKeywords = new Set();
+
+  INTERNAL_LINK_MAP.forEach(({ keyword, url }) => {
+    // Avoid linking to self
+    if (url.includes(currentSlug)) return;
+    if (linkedKeywords.has(keyword.toLowerCase())) return;
+
+    // Word boundary regex that avoids already linked text or tags
+    const escaped = keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\/**
  * TechPulse Trends - Automated Content Publishing Engine
  * Fully upgraded:
  * - High-Quality Real Editorial Photography (Unsplash Tech/Cloud/AI Photorealistic Assets)
@@ -57,6 +98,18 @@ function injectInternalLinks(htmlContent, currentSlug) {
       processed = processed.replace(regex, (match) => {
         linkedKeywords.add(keyword.toLowerCase());
         return `<a href="${url}" style="font-weight: 600; text-decoration: underline;" title="${keyword}">${match}</a>`;
+      });
+    }
+  });
+
+  return processed;
+}');
+    const regex = new RegExp('(\\b' + escaped + '\\b)(?![^<]*>|[^<>]*<\\/a>)', 'i');
+    
+    if (regex.test(processed)) {
+      processed = processed.replace(regex, (match) => {
+        linkedKeywords.add(keyword.toLowerCase());
+        return `<a href="${url}" style="color: var(--primary); font-weight: 600; text-decoration: underline;" title="${keyword}">${match}</a>`;
       });
     }
   });
