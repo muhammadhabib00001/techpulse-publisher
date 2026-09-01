@@ -15,6 +15,55 @@ const https = require('https');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 
+
+/**
+ * Internal Linking Dictionary (Contextual Anchor Keywords -> Relative Target URLs)
+ */
+const INTERNAL_LINK_MAP = [
+  { keyword: 'Zero Trust Cloud Security', url: '../articles/zero-trust-cloud-security.html' },
+  { keyword: 'Zero Trust architecture', url: '../articles/zero-trust-cloud-security.html' },
+  { keyword: 'Zero Trust', url: '../articles/zero-trust-cloud-security.html' },
+  { keyword: 'Agentic AI Workflows', url: '../articles/agentic-ai-workflows-2026.html' },
+  { keyword: 'Agentic AI', url: '../articles/agentic-ai-workflows-2026.html' },
+  { keyword: 'autonomous multi-agent', url: '../articles/agentic-ai-workflows-2026.html' },
+  { keyword: 'Core Web Vitals', url: '../articles/web-performance-inp-guide.html' },
+  { keyword: 'Interaction to Next Paint', url: '../articles/web-performance-inp-guide.html' },
+  { keyword: 'INP', url: '../articles/web-performance-inp-guide.html' },
+  { keyword: 'Post-Quantum Cryptography', url: '../articles/post-quantum-cryptography-implementation-in-cloud-storage.html' },
+  { keyword: 'Cybersecurity', url: '../category-security.html' },
+  { keyword: 'Artificial Intelligence', url: '../category-ai.html' },
+  { keyword: 'Cloud Architecture', url: '../category-cloud.html' },
+  { keyword: 'Dr. Elena Vance', url: '../author/dr-elena-vance.html' },
+  { keyword: 'Marcus Reid', url: '../author/marcus-reid.html' },
+  { keyword: 'Editorial Guidelines', url: '../pages/editorial-policy.html' }
+];
+
+/**
+ * Injects natural contextual internal links into HTML content without double-linking
+ */
+function injectInternalLinks(htmlContent, currentSlug) {
+  let processed = htmlContent;
+  const linkedKeywords = new Set();
+
+  INTERNAL_LINK_MAP.forEach(({ keyword, url }) => {
+    // Avoid linking to self
+    if (url.includes(currentSlug)) return;
+    if (linkedKeywords.has(keyword.toLowerCase())) return;
+
+    // Regex matches the keyword ONLY when NOT already inside an <a> tag or heading
+    const regex = new RegExp(`(?<!<[^>]*)\\b(${keyword})\\b(?![^<]*<\/a>)(?![^<]*<\/h[1-6]>)`, 'i');
+    
+    if (regex.test(processed)) {
+      processed = processed.replace(regex, (match) => {
+        linkedKeywords.add(keyword.toLowerCase());
+        return `<a href="${url}" style="font-weight: 600; text-decoration: underline;" title="${keyword}">${match}</a>`;
+      });
+    }
+  });
+
+  return processed;
+}
+
 // Environment & Config
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GCP_CREDENTIALS_JSON = process.env.GCP_CREDENTIALS_JSON;
@@ -408,6 +457,7 @@ function renderArticleHtml(articleData, author, category) {
   const tocHtml = articleData.tableOfContents.map(item => `<li><a href="#${item.id}">${item.title}</a></li>`).join('\n            ');
   
   const sectionsHtml = articleData.sections.map((sec, idx) => {
+    const enrichedContent = injectInternalLinks(sec.contentHtml, articleData.slug);
     let adBlock = '';
     if (idx === 1 || idx === 3) {
       adBlock = `
