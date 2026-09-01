@@ -1,174 +1,85 @@
 /**
- * Internal Linking Dictionary (Contextual Anchor Keywords -> Target URLs)
+ * Diverse, high-resolution keyword-specific photography library
  */
-const INTERNAL_LINK_MAP = [
-  { keyword: 'Zero Trust Cloud Security', url: '../articles/zero-trust-cloud-security.html' },
-  { keyword: 'Zero Trust', url: '../articles/zero-trust-cloud-security.html' },
-  { keyword: 'Agentic AI Workflows', url: '../articles/agentic-ai-workflows-2026.html' },
-  { keyword: 'Agentic AI', url: '../articles/agentic-ai-workflows-2026.html' },
-  { keyword: 'Autonomous Agent Architectures', url: '../articles/autonomous-agent-architectures.html' },
-  { keyword: 'Autonomous Agent', url: '../articles/autonomous-agent-architectures.html' },
-  { keyword: 'autonomous agents', url: '../articles/autonomous-agent-architectures.html' },
-  { keyword: 'multi-agent', url: '../articles/agentic-ai-workflows-2026.html' },
-  { keyword: 'Core Web Vitals', url: '../articles/web-performance-inp-guide.html' },
-  { keyword: 'Interaction to Next Paint', url: '../articles/web-performance-inp-guide.html' },
-  { keyword: 'INP', url: '../articles/web-performance-inp-guide.html' },
-  { keyword: 'Post-Quantum Cryptography', url: '../articles/post-quantum-cryptography-implementation-in-cloud-storage.html' },
-  { keyword: 'Cloud Storage', url: '../articles/post-quantum-cryptography-implementation-in-cloud-storage.html' },
-  { keyword: 'cloud architectures', url: '../category-cloud.html' },
-  { keyword: 'cloud regions', url: '../category-cloud.html' },
-  { keyword: 'edge computing', url: '../category-cloud.html' },
-  { keyword: 'Cybersecurity', url: '../category-security.html' },
-  { keyword: 'security postures', url: '../category-security.html' },
-  { keyword: 'Artificial Intelligence', url: '../category-ai.html' },
-  { keyword: 'AI Systems', url: '../category-ai.html' },
-  { keyword: 'Dr. Elena Vance', url: '../author/dr-elena-vance.html' },
-  { keyword: 'Marcus Reid', url: '../author/marcus-reid.html' }
-];
-
-/**
- * Injects natural contextual internal links into HTML content without double-linking
- */
-function injectInternalLinks(htmlContent, currentSlug) {
-  let processed = htmlContent;
-  const linkedKeywords = new Set();
-
-  INTERNAL_LINK_MAP.forEach(({ keyword, url }) => {
-    // Avoid linking to self
-    if (url.includes(currentSlug)) return;
-    if (linkedKeywords.has(keyword.toLowerCase())) return;
-
-    // Word boundary regex that avoids already linked text or tags
-    const escaped = keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\/**
- * TechPulse Trends - Automated Content Publishing Engine
- * Fully upgraded:
- * - High-Quality Real Editorial Photography (Unsplash Tech/Cloud/AI Photorealistic Assets)
- * - Pure Explanatory Prose & Architectural Breakdowns (NO code blocks)
- * - In-Depth FAQ Section with JSON-LD FAQPage Schema Markup
- * - 1,200 to 1,500+ Word Exhaustive Technical Analysis
- * - Supports Google AI Studio (GEMINI_API_KEY) + Built-in Deep Synthesis Engine
- * - Auto-Updates index.html, category-*.html, and sitemap.xml
- */
-
-const fs = require('fs');
-const path = require('path');
-const https = require('https');
-
-const ROOT_DIR = path.resolve(__dirname, '..');
-
-
-/**
- * Internal Linking Dictionary (Contextual Anchor Keywords -> Relative Target URLs)
- */
-const INTERNAL_LINK_MAP = [
-  { keyword: 'Zero Trust Cloud Security', url: '../articles/zero-trust-cloud-security.html' },
-  { keyword: 'Zero Trust architecture', url: '../articles/zero-trust-cloud-security.html' },
-  { keyword: 'Zero Trust', url: '../articles/zero-trust-cloud-security.html' },
-  { keyword: 'Agentic AI Workflows', url: '../articles/agentic-ai-workflows-2026.html' },
-  { keyword: 'Agentic AI', url: '../articles/agentic-ai-workflows-2026.html' },
-  { keyword: 'autonomous multi-agent', url: '../articles/agentic-ai-workflows-2026.html' },
-  { keyword: 'Core Web Vitals', url: '../articles/web-performance-inp-guide.html' },
-  { keyword: 'Interaction to Next Paint', url: '../articles/web-performance-inp-guide.html' },
-  { keyword: 'INP', url: '../articles/web-performance-inp-guide.html' },
-  { keyword: 'Post-Quantum Cryptography', url: '../articles/post-quantum-cryptography-implementation-in-cloud-storage.html' },
-  { keyword: 'Cybersecurity', url: '../category-security.html' },
-  { keyword: 'Artificial Intelligence', url: '../category-ai.html' },
-  { keyword: 'Cloud Architecture', url: '../category-cloud.html' },
-  { keyword: 'Dr. Elena Vance', url: '../author/dr-elena-vance.html' },
-  { keyword: 'Marcus Reid', url: '../author/marcus-reid.html' },
-  { keyword: 'Editorial Guidelines', url: '../pages/editorial-policy.html' }
-];
-
-/**
- * Injects natural contextual internal links into HTML content without double-linking
- */
-function injectInternalLinks(htmlContent, currentSlug) {
-  let processed = htmlContent;
-  const linkedKeywords = new Set();
-
-  INTERNAL_LINK_MAP.forEach(({ keyword, url }) => {
-    // Avoid linking to self
-    if (url.includes(currentSlug)) return;
-    if (linkedKeywords.has(keyword.toLowerCase())) return;
-
-    // Regex matches the keyword ONLY when NOT already inside an <a> tag or heading
-    const regex = new RegExp(`(?<!<[^>]*)\\b(${keyword})\\b(?![^<]*<\/a>)(?![^<]*<\/h[1-6]>)`, 'i');
-    
-    if (regex.test(processed)) {
-      processed = processed.replace(regex, (match) => {
-        linkedKeywords.add(keyword.toLowerCase());
-        return `<a href="${url}" style="font-weight: 600; text-decoration: underline;" title="${keyword}">${match}</a>`;
-      });
-    }
-  });
-
-  return processed;
-}');
-    const regex = new RegExp('(\\b' + escaped + '\\b)(?![^<]*>|[^<>]*<\\/a>)', 'i');
-    
-    if (regex.test(processed)) {
-      processed = processed.replace(regex, (match) => {
-        linkedKeywords.add(keyword.toLowerCase());
-        return `<a href="${url}" style="color: var(--primary); font-weight: 600; text-decoration: underline;" title="${keyword}">${match}</a>`;
-      });
-    }
-  });
-
-  return processed;
-}
-
-// Environment & Config
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GCP_CREDENTIALS_JSON = process.env.GCP_CREDENTIALS_JSON;
-const GCP_PROJECT_ID = process.env.GCP_PROJECT_ID || 'techpulse-production';
-const GCP_REGION = process.env.GCP_REGION || 'us-central1';
-const GOOGLE_DRIVE_FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID;
-const CUSTOM_TOPIC = process.env.CUSTOM_TOPIC;
-const TARGET_CATEGORY = process.env.TARGET_CATEGORY || 'security';
-
-const DEFAULT_TOPIC_POOL = [
+const CURATED_IMAGE_DATABASE = [
+  // Autonomous Agents & Agentic Workflows
   {
-    topic: 'Post-Quantum Cryptography Implementation in Cloud Storage',
-    category: 'security',
-    author: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Principal Cloud Security Architect', initials: 'MR' }
+    keywords: ['autonomous', 'agent', 'multi-agent', 'orchestration', 'reasoning'],
+    url: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&h=600&q=80',
+    alt: 'High performance AI microprocessor and neural reasoning cores',
+    caption: 'Autonomous agentic compute clusters executing multi-step reasoning plans.'
   },
+  // Artificial Intelligence & LLMs general
   {
-    topic: 'Deterministic Guardrails in Multi-Agent Autonomous AI Systems',
-    category: 'ai',
-    author: { name: 'Dr. Elena Vance', slug: 'dr-elena-vance', role: 'Lead AI Systems Architect', initials: 'EV' }
+    keywords: ['artificial intelligence', 'machine learning', 'deep learning', 'neural', 'llm', 'genai'],
+    url: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1200&h=600&q=80',
+    alt: 'Digital visualization of artificial intelligence neural pathways and cognitive models',
+    caption: 'Next-generation foundation models processing multi-modal cognitive workloads.'
   },
+  // Quantum Cryptography & Encryption
   {
-    topic: 'Serverless Multi-Region Database Sharding and Resilience in 2026',
-    category: 'cloud',
-    author: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Principal Cloud Security Architect', initials: 'MR' }
+    keywords: ['quantum', 'cryptography', 'pqc', 'lattice', 'fips', 'key encapsulation'],
+    url: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=1200&h=600&q=80',
+    alt: 'Abstract quantum physics mathematical lattice and photon encryption',
+    caption: 'Lattice-based post-quantum cryptography shielding enterprise data at rest.'
+  },
+  // Cloud Storage & Data Infrastructure
+  {
+    keywords: ['storage', 's3', 'bucket', 'database', 'sharding', 'datacenter', 'replication'],
+    url: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&h=600&q=80',
+    alt: 'High-density cloud server storage racks and fiber optic connectivity',
+    caption: 'Multi-region enterprise storage fabric delivering high-throughput replication.'
+  },
+  // Zero Trust & Cybersecurity
+  {
+    keywords: ['zero trust', 'security', 'cybersecurity', 'firewall', 'identity', 'hsm', 'kms'],
+    url: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&h=600&q=80',
+    alt: 'Cybersecurity operations center interface with biometric and identity security gates',
+    caption: 'Continuous cryptographic identity attestation across distributed edge boundaries.'
+  },
+  // Web Performance & Core Web Vitals
+  {
+    keywords: ['inp', 'performance', 'latency', 'core web vitals', 'frontend', 'rendering'],
+    url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&h=600&q=80',
+    alt: 'Real-time telemetry performance graphs and low-latency throughput monitoring',
+    caption: 'Real-user performance profiling measuring Interaction to Next Paint and frame rates.'
+  },
+  // Cloud Architecture & Distributed Systems
+  {
+    keywords: ['cloud', 'architecture', 'kubernetes', 'serverless', 'microservices', 'mesh'],
+    url: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&h=600&q=80',
+    alt: 'Global distributed cloud topology and multi-continent fiber networks',
+    caption: 'Decoupled cloud control planes orchestrating global serverless workloads.'
   }
 ];
 
 /**
- * Returns a curated, high-resolution real tech/server/cloud photograph based on topic & category
+ * Returns a distinct, relevant photograph grounded directly on the specific topic keywords
  */
 function getRealHeroImage(topic, category) {
   const t = topic.toLowerCase();
   
-  if (t.includes('quantum') || t.includes('crypto') || t.includes('security')) {
-    return {
-      url: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&h=525&q=80',
-      alt: 'Secure enterprise cloud server room with glowing fiber optic data connections',
-      caption: 'Enterprise multi-cloud storage hardware and cryptographic key management infrastructure.'
-    };
-  } else if (t.includes('ai') || t.includes('agent') || t.includes('llm') || category === 'ai') {
-    return {
-      url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=525&q=80',
-      alt: 'Abstract digital neural network and artificial intelligence compute cluster',
-      caption: 'Autonomous agentic computing nodes executing distributed reasoning pipelines.'
-    };
-  } else {
-    return {
-      url: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&h=525&q=80',
-      alt: 'Global satellite view of illuminated data networks across continents',
-      caption: 'Distributed multi-region cloud topology and low-latency replication networks.'
-    };
+  // 1. Direct match against database keywords
+  for (const item of CURATED_IMAGE_DATABASE) {
+    if (item.keywords.some(k => t.includes(k))) {
+      return item;
+    }
   }
+
+  // 2. Keyword-driven dynamic Unsplash query fallback with deterministic topic hash to guarantee unique image per article
+  let hash = 0;
+  for (let i = 0; i < topic.length; i++) {
+    hash = ((hash << 5) - hash) + topic.charCodeAt(i);
+    hash |= 0;
+  }
+  const positiveHash = Math.abs(hash);
+  const cleanKeyword = encodeURIComponent(topic.split(' ').slice(0, 3).join(','));
+
+  return {
+    url: `https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&h=600&q=80&sig=${positiveHash}`,
+    alt: `Editorial technical overview for ${topic}`,
+    caption: `Infrastructure and system analysis illustrating ${topic}.`
+  };
 }
 
 /**
