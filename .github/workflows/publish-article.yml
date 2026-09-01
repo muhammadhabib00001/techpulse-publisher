@@ -1,4 +1,4 @@
-name: Automated Article Publishing Pipeline (Vertex AI + Google Drive)
+name: Automated Article Publishing Pipeline (Gemini AI + Google Drive)
 
 on:
   schedule:
@@ -37,8 +37,9 @@ jobs:
       - name: Install Dependencies
         run: npm ci || npm install
 
-      - name: Run Vertex AI & Google Drive Content Engine
+      - name: Run Gemini / Vertex AI Content Engine
         env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GCP_CREDENTIALS_JSON: ${{ secrets.GCP_CREDENTIALS_JSON }}
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           GCP_REGION: ${{ secrets.GCP_REGION || 'us-central1' }}
