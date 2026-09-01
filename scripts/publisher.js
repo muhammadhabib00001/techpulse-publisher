@@ -1,4 +1,49 @@
 /**
+ * TechPulse Trends - Automated Content Publishing Engine
+ * Fully upgraded:
+ * - Distinct Keyword-Grounded High-Resolution Photography
+ * - Contextual Automatic In-Text Internal Linking Engine
+ * - Pure Explanatory Prose & Architectural Breakdowns (NO code blocks)
+ * - In-Depth FAQ Section with JSON-LD FAQPage Schema Markup
+ * - 1,200 to 1,500+ Word Exhaustive Technical Analysis
+ * - Supports Google AI Studio (GEMINI_API_KEY) + Built-in Deep Synthesis Engine
+ * - Auto-Updates index.html, category-*.html, and sitemap.xml
+ */
+
+const fs = require('fs');
+const path = require('path');
+const https = require('https');
+
+const ROOT_DIR = path.resolve(__dirname, '..');
+
+// Environment & Config
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GCP_CREDENTIALS_JSON = process.env.GCP_CREDENTIALS_JSON;
+const GCP_PROJECT_ID = process.env.GCP_PROJECT_ID || 'techpulse-production';
+const GCP_REGION = process.env.GCP_REGION || 'us-central1';
+const GOOGLE_DRIVE_FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID;
+const CUSTOM_TOPIC = process.env.CUSTOM_TOPIC;
+const TARGET_CATEGORY = process.env.TARGET_CATEGORY || 'security';
+
+const DEFAULT_TOPIC_POOL = [
+  {
+    topic: 'Post-Quantum Cryptography Implementation in Cloud Storage',
+    category: 'security',
+    author: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Principal Cloud Security Architect', initials: 'MR' }
+  },
+  {
+    topic: 'Deterministic Guardrails in Multi-Agent Autonomous AI Systems',
+    category: 'ai',
+    author: { name: 'Dr. Elena Vance', slug: 'dr-elena-vance', role: 'Lead AI Systems Architect', initials: 'EV' }
+  },
+  {
+    topic: 'Serverless Multi-Region Database Sharding and Resilience in 2026',
+    category: 'cloud',
+    author: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Principal Cloud Security Architect', initials: 'MR' }
+  }
+];
+
+/**
  * Diverse, high-resolution keyword-specific photography library
  */
 const CURATED_IMAGE_DATABASE = [
