@@ -1,4 +1,47 @@
 /**
+ * TechPulse Trends - Automated Content Publishing Engine
+ * Fully upgraded for 2026:
+ * - Generates High-Resolution Semantic Hero Vector Illustrations (SVGs) with Responsive Centering
+ * - Guarantees 1,200 to 1,500+ Word Exhaustive Technical Analysis
+ * - Generates JSON-LD Schemas, Benchmarking Tables & In-Depth Code Blocks
+ * - Supports Google AI Studio (GEMINI_API_KEY) + Vertex AI + High-Depth Offline Engine
+ * - Auto-Updates index.html, category-*.html, and sitemap.xml
+ */
+
+const fs = require('fs');
+const path = require('path');
+const https = require('https');
+
+const ROOT_DIR = path.resolve(__dirname, '..');
+
+// Environment & Config
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GCP_CREDENTIALS_JSON = process.env.GCP_CREDENTIALS_JSON;
+const GCP_PROJECT_ID = process.env.GCP_PROJECT_ID || 'techpulse-production';
+const GCP_REGION = process.env.GCP_REGION || 'us-central1';
+const GOOGLE_DRIVE_FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID;
+const CUSTOM_TOPIC = process.env.CUSTOM_TOPIC;
+const TARGET_CATEGORY = process.env.TARGET_CATEGORY || 'security';
+
+const DEFAULT_TOPIC_POOL = [
+  {
+    topic: 'Post-Quantum Cryptography Implementation in Cloud Storage',
+    category: 'security',
+    author: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Principal Cloud Security Architect', initials: 'MR' }
+  },
+  {
+    topic: 'Deterministic Guardrails in Multi-Agent Autonomous LLM Pipelines',
+    category: 'ai',
+    author: { name: 'Dr. Elena Vance', slug: 'dr-elena-vance', role: 'Lead AI Systems Architect', initials: 'EV' }
+  },
+  {
+    topic: 'Serverless Multi-Region Database Sharding and Quorum Replication in 2026',
+    category: 'cloud',
+    author: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Principal Cloud Security Architect', initials: 'MR' }
+  }
+];
+
+/**
  * Generate a clean, responsive, high-tech SVG Hero Illustration for the article
  */
 function generateHeroSvg(title, category) {
@@ -21,8 +64,8 @@ function generateHeroSvg(title, category) {
     badgeColor = '#059669';
   }
 
-  // Sanitize title for subtitle display inside SVG if needed
-  const displayTitle = title.length > 55 ? title.substring(0, 52) + '...' : title;
+  // Smart truncation & subtitle for SVG text
+  const displayTitle = title.length > 52 ? title.substring(0, 49) + '...' : title;
 
   return `
       <div class="card-img-wrap" style="aspect-ratio: 16/7; border-radius: var(--radius-md); margin-bottom: 2rem; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); overflow: hidden;">
@@ -72,11 +115,11 @@ function generateHeroSvg(title, category) {
           <line x1="770" y1="330" x2="600" y2="235" stroke="${accentColor}" stroke-width="2.5" opacity="0.5"/>
 
           <!-- Top Badge -->
-          <rect x="500" y="45" width="200" height="34" rx="17" fill="url(#heroAccentGrad)"/>
+          <rect x="490" y="45" width="220" height="34" rx="17" fill="url(#heroAccentGrad)"/>
           <text x="600" y="67" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" letter-spacing="1.5">${catUpper} RESEARCH</text>
 
           <!-- Centered, Cleanly Padded Label -->
-          <text x="600" y="465" text-anchor="middle" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="800" letter-spacing="0.5">${displayTitle.toUpperCase()}</text>
+          <text x="600" y="465" text-anchor="middle" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="800" letter-spacing="0.5">${displayTitle.toUpperCase()}</text>
         </svg>
       </div>`;
 }
