@@ -156,8 +156,7 @@ img {
 /* Main Brand Header */
 .main-header {
   background: var(--bg-card);
-  border-bottom: 3px solid var(--primary);
-  box-shadow: var(--shadow-sm);
+  box-shadow: none;
   position: relative;
   z-index: 10;
 }
@@ -327,6 +326,18 @@ img {
   font-weight: 500;
   letter-spacing: 0.5px;
   margin-top: -2px;
+}
+
+
+/* Sticky Navigation Bar on Scroll */
+.main-nav-wrapper {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 3px solid var(--primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 999;
 }
 
 /* Main Navigation Bar */
@@ -699,7 +710,7 @@ img {
   flex-direction: column;
   gap: 1.75rem;
   position: sticky;
-  top: 20px;
+  top: 65px;
 }
 
 @media (max-width: 960px) {

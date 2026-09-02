@@ -607,7 +607,7 @@ function renderArticleHtml(articleData, author, category, heroImage) {
     </div>
 
     <!-- Navigation Bar -->
-    <div style="background: var(--bg-card); border-top: 1px solid var(--border-color);">
+    <div class="main-nav-wrapper">
       <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
         <nav class="main-nav" aria-label="Main Navigation">
           <ul class="main-nav-links">
