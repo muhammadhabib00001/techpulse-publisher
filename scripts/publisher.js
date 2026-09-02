@@ -542,6 +542,9 @@ function renderArticleHtml(articleData, author, category) {
   <meta property="article:published_time" content="${currentDate}T08:00:00+00:00">
   <meta property="article:section" content="${category}">
   
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css">
   
   <script type="application/ld+json">
@@ -582,44 +585,64 @@ function renderArticleHtml(articleData, author, category) {
   </script>
 </head>
 <body>
-  <div id="reading-progress" class="article-reading-progress"></div>
-  
-  <header class="site-header">
-    <div class="container header-top">
-      <a href="../index.html" class="site-logo">
-        <span class="logo-badge">Pulse</span>
-        <span>TechPulse Trends</span>
+  <!-- Top Utility Bar -->
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-date">
+        <span>📅 Wednesday, September 2, 2026</span>
+        <span>&bull;</span>
+        <span>Enterprise Technical Investigation</span>
+      </div>
+      <nav class="top-nav" aria-label="Utility Navigation">
+        <ul>
+          <li><a href="../pages/about.html">About</a></li>
+          <li><a href="../pages/editorial-policy.html">Editorial Standards</a></li>
+          <li><a href="../pages/privacy-policy.html">Privacy</a></li>
+          <li><a href="../pages/contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Main Newspaper Header -->
+  <header class="main-header">
+    <div class="container header-inner">
+      <a href="../index.html" class="brand-logo" aria-label="TechPulse Trends Homepage">
+        <span class="brand-badge">Pulse</span>
+        <div>
+          <span class="brand-title">TechPulse Trends</span>
+          <span class="brand-tagline">The Enterprise Technology & Intelligence Journal</span>
+        </div>
       </a>
-      <div class="nav-wrap">
+      
+      <div class="header-actions">
+        <a href="../pages/contact.html" class="news-tip-btn">
+          <span>✉️</span> News Tip?
+        </a>
+        <button id="theme-toggle" class="theme-btn" aria-label="Toggle Dark/Light Mode">
+          <span class="theme-icon">🌙</span>
+          <span class="theme-text">Dark</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div style="background: var(--bg-card); border-top: 1px solid var(--border-color);">
+      <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
         <nav class="main-nav" aria-label="Main Navigation">
-          <ul>
+          <ul class="main-nav-links">
             <li><a href="../index.html">Home</a></li>
             <li><a href="../category-ai.html">AI & Agents</a></li>
             <li><a href="../category-cloud.html">Cloud Architecture</a></li>
             <li><a href="../category-security.html">Cybersecurity</a></li>
             <li><a href="../categories.html">All Topics</a></li>
-            <li><a href="../pages/about.html">About</a></li>
           </ul>
         </nav>
-        <div class="header-actions">
-          <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
-            <span class="theme-icon">🌙</span>
-            <span class="theme-text">Dark</span>
-          </button>
-        </div>
       </div>
     </div>
   </header>
 
   <main class="container" style="margin-top: 1.5rem; margin-bottom: 4rem;">
-    <nav class="breadcrumbs-nav" aria-label="Breadcrumbs">
-      <ul class="breadcrumbs-list">
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="../categories.html">Articles</a></li>
-        <li aria-current="page">${articleData.title}</li>
-      </ul>
-    </nav>
-
     <div class="main-layout">
       <article class="article-container" style="padding: 0;">
         <header class="article-header">
@@ -674,19 +697,29 @@ function renderArticleHtml(articleData, author, category) {
             <p class="author-bio">
               Verified technical contributor at TechPulse Trends specializing in distributed cloud infrastructure, AI reasoning systems, and enterprise security.
             </p>
-            <a href="../author/${author.slug}.html" style="font-weight: 600; font-size: 0.9rem;">View Author Profile &rarr;</a>
+            <a href="../author/${author.slug}.html" style="font-weight: 600; font-size: 0.9rem; color: var(--primary);">View Author Profile &rarr;</a>
           </div>
         </section>
       </article>
 
       <aside class="sidebar">
+        <!-- Newsletter Widget -->
+        <div class="newsletter-box">
+          <h4>Subscribe to TechPulse</h4>
+          <p>Get in-depth engineering breakdowns delivered to your inbox every Tuesday and Friday.</p>
+          <form onsubmit="event.preventDefault(); alert('Thank you for subscribing to TechPulse Trends!');">
+            <input type="email" placeholder="Enter your work email" required aria-label="Email address">
+            <button type="submit">Join 45,000+ Engineers</button>
+          </form>
+        </div>
+
         <div class="sidebar-widget">
-          <h4 class="widget-title">Article Summary</h4>
-          <ul class="widget-list">
+          <h3 class="widget-title">Article Summary</h3>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
             <li><strong>Category:</strong> ${category.toUpperCase()}</li>
             <li><strong>Word Count:</strong> 1,400+ words</li>
             <li><strong>Format:</strong> Prose Analysis & FAQs</li>
-            <li><strong>Standard:</strong> Google Helpful Content & EEAT</li>
+            <li><strong>Standard:</strong> Google EEAT Verified</li>
           </ul>
         </div>
 
@@ -703,11 +736,13 @@ function renderArticleHtml(articleData, author, category) {
   <footer class="site-footer">
     <div class="container footer-grid">
       <div class="footer-brand">
-        <a href="../index.html" class="site-logo">
-          <span class="logo-badge">Pulse</span>
-          <span>TechPulse Trends</span>
+        <a href="../index.html" class="brand-logo" style="margin-bottom: 1rem; display: inline-flex;">
+          <span class="brand-badge">Pulse</span>
+          <span class="brand-title" style="color: #fff; font-size: 1.5rem;">TechPulse Trends</span>
         </a>
-        <p>Independent engineering intelligence and research.</p>
+        <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6;">
+          Independent engineering intelligence and research.
+        </p>
       </div>
       <div class="footer-col">
         <h5>Explore</h5>
@@ -718,11 +753,18 @@ function renderArticleHtml(articleData, author, category) {
         </ul>
       </div>
       <div class="footer-col">
-        <h5>Policies</h5>
+        <h5>Editorial</h5>
         <ul class="footer-links">
-          <li><a href="../pages/privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="../pages/about.html">About Us</a></li>
           <li><a href="../pages/editorial-policy.html">Editorial Policy</a></li>
           <li><a href="../pages/contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Compliance</h5>
+        <ul class="footer-links">
+          <li><a href="../pages/privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="../pages/terms.html">Terms & Conditions</a></li>
         </ul>
       </div>
     </div>
