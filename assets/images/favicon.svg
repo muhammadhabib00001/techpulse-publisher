@@ -1,12 +1,86 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
   <defs>
-    <linearGradient id="favGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#d62828" />
-      <stop offset="100%" stop-color="#9e0e18" />
+    <!-- Rich Outer Badge Radial Gradient -->
+    <radialGradient id="badgeRadial" cx="50%" cy="38%" r="62%">
+      <stop offset="0%" stop-color="#ef233c" />
+      <stop offset="60%" stop-color="#c1121e" />
+      <stop offset="100%" stop-color="#780000" />
+    </radialGradient>
+
+    <!-- Warm Golden Glow -->
+    <linearGradient id="goldPageGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#b45309" />
     </linearGradient>
+
+    <!-- Falcon Wing Dynamic Gradients -->
+    <linearGradient id="wingLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="35%" stop-color="#ffccd5" />
+      <stop offset="100%" stop-color="#c1121e" />
+    </linearGradient>
+
+    <linearGradient id="wingRight" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffccd5" />
+      <stop offset="50%" stop-color="#e63946" />
+      <stop offset="100%" stop-color="#590d22" />
+    </linearGradient>
+
+    <!-- Drop Shadow Filter -->
+    <filter id="crispShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3.5" flood-color="#780000" flood-opacity="0.45"/>
+    </filter>
   </defs>
-  <rect width="64" height="64" rx="14" fill="url(#favGrad)" />
-  <!-- Monogram 'α' / 'A' -->
-  <path d="M 18 48 L 32 16 L 46 48 M 23 38 L 41 38" stroke="#ffffff" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-  <circle cx="32" cy="27" r="3" fill="#f59e0b" />
+
+  <!-- Outer Golden Metallic Ring -->
+  <circle cx="50" cy="50" r="48" fill="url(#goldPageGrad)" />
+  <circle cx="50" cy="50" r="45" fill="#111827" />
+  
+  <!-- Main Deep Crimson Circle -->
+  <circle cx="50" cy="50" r="43" fill="url(#badgeRadial)" filter="url(#crispShadow)" />
+
+  <!-- Inner Subtle Halo -->
+  <circle cx="50" cy="42" r="28" fill="#ffffff" opacity="0.12" />
+
+  <!-- Open Magazine / Book Foundation -->
+  <g id="magazine-pages">
+    <!-- Left Open Page -->
+    <path d="M 50 78 L 22 68 L 22 55 L 50 64 Z" fill="url(#goldPageGrad)" stroke="#78350f" stroke-width="0.8" />
+    <path d="M 50 78 L 24 70 L 24 58 L 50 66 Z" fill="#ffffff" opacity="0.85" />
+    <!-- Right Open Page -->
+    <path d="M 50 78 L 78 68 L 78 55 L 50 64 Z" fill="url(#goldPageGrad)" stroke="#78350f" stroke-width="0.8" />
+    <path d="M 50 78 L 76 70 L 76 58 L 50 66 Z" fill="#ffffff" opacity="0.95" />
+    <!-- Book Spine Glow -->
+    <polygon points="48,64 52,64 51,80 49,80" fill="#fef08a" />
+  </g>
+
+  <!-- Origami Soaring Falcon (Sharp, High-Contrast Facets) -->
+  <g id="soaring-falcon">
+    <!-- Left Primary Wing -->
+    <polygon points="50,44 24,24 38,40 50,47" fill="url(#wingLeft)" stroke="#590d22" stroke-width="0.75" />
+    <!-- Left Secondary Feather Facet -->
+    <polygon points="24,24 16,34 32,44 38,40" fill="#e63946" stroke="#590d22" stroke-width="0.6" />
+    <polygon points="16,34 12,42 26,46 32,44" fill="#a4161a" stroke="#590d22" stroke-width="0.6" />
+    
+    <!-- Right Primary Wing -->
+    <polygon points="50,44 76,20 62,38 50,47" fill="url(#wingRight)" stroke="#590d22" stroke-width="0.75" />
+    <!-- Right Secondary Feather Facet -->
+    <polygon points="76,20 84,30 68,42 62,38" fill="#d90429" stroke="#590d22" stroke-width="0.6" />
+    <polygon points="84,30 88,38 74,44 68,42" fill="#800f2f" stroke="#590d22" stroke-width="0.6" />
+
+    <!-- Falcon Tail / Ascent Jet -->
+    <polygon points="50,48 44,60 50,65 56,60" fill="#590d22" stroke="#ffccd5" stroke-width="0.5" />
+    
+    <!-- Falcon Body & Head -->
+    <polygon points="50,30 46,38 50,48 54,38" fill="#ffffff" stroke="#590d22" stroke-width="0.8" />
+    <!-- Sharp Falcon Crest / Head -->
+    <polygon points="50,24 53,28 50,32 47,28" fill="#fef08a" stroke="#78350f" stroke-width="0.6" />
+    <polygon points="53,28 57,30 52,31" fill="#f59e0b" />
+  </g>
+
+  <!-- Sparkling Golden Star Accents -->
+  <circle cx="50" cy="18" r="1.8" fill="#fef08a" />
+  <circle cx="28" cy="22" r="1.2" fill="#ffffff" opacity="0.9" />
+  <circle cx="72" cy="18" r="1.2" fill="#ffffff" opacity="0.9" />
 </svg>
