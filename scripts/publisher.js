@@ -259,7 +259,7 @@ STRICT GUIDELINES:
 1. Target Word Count: Minimum 1,200 words, maximum 1,500 words.
 2. Tone: Authoritative, community-grounded, empathetic, and strictly factual (Google EEAT standards).
 3. ABSOLUTELY NO programming code snippets or technical software frameworks. Write engaging journalistic prose, human-interest quotes, and civic context.
-4. Include a dedicated FAQ section with 3-4 community questions.
+4. Include a dedicated FAQ section with 4 to 5 in-depth community questions.
 5. Return ONLY valid JSON with keys: "title", "slug", "metaDescription", "sections", "tableOfContents", "faqs".
 `;
 
