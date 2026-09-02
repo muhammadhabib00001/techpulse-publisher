@@ -11,9 +11,17 @@ on:
         required: false
         default: ''
       category:
-        description: 'Target Category (ai, cloud, security)'
+        description: 'Target Category (news, community, business, arts, lifestyle, voices)'
         required: false
-        default: 'ai'
+        default: 'news'
+        type: choice
+        options:
+          - news
+          - community
+          - business
+          - arts
+          - lifestyle
+          - voices
 
 permissions:
   contents: write
@@ -43,18 +51,22 @@ jobs:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           GCP_REGION: ${{ secrets.GCP_REGION || 'us-central1' }}
           GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
-          CUSTOM_TOPIC: ${{ github.event.inputs.topic }}
-          TARGET_CATEGORY: ${{ github.event.inputs.category }}
-        run: node scripts/publisher.js
-
-      - name: Commit & Push New Article to Main
         run: |
-          git config --global user.name 'TechPulse Automated Publisher'
-          git config --global user.email 'automation@genalphamagazines.com'
-          git add articles/ sitemap.xml index.html categories.html category-*.html
+          node scripts/publisher.js \
+            --topic "${{ github.event.inputs.topic || '' }}" \
+            --category "${{ github.event.inputs.category || 'news' }}"
+
+      - name: Configure Git Committer
+        run: |
+          git config --global user.name "GenAlphaMagazines Publishing Engine"
+          git config --global user.email "bot@genalphamagazines.com"
+
+      - name: Commit and Push New Article & Updated Feeds
+        run: |
+          git add articles/ index.html category-*.html categories.html sitemap.xml
           if git diff --staged --quiet; then
-            echo "No new changes or articles generated to commit."
+            echo "No changes to commit. Article generation might have been skipped."
           else
-            git commit -m "Auto-publish: New in-depth research article [skip ci]"
+            git commit -m "Automated publication: New in-depth community journalism feature [skip ci]"
             git push origin main
           fi
