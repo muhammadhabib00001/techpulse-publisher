@@ -94,16 +94,91 @@ const CURATED_IMAGE_DATABASE = [
 ];
 
 function getRealHeroImage(topic, category) {
-  const text = (topic + ' ' + category).toLowerCase();
-  for (const item of CURATED_IMAGE_DATABASE) {
-    if (item.keywords.some(k => text.includes(k))) {
-      return item;
-    }
+  const cleanKeyword = encodeURIComponent(topic.replace(/[^a-zA-Z0-9 ]/g, ' ').trim().split(' ').slice(0, 3).join(','));
+  
+  // Topic-specific curated high-res imagery
+  const lower = topic.toLowerCase();
+  if (lower.includes('trump') || lower.includes('president') || lower.includes('white house') || lower.includes('election') || lower.includes('politics')) {
+    return {
+      url: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&h=600&q=80',
+      alt: 'The United States Capitol and presidential podium in Washington D.C.',
+      caption: 'National political developments and executive policy shifts impacting domestic and regional governance.'
+    };
   }
-  return CURATED_IMAGE_DATABASE[0];
+  if (lower.includes('theater') || lower.includes('playwright') || lower.includes('actor') || lower.includes('stage')) {
+    return {
+      url: 'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&w=1200&h=600&q=80',
+      alt: 'Dramatic live theater stage with stage lighting',
+      caption: 'Regional independent theater productions exploring contemporary narrative themes.'
+    };
+  }
+  if (lower.includes('festival') || lower.includes('waterfront') || lower.includes('heritage')) {
+    return {
+      url: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&h=600&q=80',
+      alt: 'Lively outdoor community festival pavilions',
+      caption: 'Annual community cultural festival bringing together local artisans and residents.'
+    };
+  }
+  if (lower.includes('solar') || lower.includes('energy') || lower.includes('heat pump') || lower.includes('green') || lower.includes('climate')) {
+    return {
+      url: 'https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=1200&h=600&q=80',
+      alt: 'Modern residential and regional clean solar array installation',
+      caption: 'Clean energy transition and modernized solar grid installations.'
+    };
+  }
+  if (lower.includes('business') || lower.includes('market') || lower.includes('retail') || lower.includes('economy') || lower.includes('main street')) {
+    return {
+      url: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&h=600&q=80',
+      alt: 'Bustling downtown commercial street and small business storefronts',
+      caption: 'Commercial revitalization and small enterprise growth across regional business hubs.'
+    };
+  }
+  if (lower.includes('neighbor') || lower.includes('voice') || lower.includes('community') || lower.includes('culture')) {
+    return {
+      url: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&h=600&q=80',
+      alt: 'Community members conversing and connecting in public park',
+      caption: 'Neighborhood connections fostering grassroots community resilience.'
+    };
+  }
+
+  // Dynamic high-res fallback tailored to topic keyword
+  return {
+    url: `https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&h=600&q=80`,
+    alt: `Editorial coverage on ${topic}`,
+    caption: `Comprehensive investigative reporting on ${topic}.`
+  };
 }
 
 const INTERNAL_LINK_MAP = [
+  { keyword: 'municipal governance', url: '../articles/municipal-election-analysis-candidate-platforms.html' },
+  { keyword: 'civic engagement', url: '../category-news.html' },
+  { keyword: 'small business vitality', url: '../articles/main-street-commercial-revitalization.html' },
+  { keyword: 'commercial revitalization', url: '../articles/main-street-commercial-revitalization.html' },
+  { keyword: 'clean energy transition', url: '../articles/energy-efficient-home-modernization.html' },
+  { keyword: 'infrastructure modernization', url: '../articles/energy-efficient-home-modernization.html' },
+  { keyword: 'community cultural festival', url: '../articles/annual-waterfront-heritage-festival.html' },
+  { keyword: 'neighborhood connections', url: '../articles/the-power-of-neighborly-connection-in-a-digital-world-a-columnist-perspective.html' },
+  { keyword: 'arts and theater', url: '../articles/spotlight-on-independent-theater.html' },
+  { keyword: 'Marcus Reid', url: '../author/marcus-reid.html' },
+  { keyword: 'Julia Vance', url: '../author/julia-vance.html' },
+  { keyword: 'News & Announcements', url: '../category-news.html' },
+  { keyword: 'Community & Events', url: '../category-community.html' },
+  { keyword: 'Business & Economy', url: '../category-business.html' },
+  { keyword: 'Arts & Entertainment', url: '../category-arts.html' },
+  { keyword: 'Lifestyle & Culture', url: '../category-lifestyle.html' },
+  { keyword: 'Voices & Columnists', url: '../category-voices.html' },
+  { keyword: 'Editorial Standards', url: '../pages/editorial-policy.html' }
+];
+
+function injectInternalLinks(htmlContent, currentSlug) {
+  let processed = htmlContent;
+  const linkedKeywords = new Set();
+
+  INTERNAL_LINK_MAP.forEach(({ keyword, url }) => {
+    if (url.includes(currentSlug)) return;
+    if (linkedKeywords.has(keyword.toLowerCase())) return;
+
+    const escaped = keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\const INTERNAL_LINK_MAP = [
   { keyword: 'Municipal Election Analysis', url: '../articles/municipal-election-analysis-candidate-platforms.html' },
   { keyword: 'Waterfront Heritage Festival', url: '../articles/annual-waterfront-heritage-festival.html' },
   { keyword: 'Main Street Commercial Revitalization', url: '../articles/main-street-commercial-revitalization.html' },
@@ -136,6 +211,18 @@ function injectInternalLinks(htmlContent, currentSlug) {
       processed = processed.replace(regex, (match) => {
         linkedKeywords.add(keyword.toLowerCase());
         return `<a href="${url}" style="color: var(--primary); font-weight: 600; text-decoration: underline;" title="${keyword}">${match}</a>`;
+      });
+    }
+  });
+
+  return processed;
+}');
+    const regex = new RegExp('(\\b' + escaped + '\\b)(?![^<]*>|[^<>]*<\\/a>)', 'i');
+    
+    if (regex.test(processed)) {
+      processed = processed.replace(regex, (match) => {
+        linkedKeywords.add(keyword.toLowerCase());
+        return `<a href="${url}" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${keyword}">${match}</a>`;
       });
     }
   });
