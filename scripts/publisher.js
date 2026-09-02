@@ -646,9 +646,9 @@ function renderArticleHtml(articleData, author, category, heroImage) {
 
         <figure class="featured-media" style="margin: 0; position: relative;">
           <div style="aspect-ratio: 16/9; overflow: hidden; border-radius: var(--radius-md);">
-            <img src="${heroImage.relativeUrl}" alt="${heroImage.alt}" style="width: 100%; height: 100%; object-fit: cover;">
+            <img src="${heroImage.relativeUrl}" alt="${articleData.title}" style="width: 100%; height: 100%; object-fit: cover;">
           </div>
-          <figcaption style="font-size: 0.85rem; color: var(--text-muted); padding: 0.6rem 0.25rem 0.5rem; border-bottom: 1px solid var(--border-color);">${heroImage.caption}</figcaption>
+          <figcaption style="font-size: 0.85rem; color: var(--text-muted); padding: 0.6rem 0.25rem 0.5rem; border-bottom: 1px solid var(--border-color);">${articleData.title}</figcaption>
         </figure>
 
         <nav class="table-of-contents" aria-label="Table of contents" style="margin-top: 1.5rem;">
