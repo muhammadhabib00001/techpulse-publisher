@@ -1,0 +1,17 @@
+{
+  "name": "GenAlphaMagazines",
+  "short_name": "GenAlpha",
+  "description": "Positively Local Community News, Culture & Regional Reporting",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111418",
+  "theme_color": "#c1121e",
+  "icons": [
+    {
+      "src": "/assets/images/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
