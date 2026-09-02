@@ -764,6 +764,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
   const currentDate = new Date().toISOString().split('T')[0];
   const dateFormatted = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
+  // 1. Sitemap update
   const sitemapPath = path.join(ROOT_DIR, 'sitemap.xml');
   if (fs.existsSync(sitemapPath)) {
     let sitemap = fs.readFileSync(sitemapPath, 'utf8');
@@ -776,6 +777,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
     }
   }
 
+  // 2. Feed Card snippet
   const cardSnippet = `
           <!-- Article: ${articleData.slug}.html -->
           <article class="card">
@@ -795,16 +797,27 @@ function updateSiteIndex(articleData, author, category, heroImage) {
             </div>
           </article>\n`;
 
+  // 3. Homepage update (Feed + Trending Stream + Breaking Ticker)
   const indexPath = path.join(ROOT_DIR, 'index.html');
   if (fs.existsSync(indexPath)) {
     let indexHtml = fs.readFileSync(indexPath, 'utf8');
+    
+    // Add to Latest Stories feed if not present
     if (!indexHtml.includes(articleData.slug)) {
       indexHtml = indexHtml.replace('<div class="articles-grid">', '<div class="articles-grid">\n' + cardSnippet);
-      fs.writeFileSync(indexPath, indexHtml, 'utf8');
-      console.log(`[INFO] Added card to index.html`);
     }
+    
+    // Auto-insert into Breaking Ticker
+    const tickerItem = `<a href="./articles/${articleData.slug}.html" class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> ${articleData.title}</a>\n          `;
+    if (!indexHtml.includes(`href="./articles/${articleData.slug}.html"`)) {
+      indexHtml = indexHtml.replace('<div class="breaking-ticker-track">', '<div class="breaking-ticker-track">\n          ' + tickerItem);
+    }
+    
+    fs.writeFileSync(indexPath, indexHtml, 'utf8');
+    console.log(`[INFO] Added card and ticker item to index.html`);
   }
 
+  // 4. Category Department update
   const categoryFile = `category-${category}.html`;
   const categoryPath = path.join(ROOT_DIR, categoryFile);
   if (fs.existsSync(categoryPath)) {
@@ -815,6 +828,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
       console.log(`[INFO] Added card to ${categoryFile}`);
     }
   }
+}
 }
 
 async function main() {
