@@ -390,9 +390,9 @@ async function generateArticle(topicData) {
 
   const systemInstruction = `
 You are an award-winning investigative journalist for GenAlphaMagazines (https://www.genalphamagazines.com).
-Write a comprehensive, engaging, and original 1,200 to 1,500 word newsmagazine feature.
+Write a comprehensive, engaging, and authentic newsmagazine feature with in-depth analysis.
 STRICT GUIDELINES:
-1. Target Word Count: Minimum 1,200 words, maximum 1,500 words.
+1. Write rich, detailed journalistic reporting with multiple subheadings.
 2. Tone: Authoritative, community-grounded, empathetic, and strictly factual (Google EEAT standards).
 3. ABSOLUTELY NO programming code snippets or technical software frameworks. Write pure explanatory journalistic prose.
 4. Include a dedicated FAQ section with 5 in-depth community questions.
