@@ -653,28 +653,40 @@ img {
    ========================================================================== */
 .main-layout {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 2.25rem;
   margin-top: 2rem;
+  align-items: start;
 }
 
-@media (max-width: 900px) {
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  position: sticky;
+  top: 90px;
+}
+
+@media (max-width: 960px) {
   .main-layout {
     grid-template-columns: 1fr;
   }
+  .sidebar {
+    position: static;
+  }
 }
 
-/* Article Cards Grid */
 .articles-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.5rem;
 }
 
-@media (max-width: 650px) {
+@media (max-width: 640px) {
   .articles-grid {
     grid-template-columns: 1fr;
   }
+}
 }
 
 .card {
