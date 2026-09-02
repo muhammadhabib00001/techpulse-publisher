@@ -272,10 +272,31 @@ function callGoogleAIStudio(apiKey, prompt, systemInstruction) {
 function generateDeepFallbackArticle(topic, category, author) {
   const slug = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
   
+  // Format clean natural title
+  const cleanTitle = topic.charAt(0).toUpperCase() + topic.slice(1);
+  const titleTemplates = [
+    `${cleanTitle} in 2026: Trends, Community Impact & Future Outlook`,
+    `${cleanTitle}: Key Developments, Economic Analysis & Strategic Priorities`,
+    `Inside ${cleanTitle}: An In-Depth Look at Regional & National Shifts`
+  ];
+  let hash = 0;
+  for (let i = 0; i < topic.length; i++) {
+    hash = ((hash << 5) - hash) + topic.charCodeAt(i);
+    hash |= 0;
+  }
+  const generatedTitle = titleTemplates[Math.abs(hash) % titleTemplates.length];
+  
+  const excerptTemplates = [
+    `An investigative look into ${topic}, examining key economic drivers, community stakeholder perspectives, and policy milestones in 2026.`,
+    `Exploring the latest developments in ${topic}, featuring expert commentary, data-driven analysis, and practical insights for regional leaders.`,
+    `A comprehensive feature on ${topic}, analyzing market dynamics, grassroots community feedback, and long-term strategic opportunities.`
+  ];
+  const generatedExcerpt = excerptTemplates[Math.abs(hash) % excerptTemplates.length];
+
   return {
-    title: `${topic}: Comprehensive In-Depth Report`,
+    title: generatedTitle,
     slug: slug,
-    metaDescription: `A comprehensive 1,350+ word investigative report on ${topic}, exploring community impact, civic data, and regional perspectives.`,
+    metaDescription: generatedExcerpt,
     tableOfContents: [
       { id: "overview-context", title: "1. Overview & Community Context" },
       { id: "investigative-findings", title: "2. Key Findings & Stakeholder Perspectives" },
