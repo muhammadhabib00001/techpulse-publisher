@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./assets/css/style.css?v=20260902_stickypure">
+  <link rel="stylesheet" href="./assets/css/style.css?v=20260902_alternating_layout">
 
   <script type="application/ld+json">
   {
@@ -53,7 +53,7 @@
     </div>
   </div>
 
-  <!-- Main Newspaper Header -->
+  <!-- Main Newspaper Header (Scrolls away naturally) -->
   <header class="main-header">
     <div class="container header-inner">
       <a href="./index.html" class="brand-logo" aria-label="GenAlphaMagazines Homepage">
@@ -133,21 +133,21 @@
 
   <!-- Sticky Navigation Bar on Scroll -->
   <nav class="main-nav-wrapper">
-      <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-        <nav class="main-nav" aria-label="Main Navigation">
-          <ul class="main-nav-links">
-            <li><a href="./index.html" class="active">Home</a></li>
-            <li><a href="./category-news.html">News</a></li>
-            <li><a href="./category-community.html">Community & Events</a></li>
-            <li><a href="./category-business.html">Business & Economy</a></li>
-            <li><a href="./category-arts.html">Arts & Entertainment</a></li>
-            <li><a href="./category-lifestyle.html">Lifestyle</a></li>
-            <li><a href="./category-voices.html">Voices</a></li>
-            <li><a href="./categories.html">All Topics</a></li>
-          </ul>
-        </nav>
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+      <div class="main-nav" aria-label="Main Navigation">
+        <ul class="main-nav-links">
+          <li><a href="./index.html" class="active">Home</a></li>
+          <li><a href="./category-news.html">News</a></li>
+          <li><a href="./category-community.html">Community & Events</a></li>
+          <li><a href="./category-business.html">Business & Economy</a></li>
+          <li><a href="./category-arts.html">Arts & Entertainment</a></li>
+          <li><a href="./category-lifestyle.html">Lifestyle</a></li>
+          <li><a href="./category-voices.html">Voices</a></li>
+          <li><a href="./categories.html">All Topics</a></li>
+        </ul>
       </div>
-    </nav>
+    </div>
+  </nav>
 
   <!-- Multi-Story Dynamic Breaking News Ticker -->
   <div class="breaking-bar">
@@ -180,129 +180,87 @@
     <!-- Main Content & Sidebar Layout -->
     <div class="main-layout">
       <!-- Main Content Feed Area -->
-      <div style="display: flex; flex-direction: column; gap: 2.5rem;">
+      <div style="display: flex; flex-direction: column; gap: 2.75rem;">
         
-        <!-- Section 1: LATEST STORIES (Top Feature Feed) -->
+        <!-- ================================================================
+             1st SECTION: LATEST STORIES (Pattern A: 1 Main Big + 3 Small Cards)
+             ================================================================ -->
         <section aria-label="Latest Publications">
           <div class="section-header">
             <span class="section-box">Latest Stories</span>
           </div>
 
-          <div class="articles-grid">
-            <!-- Article: finance-jobs.html -->
-            <article class="card">
-              <div class="card-img-wrap" style="aspect-ratio: 16/9; overflow: hidden;">
-                <img src="./assets/images/finance-jobs.jpg" alt="Finance Jobs in 2026: Investment Banking Trends, Career Pathways & Regional Hiring" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
-              </div>
-              <div class="card-content">
-                <span class="card-tag">BUSINESS &bull; Editorial Feature</span>
-                <h3 class="card-title">
-                  <a href="./articles/finance-jobs.html">Finance Jobs in 2026: Investment Banking Trends, Career Pathways & Regional Hiring</a>
-                </h3>
-                <p class="card-excerpt">An investigative analysis into commercial banking growth, corporate wealth advisory hiring, and competitive compensation packages across regional financial corridors.</p>
-                <div class="card-meta">
-                  <span>By <a href="./author/marcus-reid.html">Marcus Reid</a></span>
-                  <span>Sep 2, 2026</span>
+          <div class="pattern-a-grid">
+            <!-- 1 Main Big Lead Article -->
+            <div class="pattern-a-main">
+              <article class="card">
+                <div class="card-img-wrap">
+                  <img src="./assets/images/finance-jobs.jpg" alt="Finance Jobs in 2026: Investment Banking Trends, Career Pathways & Regional Hiring" loading="lazy">
                 </div>
-              </div>
-            </article>
+                <div class="card-content">
+                  <span class="card-tag">BUSINESS &bull; Editorial Feature</span>
+                  <h3 class="card-title">
+                    <a href="./articles/finance-jobs.html">Finance Jobs in 2026: Investment Banking Trends, Career Pathways & Regional Hiring</a>
+                  </h3>
+                  <p class="card-excerpt">An investigative analysis into commercial banking growth, corporate wealth advisory hiring, and competitive compensation packages across regional financial corridors.</p>
+                  <div class="card-meta">
+                    <span>By <a href="./author/marcus-reid.html">Marcus Reid</a></span>
+                    <span>Sep 2, 2026</span>
+                  </div>
+                </div>
+              </article>
+            </div>
 
-            <!-- Article: trump.html -->
-            <article class="card">
-              <div class="card-img-wrap" style="aspect-ratio: 16/9; overflow: hidden;">
-                <img src="./assets/images/donald-trump-press-briefing.jpg" alt="Donald Trump 2026 Policy Review: Trade Tariffs, Federal Initiatives & Economic Impact" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
-              </div>
-              <div class="card-content">
-                <span class="card-tag">NEWS &bull; Editorial Feature</span>
-                <h3 class="card-title">
-                  <a href="./articles/trump.html">Donald Trump 2026 Policy Review: Trade Tariffs, Federal Initiatives & Economic Impact</a>
-                </h3>
-                <p class="card-excerpt">An in-depth examination of federal trade restructuring, domestic manufacturing incentives, and administrative policy shifts shaping national commerce.</p>
-                <div class="card-meta">
-                  <span>By <a href="./author/marcus-reid.html">Marcus Reid</a></span>
-                  <span>Sep 2, 2026</span>
+            <!-- 3 Stacked Small Side Articles -->
+            <div class="pattern-a-side-list">
+              <article class="mini-side-card">
+                <div class="mini-side-thumb">
+                  <img src="./assets/images/donald-trump-press-briefing.jpg" alt="Donald Trump 2026 Policy Review" loading="lazy">
                 </div>
-              </div>
-            </article>
+                <div class="mini-side-content">
+                  <span class="mini-side-tag">NEWS</span>
+                  <h4 class="mini-side-title"><a href="./articles/trump.html">Donald Trump 2026 Policy Review: Trade Tariffs & Economy</a></h4>
+                  <span class="mini-side-meta">By Marcus Reid &bull; Sep 2, 2026</span>
+                </div>
+              </article>
 
-            <!-- Article: regional-clean-energy-transition-and-solar-farm-initiatives-in-2026.html -->
-            <article class="card">
-              <div class="card-img-wrap" style="aspect-ratio: 16/9; overflow: hidden;">
-                <img src="./assets/images/solar-farm-clean-energy.jpg" alt="Regional Clean Energy Transition: Solar Farm Expansion & Grid Modernization in 2026" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
-              </div>
-              <div class="card-content">
-                <span class="card-tag">LIFESTYLE &bull; Editorial Feature</span>
-                <h3 class="card-title">
-                  <a href="./articles/regional-clean-energy-transition-and-solar-farm-initiatives-in-2026.html">Regional Clean Energy Transition: Solar Farm Expansion & Grid Modernization in 2026</a>
-                </h3>
-                <p class="card-excerpt">Exploring utility-scale photovoltaic solar projects, distributed energy storage systems, and regional renewable subsidies reducing residential utility costs.</p>
-                <div class="card-meta">
-                  <span>By <a href="./author/marcus-reid.html">Marcus Reid</a></span>
-                  <span>Sep 2, 2026</span>
+              <article class="mini-side-card">
+                <div class="mini-side-thumb">
+                  <img src="./assets/images/solar-farm-clean-energy.jpg" alt="Regional Clean Energy Transition" loading="lazy">
                 </div>
-              </div>
-            </article>
+                <div class="mini-side-content">
+                  <span class="mini-side-tag">LIFESTYLE</span>
+                  <h4 class="mini-side-title"><a href="./articles/regional-clean-energy-transition-and-solar-farm-initiatives-in-2026.html">Regional Clean Energy Transition: Solar Farm Expansion</a></h4>
+                  <span class="mini-side-meta">By Marcus Reid &bull; Sep 2, 2026</span>
+                </div>
+              </article>
 
-            <!-- Article: municipal-election-analysis-candidate-platforms-and-community-priorities-for-2026.html -->
-            <article class="card">
-              <div class="card-img-wrap" style="aspect-ratio: 16/9; overflow: hidden;">
-                <img src="./assets/images/municipal-election-voting.jpg" alt="Municipal Election 2026: Candidate Platforms, Civic Budgets & Voter Priorities" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
-              </div>
-              <div class="card-content">
-                <span class="card-tag">NEWS &bull; Editorial Feature</span>
-                <h3 class="card-title">
-                  <a href="./articles/municipal-election-analysis-candidate-platforms-and-community-priorities-for-2026.html">Municipal Election 2026: Candidate Platforms, Civic Budgets & Voter Priorities</a>
-                </h3>
-                <p class="card-excerpt">Comparing mayoral and ward council platforms on infrastructure borrowing, property tax balance, transit funding, and public consultation.</p>
-                <div class="card-meta">
-                  <span>By <a href="./author/marcus-reid.html">Marcus Reid</a></span>
-                  <span>Sep 2, 2026</span>
+              <article class="mini-side-card">
+                <div class="mini-side-thumb">
+                  <img src="./assets/images/municipal-election-voting.jpg" alt="Municipal Election 2026" loading="lazy">
                 </div>
-              </div>
-            </article>
+                <div class="mini-side-content">
+                  <span class="mini-side-tag">NEWS</span>
+                  <h4 class="mini-side-title"><a href="./articles/municipal-election-analysis-candidate-platforms.html">Municipal Election 2026: Candidate Platforms & Budgets</a></h4>
+                  <span class="mini-side-meta">By Marcus Reid &bull; Sep 2, 2026</span>
+                </div>
+              </article>
+            </div>
           </div>
         </section>
 
-        <!-- Section 2: NEWS & CIVIC AFFAIRS -->
-        <section aria-label="News & Civic Affairs">
-          <div class="section-header">
-            <span class="section-box">News & Civic Affairs</span>
-          </div>
-          <div class="articles-grid">
-            <article class="card">
-              <div class="card-img-wrap" style="aspect-ratio: 16/9; overflow: hidden;">
-                <img src="./assets/images/municipal-election-voting.jpg" alt="Municipal Election Analysis" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
-              </div>
-              <div class="card-content">
-                <span class="card-tag">NEWS</span>
-                <h3 class="card-title"><a href="./articles/municipal-election-analysis-candidate-platforms.html">Municipal Election Analysis: Candidate Platforms & Community Priorities</a></h3>
-                <p class="card-excerpt">An in-depth investigative breakdown of candidate platforms, infrastructure borrowing strategies, and property tax policies.</p>
-                <div class="card-meta"><span>By Marcus Reid</span><span>Sep 2, 2026</span></div>
-              </div>
-            </article>
-            <article class="card">
-              <div class="card-img-wrap" style="aspect-ratio: 16/9; overflow: hidden;">
-                <img src="./assets/images/public-transit-electric-bus.jpg" alt="Public Transit Overhaul" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
-              </div>
-              <div class="card-content">
-                <span class="card-tag">NEWS</span>
-                <h3 class="card-title"><a href="./articles/regional-public-transit-overhaul.html">Regional Public Transit Overhaul: Electrification & Commuter Routes</a></h3>
-                <p class="card-excerpt">A comprehensive report on multi-million dollar regional transit investments and zero-emission electric bus deployment.</p>
-                <div class="card-meta"><span>By Julia Vance</span><span>Sep 1, 2026</span></div>
-              </div>
-            </article>
-          </div>
-        </section>
-
-        <!-- Section 3: BUSINESS & ECONOMY -->
+        <!-- ================================================================
+             2nd SECTION: BUSINESS & ECONOMY (Pattern B: Straight 4 Cards Grid)
+             ================================================================ -->
         <section aria-label="Business & Economy">
           <div class="section-header">
             <span class="section-box">Business & Economy</span>
           </div>
-          <div class="articles-grid">
+
+          <div class="pattern-b-grid">
             <article class="card">
-              <div class="card-img-wrap" style="aspect-ratio: 16/9; overflow: hidden;">
-                <img src="./assets/images/main-street-commercial-revitalization.jpg" alt="Main Street Commercial Revitalization" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+              <div class="card-img-wrap">
+                <img src="./assets/images/main-street-commercial-revitalization.jpg" alt="Main Street Commercial Revitalization" loading="lazy">
               </div>
               <div class="card-content">
                 <span class="card-tag">BUSINESS</span>
@@ -311,9 +269,10 @@
                 <div class="card-meta"><span>By Marcus Reid</span><span>Sep 2, 2026</span></div>
               </div>
             </article>
+
             <article class="card">
-              <div class="card-img-wrap" style="aspect-ratio: 16/9; overflow: hidden;">
-                <img src="./assets/images/finance-jobs.jpg" alt="Finance Jobs" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+              <div class="card-img-wrap">
+                <img src="./assets/images/finance-jobs.jpg" alt="Finance Jobs" loading="lazy">
               </div>
               <div class="card-content">
                 <span class="card-tag">BUSINESS</span>
@@ -322,49 +281,112 @@
                 <div class="card-meta"><span>By Marcus Reid</span><span>Sep 2, 2026</span></div>
               </div>
             </article>
+
+            <article class="card">
+              <div class="card-img-wrap">
+                <img src="./assets/images/energy-efficient-home-modernization.jpg" alt="Green Tech Enterprise" loading="lazy">
+              </div>
+              <div class="card-content">
+                <span class="card-tag">BUSINESS</span>
+                <h3 class="card-title"><a href="./articles/energy-efficient-home-modernization.html">Green Construction & Regional Contracting Opportunities</a></h3>
+                <p class="card-excerpt">Clean building materials and modern HVAC contracting firms experiencing significant regional expansion.</p>
+                <div class="card-meta"><span>By Marcus Reid</span><span>Sep 2, 2026</span></div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-img-wrap">
+                <img src="./assets/images/public-transit-electric-bus.jpg" alt="Commercial Fleet Transit" loading="lazy">
+              </div>
+              <div class="card-content">
+                <span class="card-tag">BUSINESS</span>
+                <h3 class="card-title"><a href="./articles/regional-public-transit-overhaul.html">Commercial Logistics & Regional Transit Infrastructure</a></h3>
+                <p class="card-excerpt">How municipal transit investments and clean fleet corridors are streamlining local business distribution.</p>
+                <div class="card-meta"><span>By Julia Vance</span><span>Sep 1, 2026</span></div>
+              </div>
+            </article>
           </div>
         </section>
 
-        <!-- Section 4: COMMUNITY & EVENTS -->
+        <!-- ================================================================
+             3rd SECTION: COMMUNITY & EVENTS (Pattern A: 1 Main Big + 3 Small Cards)
+             ================================================================ -->
         <section aria-label="Community & Events">
           <div class="section-header">
             <span class="section-box">Community & Events</span>
           </div>
-          <div class="articles-grid">
-            <article class="card">
-              <div class="card-img-wrap" style="aspect-ratio: 16/9; overflow: hidden;">
-                <img src="./assets/images/waterfront-heritage-festival.jpg" alt="Waterfront Heritage Festival" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
-              </div>
-              <div class="card-content">
-                <span class="card-tag">COMMUNITY</span>
-                <h3 class="card-title"><a href="./articles/annual-waterfront-heritage-festival.html">Annual Waterfront Heritage Festival Returns with Record Attendance</a></h3>
-                <p class="card-excerpt">Over 140 regional artisans and culinary vendors gather along the historic harbor for summer celebrations.</p>
-                <div class="card-meta"><span>By Julia Vance</span><span>Sep 2, 2026</span></div>
-              </div>
-            </article>
-            <article class="card">
-              <div class="card-img-wrap" style="aspect-ratio: 16/9; overflow: hidden;">
-                <img src="./assets/images/power-of-neighborly-connection.jpg" alt="Neighborly Connection" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
-              </div>
-              <div class="card-content">
-                <span class="card-tag">COMMUNITY</span>
-                <h3 class="card-title"><a href="./articles/power-of-neighborly-connection.html">The Power of Neighborly Connection in a Digital World</a></h3>
-                <p class="card-excerpt">Rebuilding front porch culture, neighborhood mutual aid, and local third places in modern communities.</p>
-                <div class="card-meta"><span>By Julia Vance</span><span>Sep 2, 2026</span></div>
-              </div>
-            </article>
+
+          <div class="pattern-a-grid">
+            <!-- 1 Main Big Lead Article -->
+            <div class="pattern-a-main">
+              <article class="card">
+                <div class="card-img-wrap">
+                  <img src="./assets/images/waterfront-heritage-festival.jpg" alt="Annual Waterfront Heritage Festival Returns with Record Artisan Attendance" loading="lazy">
+                </div>
+                <div class="card-content">
+                  <span class="card-tag">COMMUNITY &bull; Special Feature</span>
+                  <h3 class="card-title">
+                    <a href="./articles/annual-waterfront-heritage-festival.html">Annual Waterfront Heritage Festival Returns with Record Artisan Attendance</a>
+                  </h3>
+                  <p class="card-excerpt">Over 140 regional artisans, culinary vendors, and live acoustic performers gather along the historic harbor for summer celebrations.</p>
+                  <div class="card-meta">
+                    <span>By <a href="./author/julia-vance.html">Julia Vance</a></span>
+                    <span>Sep 2, 2026</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <!-- 3 Stacked Small Side Articles -->
+            <div class="pattern-a-side-list">
+              <article class="mini-side-card">
+                <div class="mini-side-thumb">
+                  <img src="./assets/images/power-of-neighborly-connection.jpg" alt="The Power of Neighborly Connection" loading="lazy">
+                </div>
+                <div class="mini-side-content">
+                  <span class="mini-side-tag">COMMUNITY</span>
+                  <h4 class="mini-side-title"><a href="./articles/the-power-of-neighborly-connection-in-a-digital-world-a-columnist-perspective.html">The Power of Neighborly Connection in a Digital World</a></h4>
+                  <span class="mini-side-meta">By Julia Vance &bull; Sep 2, 2026</span>
+                </div>
+              </article>
+
+              <article class="mini-side-card">
+                <div class="mini-side-thumb">
+                  <img src="./assets/images/spotlight-on-independent-theater.jpg" alt="Regional Theater Fest" loading="lazy">
+                </div>
+                <div class="mini-side-content">
+                  <span class="mini-side-tag">COMMUNITY</span>
+                  <h4 class="mini-side-title"><a href="./articles/spotlight-on-independent-theater.html">Local Stage Performances & Community Cultural Grants</a></h4>
+                  <span class="mini-side-meta">By Julia Vance &bull; Sep 2, 2026</span>
+                </div>
+              </article>
+
+              <article class="mini-side-card">
+                <div class="mini-side-thumb">
+                  <img src="./assets/images/main-street-commercial-revitalization.jpg" alt="Main Street Gatherings" loading="lazy">
+                </div>
+                <div class="mini-side-content">
+                  <span class="mini-side-tag">COMMUNITY</span>
+                  <h4 class="mini-side-title"><a href="./articles/main-street-commercial-revitalization.html">Downtown Weekend Walking Markets & Pedestrian Days</a></h4>
+                  <span class="mini-side-meta">By Marcus Reid &bull; Sep 2, 2026</span>
+                </div>
+              </article>
+            </div>
           </div>
         </section>
 
-        <!-- Section 5: ARTS & ENTERTAINMENT -->
+        <!-- ================================================================
+             4th SECTION: ARTS & ENTERTAINMENT (Pattern B: Straight 4 Cards Grid)
+             ================================================================ -->
         <section aria-label="Arts & Entertainment">
           <div class="section-header">
             <span class="section-box">Arts & Entertainment</span>
           </div>
-          <div class="articles-grid">
+
+          <div class="pattern-b-grid">
             <article class="card">
-              <div class="card-img-wrap" style="aspect-ratio: 16/9; overflow: hidden;">
-                <img src="./assets/images/spotlight-on-independent-theater.jpg" alt="Independent Theater" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+              <div class="card-img-wrap">
+                <img src="./assets/images/spotlight-on-independent-theater.jpg" alt="Spotlight on Independent Theater" loading="lazy">
               </div>
               <div class="card-content">
                 <span class="card-tag">ARTS</span>
@@ -373,48 +395,109 @@
                 <div class="card-meta"><span>By Julia Vance</span><span>Sep 2, 2026</span></div>
               </div>
             </article>
+
             <article class="card">
-              <div class="card-img-wrap" style="aspect-ratio: 16/9; overflow: hidden;">
-                <img src="./assets/images/power-of-neighborly-connection.jpg" alt="Columnist Perspectives" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+              <div class="card-img-wrap">
+                <img src="./assets/images/waterfront-heritage-festival.jpg" alt="Waterfront Artisan Exhibits" loading="lazy">
+              </div>
+              <div class="card-content">
+                <span class="card-tag">ARTS</span>
+                <h3 class="card-title"><a href="./articles/annual-waterfront-heritage-festival.html">Waterfront Heritage Crafts & Live Acoustic Stages</a></h3>
+                <p class="card-excerpt">Highlighting master woodworkers, ceramicists, and folk musicians at the regional outdoor pavilion.</p>
+                <div class="card-meta"><span>By Julia Vance</span><span>Sep 2, 2026</span></div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-img-wrap">
+                <img src="./assets/images/power-of-neighborly-connection.jpg" alt="Voices on Culture" loading="lazy">
               </div>
               <div class="card-content">
                 <span class="card-tag">VOICES</span>
-                <h3 class="card-title"><a href="./articles/the-power-of-neighborly-connection-in-a-digital-world-a-columnist-perspective.html">Voices & Perspectives: Cultivating Neighborhood Belonging</a></h3>
-                <p class="card-excerpt">Thoughtful essays on regional identity, grassroots community action, and social cohesion.</p>
+                <h3 class="card-title"><a href="./articles/the-power-of-neighborly-connection-in-a-digital-world-a-columnist-perspective.html">Voices & Essays: Cultivating Authentic Neighborhood Identity</a></h3>
+                <p class="card-excerpt">Personal column on literature, front porch conversation culture, and preserving community third places.</p>
                 <div class="card-meta"><span>By Julia Vance</span><span>Sep 2, 2026</span></div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-img-wrap">
+                <img src="./assets/images/main-street-commercial-revitalization.jpg" alt="Historic Architecture Arts" loading="lazy">
+              </div>
+              <div class="card-content">
+                <span class="card-tag">ARTS</span>
+                <h3 class="card-title"><a href="./articles/main-street-commercial-revitalization.html">Preserving Historic Main Street Architectural Character</a></h3>
+                <p class="card-excerpt">A visual look into Victorian facade restorations and heritage building conservation across downtown.</p>
+                <div class="card-meta"><span>By Marcus Reid</span><span>Sep 2, 2026</span></div>
               </div>
             </article>
           </div>
         </section>
 
-        <!-- Section 6: LIFESTYLE & CULTURE -->
+        <!-- ================================================================
+             5th SECTION: LIFESTYLE & CULTURE (Pattern A: 1 Main Big + 3 Small Cards)
+             ================================================================ -->
         <section aria-label="Lifestyle & Culture">
           <div class="section-header">
             <span class="section-box">Lifestyle & Culture</span>
           </div>
-          <div class="articles-grid">
-            <article class="card">
-              <div class="card-img-wrap" style="aspect-ratio: 16/9; overflow: hidden;">
-                <img src="./assets/images/energy-efficient-home-modernization.jpg" alt="Home Modernization" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
-              </div>
-              <div class="card-content">
-                <span class="card-tag">LIFESTYLE</span>
-                <h3 class="card-title"><a href="./articles/energy-efficient-home-modernization.html">Energy-Efficient Home Modernization: Heat Pumps & Solar</a></h3>
-                <p class="card-excerpt">Practical residential upgrades, provincial clean energy rebates, and long-term utility savings for homeowners.</p>
-                <div class="card-meta"><span>By Marcus Reid</span><span>Sep 2, 2026</span></div>
-              </div>
-            </article>
-            <article class="card">
-              <div class="card-img-wrap" style="aspect-ratio: 16/9; overflow: hidden;">
-                <img src="./assets/images/solar-farm-clean-energy.jpg" alt="Solar Farm Initiatives" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
-              </div>
-              <div class="card-content">
-                <span class="card-tag">LIFESTYLE</span>
-                <h3 class="card-title"><a href="./articles/regional-clean-energy-transition-and-solar-farm-initiatives-in-2026.html">Solar Farm Initiatives: Transitioning to Clean Power</a></h3>
-                <p class="card-excerpt">Grid modernization, agricultural dual-use agrivoltaics, and community solar cooperatives in 2026.</p>
-                <div class="card-meta"><span>By Marcus Reid</span><span>Sep 2, 2026</span></div>
-              </div>
-            </article>
+
+          <div class="pattern-a-grid">
+            <!-- 1 Main Big Lead Article -->
+            <div class="pattern-a-main">
+              <article class="card">
+                <div class="card-img-wrap">
+                  <img src="./assets/images/energy-efficient-home-modernization.jpg" alt="Energy-Efficient Home Modernization: Heat Pumps, Solar Arrays & Insulation" loading="lazy">
+                </div>
+                <div class="card-content">
+                  <span class="card-tag">LIFESTYLE &bull; Sustainable Living</span>
+                  <h3 class="card-title">
+                    <a href="./articles/energy-efficient-home-modernization.html">Energy-Efficient Home Modernization: Heat Pumps, Solar Arrays & Insulation</a>
+                  </h3>
+                  <p class="card-excerpt">Practical residential retrofits, provincial clean power rebates, and verified cost savings for homeowners upgrading to cold-climate heat pumps.</p>
+                  <div class="card-meta">
+                    <span>By <a href="./author/marcus-reid.html">Marcus Reid</a></span>
+                    <span>Sep 2, 2026</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <!-- 3 Stacked Small Side Articles -->
+            <div class="pattern-a-side-list">
+              <article class="mini-side-card">
+                <div class="mini-side-thumb">
+                  <img src="./assets/images/solar-farm-clean-energy.jpg" alt="Solar Farm Initiatives" loading="lazy">
+                </div>
+                <div class="mini-side-content">
+                  <span class="mini-side-tag">LIFESTYLE</span>
+                  <h4 class="mini-side-title"><a href="./articles/regional-clean-energy-transition-and-solar-farm-initiatives-in-2026.html">Solar Farm Transition & Rural Community Grids</a></h4>
+                  <span class="mini-side-meta">By Marcus Reid &bull; Sep 2, 2026</span>
+                </div>
+              </article>
+
+              <article class="mini-side-card">
+                <div class="mini-side-thumb">
+                  <img src="./assets/images/power-of-neighborly-connection.jpg" alt="Front Porch Living" loading="lazy">
+                </div>
+                <div class="mini-side-content">
+                  <span class="mini-side-tag">LIFESTYLE</span>
+                  <h4 class="mini-side-title"><a href="./articles/the-power-of-neighborly-connection-in-a-digital-world-a-columnist-perspective.html">Front Porch Living: Reconnecting in a Digital World</a></h4>
+                  <span class="mini-side-meta">By Julia Vance &bull; Sep 2, 2026</span>
+                </div>
+              </article>
+
+              <article class="mini-side-card">
+                <div class="mini-side-thumb">
+                  <img src="./assets/images/public-transit-electric-bus.jpg" alt="Green Commuting" loading="lazy">
+                </div>
+                <div class="mini-side-content">
+                  <span class="mini-side-tag">LIFESTYLE</span>
+                  <h4 class="mini-side-title"><a href="./articles/regional-public-transit-overhaul.html">Clean Commuting: Electric Transit Routes Across Town</a></h4>
+                  <span class="mini-side-meta">By Julia Vance &bull; Sep 1, 2026</span>
+                </div>
+              </article>
+            </div>
           </div>
         </section>
 
