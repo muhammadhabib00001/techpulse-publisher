@@ -158,9 +158,8 @@ img {
   background: var(--bg-card);
   border-bottom: 3px solid var(--primary);
   box-shadow: var(--shadow-sm);
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  position: relative;
+  z-index: 10;
 }
 
 .header-inner {
@@ -700,7 +699,7 @@ img {
   flex-direction: column;
   gap: 1.75rem;
   position: sticky;
-  top: 90px;
+  top: 20px;
 }
 
 @media (max-width: 960px) {
