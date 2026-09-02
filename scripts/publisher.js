@@ -1,5 +1,5 @@
 /**
- * The Seeker Trends - Automated Content Publishing Engine
+ * The Seeker Newsmagazine - Automated Content Publishing Engine
  * Fully upgraded for The Seeker Reference Categories:
  * - Categories: News, Community & Events, Business & Economy, Arts & Entertainment, Lifestyle & Culture, Voices
  * - Real High-Resolution Regional/Community/Editorial Photography
@@ -217,7 +217,7 @@ function generateDeepTechnicalArticle(topic, category, author) {
       {
         id: "strategic-roadmap",
         heading: "5. Long-Term Community Roadmap",
-        contentHtml: `<p>Moving forward, ongoing collaboration between municipal leaders, non-profit organizations, and engaged citizens will remain the catalyst for lasting positive change. The Seeker Trends will continue to track these developments with rigorous, independent reporting.</p>`
+        contentHtml: `<p>Moving forward, ongoing collaboration between municipal leaders, non-profit organizations, and engaged citizens will remain the catalyst for lasting positive change. The Seeker Newsmagazine will continue to track these developments with rigorous, independent reporting.</p>`
       },
       {
         id: "frequently-asked-questions",
@@ -253,7 +253,7 @@ async function generateArticle(topicData) {
   console.log(`[INFO] Synthesizing 1,200-1,500 word community report on: "${topic}"`);
 
   const systemInstruction = `
-You are an award-winning investigative journalist and community reporter for The Seeker Trends (https://www.techpulsetrends.com).
+You are an award-winning investigative journalist and community reporter for The Seeker Newsmagazine (https://www.techpulsetrends.com).
 Write a comprehensive, engaging, and original 1,200 to 1,500 word newsmagazine feature.
 STRICT GUIDELINES:
 1. Target Word Count: Minimum 1,200 words, maximum 1,500 words.
@@ -321,7 +321,7 @@ function renderArticleHtml(articleData, author, category) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${articleData.title} | The Seeker Trends</title>
+  <title>${articleData.title} | The Seeker Newsmagazine</title>
   <meta name="description" content="${articleData.metaDescription}">
   <link rel="canonical" href="https://www.techpulsetrends.com/articles/${articleData.slug}.html">
   <meta property="og:type" content="article">
@@ -366,7 +366,7 @@ function renderArticleHtml(articleData, author, category) {
         },
         "publisher": {
           "@type": "Organization",
-          "name": "The Seeker Trends",
+          "name": "The Seeker Newsmagazine",
           "url": "https://www.techpulsetrends.com/"
         }
       }${faqSchemaJson}
@@ -397,11 +397,11 @@ function renderArticleHtml(articleData, author, category) {
   <!-- Main Newspaper Header -->
   <header class="main-header">
     <div class="container header-inner">
-      <a href="../index.html" class="brand-logo" aria-label="The Seeker Trends Homepage">
+      <a href="../index.html" class="brand-logo" aria-label="The Seeker Newsmagazine Homepage">
         <span class="brand-badge">Seeker</span>
         <div>
-          <span class="brand-title">The Seeker Trends</span>
-          <span class="brand-tagline">Community News, Voices, Culture & Regional Reporting</span>
+          <span class="brand-title">The Seeker Newsmagazine</span>
+          <span class="brand-tagline">Positively Local, Supporting Local</span>
         </div>
       </a>
       
@@ -487,7 +487,7 @@ function renderArticleHtml(articleData, author, category) {
             <h4>About the Author: ${author.name}</h4>
             <div class="author-role">${author.role}</div>
             <p class="author-bio">
-              Verified community correspondent and editorial contributor at The Seeker Trends specializing in regional governance, business innovation, and arts journalism.
+              Verified community correspondent and editorial contributor at The Seeker Newsmagazine specializing in regional governance, business innovation, and arts journalism.
             </p>
             <a href="../author/${author.slug}.html" style="font-weight: 600; font-size: 0.9rem; color: var(--primary);">View Author Profile &rarr;</a>
           </div>
@@ -529,10 +529,10 @@ function renderArticleHtml(articleData, author, category) {
       <div class="footer-brand">
         <a href="../index.html" class="brand-logo" style="margin-bottom: 1rem; display: inline-flex;">
           <span class="brand-badge">Seeker</span>
-          <span class="brand-title" style="color: #fff; font-size: 1.5rem;">The Seeker Trends</span>
+          <span class="brand-title" style="color: #fff; font-size: 1.5rem;">The Seeker Newsmagazine</span>
         </a>
         <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6;">
-          The Seeker Trends is an independent community newsmagazine providing comprehensive coverage of regional affairs, local business innovation, arts, culture, and thoughtful opinion pieces.
+          The Seeker Newsmagazine is an independent community newsmagazine providing comprehensive coverage of regional affairs, local business innovation, arts, culture, and thoughtful opinion pieces.
         </p>
       </div>
       <div class="footer-col">
