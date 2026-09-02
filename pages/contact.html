@@ -3,109 +3,135 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact Us & Editorial Feedback | TechPulse Trends</title>
-  <meta name="description" content="Get in touch with the TechPulse Trends editorial team, submit technical inquiries, corrections, or feedback.">
+  <title>Contact Us & News Tips | The Seeker Trends</title>
+  <meta name="description" content="Contact The Seeker Trends editorial newsroom, submit news tips, press releases, advertising inquiries, or letters to the editor.">
   <link rel="canonical" href="https://www.techpulsetrends.com/pages/contact.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
   
-  <header class="site-header">
-    <div class="container header-top">
-      <a href="../index.html" class="site-logo">
-        <span class="logo-badge">Pulse</span>
-        <span>TechPulse Trends</span>
-      </a>
-      <div class="nav-wrap">
-        <nav class="main-nav" aria-label="Main Navigation">
-          <ul>
-            <li><a href="../index.html" class="">Home</a></li>
-            <li><a href="../category-ai.html" class="">AI & Agents</a></li>
-            <li><a href="../category-cloud.html" class="">Cloud Architecture</a></li>
-            <li><a href="../category-security.html" class="">Cybersecurity</a></li>
-            <li><a href="../categories.html" class="">All Topics</a></li>
-            <li><a href="../pages/about.html" class="active">About</a></li>
-          </ul>
-        </nav>
-        <div class="header-actions">
-          <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
-            <span class="theme-icon">🌙</span>
-            <span class="theme-text">Dark</span>
-          </button>
-          <button class="mobile-menu-btn" aria-label="Toggle navigation menu">☰</button>
+  <!-- Top Utility Bar -->
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-date">
+        <span>📅 Wednesday, September 2, 2026</span>
+        <span>&bull;</span>
+        <span>Positively Local, Supporting Regional Community</span>
+      </div>
+      <nav class="top-nav" aria-label="Utility Navigation">
+        <ul>
+          <li><a href="../pages/about.html">About</a></li>
+          <li><a href="../pages/editorial-policy.html">Editorial Standards</a></li>
+          <li><a href="../pages/privacy-policy.html">Privacy</a></li>
+          <li><a href="../pages/contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Main Newspaper Header -->
+  <header class="main-header">
+    <div class="container header-inner">
+      <a href="../index.html" class="brand-logo" aria-label="The Seeker Trends Homepage">
+        <span class="brand-badge">Seeker</span>
+        <div>
+          <span class="brand-title">The Seeker Trends</span>
+          <span class="brand-tagline">Community News, Voices, Culture & Regional Reporting</span>
         </div>
+      </a>
+      
+      <div class="header-actions">
+        <a href="../pages/contact.html" class="news-tip-btn">
+          <span>✉️</span> News Tip?
+        </a>
+        <button id="theme-toggle" class="theme-btn" aria-label="Toggle Dark/Light Mode">
+          <span class="theme-icon">🌙</span>
+          <span class="theme-text">Dark</span>
+        </button>
       </div>
     </div>
-    <div class="topic-bar">
-      <div class="container topic-bar-inner">
-        <span class="topic-bar-label">Trending Now:</span>
-        <a href="../articles/agentic-ai-workflows-2026.html" class="topic-pill">Agentic Workflows</a>
-        <a href="../articles/zero-trust-cloud-security.html" class="topic-pill">Zero Trust Cloud</a>
-        <a href="../articles/web-performance-inp-guide.html" class="topic-pill">Core Web Vitals & INP</a>
-        <a href="../category-ai.html" class="topic-pill">Enterprise LLMs</a>
-        <a href="../category-security.html" class="topic-pill">Identity Governance</a>
+
+    <!-- Navigation Bar -->
+    <div style="background: var(--bg-card); border-top: 1px solid var(--border-color);">
+      <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+        <nav class="main-nav" aria-label="Main Navigation">
+          <ul class="main-nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../category-news.html">News</a></li>
+            <li><a href="../category-community.html">Community & Events</a></li>
+            <li><a href="../category-business.html">Business & Economy</a></li>
+            <li><a href="../category-arts.html">Arts & Entertainment</a></li>
+            <li><a href="../category-lifestyle.html">Lifestyle</a></li>
+            <li><a href="../category-voices.html">Voices</a></li>
+            <li><a href="../categories.html">All Topics</a></li>
+          </ul>
+        </nav>
       </div>
     </div>
   </header>
 
-  <main class="container" style="margin-top: 2rem; margin-bottom: 4rem; max-width: 850px;">
-    <nav class="breadcrumbs-nav" aria-label="Breadcrumbs">
-      <ul class="breadcrumbs-list">
-        <li><a href="../index.html">Home</a></li>
-        <li aria-current="page">Contact Us</li>
-      </ul>
-    </nav>
-
-    <h1>Contact Our Editorial Team</h1>
-    <p style="font-size: 1.15rem; color: var(--text-muted); margin-bottom: 2rem;">
-      Have a question regarding our research, want to report a technical correction, or inquire about permissions? Use the form below or reach out directly to our offices.
-    </p>
-
-    <div class="card" style="padding: 2rem; margin-bottom: 2.5rem;">
-      <form id="contact-form">
-        <div class="form-group">
-          <label for="contact-name" class="form-label">Full Name *</label>
-          <input type="text" id="contact-name" class="form-control" placeholder="Jane Doe" required>
-        </div>
-
-        <div class="form-group">
-          <label for="contact-email" class="form-label">Business / Email Address *</label>
-          <input type="email" id="contact-email" class="form-control" placeholder="jane.doe@company.com" required>
-        </div>
-
-        <div class="form-group">
-          <label for="contact-topic" class="form-label">Subject / Inquiry Type *</label>
-          <select id="contact-topic" class="form-control" required>
-            <option value="editorial">Editorial Inquiry & Fact-Checking</option>
-            <option value="correction">Technical Correction or Code Feedback</option>
-            <option value="press">Press & Media Relations</option>
-            <option value="general">General Feedback</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="contact-message" class="form-label">Message *</label>
-          <textarea id="contact-message" class="form-control" rows="5" placeholder="Please provide detailed context regarding your question or correction request..." required></textarea>
-        </div>
-
-        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem;">Submit Message to Editorial Team</button>
-        <div id="form-feedback" style="display: none;"></div>
-      </form>
+  <main class="container" style="margin-top: 2rem; margin-bottom: 4rem;">
+    <div class="section-header">
+      <span class="section-box">Contact The Seeker Trends Newsroom</span>
     </div>
 
-    <h2>Direct Communication Channels</h2>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
-      <div class="card" style="padding: 1.25rem;">
-        <h4>Editorial Inquiries</h4>
-        <p style="font-size: 0.95rem; margin-bottom: 0.25rem;">Email: <a href="mailto:editorial@techpulsetrends.com">editorial@techpulsetrends.com</a></p>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">Response window: 24–48 hours</p>
-      </div>
+    <div class="main-layout">
+      <article class="article-container" style="padding: 0;">
+        <div class="article-body">
+          <h2>1. Submit a News Tip or Story Idea</h2>
+          <p>Do you have a breaking news tip, an investigative lead on municipal governance, or a heartwarming community achievement we should cover? <strong>The Seeker Trends</strong> actively welcomes news submissions from community residents, civic leaders, non-profits, and business owners.</p>
+          <p>When submitting a tip, please provide as much context as possible, including relevant dates, locations, public records, and contact information for key participants. Confidentiality can be requested upon submission.</p>
 
-      <div class="card" style="padding: 1.25rem;">
-        <h4>Privacy & Legal</h4>
-        <p style="font-size: 0.95rem; margin-bottom: 0.25rem;">Email: <a href="mailto:privacy@techpulsetrends.com">privacy@techpulsetrends.com</a></p>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">For GDPR / CCPA data subject inquiries</p>
-      </div>
+          <h2>2. Direct Department Inquiries</h2>
+          <ul>
+            <li><strong>Editorial Desk & News Tips:</strong> <code>editor@techpulsetrends.com</code></li>
+            <li><strong>Community Events & Arts Previews:</strong> <code>events@techpulsetrends.com</code></li>
+            <li><strong>Advertising & Commercial Sponsorships:</strong> <code>advertising@techpulsetrends.com</code></li>
+            <li><strong>Legal, Privacy & Compliance:</strong> <code>legal@techpulsetrends.com</code></li>
+          </ul>
+
+          <h2>3. Send a Message to Our Editors</h2>
+          <form onsubmit="event.preventDefault(); alert('Your message has been sent to The Seeker Trends newsroom.');" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.75rem; margin-top: 1.5rem;">
+            <div style="margin-bottom: 1rem;">
+              <label style="display: block; font-weight: 700; margin-bottom: 0.4rem;">Your Full Name *</label>
+              <input type="text" required style="width: 100%; padding: 0.7rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-main);">
+            </div>
+            <div style="margin-bottom: 1rem;">
+              <label style="display: block; font-weight: 700; margin-bottom: 0.4rem;">Email Address *</label>
+              <input type="email" required style="width: 100%; padding: 0.7rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-main);">
+            </div>
+            <div style="margin-bottom: 1rem;">
+              <label style="display: block; font-weight: 700; margin-bottom: 0.4rem;">Department / Subject *</label>
+              <select style="width: 100%; padding: 0.7rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-main);">
+                <option>News Tip / Civic Affair</option>
+                <option>Community Event Announcement</option>
+                <option>Business Spotlight Proposal</option>
+                <option>Letter to the Editor</option>
+                <option>Advertising Inquiry</option>
+              </select>
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+              <label style="display: block; font-weight: 700; margin-bottom: 0.4rem;">Message Details *</label>
+              <textarea rows="5" required style="width: 100%; padding: 0.7rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-main);"></textarea>
+            </div>
+            <button type="submit" style="background: var(--primary); color: #fff; border: none; padding: 0.8rem 1.75rem; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; text-transform: uppercase;">Submit Message</button>
+          </form>
+        </div>
+      </article>
+
+      <aside class="sidebar">
+        <div class="sidebar-widget">
+          <h3 class="widget-title">Newsroom Hours</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+            Monday &ndash; Friday: 8:30 AM &ndash; 5:00 PM EST<br>
+            Saturday &ndash; Sunday: Weekend Editorial Coverage<br>
+            Direct Telephone: 613-908-9448
+          </p>
+        </div>
+      </aside>
     </div>
   </main>
 
@@ -113,60 +139,52 @@
   <footer class="site-footer">
     <div class="container footer-grid">
       <div class="footer-brand">
-        <a href="../index.html" class="site-logo">
-          <span class="logo-badge">Pulse</span>
-          <span>TechPulse Trends</span>
+        <a href="../index.html" class="brand-logo" style="margin-bottom: 1rem; display: inline-flex;">
+          <span class="brand-badge">Seeker</span>
+          <span class="brand-title" style="color: #fff; font-size: 1.5rem;">The Seeker Trends</span>
         </a>
-        <p>Independent, research-driven engineering insights, cloud architectures, AI systems, and cybersecurity analysis for technology leaders and modern builders.</p>
-        <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-light);">Published by TechPulse Media Group LLC. Verified for Google Search & AdSense Publishing Standards 2026.</p>
+        <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6;">
+          The Seeker Trends is an independent community newsmagazine providing comprehensive coverage of regional affairs, local business innovation, arts, culture, and thoughtful opinion pieces.
+        </p>
       </div>
+      
       <div class="footer-col">
-        <h5>Editorial Categories</h5>
+        <h5>Categories</h5>
         <ul class="footer-links">
-          <li><a href="../category-ai.html">Artificial Intelligence</a></li>
-          <li><a href="../category-cloud.html">Cloud Computing & DevOps</a></li>
-          <li><a href="../category-security.html">Cybersecurity & Zero Trust</a></li>
-          <li><a href="../categories.html">Topic Taxonomy Hub</a></li>
-          <li><a href="../sitemap.xml">XML Search Sitemap</a></li>
+          <li><a href="../category-news.html">News & Announcements</a></li>
+          <li><a href="../category-community.html">Community & Events</a></li>
+          <li><a href="../category-business.html">Business & Economy</a></li>
+          <li><a href="../category-arts.html">Arts & Entertainment</a></li>
+          <li><a href="../category-lifestyle.html">Lifestyle & Culture</a></li>
+          <li><a href="../category-voices.html">Voices & Columnists</a></li>
         </ul>
       </div>
+
       <div class="footer-col">
-        <h5>About & Authors</h5>
+        <h5>Editorial</h5>
         <ul class="footer-links">
-          <li><a href="../pages/about.html">About Our Mission</a></li>
-          <li><a href="../author/dr-elena-vance.html">Dr. Elena Vance (Lead AI)</a></li>
-          <li><a href="../author/marcus-reid.html">Marcus Reid (Cloud Security)</a></li>
-          <li><a href="../pages/editorial-policy.html">Editorial & Fact-Checking</a></li>
-          <li><a href="../pages/contact.html">Contact Us & Corrections</a></li>
+          <li><a href="../pages/about.html">About Us</a></li>
+          <li><a href="../pages/editorial-policy.html">Editorial Standards</a></li>
+          <li><a href="../pages/affiliate-disclosure.html">Affiliate Disclosure</a></li>
+          <li><a href="../pages/contact.html">Contact & News Tips</a></li>
         </ul>
       </div>
+
       <div class="footer-col">
-        <h5>Legal & Policies</h5>
+        <h5>Compliance</h5>
         <ul class="footer-links">
-          <li><a href="../pages/privacy-policy.html">Privacy Policy (GDPR/CCPA)</a></li>
+          <li><a href="../pages/privacy-policy.html">Privacy Policy</a></li>
           <li><a href="../pages/terms.html">Terms & Conditions</a></li>
-          <li><a href="../pages/disclaimer.html">Liability Disclaimer</a></li>
           <li><a href="../pages/cookie-policy.html">Cookie Policy</a></li>
-          <li><a href="../pages/affiliate-disclosure.html">Advertising & FTC Disclosure</a></li>
+          <li><a href="../pages/disclaimer.html">Disclaimer</a></li>
         </ul>
       </div>
     </div>
+
     <div class="container footer-bottom">
-      <div>&copy; 2026 TechPulse Trends. All rights reserved. Content independently researched and fact-checked.</div>
-      <div>Designed for speed, accessibility, and Core Web Vitals excellence.</div>
+      <p>&copy; 2026 The Seeker Trends. All rights reserved. Built for Google Search, AdSense & Core Web Vitals compliance.</p>
     </div>
   </footer>
-
-  <!-- GDPR / AdSense Compliant Cookie Consent Banner -->
-  <div id="cookie-banner" class="cookie-banner hidden" role="dialog" aria-live="polite" aria-label="Cookie Preferences">
-    <p class="cookie-text">
-      We use strictly necessary cookies to ensure site performance, and optional analytics/advertising cookies to serve relevant technical content and support our independent research under Google AdSense policies. Read our <a href="../pages/cookie-policy.html" style="text-decoration: underline;">Cookie Policy</a> and <a href="../pages/privacy-policy.html" style="text-decoration: underline;">Privacy Policy</a>.
-    </p>
-    <div class="cookie-actions">
-      <button id="reject-cookies" class="btn btn-secondary">Essential Only</button>
-      <button id="accept-cookies" class="btn btn-primary">Accept All Cookies</button>
-    </div>
-  </div>
   <script src="../assets/js/main.js" defer></script>
 </body>
 </html>
