@@ -402,6 +402,7 @@ img {
   border-bottom: 1px solid var(--border-color);
   padding: 0.45rem 0;
   font-size: 0.86rem;
+  overflow: hidden;
 }
 
 .breaking-inner {
@@ -416,22 +417,58 @@ img {
   font-weight: 800;
   font-size: 0.75rem;
   text-transform: uppercase;
-  padding: 0.25rem 0.65rem;
+  padding: 0.28rem 0.7rem;
   border-radius: var(--radius-sm);
   white-space: nowrap;
   letter-spacing: 0.5px;
+  flex-shrink: 0;
+  z-index: 2;
+  box-shadow: 0 2px 6px rgba(193, 18, 30, 0.3);
 }
 
-.breaking-ticker {
-  display: flex;
-  gap: 1.5rem;
+.breaking-ticker-wrap {
+  flex-grow: 1;
   overflow: hidden;
-  white-space: nowrap;
+  position: relative;
 }
 
-.breaking-ticker a {
+.breaking-ticker-track {
+  display: inline-flex;
+  gap: 2.5rem;
+  white-space: nowrap;
+  animation: ticker-scroll 35s linear infinite;
+}
+
+.breaking-ticker-track:hover {
+  animation-play-state: paused;
+}
+
+.breaking-ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-weight: 600;
   color: var(--text-main);
+  text-decoration: none;
+}
+
+.breaking-ticker-item:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.ticker-bullet {
+  color: var(--primary);
+  font-weight: 900;
+}
+
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 /* ==========================================================================
