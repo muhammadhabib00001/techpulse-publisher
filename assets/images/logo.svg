@@ -1,34 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 120" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 120" width="100%" height="100%">
   <defs>
-    <linearGradient id="badgeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="crestGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#d62828" />
       <stop offset="100%" stop-color="#9e0e18" />
     </linearGradient>
-    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="130%">
-      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-opacity="0.25"/>
+    <filter id="logoShadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#c1121e" flood-opacity="0.3"/>
     </filter>
   </defs>
 
-  <!-- Red Badge Icon -->
-  <rect x="10" y="15" width="110" height="90" rx="12" fill="url(#badgeGrad)" filter="url(#dropShadow)" />
-  
-  <!-- Stylized Geometric 'GA' Monogram inside Badge -->
-  <path d="M 40 75 L 65 35 L 90 75 M 50 63 L 80 63" stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-  <circle cx="65" cy="48" r="4" fill="#f59e0b" />
+  <!-- Heraldic Crest Emblem -->
+  <g transform="translate(10, 8)">
+    <!-- Shield / Badge Frame -->
+    <path d="M 15 15 L 85 15 C 85 15, 95 65, 50 100 C 5 65, 15 15, 15 15 Z" fill="url(#crestGrad)" filter="url(#logoShadow)" />
+    <path d="M 22 22 L 78 22 C 78 22, 86 60, 50 88 C 14 60, 22 22, 22 22 Z" fill="#111827" />
+    
+    <!-- Stylized Alpha Monogram & Quill -->
+    <path d="M 33 65 L 50 28 L 67 65 M 39 54 L 61 54" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+    <circle cx="50" cy="38" r="3" fill="#f59e0b" />
+    <!-- Feather Quill Accent -->
+    <path d="M 54 40 Q 72 32 75 24 Q 68 38 60 48 Z" fill="#d62828" />
+  </g>
 
-  <!-- Typography: GenAlpha -->
-  <text x="140" y="66" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="44" font-weight="900" fill="#111418" letter-spacing="-1">
+  <!-- Typography: GENALPHA -->
+  <text x="125" y="68" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="46" font-weight="900" fill="#111827" letter-spacing="-1">
     GEN<tspan fill="#c1121e">ALPHA</tspan>
   </text>
   
   <!-- Typography: MAGAZINES -->
-  <text x="362" y="66" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="44" font-weight="300" fill="#495057" letter-spacing="1">
+  <text x="375" y="68" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="46" font-weight="300" fill="#475569" letter-spacing="1.5">
     MAGAZINES
   </text>
 
   <!-- Tagline Rule & Subtitle -->
-  <rect x="142" y="80" width="370" height="3" fill="#c1121e" rx="1.5" />
-  <text x="144" y="98" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13.5" font-weight="600" fill="#6c757d" letter-spacing="0.5">
-    POSITIVELY LOCAL &bull; SUPPORTING COMMUNITY &bull; EST. 2026
+  <rect x="127" y="82" width="480" height="3" fill="#c1121e" rx="1.5" />
+  <text x="129" y="101" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14.5" font-weight="700" fill="#64748b" letter-spacing="1.2">
+    POSITIVELY LOCAL &bull; SUPPORTING COMMUNITY
   </text>
 </svg>
