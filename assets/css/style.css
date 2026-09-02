@@ -334,10 +334,12 @@ img {
   background: var(--bg-card);
   border-top: 1px solid var(--border-color);
   border-bottom: 3px solid var(--primary);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 1000;
+  width: 100%;
 }
 
 /* Main Navigation Bar */

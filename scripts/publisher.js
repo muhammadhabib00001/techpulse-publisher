@@ -605,9 +605,10 @@ function renderArticleHtml(articleData, author, category, heroImage) {
         </button>
       </div>
     </div>
+  </header>
 
-    <!-- Navigation Bar -->
-    <div class="main-nav-wrapper">
+  <!-- Sticky Navigation Bar on Scroll -->
+  <nav class="main-nav-wrapper">
       <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
         <nav class="main-nav" aria-label="Main Navigation">
           <ul class="main-nav-links">
@@ -622,8 +623,7 @@ function renderArticleHtml(articleData, author, category, heroImage) {
           </ul>
         </nav>
       </div>
-    </div>
-  </header>
+    </nav>
 
   <main class="container" style="margin-top: 1.5rem; margin-bottom: 4rem;">
     <div class="main-layout">
