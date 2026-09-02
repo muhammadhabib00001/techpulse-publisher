@@ -850,7 +850,6 @@ function updateSiteIndex(articleData, author, category, heroImage) {
     }
   }
 }
-}
 
 async function main() {
   console.log('=== Starting GenAlphaMagazines Automated Content Pipeline ===');
