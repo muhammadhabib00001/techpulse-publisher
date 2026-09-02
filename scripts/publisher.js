@@ -99,11 +99,10 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
     };
   }
 
-  const cleanKeyword = encodeURIComponent(topic.replace(/[^a-zA-Z0-9 ]/g, '').trim().split(' ').slice(0, 3).join(','));
-  
-  // Topic-specific verified photography sources
+  // Topic & Keyword Direct Matcher
   const lower = topic.toLowerCase();
 
+  // 1. Check if specific pre-bundled image exists
   if (lower.includes('trump') || lower.includes('president') || lower.includes('white house') || lower.includes('election')) {
     const trumpExisting = path.join(ROOT_DIR, 'assets', 'images', 'donald-trump-press-briefing.jpg');
     if (fs.existsSync(trumpExisting)) {
@@ -112,6 +111,16 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
         indexUrl: `./assets/images/donald-trump-press-briefing.jpg`,
         alt: 'Donald Trump speaking at a presidential press briefing',
         caption: 'Donald Trump addressing reporters at a national press conference outlining federal policy and trade priorities.'
+      };
+    }
+  } else if (lower.includes('finance') || lower.includes('job') || lower.includes('bank') || lower.includes('career') || lower.includes('salary')) {
+    const finExisting = path.join(ROOT_DIR, 'assets', 'images', 'finance-jobs.jpg');
+    if (fs.existsSync(finExisting)) {
+      return {
+        relativeUrl: `../assets/images/finance-jobs.jpg`,
+        indexUrl: `./assets/images/finance-jobs.jpg`,
+        alt: 'Financial analysts and corporate banking professionals in modern office',
+        caption: 'Financial market analysis, corporate career roadmaps, and economic growth.'
       };
     }
   } else if (lower.includes('solar') || lower.includes('energy') || lower.includes('clean energy')) {
@@ -126,23 +135,61 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
     }
   }
 
+  // Curated High-Reliability Topic Photobank (Direct Unsplash Photo IDs - 100% Reliable, No 503s)
+  const PHOTO_BANK = {
+    business: [
+      { id: '1486406146926-c627a92ad1ab', alt: 'Commercial business district and retail storefronts', caption: 'Commercial development and regional business enterprise growth.' },
+      { id: '1556742049-0a67e557224f', alt: 'Local commerce retail storefront and customer service', caption: 'Regional retail commerce and independent business vitality.' },
+      { id: '1454165804606-c3d57bc86b40', alt: 'Corporate finance team analyzing economic data', caption: 'Corporate financial planning and employment market trends.' }
+    ],
+    news: [
+      { id: '1540910419892-4a36d2c3266c', alt: 'Civic governance hall and public council assembly', caption: 'Municipal government affairs and public policy developments.' },
+      { id: '1570125909232-eb263c188f7e', alt: 'Regional transportation network and transit infrastructure', caption: 'Infrastructure investments and regional public transit modernization.' }
+    ],
+    community: [
+      { id: '1511578314322-379afb476865', alt: 'Vibrant outdoor community cultural festival', caption: 'Community festival gathering celebrating local heritage and regional artisans.' },
+      { id: '1559027615-cd4628902d4a', alt: 'Community volunteers working together on neighborhood project', caption: 'Grassroots community volunteering and neighborhood revitalization.' }
+    ],
+    arts: [
+      { id: '1507676184212-d03ab07a01bf', alt: 'Dramatic live theater stage with stage lighting', caption: 'Independent regional theater company performing original staged works.' },
+      { id: '1460661419201-fd4cecdf8a8b', alt: 'Art exhibition gallery displaying creative paintings', caption: 'Regional arts spotlight and creative cultural showcase.' }
+    ],
+    lifestyle: [
+      { id: '1513694203232-719a280e022f', alt: 'Energy-efficient modern residential home', caption: 'Sustainable lifestyle modernizations and home energy efficiency.' },
+      { id: '1500382017468-9049fed747ef', alt: 'Countryside green hills and sustainable regional agriculture', caption: 'Regional lifestyle, conservation, and agricultural sustainability.' }
+    ],
+    voices: [
+      { id: '1529156069898-49953e39b3ac', alt: 'Community members conversing and socializing in park', caption: 'Neighborhood connections fostering grassroots community resilience.' },
+      { id: '1455390582262-044cdead277a', alt: 'Journalist notebook and fountain pen on rustic wooden desk', caption: 'Columnist reflections and thoughtful commentary on community living.' }
+    ]
+  };
+
+  const pool = PHOTO_BANK[category] || PHOTO_BANK.business;
+  let hash = 0;
+  for (let i = 0; i < topic.length; i++) {
+    hash = ((hash << 5) - hash) + topic.charCodeAt(i);
+    hash |= 0;
+  }
+  const item = pool[Math.abs(hash) % pool.length];
+  const directUrl = `https://images.unsplash.com/photo-${item.id}?auto=format&fit=crop&w=1200&h=600&q=80`;
+
   try {
-    console.log(`[INFO] Fetching and caching topic image for: "${topic}"...`);
-    await downloadImageLocally(`https://source.unsplash.com/featured/1200x600/?${cleanKeyword}`, localImgPath);
+    console.log(`[INFO] Downloading and saving static local image for: "${topic}"...`);
+    await downloadImageLocally(directUrl, localImgPath);
     console.log(`[SUCCESS] Saved local image to: assets/images/${localImgFilename}`);
     return {
       relativeUrl: `../assets/images/${localImgFilename}`,
       indexUrl: `./assets/images/${localImgFilename}`,
-      alt: `Editorial photography for ${topic}`,
-      caption: `Investigative reporting covering ${topic}.`
+      alt: item.alt,
+      caption: item.caption
     };
   } catch (err) {
-    console.warn(`[WARN] Fallback image: ${err.message}`);
+    console.warn(`[WARN] Using direct CDN URL: ${err.message}`);
     return {
-      relativeUrl: `https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&h=600&q=80`,
-      indexUrl: `https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&h=600&q=80`,
-      alt: `Editorial reporting on ${topic}`,
-      caption: `Comprehensive investigative coverage on ${topic}.`
+      relativeUrl: directUrl,
+      indexUrl: directUrl,
+      alt: item.alt,
+      caption: item.caption
     };
   }
 }
