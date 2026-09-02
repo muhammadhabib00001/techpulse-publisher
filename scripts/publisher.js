@@ -1,6 +1,6 @@
 /**
- * The Seeker Newsmagazine - Automated Content Publishing Engine
- * Fully upgraded for The Seeker Reference Categories:
+ * GenAlphaMagazines - Automated Content Publishing Engine
+ * Fully upgraded for GenAlphaMagazines Reference Categories:
  * - Categories: News, Community & Events, Business & Economy, Arts & Entertainment, Lifestyle & Culture, Voices
  * - Real High-Resolution Regional/Community/Editorial Photography
  * - Pure Explanatory Prose & Investigative Analysis (NO code blocks)
@@ -217,7 +217,7 @@ function generateDeepTechnicalArticle(topic, category, author) {
       {
         id: "strategic-roadmap",
         heading: "5. Long-Term Community Roadmap",
-        contentHtml: `<p>Moving forward, ongoing collaboration between municipal leaders, non-profit organizations, and engaged citizens will remain the catalyst for lasting positive change. The Seeker Newsmagazine will continue to track these developments with rigorous, independent reporting.</p>`
+        contentHtml: `<p>Moving forward, ongoing collaboration between municipal leaders, non-profit organizations, and engaged citizens will remain the catalyst for lasting positive change. GenAlphaMagazines will continue to track these developments with rigorous, independent reporting.</p>`
       },
       {
         id: "frequently-asked-questions",
@@ -253,7 +253,7 @@ async function generateArticle(topicData) {
   console.log(`[INFO] Synthesizing 1,200-1,500 word community report on: "${topic}"`);
 
   const systemInstruction = `
-You are an award-winning investigative journalist and community reporter for The Seeker Newsmagazine (https://www.techpulsetrends.com).
+You are an award-winning investigative journalist and community reporter for GenAlphaMagazines (https://www.genalphamagazines.com).
 Write a comprehensive, engaging, and original 1,200 to 1,500 word newsmagazine feature.
 STRICT GUIDELINES:
 1. Target Word Count: Minimum 1,200 words, maximum 1,500 words.
@@ -321,14 +321,14 @@ function renderArticleHtml(articleData, author, category) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${articleData.title} | The Seeker Newsmagazine</title>
+  <title>${articleData.title} | GenAlphaMagazines</title>
   <meta name="description" content="${articleData.metaDescription}">
-  <link rel="canonical" href="https://www.techpulsetrends.com/articles/${articleData.slug}.html">
+  <link rel="canonical" href="https://www.genalphamagazines.com/articles/${articleData.slug}.html">
   <meta property="og:type" content="article">
   <meta property="og:title" content="${articleData.title}">
   <meta property="og:description" content="${articleData.metaDescription}">
   <meta property="og:image" content="${heroImage.url}">
-  <meta property="og:url" content="https://www.techpulsetrends.com/articles/${articleData.slug}.html">
+  <meta property="og:url" content="https://www.genalphamagazines.com/articles/${articleData.slug}.html">
   <meta property="article:published_time" content="${currentDate}T08:00:00+00:00">
   <meta property="article:section" content="${category}">
   
@@ -344,30 +344,30 @@ function renderArticleHtml(articleData, author, category) {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.techpulsetrends.com/" },
-          { "@type": "ListItem", "position": 2, "name": "Categories", "item": "https://www.techpulsetrends.com/categories.html" },
-          { "@type": "ListItem", "position": 3, "name": "${articleData.title}", "item": "https://www.techpulsetrends.com/articles/${articleData.slug}.html" }
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.genalphamagazines.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Categories", "item": "https://www.genalphamagazines.com/categories.html" },
+          { "@type": "ListItem", "position": 3, "name": "${articleData.title}", "item": "https://www.genalphamagazines.com/articles/${articleData.slug}.html" }
         ]
       },
       {
         "@type": "NewsArticle",
-        "@id": "https://www.techpulsetrends.com/articles/${articleData.slug}.html#article",
+        "@id": "https://www.genalphamagazines.com/articles/${articleData.slug}.html#article",
         "headline": "${articleData.title}",
         "description": "${articleData.metaDescription}",
         "image": "${heroImage.url}",
         "datePublished": "${currentDate}T08:00:00+00:00",
         "dateModified": "${currentDate}T08:00:00+00:00",
-        "mainEntityOfPage": "https://www.techpulsetrends.com/articles/${articleData.slug}.html",
+        "mainEntityOfPage": "https://www.genalphamagazines.com/articles/${articleData.slug}.html",
         "author": {
           "@type": "Person",
           "name": "${author.name}",
-          "url": "https://www.techpulsetrends.com/author/${author.slug}.html",
+          "url": "https://www.genalphamagazines.com/author/${author.slug}.html",
           "jobTitle": "${author.role}"
         },
         "publisher": {
           "@type": "Organization",
-          "name": "The Seeker Newsmagazine",
-          "url": "https://www.techpulsetrends.com/"
+          "name": "GenAlphaMagazines",
+          "url": "https://www.genalphamagazines.com/"
         }
       }${faqSchemaJson}
     ]
@@ -397,10 +397,10 @@ function renderArticleHtml(articleData, author, category) {
   <!-- Main Newspaper Header -->
   <header class="main-header">
     <div class="container header-inner">
-      <a href="../index.html" class="brand-logo" aria-label="The Seeker Newsmagazine Homepage">
-        <span class="brand-badge">Seeker</span>
+      <a href="../index.html" class="brand-logo" aria-label="GenAlphaMagazines Homepage">
+        <span class="brand-badge">GenAlpha</span>
         <div>
-          <span class="brand-title">The Seeker Newsmagazine</span>
+          <span class="brand-title">GenAlphaMagazines</span>
           <span class="brand-tagline">Positively Local, Supporting Local</span>
         </div>
       </a>
@@ -487,7 +487,7 @@ function renderArticleHtml(articleData, author, category) {
             <h4>About the Author: ${author.name}</h4>
             <div class="author-role">${author.role}</div>
             <p class="author-bio">
-              Verified community correspondent and editorial contributor at The Seeker Newsmagazine specializing in regional governance, business innovation, and arts journalism.
+              Verified community correspondent and editorial contributor at GenAlphaMagazines specializing in regional governance, business innovation, and arts journalism.
             </p>
             <a href="../author/${author.slug}.html" style="font-weight: 600; font-size: 0.9rem; color: var(--primary);">View Author Profile &rarr;</a>
           </div>
@@ -496,7 +496,7 @@ function renderArticleHtml(articleData, author, category) {
 
       <aside class="sidebar">
         <div class="newsletter-box">
-          <h4>Subscribe to The Seeker</h4>
+          <h4>Subscribe to GenAlphaMagazines</h4>
           <p>Get in-depth regional reporting delivered to your inbox every week.</p>
           <form onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
             <input type="email" placeholder="Enter your email" required aria-label="Email address">
@@ -528,11 +528,11 @@ function renderArticleHtml(articleData, author, category) {
     <div class="container footer-grid">
       <div class="footer-brand">
         <a href="../index.html" class="brand-logo" style="margin-bottom: 1rem; display: inline-flex;">
-          <span class="brand-badge">Seeker</span>
-          <span class="brand-title" style="color: #fff; font-size: 1.5rem;">The Seeker Newsmagazine</span>
+          <span class="brand-badge">GenAlpha</span>
+          <span class="brand-title" style="color: #fff; font-size: 1.5rem;">GenAlphaMagazines</span>
         </a>
         <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6;">
-          The Seeker Newsmagazine is an independent community newsmagazine providing comprehensive coverage of regional affairs, local business innovation, arts, culture, and thoughtful opinion pieces.
+          GenAlphaMagazines is an independent community newsmagazine providing comprehensive coverage of regional affairs, local business innovation, arts, culture, and thoughtful opinion pieces.
         </p>
       </div>
       <div class="footer-col">
@@ -576,7 +576,7 @@ function updateSiteIndex(articleData, author, category) {
   const sitemapPath = path.join(ROOT_DIR, 'sitemap.xml');
   if (fs.existsSync(sitemapPath)) {
     let sitemap = fs.readFileSync(sitemapPath, 'utf8');
-    const newUrl = `https://www.techpulsetrends.com/articles/${articleData.slug}.html`;
+    const newUrl = `https://www.genalphamagazines.com/articles/${articleData.slug}.html`;
     if (!sitemap.includes(newUrl)) {
       const newUrlEntry = `  <url>\n    <loc>${newUrl}</loc>\n    <lastmod>${currentDate}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.9</priority>\n  </url>\n</urlset>`;
       sitemap = sitemap.replace('</urlset>', newUrlEntry);
@@ -627,7 +627,7 @@ function updateSiteIndex(articleData, author, category) {
 }
 
 async function main() {
-  console.log('=== Starting The Seeker Automated Content Pipeline ===');
+  console.log('=== Starting GenAlphaMagazines Automated Content Pipeline ===');
   let topicData = null;
   if (CUSTOM_TOPIC) {
     topicData = {
