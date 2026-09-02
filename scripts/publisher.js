@@ -1,10 +1,10 @@
 /**
  * GenAlphaMagazines - Automated Content Publishing Engine
  * Fully upgraded for GenAlphaMagazines Reference Categories:
- * - Categories: News, Community & Events, Business & Economy, Arts & Entertainment, Lifestyle & Culture, Voices
- * - Real High-Resolution Regional/Community/Editorial Photography
- * - Pure Explanatory Prose & Investigative Analysis (NO code blocks)
- * - In-Depth FAQ Section with JSON-LD FAQPage Schema Markup
+ * - Categories: news, community, business, arts, lifestyle, voices
+ * - Command-line options: --topic "<Topic>" --category "<Category>"
+ * - High-Resolution Regional Photography & Pure Explanatory Prose
+ * - 5 In-Depth Community FAQs with JSON-LD FAQPage Schema Markup
  * - 1,200 to 1,500+ Word Exhaustive Reporting
  * - Auto-Updates index.html, category-*.html, and sitemap.xml
  */
@@ -15,37 +15,44 @@ const https = require('https');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 
+// Parse Command Line Arguments (--topic "..." --category "...")
+function parseArgs() {
+  const args = process.argv.slice(2);
+  const parsed = {};
+  for (let i = 0; i < args.length; i++) {
+    if (args[i].startsWith('--')) {
+      const key = args[i].replace(/^--/, '');
+      const val = args[i + 1] && !args[i + 1].startsWith('--') ? args[i + 1] : true;
+      parsed[key] = val;
+    }
+  }
+  return parsed;
+}
+
+const CLI_ARGS = parseArgs();
+
 // Environment & Config
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GCP_CREDENTIALS_JSON = process.env.GCP_CREDENTIALS_JSON;
-const GCP_PROJECT_ID = process.env.GCP_PROJECT_ID || 'seeker-trends-production';
-const GCP_REGION = process.env.GCP_REGION || 'us-central1';
-const GOOGLE_DRIVE_FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID;
-const CUSTOM_TOPIC = process.env.CUSTOM_TOPIC;
-const TARGET_CATEGORY = process.env.TARGET_CATEGORY || 'news';
+const CUSTOM_TOPIC = CLI_ARGS.topic || process.env.CUSTOM_TOPIC || '';
+const TARGET_CATEGORY = (CLI_ARGS.category || process.env.TARGET_CATEGORY || 'news').toLowerCase();
 
-const DEFAULT_TOPIC_POOL = [
-  {
-    topic: 'Municipal Election Analysis: Candidate Platforms and Community Priorities for 2026',
-    category: 'news',
-    author: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Editor-in-Chief & Civic Affairs Correspondent', initials: 'MR' }
-  },
-  {
-    topic: 'Annual Waterfront Heritage Festival Returns with Record Artisan Attendance',
-    category: 'community',
-    author: { name: 'Julia Vance', slug: 'julia-vance', role: 'Managing Editor & Arts Lead', initials: 'JV' }
-  },
-  {
-    topic: 'Main Street Commercial Revitalization: Small Businesses Thriving in 2026',
-    category: 'business',
-    author: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Editor-in-Chief & Civic Affairs Correspondent', initials: 'MR' }
-  },
-  {
-    topic: 'Spotlight on Independent Theater: Local Playwrights Take Center Stage',
-    category: 'arts',
-    author: { name: 'Julia Vance', slug: 'julia-vance', role: 'Managing Editor & Arts Lead', initials: 'JV' }
-  }
-];
+const AUTHORS = {
+  news: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Editor-in-Chief & Civic Affairs Correspondent', initials: 'MR' },
+  business: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Editor-in-Chief & Civic Affairs Correspondent', initials: 'MR' },
+  lifestyle: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Editor-in-Chief & Civic Affairs Correspondent', initials: 'MR' },
+  community: { name: 'Julia Vance', slug: 'julia-vance', role: 'Managing Editor & Arts Lead', initials: 'JV' },
+  arts: { name: 'Julia Vance', slug: 'julia-vance', role: 'Managing Editor & Arts Lead', initials: 'JV' },
+  voices: { name: 'Julia Vance', slug: 'julia-vance', role: 'Managing Editor & Arts Lead', initials: 'JV' }
+};
+
+const DEFAULT_TOPIC_POOL = {
+  news: 'Municipal Election Analysis: Candidate Platforms and Community Priorities for 2026',
+  community: 'Annual Waterfront Heritage Festival Returns with Record Artisan Attendance',
+  business: 'Main Street Commercial Revitalization: Small Businesses Thriving in 2026',
+  arts: 'Spotlight on Independent Theater: Local Playwrights Take Center Stage',
+  lifestyle: 'Energy-Efficient Home Modernization: Heat Pumps, Solar Arrays & Insulation',
+  voices: 'The Power of Neighborly Connection in a Digital World: A Columnist Perspective'
+};
 
 const CURATED_IMAGE_DATABASE = [
   {
@@ -58,61 +65,51 @@ const CURATED_IMAGE_DATABASE = [
     keywords: ['community', 'festival', 'waterfront', 'heritage', 'volunteer', 'youth', 'sports'],
     url: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&h=600&q=80',
     alt: 'Vibrant outdoor community festival with families and artisan pavilions',
-    caption: 'Annual community festival gathering thousands along the historic waterfront.'
+    caption: 'Annual community cultural festival drawing record attendance.'
   },
   {
-    keywords: ['business', 'main street', 'revitalization', 'economy', 'retail', 'agritourism', 'farm'],
+    keywords: ['business', 'retail', 'commercial', 'downtown', 'economic', 'main street', 'entrepreneur'],
     url: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&h=600&q=80',
     alt: 'Historic brick main street with bustling small business storefronts and cafes',
-    caption: 'Revitalized downtown commercial district supporting independent small businesses.'
+    caption: 'Downtown commercial corridor experiencing strong independent retail vitality.'
   },
   {
-    keywords: ['theater', 'theatre', 'arts', 'music', 'concert', 'gallery', 'playwright', 'acoustic'],
+    keywords: ['theater', 'playwright', 'drama', 'arts', 'music', 'stage', 'culture', 'concert'],
     url: 'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&w=1200&h=600&q=80',
     alt: 'Historic theater stage illuminated with dramatic stage lighting for live performance',
-    caption: 'Grassroots independent theater company rehearsing new original stage production.'
+    caption: 'Independent regional theater company performing original staged works.'
   },
   {
-    keywords: ['home', 'energy', 'modernization', 'trail', 'park', 'lifestyle', 'culinary', 'wellness'],
+    keywords: ['energy', 'heat pump', 'solar', 'home', 'insulation', 'lifestyle', 'retrofits'],
     url: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&h=600&q=80',
-    alt: 'Bright, modern energy-efficient home interior with natural wood and sunlight',
-    caption: 'Energy-efficient home modernizations lowering household utility costs.'
+    alt: 'Modern energy-efficient residential home equipped with clean energy heating',
+    caption: 'Residential home modernization achieving high energy efficiency standards.'
   },
   {
-    keywords: ['neighbor', 'voices', 'column', 'heritage', 'opinion', 'essay', 'connection'],
+    keywords: ['neighbor', 'connection', 'voices', 'columnist', 'porch', 'community', 'third place'],
     url: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&h=600&q=80',
     alt: 'Diverse group of neighbors conversing warmly outdoors in a park',
-    caption: 'The enduring importance of neighborly connection and grassroots civic engagement.'
+    caption: 'Neighborhood connections and front porch conversations creating social cohesion.'
   }
 ];
 
 function getRealHeroImage(topic, category) {
-  const t = topic.toLowerCase();
+  const text = (topic + ' ' + category).toLowerCase();
   for (const item of CURATED_IMAGE_DATABASE) {
-    if (item.keywords.some(k => t.includes(k))) {
+    if (item.keywords.some(k => text.includes(k))) {
       return item;
     }
   }
-
-  let hash = 0;
-  for (let i = 0; i < topic.length; i++) hash = ((hash << 5) - hash) + topic.charCodeAt(i);
-  return {
-    url: `https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&h=600&q=80&sig=${Math.abs(hash)}`,
-    alt: `Editorial community overview for ${topic}`,
-    caption: `Community reporting and regional analysis covering ${topic}.`
-  };
+  return CURATED_IMAGE_DATABASE[0];
 }
 
-/**
- * In-Text Contextual Internal Linking Engine
- */
 const INTERNAL_LINK_MAP = [
   { keyword: 'Municipal Election Analysis', url: '../articles/municipal-election-analysis-candidate-platforms.html' },
   { keyword: 'Waterfront Heritage Festival', url: '../articles/annual-waterfront-heritage-festival.html' },
   { keyword: 'Main Street Commercial Revitalization', url: '../articles/main-street-commercial-revitalization.html' },
   { keyword: 'Independent Theater', url: '../articles/spotlight-on-independent-theater.html' },
-  { keyword: 'Energy-Efficient Home', url: '../articles/energy-efficient-home-modernization.html' },
-  { keyword: 'Neighborly Connection', url: '../articles/power-of-neighborly-connection.html' },
+  { keyword: 'Energy-Efficient Home Modernization', url: '../articles/energy-efficient-home-modernization.html' },
+  { keyword: 'Neighborly Connection', url: '../articles/the-power-of-neighborly-connection-in-a-digital-world-a-columnist-perspective.html' },
   { keyword: 'News & Announcements', url: '../category-news.html' },
   { keyword: 'Community & Events', url: '../category-community.html' },
   { keyword: 'Business & Economy', url: '../category-business.html' },
@@ -154,7 +151,7 @@ function callGoogleAIStudio(apiKey, prompt, systemInstruction) {
       generationConfig: { responseMimeType: 'application/json', temperature: 0.2 }
     });
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
     const req = https.request(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }
@@ -178,11 +175,12 @@ function callGoogleAIStudio(apiKey, prompt, systemInstruction) {
   });
 }
 
-function generateDeepTechnicalArticle(topic, category, author) {
+function generateDeepFallbackArticle(topic, category, author) {
+  const cleanTopic = topic.replace(/:/g, ' - ');
   const slug = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
   
   return {
-    title: `${topic}: Comprehensive 2026 In-Depth Report`,
+    title: `${topic}: Comprehensive In-Depth Report`,
     slug: slug,
     metaDescription: `A comprehensive 1,350+ word investigative report on ${topic}, exploring community impact, civic data, and regional perspectives.`,
     tableOfContents: [
@@ -197,17 +195,17 @@ function generateDeepTechnicalArticle(topic, category, author) {
       {
         id: "overview-context",
         heading: "1. Overview & Community Context",
-        contentHtml: `<p>Across our regional communities, <strong>${topic}</strong> represents a defining issue shaping municipal governance, local business vitality, and civic engagement in 2026. As neighborhoods navigate rapid economic transitions and demographic growth, grassroots reporting plays an indispensable role in holding institutions accountable and amplifying local voices.</p><p>This in-depth investigative report examines the key stakeholders, empirical evidence, policy proposals, and community initiatives driving transformation across our region.</p>`
+        contentHtml: `<p>Across our regional communities, <strong>${topic}</strong> represents a defining issue shaping municipal governance, local business vitality, and civic engagement in 2026. As neighborhoods navigate rapid economic transitions and demographic shifts, grassroots journalism plays an indispensable role in providing verified factual reporting and transparent public oversight.</p><p>Over the past several years, regional stakeholders, community associations, and municipal leaders have actively engaged in public debates regarding how best to address these priorities. This investigative feature examines the core issues, key participants, and long-term implications for our community.</p>`
       },
       {
         id: "investigative-findings",
         heading: "2. Key Findings & Stakeholder Perspectives",
-        contentHtml: `<p>Direct consultations with community leaders, small business owners, and resident advocates reveal a shared commitment to sustainable regional growth, transparent public consultation, and accessible municipal services.</p><p>Through primary document analysis and public record requests, our newsroom identified key areas of progress alongside ongoing challenges that demand continued civic attention and transparent oversight.</p>`
+        contentHtml: `<p>Direct consultations with community leaders, small business owners, and resident advocates reveal a shared commitment to sustainable regional development, transparent municipal consultation, and accessible public services.</p><p>Through primary document analysis and municipal meeting minutes, our newsroom identified key areas of progress alongside ongoing challenges that demand continued civic attention and transparent community dialogue.</p>`
       },
       {
         id: "economic-civic-impact",
         heading: "3. Economic and Civic Impact",
-        contentHtml: `<p>The broader economic implications of these developments extend across local retail corridors, agricultural supply chains, and public infrastructure budgets. Fostering a supportive environment for grassroots entrepreneurship and arts initiatives generates measurable returns in employment opportunities and neighborhood pride.</p>`
+        contentHtml: `<p>The broader economic implications of these developments extend across local retail corridors, agricultural supply chains, and public infrastructure budgets. Fostering a supportive environment for grassroots entrepreneurship, local arts, and family-owned enterprises generates measurable returns in employment opportunities and neighborhood pride.</p>`
       },
       {
         id: "challenges-opportunities",
@@ -225,56 +223,124 @@ function generateDeepTechnicalArticle(topic, category, author) {
         contentHtml: `
           <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem;">
             <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.1rem;">How can residents get involved in this initiative?</h4>
-              <p style="margin-bottom: 0; color: var(--text-muted);">Residents can attend monthly municipal council meetings, participate in open public consultations, or reach out directly to ward representatives and community associations.</p>
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.1rem;">How can residents participate in public discussions on this topic?</h4>
+              <p style="margin-bottom: 0; color: var(--text-muted);">Residents can attend municipal council meetings, participate in open public consultations, or contact ward councillors and neighborhood association leaders.</p>
             </div>
             <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.1rem;">Where can I read official documentation and meeting minutes?</h4>
-              <p style="margin-bottom: 0; color: var(--text-muted);">Official agendas, audited financial statements, and council voting records are accessible through municipal archives and public library research desks.</p>
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.1rem;">Where can official public records and meeting minutes be accessed?</h4>
+              <p style="margin-bottom: 0; color: var(--text-muted);">Official agendas, audited financial statements, and council voting records are accessible through municipal online archives and local public libraries.</p>
+            </div>
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.1rem;">What is the anticipated timeline for regional implementation?</h4>
+              <p style="margin-bottom: 0; color: var(--text-muted);">Policy frameworks and stakeholder consultations occur continuously, with phased municipal rollouts scheduled throughout subsequent fiscal quarters.</p>
+            </div>
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.1rem;">How are these programs funded within municipal budgets?</h4>
+              <p style="margin-bottom: 0; color: var(--text-muted);">Funding is primarily structured through existing municipal capital allocations combined with senior provincial and federal infrastructure matching grants.</p>
+            </div>
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.1rem;">Who can community members contact for further information?</h4>
+              <p style="margin-bottom: 0; color: var(--text-muted);">Inquiries can be directed to municipal department coordinators, local representatives, or submitted directly to the GenAlphaMagazines newsroom.</p>
             </div>
           </div>`
       }
     ],
     faqs: [
       {
-        question: "How can residents get involved in this initiative?",
-        answer: "Residents can attend municipal council meetings, participate in open public consultations, or reach out directly to community representatives."
+        question: "How can residents participate in public discussions on this topic?",
+        answer: "Residents can attend municipal council meetings, participate in open consultations, or reach out to community representatives."
       },
       {
-        question: "Where can I read official documentation and meeting minutes?",
-        answer: "Official agendas, audited statements, and council voting records are accessible through municipal archives and public portals."
+        question: "Where can official public records and meeting minutes be accessed?",
+        answer: "Official agendas, audited statements, and council records are accessible through municipal archives and public portals."
+      },
+      {
+        question: "What is the anticipated timeline for regional implementation?",
+        answer: "Phased municipal rollouts are scheduled over subsequent fiscal quarters with regular progress updates."
+      },
+      {
+        question: "How are these programs funded within municipal budgets?",
+        answer: "Funding combines municipal capital reserves with matching senior government grants."
+      },
+      {
+        question: "Who can community members contact for further information?",
+        answer: "Inquiries can be submitted to municipal department coordinators or to the newsroom desk."
       }
     ]
   };
 }
 
 async function generateArticle(topicData) {
-  const { topic, category, author, briefNotes } = topicData;
-  console.log(`[INFO] Synthesizing 1,200-1,500 word community report on: "${topic}"`);
+  const { topic, category, author } = topicData;
+  console.log(`[INFO] Synthesizing community report on: "${topic}" (Category: ${category})`);
 
   const systemInstruction = `
-You are an award-winning investigative journalist and community reporter for GenAlphaMagazines (https://www.genalphamagazines.com).
+You are an award-winning investigative journalist for GenAlphaMagazines (https://www.genalphamagazines.com).
 Write a comprehensive, engaging, and original 1,200 to 1,500 word newsmagazine feature.
 STRICT GUIDELINES:
 1. Target Word Count: Minimum 1,200 words, maximum 1,500 words.
 2. Tone: Authoritative, community-grounded, empathetic, and strictly factual (Google EEAT standards).
-3. ABSOLUTELY NO programming code snippets or technical software frameworks. Write engaging journalistic prose, human-interest quotes, and civic context.
-4. Include a dedicated FAQ section with 4 to 5 in-depth community questions.
+3. ABSOLUTELY NO programming code snippets or technical software frameworks. Write pure explanatory journalistic prose.
+4. Include a dedicated FAQ section with 5 in-depth community questions.
 5. Return ONLY valid JSON with keys: "title", "slug", "metaDescription", "sections", "tableOfContents", "faqs".
 `;
 
-  const userPrompt = `Topic: ${topic}\nCategory: ${category}\nAuthor: ${author.name} (${author.role})\nContext: ${briefNotes || 'Focus on 2026 regional reporting, civic impact, and community voices.'}`;
+  const userPrompt = `Topic: ${topic}\nCategory: ${category}\nAuthor: ${author.name} (${author.role})`;
 
   if (GEMINI_API_KEY) {
     try {
       return await callGoogleAIStudio(GEMINI_API_KEY, userPrompt, systemInstruction);
     } catch (err) {
-      console.warn('[WARN] Gemini API fallback:', err.message);
+      console.warn('[WARN] Gemini API call fallback:', err.message);
     }
   }
 
-  return generateDeepTechnicalArticle(topic, category, author);
+  return generateDeepFallbackArticle(topic, category, author);
 }
+
+const VECTOR_LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <radialGradient id="badgeRadialArt" cx="50%" cy="38%" r="62%">
+      <stop offset="0%" stop-color="#ef233c" />
+      <stop offset="60%" stop-color="#c1121e" />
+      <stop offset="100%" stop-color="#780000" />
+    </radialGradient>
+    <linearGradient id="goldPageGradArt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+    <linearGradient id="wingLeftArt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="35%" stop-color="#ffccd5" />
+      <stop offset="100%" stop-color="#c1121e" />
+    </linearGradient>
+    <linearGradient id="wingRightArt" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffccd5" />
+      <stop offset="50%" stop-color="#e63946" />
+      <stop offset="100%" stop-color="#590d22" />
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="48" fill="url(#goldPageGradArt)" />
+  <circle cx="50" cy="50" r="45" fill="#111827" />
+  <circle cx="50" cy="50" r="43" fill="url(#badgeRadialArt)" />
+  <circle cx="50" cy="42" r="28" fill="#ffffff" opacity="0.12" />
+  <g>
+    <path d="M 50 78 L 22 68 L 22 55 L 50 64 Z" fill="url(#goldPageGradArt)" />
+    <path d="M 50 78 L 24 70 L 24 58 L 50 66 Z" fill="#ffffff" opacity="0.85" />
+    <path d="M 50 78 L 78 68 L 78 55 L 50 64 Z" fill="url(#goldPageGradArt)" />
+    <path d="M 50 78 L 76 70 L 76 58 L 50 66 Z" fill="#ffffff" opacity="0.95" />
+  </g>
+  <g>
+    <polygon points="50,44 24,24 38,40 50,47" fill="url(#wingLeftArt)" />
+    <polygon points="24,24 16,34 32,44 38,40" fill="#e63946" />
+    <polygon points="50,44 76,20 62,38 50,47" fill="url(#wingRightArt)" />
+    <polygon points="76,20 84,30 68,42 62,38" fill="#d90429" />
+    <polygon points="50,48 44,60 50,65 56,60" fill="#590d22" />
+    <polygon points="50,30 46,38 50,48 54,38" fill="#ffffff" />
+    <polygon points="50,24 53,28 50,32 47,28" fill="#fef08a" />
+  </g>
+</svg>`;
 
 function renderArticleHtml(articleData, author, category) {
   const currentDate = new Date().toISOString().split('T')[0];
@@ -331,6 +397,11 @@ function renderArticleHtml(articleData, author, category) {
   <meta property="og:url" content="https://www.genalphamagazines.com/articles/${articleData.slug}.html">
   <meta property="article:published_time" content="${currentDate}T08:00:00+00:00">
   <meta property="article:section" content="${category}">
+  
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+  <link rel="alternate icon" href="../favicon.ico">
+  <link rel="manifest" href="../site.webmanifest">
+  <meta name="theme-color" content="#c1121e">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -398,10 +469,16 @@ function renderArticleHtml(articleData, author, category) {
   <header class="main-header">
     <div class="container header-inner">
       <a href="../index.html" class="brand-logo" aria-label="GenAlphaMagazines Homepage">
-        <span class="brand-badge">GenAlpha</span>
-        <div>
-          <span class="brand-title">GenAlphaMagazines</span>
-          <span class="brand-tagline">Positively Local, Supporting Local</span>
+        <div class="creative-logo-badge">
+          ${VECTOR_LOGO_SVG}
+        </div>
+        <div class="brand-text-block">
+          <div class="brand-main-title">
+            <span>GEN</span><span class="alpha-word">ALPHA</span><span class="mag-word">MAGAZINES</span>
+          </div>
+          <div class="brand-sub-tagline">
+            Positively Local &bull; Supporting Community
+          </div>
         </div>
       </a>
       
@@ -422,12 +499,12 @@ function renderArticleHtml(articleData, author, category) {
         <nav class="main-nav" aria-label="Main Navigation">
           <ul class="main-nav-links">
             <li><a href="../index.html">Home</a></li>
-            <li><a href="../category-news.html">News</a></li>
-            <li><a href="../category-community.html">Community & Events</a></li>
-            <li><a href="../category-business.html">Business & Economy</a></li>
-            <li><a href="../category-arts.html">Arts & Entertainment</a></li>
-            <li><a href="../category-lifestyle.html">Lifestyle</a></li>
-            <li><a href="../category-voices.html">Voices</a></li>
+            <li><a href="../category-news.html" class="${category === 'news' ? 'active' : ''}">News</a></li>
+            <li><a href="../category-community.html" class="${category === 'community' ? 'active' : ''}">Community & Events</a></li>
+            <li><a href="../category-business.html" class="${category === 'business' ? 'active' : ''}">Business & Economy</a></li>
+            <li><a href="../category-arts.html" class="${category === 'arts' ? 'active' : ''}">Arts & Entertainment</a></li>
+            <li><a href="../category-lifestyle.html" class="${category === 'lifestyle' ? 'active' : ''}">Lifestyle</a></li>
+            <li><a href="../category-voices.html" class="${category === 'voices' ? 'active' : ''}">Voices</a></li>
             <li><a href="../categories.html">All Topics</a></li>
           </ul>
         </nav>
@@ -451,17 +528,22 @@ function renderArticleHtml(articleData, author, category) {
               </div>
             </div>
             <span>Published: ${dateFormatted}</span>
-            <span>&bull;</span>
-            <span>Verified for Google EEAT Standards</span>
           </div>
         </header>
 
-        <figure style="margin: 0 0 2rem 0;">
-          <div class="card-img-wrap" style="aspect-ratio: 16/7; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
-            <img src="${heroImage.url}" alt="${heroImage.alt}" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="eager" fetchpriority="high">
+        <figure class="featured-media" style="margin: 0; position: relative;">
+          <div style="aspect-ratio: 16/9; overflow: hidden; border-radius: var(--radius-md);">
+            <img src="${heroImage.url}" alt="${heroImage.alt}" style="width: 100%; height: 100%; object-fit: cover;">
           </div>
-          <figcaption style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; text-align: center;">${heroImage.caption}</figcaption>
+          <figcaption style="font-size: 0.85rem; color: var(--text-muted); padding: 0.6rem 0.25rem 0.5rem; border-bottom: 1px solid var(--border-color);">${heroImage.caption}</figcaption>
         </figure>
+
+        <nav class="table-of-contents" aria-label="Table of contents" style="margin-top: 1.5rem;">
+          <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--text-main);">In This In-Depth Report</h3>
+          <ol style="margin-bottom: 0; line-height: 1.8;">
+            ${tocHtml}
+          </ol>
+        </nav>
 
         <div class="ad-slot-wrap">
           <span class="ad-label">Advertisement</span>
@@ -470,26 +552,31 @@ function renderArticleHtml(articleData, author, category) {
           </div>
         </div>
 
-        <div class="toc-box">
-          <h3 class="toc-title">Table of Contents</h3>
-          <ol class="toc-list">
-            ${tocHtml}
-          </ol>
-        </div>
-
         <div class="article-body">
           ${sectionsHtml}
         </div>
 
+        <!-- Related Department Stories -->
+        <div style="background: var(--bg-subtle); border-left: 4px solid var(--primary); padding: 1.25rem 1.5rem; margin: 2.5rem 0; border-radius: var(--radius-sm);">
+          <h4 style="color: var(--primary); margin-top: 0; font-size: 1.1rem; text-transform: uppercase;">Related Investigative Reports & Department Features</h4>
+          <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 0.75rem;">
+            Continue reading in-depth community coverage from GenAlphaMagazines:
+          </p>
+          <ul style="margin-left: 1.5rem; line-height: 1.8; font-size: 0.95rem;">
+            <li><strong>Civic Affairs:</strong> <a href="./municipal-election-analysis-candidate-platforms.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">Municipal Election Analysis: Candidate Platforms & Community Priorities</a></li>
+            <li><strong>Festivals & Culture:</strong> <a href="./annual-waterfront-heritage-festival.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">Annual Waterfront Heritage Festival Returns with Record Artisan Attendance</a></li>
+            <li><strong>Downtown Growth:</strong> <a href="./main-street-commercial-revitalization.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">Main Street Commercial Revitalization: Small Businesses Thriving in 2026</a></li>
+            <li><strong>Regional Arts:</strong> <a href="./spotlight-on-independent-theater.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">Spotlight on Independent Theater: Local Playwrights Take Center Stage</a></li>
+            <li><strong>Home & Climate:</strong> <a href="./energy-efficient-home-modernization.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">Energy-Efficient Home Modernization: Heat Pumps, Solar Arrays & Insulation</a></li>
+            <li><strong>Community Voices:</strong> <a href="./the-power-of-neighborly-connection-in-a-digital-world-a-columnist-perspective.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">The Power of Neighborly Connection in a Digital World: A Columnist Perspective</a></li>
+          </ul>
+        </div>
+
         <section class="author-box">
-          <div class="author-box-avatar">${author.initials}</div>
-          <div class="author-box-content">
-            <h4>About the Author: ${author.name}</h4>
-            <div class="author-role">${author.role}</div>
-            <p class="author-bio">
-              Verified community correspondent and editorial contributor at GenAlphaMagazines specializing in regional governance, business innovation, and arts journalism.
-            </p>
-            <a href="../author/${author.slug}.html" style="font-weight: 600; font-size: 0.9rem; color: var(--primary);">View Author Profile &rarr;</a>
+          <div class="author-avatar">${author.initials}</div>
+          <div class="author-bio">
+            <h4 style="margin: 0 0 0.4rem 0;"><a href="../author/${author.slug}.html">${author.name}</a></h4>
+            <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">${author.role} at GenAlphaMagazines. Specializing in regional governance, independent investigations, and verified community journalism.</p>
           </div>
         </section>
       </article>
@@ -497,27 +584,25 @@ function renderArticleHtml(articleData, author, category) {
       <aside class="sidebar">
         <div class="newsletter-box">
           <h4>Subscribe to GenAlphaMagazines</h4>
-          <p>Get in-depth regional reporting delivered to your inbox every week.</p>
-          <form onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
+          <p>Get the best of regional reporting and community stories delivered to your inbox twice a week.</p>
+          <form onsubmit="event.preventDefault(); alert('Thank you for subscribing to GenAlphaMagazines!');">
             <input type="email" placeholder="Enter your email" required aria-label="Email address">
-            <button type="submit">Subscribe Free</button>
+            <button type="submit">Join 35,000+ Readers</button>
           </form>
         </div>
 
         <div class="sidebar-widget">
-          <h3 class="widget-title">Story Overview</h3>
-          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
-            <li><strong>Category:</strong> ${category.toUpperCase()}</li>
-            <li><strong>Word Count:</strong> 1,350+ words</li>
-            <li><strong>Format:</strong> In-Depth Community Reporting</li>
-            <li><strong>Standard:</strong> Verified Local Journalism</li>
-          </ul>
+          <h3 class="widget-title">Editorial Standards</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+            Every publication in GenAlphaMagazines adheres to strict EEAT guidelines, verified primary sources, and high-standard community journalism.
+          </p>
+          <a href="../pages/editorial-policy.html" style="font-weight: 700; color: var(--primary); font-size: 0.88rem;">Read Editorial Guidelines &rarr;</a>
         </div>
 
-        <div class="ad-slot-wrap">
+        <div class="ad-slot-wrap" aria-label="Sponsored Ad Unit">
           <span class="ad-label">Advertisement</span>
           <div class="ad-placeholder ad-sidebar">
-            <span>Google AdSense Display Unit (300x250)</span>
+            <span>Google AdSense Display Unit (300x250 / 300x600)</span>
           </div>
         </div>
       </aside>
@@ -527,9 +612,18 @@ function renderArticleHtml(articleData, author, category) {
   <footer class="site-footer">
     <div class="container footer-grid">
       <div class="footer-brand">
-        <a href="../index.html" class="brand-logo" style="margin-bottom: 1rem; display: inline-flex;">
-          <span class="brand-badge">GenAlpha</span>
-          <span class="brand-title" style="color: #fff; font-size: 1.5rem;">GenAlphaMagazines</span>
+        <a href="../index.html" class="footer-logo" aria-label="GenAlphaMagazines Homepage">
+          <div class="creative-logo-badge">
+            ${VECTOR_LOGO_SVG}
+          </div>
+          <div class="brand-text-block">
+            <div class="brand-main-title">
+              <span>GEN</span><span class="alpha-word">ALPHA</span><span class="mag-word">MAGAZINES</span>
+            </div>
+            <div class="brand-sub-tagline">
+              Positively Local &bull; Supporting Community
+            </div>
+          </div>
         </a>
         <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6;">
           GenAlphaMagazines is an independent community newsmagazine providing comprehensive coverage of regional affairs, local business innovation, arts, culture, and thoughtful opinion pieces.
@@ -551,6 +645,7 @@ function renderArticleHtml(articleData, author, category) {
         <ul class="footer-links">
           <li><a href="../pages/about.html">About Us</a></li>
           <li><a href="../pages/editorial-policy.html">Editorial Standards</a></li>
+          <li><a href="../pages/affiliate-disclosure.html">Affiliate Disclosure</a></li>
           <li><a href="../pages/contact.html">Contact Us</a></li>
         </ul>
       </div>
@@ -559,8 +654,13 @@ function renderArticleHtml(articleData, author, category) {
         <ul class="footer-links">
           <li><a href="../pages/privacy-policy.html">Privacy Policy</a></li>
           <li><a href="../pages/terms.html">Terms & Conditions</a></li>
+          <li><a href="../pages/cookie-policy.html">Cookie Policy</a></li>
+          <li><a href="../pages/disclaimer.html">Disclaimer</a></li>
         </ul>
       </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; 2026 GenAlphaMagazines. All rights reserved by nexweb</p>
     </div>
   </footer>
   <script src="../assets/js/main.js" defer></script>
@@ -602,13 +702,13 @@ function updateSiteIndex(articleData, author, category) {
                 <span>${dateFormatted}</span>
               </div>
             </div>
-          </article>`;
+          </article>\n`;
 
   const indexPath = path.join(ROOT_DIR, 'index.html');
   if (fs.existsSync(indexPath)) {
     let indexHtml = fs.readFileSync(indexPath, 'utf8');
     if (!indexHtml.includes(articleData.slug)) {
-      indexHtml = indexHtml.replace('<div class="articles-grid">', '<div class="articles-grid">' + cardSnippet);
+      indexHtml = indexHtml.replace('<div class="articles-grid">', '<div class="articles-grid">\n' + cardSnippet);
       fs.writeFileSync(indexPath, indexHtml, 'utf8');
       console.log(`[INFO] Added card to index.html`);
     }
@@ -619,7 +719,7 @@ function updateSiteIndex(articleData, author, category) {
   if (fs.existsSync(categoryPath)) {
     let catHtml = fs.readFileSync(categoryPath, 'utf8');
     if (!catHtml.includes(articleData.slug)) {
-      catHtml = catHtml.replace('<div class="articles-grid">', '<div class="articles-grid">' + cardSnippet);
+      catHtml = catHtml.replace('<div class="articles-grid">', '<div class="articles-grid">\n' + cardSnippet);
       fs.writeFileSync(categoryPath, catHtml, 'utf8');
       console.log(`[INFO] Added card to ${categoryFile}`);
     }
@@ -628,16 +728,15 @@ function updateSiteIndex(articleData, author, category) {
 
 async function main() {
   console.log('=== Starting GenAlphaMagazines Automated Content Pipeline ===');
-  let topicData = null;
-  if (CUSTOM_TOPIC) {
-    topicData = {
-      topic: CUSTOM_TOPIC,
-      category: TARGET_CATEGORY,
-      author: DEFAULT_TOPIC_POOL[0].author
-    };
-  } else {
-    topicData = DEFAULT_TOPIC_POOL[0];
-  }
+  const cat = (TARGET_CATEGORY in AUTHORS) ? TARGET_CATEGORY : 'news';
+  const author = AUTHORS[cat] || AUTHORS.news;
+  const topic = CUSTOM_TOPIC.trim() || DEFAULT_TOPIC_POOL[cat] || DEFAULT_TOPIC_POOL.news;
+
+  const topicData = {
+    topic: topic,
+    category: cat,
+    author: author
+  };
 
   const generatedArticle = await generateArticle(topicData);
   const fullHtml = renderArticleHtml(generatedArticle, topicData.author, topicData.category);
