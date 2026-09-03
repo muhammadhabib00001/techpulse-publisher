@@ -271,33 +271,45 @@ function getInternalLinkMap() {
     { keyword: 'Editorial Policy', url: '../pages/editorial-policy.html' },
     { keyword: 'Editorial Standards', url: '../pages/editorial-policy.html' },
 
-    // Core Topic Keywords to Target Articles
+    // High-Frequency Cross-Article Contextual Keywords
     { keyword: 'electric vehicle charging', url: '../articles/electric-vehicle-charging-stations-guide.html' },
     { keyword: 'EV charging stations', url: '../articles/electric-vehicle-charging-stations-guide.html' },
     { keyword: 'charging infrastructure', url: '../articles/electric-vehicle-charging-stations-guide.html' },
+    { keyword: 'battery lifespan', url: '../articles/smartphone-battery-life-tips-complete-practical-guide.html' },
+    { keyword: 'battery life tips', url: '../articles/smartphone-battery-life-tips-complete-practical-guide.html' },
+    { keyword: 'battery life', url: '../articles/smartphone-battery-life-tips-complete-practical-guide.html' },
+    { keyword: 'smartphone battery', url: '../articles/smartphone-battery-life-tips-complete-practical-guide.html' },
+    { keyword: 'charging cycles', url: '../articles/smartphone-battery-life-tips-complete-practical-guide.html' },
+    { keyword: 'power supply', url: '../articles/ups-battery-guide-choosing-replacing-and-care-tips.html' },
+    { keyword: 'backup power', url: '../articles/ups-battery-guide-choosing-replacing-and-care-tips.html' },
+    { keyword: 'power surges', url: '../articles/ups-battery-guide-choosing-replacing-and-care-tips.html' },
+    { keyword: 'clean energy transition', url: '../articles/regional-clean-energy-transition-and-solar-farm-initiatives-in-2026.html' },
+    { keyword: 'clean energy', url: '../articles/regional-clean-energy-transition-and-solar-farm-initiatives-in-2026.html' },
+    { keyword: 'solar arrays', url: '../articles/energy-efficient-home-modernization.html' },
+    { keyword: 'heat pumps', url: '../articles/energy-efficient-home-modernization.html' },
+    { keyword: 'commercial revitalization', url: '../articles/main-street-commercial-revitalization.html' },
+    { keyword: 'small business vitality', url: '../articles/main-street-commercial-revitalization-small-businesses-thriving-in-2026.html' },
+    { keyword: 'small businesses', url: '../articles/main-street-commercial-revitalization.html' },
+    { keyword: 'waterfront heritage festival', url: '../articles/annual-waterfront-heritage-festival.html' },
+    { keyword: 'independent theater', url: '../articles/spotlight-on-independent-theater.html' },
+    { keyword: 'zero trust cloud security', url: '../articles/zero-trust-cloud-security.html' },
+    { keyword: 'cloud security', url: '../articles/zero-trust-cloud-security.html' },
+    { keyword: 'quantum cryptography', url: '../articles/post-quantum-cryptography-implementation-in-cloud-storage.html' },
+    { keyword: 'web performance', url: '../articles/web-performance-inp-guide.html' },
+    { keyword: 'INP optimization', url: '../articles/web-performance-inp-guide.html' },
     { keyword: 'Atlanta Airport', url: '../articles/atlanta-airport-atl-guide-terminals-layovers-and-everything-to-know.html' },
     { keyword: 'airport layover', url: '../articles/atlanta-airport-atl-guide-terminals-layovers-and-everything-to-know.html' },
     { keyword: 'airports guide', url: '../articles/airports.html' },
     { keyword: 'agentic AI workflows', url: '../articles/agentic-ai-workflows-2026.html' },
     { keyword: 'autonomous agent', url: '../articles/autonomous-agent-architectures.html' },
     { keyword: 'artificial intelligence', url: '../articles/artificial-intelligence.html' },
-    { keyword: 'clean energy transition', url: '../articles/regional-clean-energy-transition-and-solar-farm-initiatives-in-2026.html' },
-    { keyword: 'solar arrays', url: '../articles/energy-efficient-home-modernization.html' },
-    { keyword: 'heat pumps', url: '../articles/energy-efficient-home-modernization.html' },
-    { keyword: 'commercial revitalization', url: '../articles/main-street-commercial-revitalization.html' },
-    { keyword: 'small business vitality', url: '../articles/main-street-commercial-revitalization-small-businesses-thriving-in-2026.html' },
-    { keyword: 'waterfront heritage festival', url: '../articles/annual-waterfront-heritage-festival.html' },
-    { keyword: 'independent theater', url: '../articles/spotlight-on-independent-theater.html' },
-    { keyword: 'zero trust cloud security', url: '../articles/zero-trust-cloud-security.html' },
-    { keyword: 'quantum cryptography', url: '../articles/post-quantum-cryptography-implementation-in-cloud-storage.html' },
-    { keyword: 'web performance', url: '../articles/web-performance-inp-guide.html' },
-    { keyword: 'INP optimization', url: '../articles/web-performance-inp-guide.html' },
     { keyword: 'crypto news', url: '../articles/crypto-news.html' },
     { keyword: 'finance jobs', url: '../articles/finance-jobs.html' },
     { keyword: 'outdoor recreation', url: '../articles/outdoor-recreation.html' },
     { keyword: 'municipal election', url: '../articles/municipal-election-analysis.html' },
-    { keyword: 'smartphone battery', url: '../articles/smartphone-battery-life-tips-complete-practical-guide.html' },
-    { keyword: 'battery life tips', url: '../articles/smartphone-battery-life-tips-complete-practical-guide.html' }
+    { keyword: 'economic sanctions', url: '../articles/trump-vs-iran-tensions-policy-sanctions-and-risks.html' },
+    { keyword: 'international commerce', url: '../articles/trump-vs-iran-tensions-policy-sanctions-and-risks.html' },
+    { keyword: 'trade policy', url: '../articles/trump-vs-canada-trade-and-border-policies-explained.html' }
   ];
 
   // Dynamically index all articles in articles directory for automatic cross-linking
@@ -587,20 +599,23 @@ WRITING STYLE RULES (follow strictly):
    - "across our regional communities"
    - Em-dash (—) and en-dash (–)
 8. CONTENT DEPTH: Minimum 1,200 words total across all sections.
-9. GOOGLE SEO POLICY FOR TITLE & URL:
+9. INTERNAL LINKING CONTEXT: Naturally mention related topics within paragraphs to enable contextual reading:
+   - For technology/lifestyle/hardware: naturally mention topics like "clean energy transition", "smart home technology", "battery life tips", "web performance", or "commercial equipment".
+   - For news/policy: naturally mention topics like "global energy markets", "international commerce", "civic developments", or "regional investments".
+10. GOOGLE SEO POLICY FOR TITLE & URL:
    - "title": Must strictly follow Google Search Central guidelines: 50-60 characters, descriptive, target keyword placed prominently, no clickbait or keyword stuffing, no em-dashes. Example: "Atlanta Airport ATL Guide: Terminals and Layover Tips"
    - "slug": Must be directly derived from the title: lowercase, clean, hyphenated words matching title keywords (e.g. "atlanta-airport-atl-guide-terminals-and-layover-tips")
    - "metaDescription": 140-155 characters summarizing the article with primary keyword.
    - "tableOfContents": array of {id, title}
    - "sections": array of {id, heading, contentHtml} (Section 1 heading MUST be "")
    - "faqs": array of {question, answer}
-10. Valid HTML only in contentHtml.`;
+11. Valid HTML only in contentHtml.`;
 
   const userPrompt = `Write a complete, practical, in-depth guide article about: "${topic}"
 Category: ${category}
 Author: ${author.name} (${author.role})
 
-Follow Google SEO title policies (under 60 characters with main keyword) and derive the slug directly from the title. Do not use em-dashes and start directly with helpful content.`;
+Follow Google SEO title policies (under 60 characters with main keyword) and derive the slug directly from the title. Do not use em-dashes and start directly with helpful content. Naturally reference related cross-topic contexts like energy efficiency, digital performance, or market implications so internal links can connect seamlessly.`;
 
   if (GEMINI_API_KEY) {
     try {
