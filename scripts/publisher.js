@@ -83,116 +83,85 @@ function downloadImageLocally(url, destPath) {
 }
 
 /**
- * Generates an Imagen/Gemini image or fetches a verified high-resolution keyword-matched photo
+ * Fetches a unique, topic-keyword-matched hero image via Unsplash Source search.
+ * Each article topic gets a different, relevant image automatically.
  */
 async function fetchOrGenerateTopicImage(topic, category, slug) {
   const localImgFilename = `${slug}.jpg`;
   const localImgPath = path.join(ROOT_DIR, 'assets', 'images', localImgFilename);
 
-  // If local image already exists, use it
-  if (fs.existsSync(localImgPath) && fs.statSync(localImgPath).size > 1000) {
+  // If local image already exists and is valid, reuse it
+  if (fs.existsSync(localImgPath) && fs.statSync(localImgPath).size > 10000) {
     return {
       relativeUrl: `../assets/images/${localImgFilename}`,
       indexUrl: `./assets/images/${localImgFilename}`,
-      alt: `Editorial photography for ${topic}`,
-      caption: `Investigative reporting and regional coverage on ${topic}.`
+      alt: `${topic} — featured editorial photo`,
+      caption: `${topic}: expert guide and practical tips.`
     };
   }
 
-  // Topic & Keyword Direct Matcher
-  const lower = topic.toLowerCase();
+  // Build unique keyword query from the topic (first 4 meaningful words)
+  const queryWords = topic
+    .replace(/[^a-zA-Z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter(w => w.length > 2)
+    .slice(0, 4)
+    .join(',');
 
-  // 1. Check if specific pre-bundled image exists
-  if (lower.includes('trump') || lower.includes('president') || lower.includes('white house') || lower.includes('election')) {
-    const trumpExisting = path.join(ROOT_DIR, 'assets', 'images', 'donald-trump-press-briefing.jpg');
-    if (fs.existsSync(trumpExisting)) {
-      return {
-        relativeUrl: `../assets/images/donald-trump-press-briefing.jpg`,
-        indexUrl: `./assets/images/donald-trump-press-briefing.jpg`,
-        alt: 'Donald Trump speaking at a presidential press briefing',
-        caption: 'Donald Trump addressing reporters at a national press conference outlining federal policy and trade priorities.'
-      };
-    }
-  } else if (lower.includes('finance') || lower.includes('job') || lower.includes('bank') || lower.includes('career') || lower.includes('salary')) {
-    const finExisting = path.join(ROOT_DIR, 'assets', 'images', 'finance-jobs.jpg');
-    if (fs.existsSync(finExisting)) {
-      return {
-        relativeUrl: `../assets/images/finance-jobs.jpg`,
-        indexUrl: `./assets/images/finance-jobs.jpg`,
-        alt: 'Financial analysts and corporate banking professionals in modern office',
-        caption: 'Financial market analysis, corporate career roadmaps, and economic growth.'
-      };
-    }
-  } else if (lower.includes('solar') || lower.includes('energy') || lower.includes('clean energy')) {
-    const solarExisting = path.join(ROOT_DIR, 'assets', 'images', 'solar-farm-clean-energy.jpg');
-    if (fs.existsSync(solarExisting)) {
-      return {
-        relativeUrl: `../assets/images/solar-farm-clean-energy.jpg`,
-        indexUrl: `./assets/images/solar-farm-clean-energy.jpg`,
-        alt: 'Modern clean solar farm array in rolling countryside',
-        caption: 'Clean energy transition and large-scale regional solar farm installation.'
-      };
-    }
-  }
+  // Unique numeric signature per slug — makes every request distinct
+  const sig = Math.abs(slug.split('').reduce((h, c) => ((h << 5) - h) + c.charCodeAt(0), 0) & 0x7fffffff);
 
-  // Curated High-Reliability Topic Photobank (Direct Unsplash Photo IDs - 100% Reliable, No 503s)
-  const PHOTO_BANK = {
-    business: [
-      { id: '1486406146926-c627a92ad1ab', alt: 'Commercial business district and retail storefronts', caption: 'Commercial development and regional business enterprise growth.' },
-      { id: '1556742049-0a67e557224f', alt: 'Local commerce retail storefront and customer service', caption: 'Regional retail commerce and independent business vitality.' },
-      { id: '1454165804606-c3d57bc86b40', alt: 'Corporate finance team analyzing economic data', caption: 'Corporate financial planning and employment market trends.' }
-    ],
-    news: [
-      { id: '1540910419892-4a36d2c3266c', alt: 'Civic governance hall and public council assembly', caption: 'Municipal government affairs and public policy developments.' },
-      { id: '1570125909232-eb263c188f7e', alt: 'Regional transportation network and transit infrastructure', caption: 'Infrastructure investments and regional public transit modernization.' }
-    ],
-    community: [
-      { id: '1511578314322-379afb476865', alt: 'Vibrant outdoor community cultural festival', caption: 'Community festival gathering celebrating local heritage and regional artisans.' },
-      { id: '1559027615-cd4628902d4a', alt: 'Community volunteers working together on neighborhood project', caption: 'Grassroots community volunteering and neighborhood revitalization.' }
-    ],
-    arts: [
-      { id: '1507676184212-d03ab07a01bf', alt: 'Dramatic live theater stage with stage lighting', caption: 'Independent regional theater company performing original staged works.' },
-      { id: '1460661419201-fd4cecdf8a8b', alt: 'Art exhibition gallery displaying creative paintings', caption: 'Regional arts spotlight and creative cultural showcase.' }
-    ],
-    lifestyle: [
-      { id: '1513694203232-719a280e022f', alt: 'Energy-efficient modern residential home', caption: 'Sustainable lifestyle modernizations and home energy efficiency.' },
-      { id: '1500382017468-9049fed747ef', alt: 'Countryside green hills and sustainable regional agriculture', caption: 'Regional lifestyle, conservation, and agricultural sustainability.' }
-    ],
-    voices: [
-      { id: '1529156069898-49953e39b3ac', alt: 'Community members conversing and socializing in park', caption: 'Neighborhood connections fostering grassroots community resilience.' },
-      { id: '1455390582262-044cdead277a', alt: 'Journalist notebook and fountain pen on rustic wooden desk', caption: 'Columnist reflections and thoughtful commentary on community living.' }
-    ]
-  };
-
-  const pool = PHOTO_BANK[category] || PHOTO_BANK.business;
-  let hash = 0;
-  for (let i = 0; i < topic.length; i++) {
-    hash = ((hash << 5) - hash) + topic.charCodeAt(i);
-    hash |= 0;
-  }
-  const item = pool[Math.abs(hash) % pool.length];
-  const directUrl = `https://images.unsplash.com/photo-${item.id}?auto=format&fit=crop&w=1200&h=600&q=80`;
+  // Try Unsplash Source search — unique keyword + sig per article = unique image
+  const unsplashSearchUrl = `https://source.unsplash.com/1200x600/?${encodeURIComponent(queryWords)}&sig=${sig}`;
 
   try {
-    console.log(`[INFO] Downloading and saving static local image for: "${topic}"...`);
-    await downloadImageLocally(directUrl, localImgPath);
-    console.log(`[SUCCESS] Saved local image to: assets/images/${localImgFilename}`);
-    return {
-      relativeUrl: `../assets/images/${localImgFilename}`,
-      indexUrl: `./assets/images/${localImgFilename}`,
-      alt: item.alt,
-      caption: item.caption
-    };
+    console.log(`[INFO] Fetching topic-matched image for "${topic}" (keywords: ${queryWords})...`);
+    await downloadImageLocally(unsplashSearchUrl, localImgPath);
+    if (fs.existsSync(localImgPath) && fs.statSync(localImgPath).size > 10000) {
+      console.log(`[SUCCESS] Topic image saved: assets/images/${localImgFilename}`);
+      return {
+        relativeUrl: `../assets/images/${localImgFilename}`,
+        indexUrl: `./assets/images/${localImgFilename}`,
+        alt: `${topic} — editorial featured image`,
+        caption: `${topic}: comprehensive guide and key insights.`
+      };
+    }
+    throw new Error('File too small — likely a placeholder');
   } catch (err) {
-    console.warn(`[WARN] Using direct CDN URL: ${err.message}`);
-    return {
-      relativeUrl: directUrl,
-      indexUrl: directUrl,
-      alt: item.alt,
-      caption: item.caption
-    };
+    console.warn(`[WARN] Topic image failed (${err.message}). Trying direct fallback...`);
   }
+
+  // Fallback: reliable curated Unsplash photo IDs per category (diverse selection)
+  const FALLBACK_POOLS = {
+    business: ['1486406146926-c627a92ad1ab', '1454165804606-c3d57bc86b40', '1556742049-0a67e557224f', '1507679799987-c73779587ccf', '1560472354-b33ff0ad5111'],
+    news:     ['1540910419892-4a36d2c3266c', '1570125909232-eb263c188f7e', '1504711434969-e33886168f5c', '1585829365295-ab7cd400c167', '1434030216411-0b793f4b6db9'],
+    community:['1511578314322-379afb476865', '1559027615-cd4628902d4a', '1529156069898-49953e39b3ac', '1475483768296-75f5e5f55b8a', '1522202176988-66273c2fd55f'],
+    arts:     ['1507676184212-d03ab07a01bf', '1460661419201-fd4cecdf8a8b', '1578321272125-162a75be7e28', '1513364776144-60967b0f800f', '1520166012930-4b4ce4a6a59e'],
+    lifestyle:['1513694203232-719a280e022f', '1500382017468-9049fed747ef', '1505691938895-1758d7feb511', '1496181133206-80ce9b88a853', '1484480974693-6ca0a78fb36b'],
+    voices:   ['1529156069898-49953e39b3ac', '1455390582262-044cdead277a', '1504711434969-e33886168f5c', '1434030216411-0b793f4b6db9', '1507003211169-0a1dd7228f2d']
+  };
+
+  const pool = FALLBACK_POOLS[category] || FALLBACK_POOLS.business;
+  const picId = pool[sig % pool.length];
+  const fallbackUrl = `https://images.unsplash.com/photo-${picId}?auto=format&fit=crop&w=1200&h=600&q=80`;
+
+  try {
+    await downloadImageLocally(fallbackUrl, localImgPath);
+    console.log(`[SUCCESS] Fallback image saved: assets/images/${localImgFilename}`);
+  } catch (e2) {
+    console.warn(`[WARN] All image downloads failed: ${e2.message}`);
+  }
+
+  return {
+    relativeUrl: fs.existsSync(localImgPath) && fs.statSync(localImgPath).size > 5000
+      ? `../assets/images/${localImgFilename}` : fallbackUrl,
+    indexUrl: fs.existsSync(localImgPath) && fs.statSync(localImgPath).size > 5000
+      ? `./assets/images/${localImgFilename}` : fallbackUrl,
+    alt: `${topic} — editorial photo`,
+    caption: `${topic}: in-depth guide and practical insights.`
+  };
 }
+
 
 const INTERNAL_LINK_MAP = [
   { keyword: 'municipal governance', url: '../articles/municipal-election-analysis-candidate-platforms.html' },
@@ -272,131 +241,198 @@ function callGoogleAIStudio(apiKey, prompt, systemInstruction) {
 function generateDeepFallbackArticle(topic, category, author) {
   const slug = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
   const cleanTopic = topic.charAt(0).toUpperCase() + topic.slice(1);
-  
-  // Natural journalistic headlines
-  const title = `${cleanTopic} in 2026: In-Depth Guide, Industry Trends & Future Outlook`;
-  const metaDescription = `An exhaustive investigation and practical guide to ${topic} in 2026, exploring core methodologies, emerging industry shifts, community perspectives, and actionable recommendations.`;
+
+  const title = `${cleanTopic}: A Complete Practical Guide for 2026`;
+  const metaDescription = `Everything you need to know about ${topic} in 2026 — from the basics to expert tips, common questions answered, and practical advice you can use right away.`;
 
   return {
-    title: title,
-    slug: slug,
-    metaDescription: metaDescription,
+    title,
+    slug,
+    metaDescription,
     tableOfContents: [
-      { id: "understanding-core-concepts", title: "1. Core Principles & Modern Foundations" },
-      { id: "practical-methods-and-trends", title: "2. Key Methodologies & Practical Techniques" },
-      { id: "community-and-economic-impact", title: "3. Regional Shifts & Economic Implications" },
-      { id: "best-practices-and-challenges", title: "4. Practical Guidelines & Overcoming Obstacles" },
-      { id: "future-trends-roadmap", title: "5. Long-Term Innovations & Outlook for 2026+" },
-      { id: "frequently-asked-questions", title: "6. Frequently Asked Questions" }
+      { id: 'what-is-overview', title: `About ${cleanTopic}` },
+      { id: 'how-it-works', title: `How ${cleanTopic} Works` },
+      { id: 'getting-started', title: 'Getting Started: Step-by-Step' },
+      { id: 'tips-and-advice', title: 'Practical Tips and What to Expect' },
+      { id: 'common-mistakes', title: 'Common Mistakes and How to Avoid Them' },
+      { id: 'frequently-asked-questions', title: 'Frequently Asked Questions' }
     ],
     sections: [
       {
-        id: "understanding-core-concepts",
-        heading: "1. Core Principles & Modern Foundations",
-        contentHtml: `<p>In recent years, the landscape surrounding <strong>${topic}</strong> has undergone a profound transformation. As regional communities and modern industries seek higher efficiency and sustainable practices in 2026, understanding the fundamental mechanics behind ${topic} is essential for informed decision-making.</p>
-        <p>Whether examining local grassroots initiatives or broad national trends, the principles governing ${topic} emphasize verified standards, structured planning, and proactive engagement. Practitioners and community stakeholders who adopt a disciplined approach consistently report superior outcomes and long-term resilience.</p>`
+        id: 'what-is-overview',
+        heading: `About ${cleanTopic}`,
+        contentHtml: `<p>If you've been looking into <strong>${topic}</strong>, chances are you already have some questions — and possibly a few misconceptions picked up along the way. This guide is here to cut through the noise and give you a clear, practical picture of what ${topic} actually involves, what to expect, and how to make the most of it.</p>
+
+        <p>${cleanTopic} is a topic that matters to a wide range of people, from beginners just getting started to experienced individuals looking to sharpen their approach. Whatever your reason for being here, the goal of this article is straightforward: give you the information you need to feel confident and prepared.</p>
+
+        <h3>Why ${cleanTopic} Matters in 2026</h3>
+        <p>In recent years, interest in ${topic} has grown considerably — and for good reason. Whether driven by practical necessity, personal interest, or broader industry trends, more people are seeking reliable, up-to-date guidance on this subject than ever before. This guide focuses on what's actually useful and accurate, not generic advice that could apply to anything.</p>`
       },
       {
-        id: "practical-methods-and-trends",
-        heading: "2. Key Methodologies & Practical Techniques",
-        contentHtml: `<p>Executing initiatives related to ${topic} requires a clear step-by-step framework tailored to current 2026 conditions:</p>
-        <ul style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.8;">
-          <li><strong>Strategic Assessment & Preparation:</strong> Conducting preliminary groundwork, evaluating environmental constraints, and establishing measurable performance indicators.</li>
-          <li><strong>Resource Allocation & Material Selection:</strong> Utilizing durable, sustainable components and modern digital tooling to minimize waste and streamline workflows.</li>
-          <li><strong>Iterative Execution & Quality Control:</strong> Applying standardized checks at each milestone to ensure compliance with municipal regulations and safety benchmarks.</li>
+        id: 'how-it-works',
+        heading: `How ${cleanTopic} Works`,
+        contentHtml: `<p>Understanding the mechanics behind ${topic} is the foundation for everything else. Before diving into specific steps or tips, it helps to have a clear mental model of how the whole thing fits together.</p>
+
+        <h3>The Core Mechanism</h3>
+        <p>At its core, ${topic} operates on a few fundamental principles that remain consistent regardless of your specific situation or goals. Getting familiar with these fundamentals early will save you time and prevent common missteps later on.</p>
+
+        <ul style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.9;">
+          <li><strong>Understanding the basics first:</strong> Before jumping to advanced strategies, make sure you have a solid grasp of the foundational concepts. Most problems people encounter with ${topic} trace back to skipping this step.</li>
+          <li><strong>Knowing your specific situation:</strong> ${cleanTopic} is not a one-size-fits-all subject. What works well for one person may need adjustment for another depending on their specific circumstances, goals, and constraints.</li>
+          <li><strong>Being realistic about timelines:</strong> Results and progress with ${topic} rarely happen overnight. Setting realistic expectations from the start leads to a much better experience.</li>
         </ul>
-        <p>Industry field reports indicate that adopting these structured workflows reduces project friction by over 35% while establishing clear transparency for all participants.</p>`
+
+        <h3>Key Factors That Affect the Experience</h3>
+        <p>Several factors can significantly influence how your experience with ${topic} plays out. Being aware of these ahead of time lets you plan more effectively and avoid surprises.</p>`
       },
       {
-        id: "community-and-economic-impact",
-        heading: "3. Regional Shifts & Economic Implications",
-        contentHtml: `<p>The ripple effects of ${topic} extend far beyond isolated implementations, creating tangible economic value across local commercial corridors and neighborhood hubs. By fostering local talent, supporting independent businesses, and cultivating strong regional supply chains, communities build long-term economic self-reliance.</p>
-        <p>Furthermore, civic collaboration around ${topic} has fostered unprecedented civic engagement, bringing together diverse demographics through shared workshops, public consultations, and regional advisory boards.</p>`
+        id: 'getting-started',
+        heading: 'Getting Started: Step-by-Step',
+        contentHtml: `<p>Ready to move from reading to doing? Here's a straightforward approach to getting started with ${topic} that minimizes guesswork and sets you up for a smoother experience.</p>
+
+        <h3>Step 1: Do Your Preparation</h3>
+        <p>Before anything else, take stock of what you actually need and what you already have available. This includes understanding any requirements, gathering necessary information or materials, and identifying any potential complications before they become problems.</p>
+
+        <h3>Step 2: Start with the Right Resources</h3>
+        <p>The quality of the resources and information you rely on makes a significant difference with ${topic}. Look for sources that are current, specific to your situation, and come from people or organizations with genuine expertise in this area.</p>
+
+        <h3>Step 3: Take It One Stage at a Time</h3>
+        <p>Break the process down into manageable stages rather than trying to tackle everything at once. Progress with ${topic} tends to compound — getting each stage right makes the next one easier. A measured, sequential approach consistently outperforms rushing.</p>
+
+        <ol style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.9;">
+          <li>Identify your specific goal with ${topic} and write it down clearly</li>
+          <li>Research the specific requirements or steps relevant to your situation</li>
+          <li>Assemble any tools, information, or support you'll need in advance</li>
+          <li>Work through each stage methodically, checking your progress as you go</li>
+          <li>Adjust your approach based on what you learn along the way</li>
+        </ol>`
       },
       {
-        id: "best-practices-and-challenges",
-        heading: "4. Practical Guidelines & Overcoming Obstacles",
-        contentHtml: `<p>Despite positive momentum, several key challenges require careful consideration:</p>
-        <ol style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.8;">
-          <li><strong>Balancing Capital Outlays:</strong> Managing upfront investments through phased funding models and community partnership grants.</li>
-          <li><strong>Regulatory Alignment:</strong> Staying current with evolving regional guidelines and compliance frameworks.</li>
-          <li><strong>Public Communication:</strong> Ensuring open channels of dialogue between planners, local merchants, and neighborhood residents.</li>
-        </ol>
-        <p>Addressing these factors early in the development cycle ensures smooth long-term operations and sustained stakeholder trust.</p>`
+        id: 'tips-and-advice',
+        heading: 'Practical Tips and What to Expect',
+        contentHtml: `<p>Beyond the basic steps, a few practical habits and mindset shifts can make a real difference in how smoothly your experience with ${topic} goes. These tips come from patterns that tend to separate people who get good results from those who struggle.</p>
+
+        <h3>Tip 1: Build In More Time Than You Think You Need</h3>
+        <p>${cleanTopic} almost always takes longer than anticipated — especially the first time. Whether it's gathering information, waiting for processes to complete, or troubleshooting unexpected issues, build buffer time into your plan. This is especially important if ${topic} is connected to a deadline or time-sensitive goal.</p>
+
+        <h3>Tip 2: Don't Skip the Verification Steps</h3>
+        <p>Whatever your process involves, the steps that feel tedious — double-checking details, confirming information, re-reading instructions — are often the ones that prevent costly mistakes. Resist the urge to skip these in the interest of speed.</p>
+
+        <h3>Tip 3: Ask Questions Before You're Stuck</h3>
+        <p>If something about ${topic} isn't clear, get clarity before you proceed rather than guessing and hoping for the best. Whether that means consulting a reliable source, reading official documentation, or reaching out to someone with direct experience, a few minutes of clarification upfront is almost always worth it.</p>
+
+        <ul style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.9;">
+          <li>Keep notes on what you did and what results it produced — useful if you need to repeat the process or troubleshoot later</li>
+          <li>Pay attention to any official guidelines or requirements specific to your situation with ${topic}</li>
+          <li>If using tools or platforms related to ${topic}, take time to understand the key features before diving in</li>
+        </ul>`
       },
       {
-        id: "future-trends-roadmap",
-        heading: "5. Long-Term Innovations & Outlook for 2026+",
-        contentHtml: `<p>Looking ahead, the evolution of ${topic} will increasingly intersect with smart infrastructure, clean technology, and decentralized community initiatives. As novel tools emerge, leaders who remain agile and grounded in core values will lead the next wave of civic innovation.</p>
-        <p>GenAlphaMagazines will continue to investigate and report on the forefront of ${topic}, delivering verified, independent journalism directly from our newsroom.</p>`
+        id: 'common-mistakes',
+        heading: 'Common Mistakes and How to Avoid Them',
+        contentHtml: `<p>Understanding what tends to go wrong with ${topic} is just as valuable as knowing what to do right. Here are the most common missteps — and how to sidestep them.</p>
+
+        <h3>Rushing the Early Stages</h3>
+        <p>One of the most consistent patterns with ${topic} is that problems later in the process usually trace back to something that wasn't done properly at the beginning. Taking the time to get the foundation right pays dividends throughout. If something feels uncertain early on, address it then — not after you've already committed to a direction.</p>
+
+        <h3>Relying on Outdated Information</h3>
+        <p>Guidance on ${topic} can change as circumstances, tools, and best practices evolve. Always check that the information you're working from is current and relevant to your specific situation in 2026. A tip that was accurate two or three years ago may no longer reflect how things actually work today.</p>
+
+        <h3>Underestimating the Learning Curve</h3>
+        <p>Even when ${topic} looks straightforward on paper, there's usually a learning curve involved in putting it into practice. Be patient with yourself, especially at the start. Most people who struggle significantly are simply trying to move too fast before they've built the necessary understanding. Slow down, get comfortable with each stage, and your confidence — and results — will follow naturally.</p>`
       },
       {
-        id: "frequently-asked-questions",
-        heading: "6. Frequently Asked Questions",
+        id: 'frequently-asked-questions',
+        heading: 'Frequently Asked Questions',
         contentHtml: `
-          <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1.5rem;">
+          <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1rem;">
             <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">What are the primary factors to consider before starting with ${topic}?</h4>
-              <p style="margin-bottom: 0; color: var(--text-muted);">Key considerations include assessing initial budget allocations, understanding local regulatory requirements, and engaging qualified regional partners with verified experience.</p>
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">What is the best way to get started with ${topic}?</h4>
+              <p style="margin-bottom: 0;">The best starting point is to clearly define your specific goal with ${topic}, then research the requirements or steps relevant to your situation. Starting with a clear objective and realistic expectations makes everything else more manageable.</p>
             </div>
             <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">How does ${topic} impact local community and economic vitality?</h4>
-              <p style="margin-bottom: 0; color: var(--text-muted);">It generates localized employment, strengthens commercial supplier networks, and creates lasting community assets that enhance neighborhood quality of life.</p>
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">How long does it typically take to see results with ${topic}?</h4>
+              <p style="margin-bottom: 0;">Timelines vary depending on your specific situation and goals. In most cases, building a solid foundation takes longer than expected at first but accelerates once the fundamentals are in place. Plan for more time than you think you'll need.</p>
             </div>
             <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">Where can official guidelines and community resources be found?</h4>
-              <p style="margin-bottom: 0; color: var(--text-muted);">Official documentation is accessible via regional municipal portals, public library archives, and regular publication briefings on GenAlphaMagazines.</p>
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">What are the most important things to know about ${topic} before starting?</h4>
+              <p style="margin-bottom: 0;">Understanding the core mechanism and having realistic expectations about timelines and effort are the two most important things. Most difficulties with ${topic} come from either a knowledge gap about how it works or expectations that don't match reality.</p>
             </div>
             <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">What is the anticipated rollout timeline for regional programs?</h4>
-              <p style="margin-bottom: 0; color: var(--text-muted);">Programs typically proceed through quarterly milestone phases, with regular public reviews and community stakeholder updates.</p>
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">Is ${topic} suitable for beginners?</h4>
+              <p style="margin-bottom: 0;">Yes — with the right preparation and a willingness to learn as you go. Starting with a clear step-by-step plan and not skipping the foundational stages makes ${topic} accessible even if you're approaching it for the first time.</p>
             </div>
             <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">How can residents and small businesses get involved?</h4>
-              <p style="margin-bottom: 0; color: var(--text-muted);">Interested parties can participate in open public consultations, join neighborhood committees, or contact the editorial newsroom for feature inquiries.</p>
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">Where can I find reliable, up-to-date information about ${topic}?</h4>
+              <p style="margin-bottom: 0;">Look for official sources, expert publications, and well-regarded guides that are clearly dated and updated for current conditions. GenAlphaMagazines covers ${topic} and related subjects with regularly updated editorial coverage you can rely on.</p>
             </div>
+          </div>
+
+          <div style="background: var(--bg-subtle); border-left: 4px solid var(--primary); padding: 1.5rem; margin-top: 2rem; border-radius: var(--radius-sm);">
+            <h3 style="margin-top: 0; color: var(--primary);">Final Thoughts</h3>
+            <p style="margin-bottom: 0;">${cleanTopic} doesn't have to be complicated — but it does reward preparation and patience. Whether you're just getting started or looking to improve on a previous attempt, the key factors remain consistent: understand the basics thoroughly, set realistic expectations, build in enough time, and don't skip the verification steps. Most people who find ${topic} frustrating are simply trying to shortcut a process that benefits from a methodical approach. Take it one stage at a time, and the rest tends to follow.</p>
           </div>`
       }
     ],
     faqs: [
       {
-        question: `What are the primary factors to consider before starting with ${topic}?`,
-        answer: `Key considerations include assessing initial budget allocations, understanding local regulatory requirements, and engaging qualified regional partners with verified experience.`
+        question: `What is the best way to get started with ${topic}?`,
+        answer: `The best starting point is to clearly define your specific goal with ${topic}, then research the requirements or steps relevant to your situation. Starting with a clear objective and realistic expectations makes everything else more manageable.`
       },
       {
-        question: `How does ${topic} impact local community and economic vitality?`,
-        answer: `It generates localized employment, strengthens commercial supplier networks, and creates lasting community assets that enhance neighborhood quality of life.`
+        question: `How long does it typically take to see results with ${topic}?`,
+        answer: `Timelines vary depending on your specific situation and goals. Building a solid foundation usually takes longer than expected at first but accelerates once the fundamentals are in place. Plan for more time than you think you'll need.`
       },
       {
-        question: `Where can official guidelines and community resources be found?`,
-        answer: `Official documentation is accessible via regional municipal portals, public library archives, and regular publication briefings on GenAlphaMagazines.`
+        question: `What are the most important things to know about ${topic} before starting?`,
+        answer: `Understanding the core mechanism and having realistic expectations about timelines and effort are the two most important things. Most difficulties with ${topic} come from either a knowledge gap or expectations that don't match reality.`
       },
       {
-        question: `What is the anticipated rollout timeline for regional programs?`,
-        answer: `Programs typically proceed through quarterly milestone phases, with regular public reviews and community stakeholder updates.`
+        question: `Is ${topic} suitable for beginners?`,
+        answer: `Yes — with the right preparation and willingness to learn as you go. Starting with a clear step-by-step plan and not skipping the foundational stages makes ${topic} accessible even for first-timers.`
       },
       {
-        question: `How can residents and small businesses get involved?`,
-        answer: `Interested parties can participate in open public consultations, join neighborhood committees, or contact the editorial newsroom for feature inquiries.`
+        question: `Where can I find reliable, up-to-date information about ${topic}?`,
+        answer: `Look for official sources, expert publications, and well-regarded guides that are clearly dated and current. GenAlphaMagazines covers ${topic} and related subjects with regularly updated editorial coverage.`
       }
     ]
   };
 }
 
+
+
 async function generateArticle(topicData) {
   const { topic, category, author } = topicData;
-  console.log(`[INFO] Synthesizing community report on: "${topic}" (Category: ${category})`);
+  console.log(`[INFO] Generating article on: "${topic}" (Category: ${category})`);
 
-  const systemInstruction = `You are a senior editor and investigative journalist at GenAlphaMagazines (https://www.genalphamagazines.com) writing in the style of top-tier publication Quartist (quartist.de).
-STRICT EDITORIAL REQUIREMENTS:
-1. Tone: Deeply informative, practical, well-structured, authoritative, and engaging (Google EEAT journalistic standard).
-2. Structure:
-   - Provide 5 distinct numbered sections (1. ..., 2. ..., 3. ..., 4. ..., 5. ...). Do NOT duplicate numbers in titles (e.g. use "1. Core Foundations", not "1. 1. Core Foundations").
-   - Each section must contain 2-4 comprehensive, articulate paragraphs with contextual insights, practical bullet points, or step-by-step guidance.
-   - Section 6 MUST be "6. Frequently Asked Questions (FAQ)" with 5 in-depth, realistic questions and thorough answers.
-3. ABSOLUTELY NO code snippets, programming languages, or Markdown symbols in text. Return valid JSON only with keys: "title", "slug", "metaDescription", "tableOfContents", "sections", "faqs".`;
+  const systemInstruction = `You are an expert writer for GenAlphaMagazines, producing practical, reader-first guides in the exact style of quartist.de.
 
-  const userPrompt = `Topic: ${topic}\nCategory: ${category}\nAuthor: ${author.name} (${author.role})`;
+WRITING STYLE RULES (follow strictly):
+1. TONE: Conversational, helpful, direct. Write like you are explaining to a smart friend — not a bureaucrat writing a report. No corporate jargon, no civic boilerplate.
+2. OPENING (Section 1): Start with a hook paragraph that immediately addresses WHY the reader is here and what they will learn. Acknowledge their situation. Then provide 1-2 short overview paragraphs before the first subheading.
+3. STRUCTURE — provide exactly these 6 sections with the exact heading formats:
+   - Section 1: A short introductory overview section (title = an "About [Topic]" or "What is [Topic]" style heading)
+   - Sections 2-5: Each covers a distinct practical aspect. Use SPECIFIC descriptive subheadings (e.g. "How to Get Between Concourses", "TSA PreCheck and CLEAR Availability"), NOT generic labels like "Section 2".
+   - Section 6: MUST be titled "Frequently Asked Questions" with 5 realistic Q&A pairs plus a "Final Thoughts" paragraph at the very end of section 6's contentHtml.
+4. SUBHEADINGS: Within each section's contentHtml, use <h3> tags for sub-topics. Example: <h3>TSA PreCheck and CLEAR Availability</h3>
+5. BULLETS & LISTS: Use <ul> or <ol> with <li> tags for lists of tips, steps, or options. Make them specific, not vague.
+6. NO GENERIC PHRASES: Never write "across our regional communities", "municipal governance", "civic engagement", "stakeholder trust", "quarterly milestone phases". These are banned.
+7. CONTENT DEPTH: Every paragraph must contain real, specific, practical information about the exact topic. Minimum 1,200 words total across all sections.
+8. FAQS: Must be 5 specific, realistic questions a real reader would ask about this exact topic. Answers must be direct and informative (2-4 sentences each).
+9. JSON ONLY: Return valid JSON with keys: "title", "slug", "metaDescription", "tableOfContents", "sections", "faqs".
+   - "title": A clear, practical, SEO-friendly title (e.g. "Atlanta Airport (ATL) Guide: Terminals, Layovers, and Everything to Know")
+   - "slug": lowercase hyphenated URL slug
+   - "metaDescription": 150-160 character meta description
+   - "tableOfContents": array of {id, title} — one entry per section
+   - "sections": array of {id, heading, contentHtml} — full HTML content per section
+   - "faqs": array of {question, answer} — 5 FAQ pairs for schema markup
+10. NO markdown, NO code blocks in the JSON values. contentHtml must be valid HTML only.`;
+
+  const userPrompt = `Write a complete, practical, in-depth guide article about: "${topic}"
+Category: ${category}
+Author: ${author.name} (${author.role})
+
+Make the article topic-specific with real, accurate information about "${topic}". Do NOT write generic community reporting — write a practical reader guide like quartist.de would.`;
 
   if (GEMINI_API_KEY) {
     try {
@@ -408,6 +444,7 @@ STRICT EDITORIAL REQUIREMENTS:
 
   return generateDeepFallbackArticle(topic, category, author);
 }
+
 
 const VECTOR_LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
   <defs>
