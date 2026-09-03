@@ -799,12 +799,12 @@ function updateSiteIndex(articleData, author, category, heroImage) {
     }
   }
 
-  // 2. VIP Homepage Auto-Update (Section 1: Latest Stories Main Lead + Ticker)
+  // 2. VIP Homepage Auto-Update (Section 1: Latest Stories + Corresponding Category Section on Homepage)
   const indexPath = path.join(ROOT_DIR, 'index.html');
   if (fs.existsSync(indexPath)) {
     let indexHtml = fs.readFileSync(indexPath, 'utf8');
 
-    // Create the Main Lead Card for Section 1
+    // A. Section 1 Lead Main Card
     const newLeadMainCard = `<div class="pattern-a-main">
             <article class="card">
               <div class="card-img-wrap">
@@ -824,16 +824,62 @@ function updateSiteIndex(articleData, author, category, heroImage) {
             </article>
           </div>`;
 
-    // Safe string slice replacement without regex errors
     const mainStart = indexHtml.indexOf('<div class="pattern-a-main">');
     const sideStart = indexHtml.indexOf('<div class="pattern-a-side-list">');
 
     if (mainStart !== -1 && sideStart !== -1 && mainStart < sideStart) {
       indexHtml = indexHtml.slice(0, mainStart) + newLeadMainCard + '\n\n          ' + indexHtml.slice(sideStart);
-      console.log(`[INFO] Successfully set ${articleData.title} as #1 Main Feature on Homepage!`);
+      console.log(`[INFO] Successfully set ${articleData.title} as #1 Main Feature in Latest Stories on Homepage!`);
     }
 
-    // Auto-prepend into Breaking News Marquee Ticker
+    // B. Auto-update the specific Category section on Homepage
+    const newCardSnippet = `
+          <article class="card">
+            <div class="card-img-wrap">
+              <img src="${heroImage.indexUrl}" alt="${articleData.title}" loading="lazy">
+            </div>
+            <div class="card-content">
+              <span class="card-tag">${category.toUpperCase()}</span>
+              <h3 class="card-title"><a href="./articles/${articleData.slug}.html">${articleData.title}</a></h3>
+              <p class="card-excerpt">${articleData.metaDescription}</p>
+              <div class="card-meta"><span>By ${author.name}</span><span>${dateFormatted}</span></div>
+            </div>
+          </article>`;
+
+    // Map categories to homepage section labels
+    const categorySectionLabels = {
+      'business': 'Business & Economy',
+      'community': 'Community & Events',
+      'arts': 'Arts & Entertainment',
+      'lifestyle': 'Lifestyle & Culture',
+      'news': 'Latest Stories',
+      'voices': 'Arts & Entertainment'
+    };
+
+    const targetLabel = categorySectionLabels[category] || 'Business & Economy';
+    const sectionIndex = indexHtml.indexOf(`<span class="section-box">${targetLabel}</span>`);
+
+    if (sectionIndex !== -1) {
+      // Check if it has a pattern-b-grid (Straight 4 cards) or pattern-a-grid
+      const nextGridIndex = indexHtml.indexOf('<div class="pattern-b-grid">', sectionIndex);
+      const nextPatternAIndex = indexHtml.indexOf('<div class="pattern-a-main">', sectionIndex);
+
+      if (nextGridIndex !== -1 && (nextGridIndex - sectionIndex < 300)) {
+        // Prepend into pattern-b-grid
+        const gridInsertionPoint = nextGridIndex + '<div class="pattern-b-grid">'.length;
+        indexHtml = indexHtml.slice(0, gridInsertionPoint) + '\n' + newCardSnippet + indexHtml.slice(gridInsertionPoint);
+        console.log(`[INFO] Injected new card into ${targetLabel} grid on Homepage!`);
+      } else if (nextPatternAIndex !== -1 && (nextPatternAIndex - sectionIndex < 300) && sectionIndex > 500) {
+        // Update Pattern A main card for that category section
+        const catSideStart = indexHtml.indexOf('<div class="pattern-a-side-list">', nextPatternAIndex);
+        if (catSideStart !== -1) {
+          indexHtml = indexHtml.slice(0, nextPatternAIndex) + newLeadMainCard + '\n\n          ' + indexHtml.slice(catSideStart);
+          console.log(`[INFO] Updated main card in ${targetLabel} section on Homepage!`);
+        }
+      }
+    }
+
+    // C. Auto-prepend into Breaking News Marquee Ticker
     const tickerItem = `<a href="./articles/${articleData.slug}.html" class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> ${articleData.title}</a>\n          `;
     if (!indexHtml.includes(`href="./articles/${articleData.slug}.html"`)) {
       indexHtml = indexHtml.replace('<div class="breaking-ticker-track">', '<div class="breaking-ticker-track">\n          ' + tickerItem);
