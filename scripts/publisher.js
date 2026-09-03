@@ -1069,6 +1069,20 @@ function updateSiteIndex(articleData, author, category, heroImage) {
   if (fs.existsSync(indexPath)) {
     let indexHtml = fs.readFileSync(indexPath, 'utf8');
 
+    // Mini side card snippet for previous features pushed to side feed
+    const newMiniSideCard = `            <article class="mini-side-card">
+              <div class="mini-side-thumb">
+                <img src="${heroImage.indexUrl}" alt="${articleData.title}" loading="lazy">
+              </div>
+              <div class="mini-side-content">
+                <span class="mini-side-tag">${category.toUpperCase()}</span>
+                <h4 class="mini-side-title">
+                  <a href="./articles/${articleData.slug}.html">${articleData.title}</a>
+                </h4>
+                <div class="mini-side-meta">${dateFormatted} &bull; ${author.name}</div>
+              </div>
+            </article>\n`;
+
     // A. Section 1 Lead Main Card
     const newLeadMainCard = `<div class="pattern-a-main">
             <article class="card">
@@ -1093,7 +1107,48 @@ function updateSiteIndex(articleData, author, category, heroImage) {
     const sideStart = indexHtml.indexOf('<div class="pattern-a-side-list">');
 
     if (mainStart !== -1 && sideStart !== -1 && mainStart < sideStart) {
+      // Extract current lead article if it exists and convert to mini-side-card
+      const currentMainBlock = indexHtml.slice(mainStart, sideStart);
+      const urlMatch = currentMainBlock.match(/href="\.\/articles\/([^"]+)"/);
+      const titleMatch = currentMainBlock.match(/<a href="\.\/articles\/[^"]+">([^<]+)<\/a>/);
+      const imgMatch = currentMainBlock.match(/<img src="([^"]+)"/);
+      const tagMatch = currentMainBlock.match(/<span class="card-tag">([A-Z\s]+)(?:&bull;|•|&middot;|\s)+/);
+      const metaMatch = currentMainBlock.match(/<span>([^<]+)<\/span>\s*<\/div>/);
+
+      let prevLeadSideSnippet = '';
+      if (urlMatch && titleMatch && imgMatch && !urlMatch[1].includes(articleData.slug)) {
+        const prevSlug = urlMatch[1];
+        const prevTitle = titleMatch[1];
+        const prevImg = imgMatch[1];
+        const prevTag = tagMatch ? tagMatch[1].trim() : 'NEWS';
+        const prevMeta = metaMatch ? metaMatch[1].trim() : dateFormatted;
+
+        prevLeadSideSnippet = `            <article class="mini-side-card">
+              <div class="mini-side-thumb">
+                <img src="${prevImg}" alt="${prevTitle}" loading="lazy">
+              </div>
+              <div class="mini-side-content">
+                <span class="mini-side-tag">${prevTag}</span>
+                <h4 class="mini-side-title">
+                  <a href="./articles/${prevSlug}">${prevTitle}</a>
+                </h4>
+                <div class="mini-side-meta">${prevMeta}</div>
+              </div>
+            </article>\n`;
+      }
+
+      // Update Main Lead
       indexHtml = indexHtml.slice(0, mainStart) + newLeadMainCard + '\n\n          ' + indexHtml.slice(sideStart);
+
+      // Prepend previous story into pattern-a-side-list so nothing gets lost
+      if (prevLeadSideSnippet) {
+        // Clear placeholder text if present
+        indexHtml = indexHtml.replace(/<p style="color: var\(--text-muted\); padding: 2rem 1rem;[^>]*>Headline feed ready for new publications\.<\/p>/i, '');
+        // Check if article is already in side list
+        if (!indexHtml.includes(urlMatch[1])) {
+          indexHtml = indexHtml.replace('<div class="pattern-a-side-list">', '<div class="pattern-a-side-list">\n' + prevLeadSideSnippet);
+        }
+      }
       console.log(`[INFO] Successfully set ${articleData.title} as #1 Main Feature in Latest Stories on Homepage!`);
     }
 
@@ -1126,19 +1181,61 @@ function updateSiteIndex(articleData, author, category, heroImage) {
 
     if (sectionIndex !== -1) {
       // Check if it has a pattern-b-grid (Straight 4 cards) or pattern-a-grid
-      const nextGridIndex = indexHtml.indexOf('<div class="pattern-b-grid">', sectionIndex);
+      const nextGridIndex = indexHtml.indexOf('<div class="pattern-b-grid"', sectionIndex);
       const nextPatternAIndex = indexHtml.indexOf('<div class="pattern-a-main">', sectionIndex);
 
-      if (nextGridIndex !== -1 && (nextGridIndex - sectionIndex < 300)) {
-        // Prepend into pattern-b-grid
-        const gridInsertionPoint = nextGridIndex + '<div class="pattern-b-grid">'.length;
-        indexHtml = indexHtml.slice(0, gridInsertionPoint) + '\n' + newCardSnippet + indexHtml.slice(gridInsertionPoint);
-        console.log(`[INFO] Injected new card into ${targetLabel} grid on Homepage!`);
-      } else if (nextPatternAIndex !== -1 && (nextPatternAIndex - sectionIndex < 300) && sectionIndex > 500) {
+      if (nextGridIndex !== -1 && (nextGridIndex - sectionIndex < 350)) {
+        // Remove empty placeholder and style in pattern-b-grid
+        const gridEnd = indexHtml.indexOf('</div>', nextGridIndex);
+        const gridContent = indexHtml.substring(nextGridIndex, gridEnd);
+        if (gridContent.includes('Department archive ready') || gridContent.includes('grid-template-columns: 1fr;')) {
+          indexHtml = indexHtml.replace(/style="grid-template-columns:\s*1fr;"/i, '');
+          indexHtml = indexHtml.replace(/<p style="color: var\(--text-muted\); padding: 2\.5rem 1\.5rem;[^>]*>Department archive ready\. Newly published features will appear here automatically\.<\/p>/i, '');
+        }
+
+        const gridTagMatch = indexHtml.match(/<div class="pattern-b-grid"[^>]*>/i);
+        if (gridTagMatch) {
+          const insertIdx = indexHtml.indexOf(gridTagMatch[0], sectionIndex) + gridTagMatch[0].length;
+          indexHtml = indexHtml.slice(0, insertIdx) + '\n' + newCardSnippet + indexHtml.slice(insertIdx);
+          console.log(`[INFO] Injected new card into ${targetLabel} grid on Homepage!`);
+        }
+      } else if (nextPatternAIndex !== -1 && (nextPatternAIndex - sectionIndex < 350) && sectionIndex > 500) {
         // Update Pattern A main card for that category section
         const catSideStart = indexHtml.indexOf('<div class="pattern-a-side-list">', nextPatternAIndex);
         if (catSideStart !== -1) {
+          const currentCatMain = indexHtml.slice(nextPatternAIndex, catSideStart);
+          const cUrlMatch = currentCatMain.match(/href="\.\/articles\/([^"]+)"/);
+          const cTitleMatch = currentCatMain.match(/<a href="\.\/articles\/[^"]+">([^<]+)<\/a>/);
+          const cImgMatch = currentCatMain.match(/<img src="([^"]+)"/);
+          const cTagMatch = currentCatMain.match(/<span class="card-tag">([A-Z\s]+)(?:&bull;|•|&middot;|\s)+/);
+          const cMetaMatch = currentCatMain.match(/<span>([^<]+)<\/span>\s*<\/div>/);
+
+          let prevCatSideSnippet = '';
+          if (cUrlMatch && cTitleMatch && cImgMatch && !cUrlMatch[1].includes(articleData.slug)) {
+            prevCatSideSnippet = `            <article class="mini-side-card">
+              <div class="mini-side-thumb">
+                <img src="${cImgMatch[1]}" alt="${cTitleMatch[1]}" loading="lazy">
+              </div>
+              <div class="mini-side-content">
+                <span class="mini-side-tag">${cTagMatch ? cTagMatch[1].trim() : category.toUpperCase()}</span>
+                <h4 class="mini-side-title">
+                  <a href="./articles/${cUrlMatch[1]}">${cTitleMatch[1]}</a>
+                </h4>
+                <div class="mini-side-meta">${cMetaMatch ? cMetaMatch[1].trim() : dateFormatted}</div>
+              </div>
+            </article>\n`;
+          }
+
           indexHtml = indexHtml.slice(0, nextPatternAIndex) + newLeadMainCard + '\n\n          ' + indexHtml.slice(catSideStart);
+
+          if (prevCatSideSnippet) {
+            const catSideListTag = '<div class="pattern-a-side-list">';
+            const sideListIdx = indexHtml.indexOf(catSideListTag, nextPatternAIndex);
+            if (sideListIdx !== -1) {
+              const afterSideList = sideListIdx + catSideListTag.length;
+              indexHtml = indexHtml.slice(0, afterSideList) + '\n' + prevCatSideSnippet + indexHtml.slice(afterSideList);
+            }
+          }
           console.log(`[INFO] Updated main card in ${targetLabel} section on Homepage!`);
         }
       }
@@ -1179,8 +1276,13 @@ function updateSiteIndex(articleData, author, category, heroImage) {
           </article>\n`;
 
     if (!catHtml.includes(articleData.slug)) {
-      if (catHtml.includes('<div class="articles-grid">')) {
-        catHtml = catHtml.replace('<div class="articles-grid">', '<div class="articles-grid">\n' + catCardSnippet);
+      const gridMatch = catHtml.match(/<div class="articles-grid"[^>]*>/i);
+      if (gridMatch) {
+        // Clean any placeholder paragraphs or empty styling
+        catHtml = catHtml.replace(/<p style="color: var\(--text-muted\); padding: 3rem 1\.5rem;[^>]*>Department archive ready\. Newly generated stories will appear here automatically\.<\/p>/i, '');
+        catHtml = catHtml.replace(/style="grid-template-columns:\s*1fr;"/i, '');
+        // Inject card directly inside grid
+        catHtml = catHtml.replace(gridMatch[0], `${gridMatch[0]}\n${catCardSnippet}`);
       }
       fs.writeFileSync(categoryPath, catHtml, 'utf8');
       console.log(`[INFO] Added ${articleData.slug} to ${categoryFile}`);
