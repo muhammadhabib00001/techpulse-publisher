@@ -699,10 +699,22 @@ function renderArticleHtml(articleData, author, category, heroImage) {
       ? `<h2>${sec.heading.replace(/[—–]/g, ': ').trim()}</h2>` 
       : '';
 
+    // If this is the FAQ section and articleData.faqs exists, seamlessly append the styled FAQ Q&A cards
+    let faqBlock = '';
+    if ((sec.id === 'frequently-asked-questions' || sec.id === 'faqs') && articleData.faqs && articleData.faqs.length > 0) {
+      const faqCards = articleData.faqs.map(f => `
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem;">
+              <h4 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary); font-size: 1.05rem;">${f.question}</h4>
+              <p style="margin-bottom: 0; color: var(--text-main); font-size: 0.95rem; line-height: 1.7;">${f.answer}</p>
+            </div>`).join('\n');
+      faqBlock = `<div style="margin-top: 1.25rem;">${faqCards}</div>`;
+    }
+
     return `
           <section id="${sec.id}">
             ${headingHtml}
             ${enrichedContent}
+            ${faqBlock}
           </section>${adBlock}`;
   }).join('\n');
 
