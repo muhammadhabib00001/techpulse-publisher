@@ -1203,3 +1203,249 @@ img {
   font-size: 0.82rem;
   color: #64748b;
 }
+
+/* ==========================================================================
+   Mobile Precision Fit & Strict Zero-Horizontal-Overflow Protection
+   ========================================================================== */
+html, body {
+  overflow-x: hidden !important;
+  width: 100% !important;
+  position: relative;
+  -webkit-text-size-adjust: 100%;
+}
+
+.container {
+  width: 100% !important;
+  max-width: 1280px !important;
+  margin: 0 auto !important;
+  padding: 0 1.25rem !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 0.85rem !important;
+  }
+
+  .top-bar {
+    display: none !important; /* Hide tiny top utility bar on mobile to keep header clean */
+  }
+
+  .main-header {
+    padding: 0.25rem 0 !important;
+  }
+
+  .header-inner {
+    padding: 0.5rem 0 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+
+  .brand-logo {
+    gap: 0.6rem !important;
+  }
+
+  .creative-logo-badge {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  .brand-main-title {
+    font-size: 1.15rem !important;
+    line-height: 1.1 !important;
+  }
+
+  .brand-sub-tagline {
+    font-size: 0.52rem !important;
+  }
+
+  .header-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.4rem !important;
+  }
+
+  .news-tip-btn {
+    display: none !important; /* Hide tip button on tiny screens to avoid header wrap */
+  }
+
+  .theme-btn {
+    padding: 0.35rem 0.55rem !important;
+    font-size: 0.75rem !important;
+  }
+
+  /* Navigation Bar on Mobile */
+  .main-nav-wrapper {
+    background: var(--bg-card) !important;
+    border-top: 1px solid var(--border-color) !important;
+    border-bottom: 2px solid var(--primary) !important;
+  }
+
+  .mobile-nav-bar-inner {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0.4rem 0.85rem !important;
+    width: 100% !important;
+  }
+
+  .mobile-menu-btn {
+    display: inline-flex !important;
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 0.45rem 0.9rem !important;
+    font-size: 0.85rem !important;
+    font-weight: 800 !important;
+    border-radius: var(--radius-sm) !important;
+    cursor: pointer !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .mobile-nav-title {
+    display: block !important;
+    font-size: 0.85rem !important;
+    font-weight: 800 !important;
+    color: var(--text-main) !important;
+    text-transform: uppercase !important;
+  }
+
+  .main-nav {
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    width: 100% !important;
+    background: var(--bg-card) !important;
+    border-bottom: 3px solid var(--primary) !important;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2) !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    transition: max-height 0.35s ease, opacity 0.25s ease !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    padding: 0 !important;
+    z-index: 1001 !important;
+  }
+
+  .main-nav.open {
+    max-height: 480px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    overflow-y: auto !important;
+    padding: 0.75rem 0.85rem 1.25rem !important;
+  }
+
+  .main-nav-links {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.4rem !important;
+    width: 100% !important;
+  }
+
+  .main-nav-links li {
+    width: 100% !important;
+  }
+
+  .main-nav-links a {
+    display: block !important;
+    width: 100% !important;
+    padding: 0.65rem 0.85rem !important;
+    font-size: 0.88rem !important;
+    font-weight: 700 !important;
+    background: var(--bg-subtle) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--radius-sm) !important;
+    color: var(--text-main) !important;
+  }
+
+  .main-nav-links a.active,
+  .main-nav-links a:hover {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    border-color: var(--primary) !important;
+  }
+
+  /* Breaking News Bar on Mobile */
+  .breaking-bar {
+    padding: 0.35rem 0 !important;
+  }
+  
+  .breaking-badge {
+    font-size: 0.68rem !important;
+    padding: 0.22rem 0.55rem !important;
+  }
+
+  .breaking-ticker-item {
+    font-size: 0.8rem !important;
+  }
+
+  /* Homepage Sections on Mobile */
+  .home-main-container {
+    padding: 0 0.85rem !important;
+    margin: 0.75rem auto 3rem auto !important;
+  }
+
+  .category-quick-bar {
+    padding: 0.4rem 0 0.85rem 0 !important;
+    margin-bottom: 1rem !important;
+    gap: 0.5rem !important;
+  }
+
+  .cat-pill {
+    padding: 0.35rem 0.75rem !important;
+    font-size: 0.78rem !important;
+  }
+
+  .section-header {
+    margin: 1.75rem 0 1rem 0 !important;
+  }
+
+  .section-box {
+    font-size: 0.88rem !important;
+    padding: 4px 10px !important;
+  }
+
+  .pattern-a-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .pattern-a-main .card-title {
+    font-size: 1.15rem !important;
+  }
+
+  .card-excerpt {
+    font-size: 0.85rem !important;
+    margin-bottom: 0.6rem !important;
+  }
+
+  .pattern-a-side-list {
+    gap: 0.6rem !important;
+  }
+
+  .mini-side-card {
+    padding: 0.5rem 0.65rem !important;
+    gap: 0.65rem !important;
+  }
+
+  .mini-side-thumb {
+    width: 75px !important;
+    height: 58px !important;
+  }
+
+  .mini-side-title {
+    font-size: 0.82rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .mini-side-meta {
+    font-size: 0.7rem !important;
+  }
+
+  .pattern-b-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+}
