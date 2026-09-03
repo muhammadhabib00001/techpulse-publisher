@@ -1261,3 +1261,197 @@ img {
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================================
+   Comprehensive Mobile & Tablet Responsive Architecture
+   ========================================================================== */
+
+/* 1. Mobile Top Bar */
+@media (max-width: 768px) {
+  .top-bar {
+    padding: 0.35rem 0;
+  }
+  .top-bar-inner {
+    justify-content: center;
+    text-align: center;
+    gap: 0.35rem;
+  }
+  .top-date {
+    font-size: 0.72rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .top-nav {
+    display: none; /* Keep top bar clean on mobile */
+  }
+}
+
+/* 2. Mobile Brand Header */
+@media (max-width: 768px) {
+  .header-inner {
+    padding: 0.6rem 0;
+    gap: 0.5rem;
+  }
+  .creative-logo-badge {
+    width: 42px !important;
+    height: 42px !important;
+  }
+  .brand-main-title {
+    font-size: 1.25rem !important;
+    letter-spacing: -0.3px;
+  }
+  .brand-sub-tagline {
+    font-size: 0.58rem !important;
+    letter-spacing: 0.3px;
+  }
+  .news-tip-btn {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.72rem;
+  }
+  .theme-btn {
+    padding: 0.35rem 0.55rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .news-tip-btn span:last-child {
+    display: none; /* Icon only on extra small screens */
+  }
+  .news-tip-btn {
+    padding: 0.4rem 0.55rem;
+  }
+}
+
+/* 3. Smooth Horizontal-Scrolling Touch Navigation Bar */
+.main-nav-wrapper {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 3px solid var(--primary);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .main-nav-wrapper .container {
+    padding: 0 0.5rem;
+  }
+  .main-nav {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+  .main-nav::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+  .main-nav-links {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.2rem;
+    padding: 0.35rem 0.25rem;
+    white-space: nowrap;
+  }
+  .main-nav-links a {
+    font-size: 0.78rem;
+    padding: 0.4rem 0.65rem;
+    flex-shrink: 0;
+  }
+}
+
+/* 4. Breaking News Ticker Mobile Layout */
+@media (max-width: 768px) {
+  .breaking-bar {
+    padding: 0.35rem 0;
+  }
+  .breaking-badge {
+    font-size: 0.68rem;
+    padding: 0.2rem 0.5rem;
+  }
+  .breaking-ticker-item {
+    font-size: 0.8rem;
+  }
+}
+
+/* 5. Pattern A: 1 Main Big Feature + 5 Side Cards Mobile Optimization */
+@media (max-width: 860px) {
+  .pattern-a-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+  .pattern-a-side-list {
+    gap: 0.75rem !important;
+  }
+  .mini-side-card {
+    padding: 0.65rem 0.75rem !important;
+    gap: 0.75rem !important;
+  }
+  .mini-side-thumb {
+    width: 85px !important;
+    height: 65px !important;
+  }
+  .mini-side-title {
+    font-size: 0.85rem !important;
+    white-space: normal !important;
+    line-height: 1.3 !important;
+  }
+}
+
+/* 6. Pattern B: Straight 4-Cards Grid Mobile Optimization */
+@media (max-width: 700px) {
+  .pattern-b-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+  .card-title {
+    font-size: 1.05rem !important;
+  }
+  .card-excerpt {
+    font-size: 0.85rem !important;
+  }
+}
+
+/* 7. General Responsive Layouts & Typography */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 0.85rem !important;
+  }
+  .section-header .section-box {
+    font-size: 0.92rem;
+    padding: 4px 10px;
+  }
+  .article-title {
+    font-size: 1.5rem !important;
+    line-height: 1.25 !important;
+  }
+  .article-body {
+    font-size: 1rem !important;
+    line-height: 1.7 !important;
+  }
+  .article-body h2 {
+    font-size: 1.35rem !important;
+    margin: 1.75rem 0 0.75rem 0 !important;
+  }
+  .article-body h3 {
+    font-size: 1.15rem !important;
+  }
+  .toc-box {
+    padding: 1rem 1.15rem !important;
+  }
+  .author-box {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.25rem !important;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.75rem !important;
+  }
+}
