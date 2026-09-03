@@ -1485,10 +1485,7 @@ html, body {
     font-size: 0.85rem !important;
     line-height: 1.45 !important;
     margin-bottom: 0.5rem !important;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 2 !important;
-    -webkit-box-orient: vertical !important;
-    overflow: hidden !important;
+    display: block !important; overflow: visible !important;
   }
 }
 
@@ -1616,4 +1613,58 @@ html, body {
   font-size: 0.92rem;
   line-height: 1.6;
   color: var(--text-muted);
+}
+
+/* ==========================================================================
+   FINAL BULLETPROOF ZERO-TRUNCATION MOBILE TYPOGRAPHY (NO TEXT CUT EVER)
+   ========================================================================== */
+@media (max-width: 900px) {
+  /* Prevent any headline or title truncation */
+  .card-title,
+  .card-title a,
+  .pattern-a-main .card-title,
+  .pattern-a-main .card-title a,
+  .mini-side-title,
+  .mini-side-title a,
+  .related-card-title,
+  .related-card-title a {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+    -webkit-line-clamp: unset !important;
+    display: block !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+  }
+
+  /* Prevent any excerpt truncation */
+  .card-excerpt {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+    -webkit-line-clamp: unset !important;
+    display: block !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    line-height: 1.55 !important;
+  }
+
+  /* Allow mini side cards to expand vertically to fit 100% of the title */
+  .mini-side-card {
+    height: auto !important;
+    min-height: 80px !important;
+    align-items: flex-start !important;
+  }
+
+  .mini-side-content {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+  }
+
+  .mini-side-title {
+    font-size: 0.88rem !important;
+    line-height: 1.35 !important;
+  }
 }
