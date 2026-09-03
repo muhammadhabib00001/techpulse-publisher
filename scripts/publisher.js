@@ -679,6 +679,28 @@ const VECTOR_LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10
   </g>
 </svg>`;
 
+function getDynamicRelatedArticles(currentSlug) {
+  const articlesDir = path.join(ROOT_DIR, 'articles');
+  if (!fs.existsSync(articlesDir)) return [];
+
+  const files = fs.readdirSync(articlesDir).filter(f => f.endsWith('.html') && f !== `${currentSlug}.html`);
+  const list = [];
+
+  for (const f of files) {
+    try {
+      const html = fs.readFileSync(path.join(articlesDir, f), 'utf8');
+      const titleMatch = html.match(/<title>([^<]+)<\/title>/);
+      let title = titleMatch ? titleMatch[1].replace(/\s*\|\s*GenAlphaMagazines.*$/, '').trim() : f.replace('.html', '');
+      const catMatch = html.match(/<meta property="article:section" content="([^"]+)"/) || html.match(/<span class="card-tag">([A-Z\s]+)(?:&bull;|•|&middot;|\s)+/);
+      let cat = catMatch ? catMatch[1].trim().toUpperCase() : 'FEATURE';
+      list.push({ slug: f.replace('.html', ''), title, category: cat });
+    } catch (e) {}
+  }
+
+  // Shuffle and pick up to 5 articles
+  return list.sort(() => 0.5 - Math.random()).slice(0, 5);
+}
+
 function renderArticleHtml(articleData, author, category, heroImage) {
   const currentDate = new Date().toISOString().split('T')[0];
   const dateFormatted = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -936,20 +958,23 @@ function renderArticleHtml(articleData, author, category, heroImage) {
         </div>
 
         <!-- Related Department Stories -->
+        ${(() => {
+          const related = getDynamicRelatedArticles(articleData.slug);
+          if (!related || related.length === 0) return '';
+          const itemsHtml = related.map(r => 
+            `<li><strong>${r.category}:</strong> <a href="./${r.slug}.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">${r.title}</a></li>`
+          ).join('\n            ');
+          return `
         <div style="background: var(--bg-subtle); border-left: 4px solid var(--primary); padding: 1.25rem 1.5rem; margin: 2.5rem 0; border-radius: var(--radius-sm);">
           <h4 style="color: var(--primary); margin-top: 0; font-size: 1.1rem; text-transform: uppercase;">Related Investigative Reports & Department Features</h4>
           <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 0.75rem;">
             Continue reading in-depth community coverage from GenAlphaMagazines:
           </p>
           <ul style="margin-left: 1.5rem; line-height: 1.8; font-size: 0.95rem;">
-            <li><strong>Civic Affairs:</strong> <a href="./municipal-election-analysis-candidate-platforms.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">Municipal Election Analysis: Candidate Platforms & Community Priorities</a></li>
-            <li><strong>Festivals & Culture:</strong> <a href="./annual-waterfront-heritage-festival.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">Annual Waterfront Heritage Festival Returns with Record Artisan Attendance</a></li>
-            <li><strong>Downtown Growth:</strong> <a href="./main-street-commercial-revitalization.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">Main Street Commercial Revitalization: Small Businesses Thriving in 2026</a></li>
-            <li><strong>Regional Arts:</strong> <a href="./spotlight-on-independent-theater.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">Spotlight on Independent Theater: Local Playwrights Take Center Stage</a></li>
-            <li><strong>Home & Climate:</strong> <a href="./energy-efficient-home-modernization.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">Energy-Efficient Home Modernization: Heat Pumps, Solar Arrays & Insulation</a></li>
-            <li><strong>Community Voices:</strong> <a href="./the-power-of-neighborly-connection-in-a-digital-world-a-columnist-perspective.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">The Power of Neighborly Connection in a Digital World: A Columnist Perspective</a></li>
+            ${itemsHtml}
           </ul>
-        </div>
+        </div>`;
+        })()}
 
         <section class="author-box">
           <div class="author-avatar">${author.initials}</div>
