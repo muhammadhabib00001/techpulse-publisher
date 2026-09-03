@@ -68,5 +68,6 @@ jobs:
             echo "No changes to commit. Article generation might have been skipped."
           else
             git commit -m "Automated publication: New in-depth community journalism feature [skip ci]"
+            git pull --rebase origin main
             git push origin main
           fi
