@@ -34,7 +34,7 @@ const CLI_ARGS = parseArgs();
 
 // Environment & Config
 const GEMINI_API_KEY     = process.env.GEMINI_API_KEY;
-const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;   // Free: unsplash.com/developers
+const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY || 'rug2wxB71o1mh5kYy_K6kJVLxXZ6CA2apSHUrGqZYLk';
 const CUSTOM_TOPIC       = CLI_ARGS.topic || process.env.CUSTOM_TOPIC || '';
 const TARGET_CATEGORY    = (CLI_ARGS.category || process.env.TARGET_CATEGORY || 'news').toLowerCase();
 
@@ -161,11 +161,11 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
 
       const photoData = await new Promise((resolve, reject) => {
         const get = https.get;
-        get(unsplashApiUrl, { headers: { 'Accept-Version': 'v1' } }, (res) => {
+        get(unsplashApiUrl, { headers: { 'Accept-Version': 'v1', 'User-Agent': 'TechPulsePublisher/1.0', 'Authorization': `Client-ID ${UNSPLASH_ACCESS_KEY}` } }, (res) => {
           let body = '';
           res.on('data', chunk => body += chunk);
           res.on('end', () => {
-            if (res.statusCode !== 200) return reject(new Error(`Unsplash API status ${res.statusCode}`));
+            if (res.statusCode !== 200) return reject(new Error(`Unsplash API status ${res.statusCode}: ${body.slice(0, 100)}`));
             try { resolve(JSON.parse(body)); } catch (e) { reject(e); }
           });
         }).on('error', reject);
