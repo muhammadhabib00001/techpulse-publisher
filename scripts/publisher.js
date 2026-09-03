@@ -100,7 +100,11 @@ function downloadImageLocally(url, destPath) {
  */
 async function fetchOrGenerateTopicImage(topic, category, slug) {
   const localImgFilename = `${slug}.jpg`;
-  const localImgPath = path.join(ROOT_DIR, 'assets', 'images', localImgFilename);
+  const imgDir = path.join(ROOT_DIR, 'assets', 'images');
+  if (!fs.existsSync(imgDir)) {
+    fs.mkdirSync(imgDir, { recursive: true });
+  }
+  const localImgPath = path.join(imgDir, localImgFilename);
 
   // Reuse existing valid image
   if (fs.existsSync(localImgPath) && fs.statSync(localImgPath).size > 10000) {
@@ -1180,7 +1184,12 @@ async function main() {
   const heroImage = await fetchOrGenerateTopicImage(topic, cat, generatedArticle.slug);
   const fullHtml = renderArticleHtml(generatedArticle, topicData.author, topicData.category, heroImage);
 
-  const outputPath = path.join(ROOT_DIR, 'articles', `${generatedArticle.slug}.html`);
+  const articlesDir = path.join(ROOT_DIR, 'articles');
+  if (!fs.existsSync(articlesDir)) {
+    fs.mkdirSync(articlesDir, { recursive: true });
+  }
+
+  const outputPath = path.join(articlesDir, `${generatedArticle.slug}.html`);
   fs.writeFileSync(outputPath, fullHtml, 'utf8');
   console.log(`[SUCCESS] Article written to: ${outputPath}`);
 
