@@ -158,35 +158,44 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
   // ─────────────────────────────────────────────────────────────
   if (UNSPLASH_ACCESS_KEY) {
     try {
-      console.log(`[INFO] Layer 2: Fetching Unsplash API photo for "${keywords}"...`);
-      // Use /search/photos which is robust, accurate, and avoids 500 errors on random endpoint
-      const unsplashApiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(keywords)}&orientation=landscape&per_page=5&client_id=${UNSPLASH_ACCESS_KEY}`;
+      // Build smart query candidates: full words, first 2 words, or core topic words
+      const words = topic.replace(/[^a-zA-Z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length > 2);
+      const queryCandidates = [
+        words.slice(0, 3).join(' '),
+        words.slice(0, 2).join(' '),
+        words.length > 2 ? `${words[0]} ${words[words.length - 1]}` : words[0],
+        category
+      ];
 
-      const photoData = await new Promise((resolve, reject) => {
-        const get = https.get;
-        get(unsplashApiUrl, { headers: { 'Accept-Version': 'v1', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) TechPulse/1.0' } }, (res) => {
-          let body = '';
-          res.on('data', chunk => body += chunk);
-          res.on('end', () => {
-            if (res.statusCode !== 200) return reject(new Error(`Unsplash API status ${res.statusCode}: ${body.slice(0, 100)}`));
-            try { resolve(JSON.parse(body)); } catch (e) { reject(e); }
-          });
-        }).on('error', reject);
-      });
+      for (const query of queryCandidates) {
+        if (!query || query.trim().length < 3) continue;
+        console.log(`[INFO] Layer 2: Searching Unsplash for "${query}"...`);
+        const unsplashApiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&orientation=landscape&per_page=5&client_id=${UNSPLASH_ACCESS_KEY}`;
 
-      const photoItem = (photoData.results && photoData.results.length > 0) 
-        ? photoData.results[sig % Math.min(photoData.results.length, 3)] 
-        : null;
+        const photoData = await new Promise((resolve, reject) => {
+          const get = https.get;
+          get(unsplashApiUrl, { headers: { 'Accept-Version': 'v1', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) TechPulse/1.0' } }, (res) => {
+            let body = '';
+            res.on('data', chunk => body += chunk);
+            res.on('end', () => {
+              if (res.statusCode !== 200) return reject(new Error(`Unsplash API status ${res.statusCode}: ${body.slice(0, 100)}`));
+              try { resolve(JSON.parse(body)); } catch (e) { reject(e); }
+            });
+          }).on('error', reject);
+        });
 
-      const photoUrl = photoItem && photoItem.urls && (photoItem.urls.regular || photoItem.urls.full);
-      if (!photoUrl) throw new Error('No photo URL in Unsplash response');
-
-      await downloadImageLocally(photoUrl, localImgPath);
-      if (fs.existsSync(localImgPath) && fs.statSync(localImgPath).size > 10000) {
-        console.log(`[SUCCESS] Layer 2: Unsplash API photo saved: assets/images/${localImgFilename}`);
-        return buildImageResult(localImgFilename, localImgPath, topic);
+        if (photoData.results && photoData.results.length > 0) {
+          const photoItem = photoData.results[sig % Math.min(photoData.results.length, 3)];
+          const photoUrl = photoItem && photoItem.urls && (photoItem.urls.regular || photoItem.urls.full);
+          if (photoUrl) {
+            await downloadImageLocally(photoUrl, localImgPath);
+            if (fs.existsSync(localImgPath) && fs.statSync(localImgPath).size > 10000) {
+              console.log(`[SUCCESS] Layer 2: Unsplash photo saved for "${query}": assets/images/${localImgFilename}`);
+              return buildImageResult(localImgFilename, localImgPath, topic);
+            }
+          }
+        }
       }
-      throw new Error('Downloaded file too small');
     } catch (err) {
       console.warn(`[WARN] Layer 2 (Unsplash API) failed: ${err.message}`);
     }
@@ -669,6 +678,24 @@ function renderArticleHtml(articleData, author, category, heroImage) {
           </section>${adBlock}`;
   }).join('\n');
 
+  // Render visible FAQ section if FAQs exist and not already present in contentHtml
+  let visibleFaqHtml = '';
+  if (articleData.faqs && articleData.faqs.length > 0) {
+    const faqCards = articleData.faqs.map(f => `
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem;">
+              <h4 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary); font-size: 1.05rem;">${f.question}</h4>
+              <p style="margin-bottom: 0; color: var(--text-main); font-size: 0.95rem; line-height: 1.7;">${f.answer}</p>
+            </div>`).join('\n');
+
+    visibleFaqHtml = `
+          <section id="frequently-asked-questions" style="margin-top: 2rem;">
+            <h2>Frequently Asked Questions</h2>
+            <div style="margin-top: 1.25rem;">
+              ${faqCards}
+            </div>
+          </section>`;
+  }
+
   let faqSchemaJson = '';
   if (articleData.faqs && articleData.faqs.length > 0) {
     const faqEntities = articleData.faqs.map(f => ({
@@ -841,6 +868,7 @@ function renderArticleHtml(articleData, author, category, heroImage) {
 
         <div class="article-body">
           ${sectionsHtml}
+          ${sectionsHtml.includes('id="frequently-asked-questions"') ? '' : visibleFaqHtml}
         </div>
 
         <!-- Related Department Stories -->
