@@ -1449,3 +1449,45 @@ html, body {
     gap: 1rem !important;
   }
 }
+
+/* ==========================================================================
+   Mobile Big Hero Card & Image Aspect Ratio Polish
+   ========================================================================== */
+@media (max-width: 768px) {
+  .pattern-a-main .card-img-wrap {
+    aspect-ratio: 16/9 !important;
+    max-height: 220px !important;
+    width: 100% !important;
+  }
+  
+  .pattern-a-main .card-img-wrap img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .card-img-wrap {
+    aspect-ratio: 16/9 !important;
+    max-height: 200px !important;
+  }
+
+  .card-content {
+    padding: 0.9rem !important;
+  }
+
+  .pattern-a-main .card-title {
+    font-size: 1.15rem !important;
+    line-height: 1.35 !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  .card-excerpt {
+    font-size: 0.85rem !important;
+    line-height: 1.45 !important;
+    margin-bottom: 0.5rem !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+}
