@@ -271,114 +271,113 @@ function callGoogleAIStudio(apiKey, prompt, systemInstruction) {
 
 function generateDeepFallbackArticle(topic, category, author) {
   const slug = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const cleanTopic = topic.charAt(0).toUpperCase() + topic.slice(1);
   
-  // Format clean natural title
-  const cleanTitle = topic.charAt(0).toUpperCase() + topic.slice(1);
-  const titleTemplates = [
-    `${cleanTitle} in 2026: Trends, Community Impact & Future Outlook`,
-    `${cleanTitle}: Key Developments, Economic Analysis & Strategic Priorities`,
-    `Inside ${cleanTitle}: An In-Depth Look at Regional & National Shifts`
-  ];
-  let hash = 0;
-  for (let i = 0; i < topic.length; i++) {
-    hash = ((hash << 5) - hash) + topic.charCodeAt(i);
-    hash |= 0;
-  }
-  const generatedTitle = titleTemplates[Math.abs(hash) % titleTemplates.length];
-  
-  const excerptTemplates = [
-    `An investigative look into ${topic}, examining key economic drivers, community stakeholder perspectives, and policy milestones in 2026.`,
-    `Exploring the latest developments in ${topic}, featuring expert commentary, data-driven analysis, and practical insights for regional leaders.`,
-    `A comprehensive feature on ${topic}, analyzing market dynamics, grassroots community feedback, and long-term strategic opportunities.`
-  ];
-  const generatedExcerpt = excerptTemplates[Math.abs(hash) % excerptTemplates.length];
+  // Natural journalistic headlines
+  const title = `${cleanTopic} in 2026: In-Depth Guide, Industry Trends & Future Outlook`;
+  const metaDescription = `An exhaustive investigation and practical guide to ${topic} in 2026, exploring core methodologies, emerging industry shifts, community perspectives, and actionable recommendations.`;
 
   return {
-    title: generatedTitle,
+    title: title,
     slug: slug,
-    metaDescription: generatedExcerpt,
+    metaDescription: metaDescription,
     tableOfContents: [
-      { id: "overview-context", title: "1. Overview & Community Context" },
-      { id: "investigative-findings", title: "2. Key Findings & Stakeholder Perspectives" },
-      { id: "economic-civic-impact", title: "3. Economic and Civic Impact" },
-      { id: "challenges-opportunities", title: "4. Challenges and Future Opportunities" },
-      { id: "strategic-roadmap", title: "5. Long-Term Community Roadmap" },
-      { id: "frequently-asked-questions", title: "6. Frequently Asked Questions (FAQ)" }
+      { id: "understanding-core-concepts", title: "1. Core Principles & Modern Foundations" },
+      { id: "practical-methods-and-trends", title: "2. Key Methodologies & Practical Techniques" },
+      { id: "community-and-economic-impact", title: "3. Regional Shifts & Economic Implications" },
+      { id: "best-practices-and-challenges", title: "4. Practical Guidelines & Overcoming Obstacles" },
+      { id: "future-trends-roadmap", title: "5. Long-Term Innovations & Outlook for 2026+" },
+      { id: "frequently-asked-questions", title: "6. Frequently Asked Questions" }
     ],
     sections: [
       {
-        id: "overview-context",
-        heading: "1. Overview & Community Context",
-        contentHtml: `<p>Across our regional communities, <strong>${topic}</strong> represents a defining issue shaping municipal governance, local business vitality, and civic engagement in 2026. As neighborhoods navigate rapid economic transitions and demographic shifts, grassroots journalism plays an indispensable role in providing verified factual reporting and transparent public oversight.</p><p>Over the past several years, regional stakeholders, community associations, and municipal leaders have actively engaged in public debates regarding how best to address these priorities. This investigative feature examines the core issues, key participants, and long-term implications for our community.</p>`
+        id: "understanding-core-concepts",
+        heading: "1. Core Principles & Modern Foundations",
+        contentHtml: `<p>In recent years, the landscape surrounding <strong>${topic}</strong> has undergone a profound transformation. As regional communities and modern industries seek higher efficiency and sustainable practices in 2026, understanding the fundamental mechanics behind ${topic} is essential for informed decision-making.</p>
+        <p>Whether examining local grassroots initiatives or broad national trends, the principles governing ${topic} emphasize verified standards, structured planning, and proactive engagement. Practitioners and community stakeholders who adopt a disciplined approach consistently report superior outcomes and long-term resilience.</p>`
       },
       {
-        id: "investigative-findings",
-        heading: "2. Key Findings & Stakeholder Perspectives",
-        contentHtml: `<p>Direct consultations with community leaders, small business owners, and resident advocates reveal a shared commitment to sustainable regional development, transparent municipal consultation, and accessible public services.</p><p>Through primary document analysis and municipal meeting minutes, our newsroom identified key areas of progress alongside ongoing challenges that demand continued civic attention and transparent community dialogue.</p>`
+        id: "practical-methods-and-trends",
+        heading: "2. Key Methodologies & Practical Techniques",
+        contentHtml: `<p>Executing initiatives related to ${topic} requires a clear step-by-step framework tailored to current 2026 conditions:</p>
+        <ul style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.8;">
+          <li><strong>Strategic Assessment & Preparation:</strong> Conducting preliminary groundwork, evaluating environmental constraints, and establishing measurable performance indicators.</li>
+          <li><strong>Resource Allocation & Material Selection:</strong> Utilizing durable, sustainable components and modern digital tooling to minimize waste and streamline workflows.</li>
+          <li><strong>Iterative Execution & Quality Control:</strong> Applying standardized checks at each milestone to ensure compliance with municipal regulations and safety benchmarks.</li>
+        </ul>
+        <p>Industry field reports indicate that adopting these structured workflows reduces project friction by over 35% while establishing clear transparency for all participants.</p>`
       },
       {
-        id: "economic-civic-impact",
-        heading: "3. Economic and Civic Impact",
-        contentHtml: `<p>The broader economic implications of these developments extend across local retail corridors, agricultural supply chains, and public infrastructure budgets. Fostering a supportive environment for grassroots entrepreneurship, local arts, and family-owned enterprises generates measurable returns in employment opportunities and neighborhood pride.</p>`
+        id: "community-and-economic-impact",
+        heading: "3. Regional Shifts & Economic Implications",
+        contentHtml: `<p>The ripple effects of ${topic} extend far beyond isolated implementations, creating tangible economic value across local commercial corridors and neighborhood hubs. By fostering local talent, supporting independent businesses, and cultivating strong regional supply chains, communities build long-term economic self-reliance.</p>
+        <p>Furthermore, civic collaboration around ${topic} has fostered unprecedented civic engagement, bringing together diverse demographics through shared workshops, public consultations, and regional advisory boards.</p>`
       },
       {
-        id: "challenges-opportunities",
-        heading: "4. Challenges and Future Opportunities",
-        contentHtml: `<p>While positive momentum is evident, community stakeholders emphasize the necessity of balanced resource allocation, equitable funding across rural and urban districts, and preservation of regional heritage during infrastructure modernization.</p>`
+        id: "best-practices-and-challenges",
+        heading: "4. Practical Guidelines & Overcoming Obstacles",
+        contentHtml: `<p>Despite positive momentum, several key challenges require careful consideration:</p>
+        <ol style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.8;">
+          <li><strong>Balancing Capital Outlays:</strong> Managing upfront investments through phased funding models and community partnership grants.</li>
+          <li><strong>Regulatory Alignment:</strong> Staying current with evolving regional guidelines and compliance frameworks.</li>
+          <li><strong>Public Communication:</strong> Ensuring open channels of dialogue between planners, local merchants, and neighborhood residents.</li>
+        </ol>
+        <p>Addressing these factors early in the development cycle ensures smooth long-term operations and sustained stakeholder trust.</p>`
       },
       {
-        id: "strategic-roadmap",
-        heading: "5. Long-Term Community Roadmap",
-        contentHtml: `<p>Moving forward, ongoing collaboration between municipal leaders, non-profit organizations, and engaged citizens will remain the catalyst for lasting positive change. GenAlphaMagazines will continue to track these developments with rigorous, independent reporting.</p>`
+        id: "future-trends-roadmap",
+        heading: "5. Long-Term Innovations & Outlook for 2026+",
+        contentHtml: `<p>Looking ahead, the evolution of ${topic} will increasingly intersect with smart infrastructure, clean technology, and decentralized community initiatives. As novel tools emerge, leaders who remain agile and grounded in core values will lead the next wave of civic innovation.</p>
+        <p>GenAlphaMagazines will continue to investigate and report on the forefront of ${topic}, delivering verified, independent journalism directly from our newsroom.</p>`
       },
       {
         id: "frequently-asked-questions",
-        heading: "6. Frequently Asked Questions (FAQ)",
+        heading: "6. Frequently Asked Questions",
         contentHtml: `
-          <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem;">
+          <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1.5rem;">
             <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.1rem;">How can residents participate in public discussions on this topic?</h4>
-              <p style="margin-bottom: 0; color: var(--text-muted);">Residents can attend municipal council meetings, participate in open public consultations, or contact ward councillors and neighborhood association leaders.</p>
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">What are the primary factors to consider before starting with ${topic}?</h4>
+              <p style="margin-bottom: 0; color: var(--text-muted);">Key considerations include assessing initial budget allocations, understanding local regulatory requirements, and engaging qualified regional partners with verified experience.</p>
             </div>
             <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.1rem;">Where can official public records and meeting minutes be accessed?</h4>
-              <p style="margin-bottom: 0; color: var(--text-muted);">Official agendas, audited financial statements, and council voting records are accessible through municipal online archives and local public libraries.</p>
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">How does ${topic} impact local community and economic vitality?</h4>
+              <p style="margin-bottom: 0; color: var(--text-muted);">It generates localized employment, strengthens commercial supplier networks, and creates lasting community assets that enhance neighborhood quality of life.</p>
             </div>
             <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.1rem;">What is the anticipated timeline for regional implementation?</h4>
-              <p style="margin-bottom: 0; color: var(--text-muted);">Policy frameworks and stakeholder consultations occur continuously, with phased municipal rollouts scheduled throughout subsequent fiscal quarters.</p>
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">Where can official guidelines and community resources be found?</h4>
+              <p style="margin-bottom: 0; color: var(--text-muted);">Official documentation is accessible via regional municipal portals, public library archives, and regular publication briefings on GenAlphaMagazines.</p>
             </div>
             <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.1rem;">How are these programs funded within municipal budgets?</h4>
-              <p style="margin-bottom: 0; color: var(--text-muted);">Funding is primarily structured through existing municipal capital allocations combined with senior provincial and federal infrastructure matching grants.</p>
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">What is the anticipated rollout timeline for regional programs?</h4>
+              <p style="margin-bottom: 0; color: var(--text-muted);">Programs typically proceed through quarterly milestone phases, with regular public reviews and community stakeholder updates.</p>
             </div>
             <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.1rem;">Who can community members contact for further information?</h4>
-              <p style="margin-bottom: 0; color: var(--text-muted);">Inquiries can be directed to municipal department coordinators, local representatives, or submitted directly to the GenAlphaMagazines newsroom.</p>
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">How can residents and small businesses get involved?</h4>
+              <p style="margin-bottom: 0; color: var(--text-muted);">Interested parties can participate in open public consultations, join neighborhood committees, or contact the editorial newsroom for feature inquiries.</p>
             </div>
           </div>`
       }
     ],
     faqs: [
       {
-        question: "How can residents participate in public discussions on this topic?",
-        answer: "Residents can attend municipal council meetings, participate in open consultations, or reach out to community representatives."
+        question: `What are the primary factors to consider before starting with ${topic}?`,
+        answer: `Key considerations include assessing initial budget allocations, understanding local regulatory requirements, and engaging qualified regional partners with verified experience.`
       },
       {
-        question: "Where can official public records and meeting minutes be accessed?",
-        answer: "Official agendas, audited statements, and council records are accessible through municipal archives and public portals."
+        question: `How does ${topic} impact local community and economic vitality?`,
+        answer: `It generates localized employment, strengthens commercial supplier networks, and creates lasting community assets that enhance neighborhood quality of life.`
       },
       {
-        question: "What is the anticipated timeline for regional implementation?",
-        answer: "Phased municipal rollouts are scheduled over subsequent fiscal quarters with regular progress updates."
+        question: `Where can official guidelines and community resources be found?`,
+        answer: `Official documentation is accessible via regional municipal portals, public library archives, and regular publication briefings on GenAlphaMagazines.`
       },
       {
-        question: "How are these programs funded within municipal budgets?",
-        answer: "Funding combines municipal capital reserves with matching senior government grants."
+        question: `What is the anticipated rollout timeline for regional programs?`,
+        answer: `Programs typically proceed through quarterly milestone phases, with regular public reviews and community stakeholder updates.`
       },
       {
-        question: "Who can community members contact for further information?",
-        answer: "Inquiries can be submitted to municipal department coordinators or to the newsroom desk."
+        question: `How can residents and small businesses get involved?`,
+        answer: `Interested parties can participate in open public consultations, join neighborhood committees, or contact the editorial newsroom for feature inquiries.`
       }
     ]
   };
@@ -388,16 +387,14 @@ async function generateArticle(topicData) {
   const { topic, category, author } = topicData;
   console.log(`[INFO] Synthesizing community report on: "${topic}" (Category: ${category})`);
 
-  const systemInstruction = `
-You are an award-winning investigative journalist for GenAlphaMagazines (https://www.genalphamagazines.com).
-Write a comprehensive, engaging, and authentic newsmagazine feature with in-depth analysis.
-STRICT GUIDELINES:
-1. Write rich, detailed journalistic reporting with multiple subheadings.
-2. Tone: Authoritative, community-grounded, empathetic, and strictly factual (Google EEAT standards).
-3. ABSOLUTELY NO programming code snippets or technical software frameworks. Write pure explanatory journalistic prose.
-4. Include a dedicated FAQ section with 5 in-depth community questions.
-5. Return ONLY valid JSON with keys: "title", "slug", "metaDescription", "sections", "tableOfContents", "faqs".
-`;
+  const systemInstruction = `You are a senior editor and investigative journalist at GenAlphaMagazines (https://www.genalphamagazines.com) writing in the style of top-tier publication Quartist (quartist.de).
+STRICT EDITORIAL REQUIREMENTS:
+1. Tone: Deeply informative, practical, well-structured, authoritative, and engaging (Google EEAT journalistic standard).
+2. Structure:
+   - Provide 5 distinct numbered sections (1. ..., 2. ..., 3. ..., 4. ..., 5. ...). Do NOT duplicate numbers in titles (e.g. use "1. Core Foundations", not "1. 1. Core Foundations").
+   - Each section must contain 2-4 comprehensive, articulate paragraphs with contextual insights, practical bullet points, or step-by-step guidance.
+   - Section 6 MUST be "6. Frequently Asked Questions (FAQ)" with 5 in-depth, realistic questions and thorough answers.
+3. ABSOLUTELY NO code snippets, programming languages, or Markdown symbols in text. Return valid JSON only with keys: "title", "slug", "metaDescription", "tableOfContents", "sections", "faqs".`;
 
   const userPrompt = `Topic: ${topic}\nCategory: ${category}\nAuthor: ${author.name} (${author.role})`;
 
@@ -460,7 +457,11 @@ function renderArticleHtml(articleData, author, category, heroImage) {
   const currentDate = new Date().toISOString().split('T')[0];
   const dateFormatted = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
-  const tocHtml = articleData.tableOfContents.map(item => `<li><a href="#${item.id}">${item.title}</a></li>`).join('\n            ');
+  const tocHtml = articleData.tableOfContents.map(item => {
+    // Strip leading number if present to prevent double numbering (e.g., '1. 1. Title' -> '1. Title')
+    const cleanItemTitle = item.title.replace(/^\d+\.\s*\d*\.?\s*/, '');
+    return `<li><a href="#${item.id}">${cleanItemTitle}</a></li>`;
+  }).join('\n            ');
   
   const sectionsHtml = articleData.sections.map((sec, idx) => {
     const enrichedContent = injectInternalLinks(sec.contentHtml, articleData.slug);
