@@ -652,18 +652,7 @@ function renderArticleHtml(articleData, author, category, heroImage) {
           <figcaption style="font-size: 0.85rem; color: var(--text-muted); padding: 0.6rem 0.25rem 0.5rem; border-bottom: 1px solid var(--border-color);">${articleData.title}</figcaption>
         </figure>
 
-        <nav class="table-of-contents" aria-label="Table of contents" style="margin-top: 1.5rem;">
-          <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--text-main);">In This In-Depth Report</h3>
-          <ol style="margin-bottom: 0; line-height: 1.8;">
-            ${tocHtml}
-          </ol>
-        </nav>
-
-        <div class="ad-slot-wrap">
-          <span class="ad-label">Advertisement</span>
-          <div class="ad-placeholder ad-leaderboard">
-            <span>Google AdSense Header Unit (728x90)</span>
-          </div>
+        
         </div>
 
         <div class="article-body">
