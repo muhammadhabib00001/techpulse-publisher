@@ -159,16 +159,29 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
   if (UNSPLASH_ACCESS_KEY) {
     try {
       // Build smart query candidates: full words, first 2 words, or core topic words
-      const words = topic.replace(/[^a-zA-Z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length > 2);
+      const words = topic.replace(/[^a-zA-Z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length > 1);
+      
+      // Technical acronym / synonym dictionary for Unsplash accuracy
+      const expansions = [];
+      const lowerTopic = topic.toLowerCase();
+      if (lowerTopic.includes('ups') || lowerTopic.includes('battery')) {
+        expansions.push('battery backup', 'power supply computer', 'server battery');
+      }
+      if (lowerTopic.includes('iran') || lowerTopic.includes('trump')) {
+        expansions.push('Trump Iran', 'Iran politics', 'Middle East diplomacy');
+      }
+
       const queryCandidates = [
+        ...expansions,
         words.slice(0, 3).join(' '),
         words.slice(0, 2).join(' '),
-        words.length > 2 ? `${words[0]} ${words[words.length - 1]}` : words[0],
+        words.length > 2 ? `${words[0]} ${words[words.length - 1]}` : '',
+        words[words.length - 1], // e.g. 'battery'
+        words[0],
         category
-      ];
+      ].filter(q => q && q.trim().length >= 3);
 
       for (const query of queryCandidates) {
-        if (!query || query.trim().length < 3) continue;
         console.log(`[INFO] Layer 2: Searching Unsplash for "${query}"...`);
         const unsplashApiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&orientation=landscape&per_page=5&client_id=${UNSPLASH_ACCESS_KEY}`;
 

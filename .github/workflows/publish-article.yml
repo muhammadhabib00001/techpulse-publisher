@@ -47,6 +47,7 @@ jobs:
       - name: Run Gemini / Vertex AI Content Engine
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY || 'rug2wxB71o1mh5kYy_K6kJVLxXZ6CA2apSHUrGqZYLk' }}
           GCP_CREDENTIALS_JSON: ${{ secrets.GCP_CREDENTIALS_JSON }}
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           GCP_REGION: ${{ secrets.GCP_REGION || 'us-central1' }}
