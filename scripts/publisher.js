@@ -157,11 +157,12 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
   if (UNSPLASH_ACCESS_KEY) {
     try {
       console.log(`[INFO] Layer 2: Fetching Unsplash API photo for "${keywords}"...`);
-      const unsplashApiUrl = `https://api.unsplash.com/photos/random?query=${encodeURIComponent(keywords)}&orientation=landscape&client_id=${UNSPLASH_ACCESS_KEY}`;
+      // Use /search/photos which is robust, accurate, and avoids 500 errors on random endpoint
+      const unsplashApiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(keywords)}&orientation=landscape&per_page=5&client_id=${UNSPLASH_ACCESS_KEY}`;
 
       const photoData = await new Promise((resolve, reject) => {
         const get = https.get;
-        get(unsplashApiUrl, { headers: { 'Accept-Version': 'v1', 'User-Agent': 'TechPulsePublisher/1.0', 'Authorization': `Client-ID ${UNSPLASH_ACCESS_KEY}` } }, (res) => {
+        get(unsplashApiUrl, { headers: { 'Accept-Version': 'v1', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) TechPulse/1.0' } }, (res) => {
           let body = '';
           res.on('data', chunk => body += chunk);
           res.on('end', () => {
@@ -171,7 +172,11 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
         }).on('error', reject);
       });
 
-      const photoUrl = photoData.urls && (photoData.urls.regular || photoData.urls.full);
+      const photoItem = (photoData.results && photoData.results.length > 0) 
+        ? photoData.results[sig % Math.min(photoData.results.length, 3)] 
+        : null;
+
+      const photoUrl = photoItem && photoItem.urls && (photoItem.urls.regular || photoItem.urls.full);
       if (!photoUrl) throw new Error('No photo URL in Unsplash response');
 
       await downloadImageLocally(photoUrl, localImgPath);
@@ -266,7 +271,9 @@ function getInternalLinkMap() {
     { keyword: 'crypto news', url: '../articles/crypto-news.html' },
     { keyword: 'finance jobs', url: '../articles/finance-jobs.html' },
     { keyword: 'outdoor recreation', url: '../articles/outdoor-recreation.html' },
-    { keyword: 'municipal election', url: '../articles/municipal-election-analysis.html' }
+    { keyword: 'municipal election', url: '../articles/municipal-election-analysis.html' },
+    { keyword: 'smartphone battery', url: '../articles/smartphone-battery-life-tips-complete-practical-guide.html' },
+    { keyword: 'battery life tips', url: '../articles/smartphone-battery-life-tips-complete-practical-guide.html' }
   ];
 
   // Dynamically index all articles in articles directory for automatic cross-linking
@@ -301,9 +308,9 @@ function injectInternalLinks(htmlContent, currentSlug) {
     if (url.includes(currentSlug)) return;
     if (linkedKeywords.has(keyword.toLowerCase())) return;
 
-    // Word-boundary case-insensitive search, avoiding existing <a> tags or HTML attributes
+    // Match keyword outside existing <a> tags
     const escaped = keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
-    const regex = new RegExp('(?<!<[^>]*)(\\b' + escaped + '\\b)(?![^<]*<\\/a>|[^<]*>)', 'i');
+    const regex = new RegExp('(\\b' + escaped + '\\b)(?![^<]*>|[^<>]*<\\/a>)', 'i');
     
     if (regex.test(processed)) {
       processed = processed.replace(regex, (match) => {
