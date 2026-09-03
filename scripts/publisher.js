@@ -689,7 +689,7 @@ function renderArticleHtml(articleData, author, category, heroImage) {
 
   const sectionsHtml = articleData.sections.map((sec, idx) => {
     let rawContent = (sec.contentHtml || '').replace(/[—–]/g, ', ');
-    const enrichedContent = injectInternalLinks(rawContent, articleData.slug);
+    let enrichedContent = injectInternalLinks(rawContent, articleData.slug);
     let adBlock = '';
     if (idx === 1 || idx === 3) {
       adBlock = `
