@@ -520,7 +520,7 @@ function renderArticleHtml(articleData, author, category, heroImage) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/style.css?v=final_stable_v1">
   
   <script type="application/ld+json">
   {
@@ -651,9 +651,6 @@ function renderArticleHtml(articleData, author, category, heroImage) {
           </div>
           <figcaption style="font-size: 0.85rem; color: var(--text-muted); padding: 0.6rem 0.25rem 0.5rem; border-bottom: 1px solid var(--border-color);">${articleData.title}</figcaption>
         </figure>
-
-        
-        </div>
 
         <div class="article-body">
           ${sectionsHtml}
