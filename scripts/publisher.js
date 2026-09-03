@@ -33,9 +33,11 @@ function parseArgs() {
 const CLI_ARGS = parseArgs();
 
 // Environment & Config
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const CUSTOM_TOPIC = CLI_ARGS.topic || process.env.CUSTOM_TOPIC || '';
-const TARGET_CATEGORY = (CLI_ARGS.category || process.env.TARGET_CATEGORY || 'news').toLowerCase();
+const GEMINI_API_KEY     = process.env.GEMINI_API_KEY;
+const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;   // Free: unsplash.com/developers
+const CUSTOM_TOPIC       = CLI_ARGS.topic || process.env.CUSTOM_TOPIC || '';
+const TARGET_CATEGORY    = (CLI_ARGS.category || process.env.TARGET_CATEGORY || 'news').toLowerCase();
+
 
 const AUTHORS = {
   news: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Editor-in-Chief & Civic Affairs Correspondent', initials: 'MR' },
@@ -83,55 +85,110 @@ function downloadImageLocally(url, destPath) {
 }
 
 /**
- * Fetches a unique, topic-keyword-matched hero image via Unsplash Source search.
- * Each article topic gets a different, relevant image automatically.
+ * IMAGE ENGINE — 3-Layer Pipeline (best quality → reliable fallback)
+ *
+ * Layer 1: Gemini Imagen AI — generates a 100% unique, topic-specific AI image
+ *          Requires: GEMINI_API_KEY  (same key used for article generation)
+ *
+ * Layer 2: Unsplash API — keyword-searched real photo, unique per topic
+ *          Requires: UNSPLASH_ACCESS_KEY  (free at unsplash.com/developers)
+ *
+ * Layer 3: Curated direct Unsplash photo IDs — reliable offline fallback
+ *          No API key required.
  */
 async function fetchOrGenerateTopicImage(topic, category, slug) {
   const localImgFilename = `${slug}.jpg`;
   const localImgPath = path.join(ROOT_DIR, 'assets', 'images', localImgFilename);
 
-  // If local image already exists and is valid, reuse it
+  // Reuse existing valid image
   if (fs.existsSync(localImgPath) && fs.statSync(localImgPath).size > 10000) {
-    return {
-      relativeUrl: `../assets/images/${localImgFilename}`,
-      indexUrl: `./assets/images/${localImgFilename}`,
-      alt: `${topic} — featured editorial photo`,
-      caption: `${topic}: expert guide and practical tips.`
-    };
+    console.log(`[INFO] Using existing image for: ${slug}`);
+    return buildImageResult(localImgFilename, localImgPath, topic);
   }
 
-  // Build unique keyword query from the topic (first 4 meaningful words)
-  const queryWords = topic
+  // Build keyword query from topic (first 5 meaningful words)
+  const keywords = topic
     .replace(/[^a-zA-Z0-9\s]/g, ' ')
     .split(/\s+/)
     .filter(w => w.length > 2)
-    .slice(0, 4)
-    .join(',');
+    .slice(0, 5)
+    .join(' ');
 
-  // Unique numeric signature per slug — makes every request distinct
+  // Unique numeric hash per slug
   const sig = Math.abs(slug.split('').reduce((h, c) => ((h << 5) - h) + c.charCodeAt(0), 0) & 0x7fffffff);
 
-  // Try Unsplash Source search — unique keyword + sig per article = unique image
-  const unsplashSearchUrl = `https://source.unsplash.com/1200x600/?${encodeURIComponent(queryWords)}&sig=${sig}`;
+  // ─────────────────────────────────────────────────────────────
+  // LAYER 1: Gemini Imagen — AI-generated topic-specific image
+  // ─────────────────────────────────────────────────────────────
+  if (GEMINI_API_KEY) {
+    try {
+      console.log(`[INFO] Layer 1: Generating AI image via Gemini Imagen for "${keywords}"...`);
+      const { GoogleGenAI } = require('@google/genai');
+      const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
-  try {
-    console.log(`[INFO] Fetching topic-matched image for "${topic}" (keywords: ${queryWords})...`);
-    await downloadImageLocally(unsplashSearchUrl, localImgPath);
-    if (fs.existsSync(localImgPath) && fs.statSync(localImgPath).size > 10000) {
-      console.log(`[SUCCESS] Topic image saved: assets/images/${localImgFilename}`);
-      return {
-        relativeUrl: `../assets/images/${localImgFilename}`,
-        indexUrl: `./assets/images/${localImgFilename}`,
-        alt: `${topic} — editorial featured image`,
-        caption: `${topic}: comprehensive guide and key insights.`
-      };
+      const imgPrompt = `High-quality editorial photograph for a magazine article about: ${keywords}. 
+        Professional photography style, well-lit, sharp focus, 16:9 landscape format. 
+        No text, no watermarks, no people's faces. Photorealistic.`;
+
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.5-flash-image',
+        contents: imgPrompt,
+      });
+
+      for (const part of response.candidates[0].content.parts) {
+        if (part.inlineData && part.inlineData.data) {
+          const imgBuffer = Buffer.from(part.inlineData.data, 'base64');
+          fs.writeFileSync(localImgPath, imgBuffer);
+          if (fs.statSync(localImgPath).size > 10000) {
+            console.log(`[SUCCESS] Layer 1: Gemini AI image saved: assets/images/${localImgFilename}`);
+            return buildImageResult(localImgFilename, localImgPath, topic);
+          }
+        }
+      }
+      throw new Error('No inline image data in Gemini response');
+    } catch (err) {
+      console.warn(`[WARN] Layer 1 (Gemini Imagen) failed: ${err.message}`);
     }
-    throw new Error('File too small — likely a placeholder');
-  } catch (err) {
-    console.warn(`[WARN] Topic image failed (${err.message}). Trying direct fallback...`);
   }
 
-  // Fallback: reliable curated Unsplash photo IDs per category (diverse selection)
+  // ─────────────────────────────────────────────────────────────
+  // LAYER 2: Unsplash API — real photo searched by topic keyword
+  // ─────────────────────────────────────────────────────────────
+  if (UNSPLASH_ACCESS_KEY) {
+    try {
+      console.log(`[INFO] Layer 2: Fetching Unsplash API photo for "${keywords}"...`);
+      const unsplashApiUrl = `https://api.unsplash.com/photos/random?query=${encodeURIComponent(keywords)}&orientation=landscape&client_id=${UNSPLASH_ACCESS_KEY}`;
+
+      const photoData = await new Promise((resolve, reject) => {
+        const get = https.get;
+        get(unsplashApiUrl, { headers: { 'Accept-Version': 'v1' } }, (res) => {
+          let body = '';
+          res.on('data', chunk => body += chunk);
+          res.on('end', () => {
+            if (res.statusCode !== 200) return reject(new Error(`Unsplash API status ${res.statusCode}`));
+            try { resolve(JSON.parse(body)); } catch (e) { reject(e); }
+          });
+        }).on('error', reject);
+      });
+
+      const photoUrl = photoData.urls && (photoData.urls.regular || photoData.urls.full);
+      if (!photoUrl) throw new Error('No photo URL in Unsplash response');
+
+      await downloadImageLocally(photoUrl, localImgPath);
+      if (fs.existsSync(localImgPath) && fs.statSync(localImgPath).size > 10000) {
+        console.log(`[SUCCESS] Layer 2: Unsplash API photo saved: assets/images/${localImgFilename}`);
+        return buildImageResult(localImgFilename, localImgPath, topic);
+      }
+      throw new Error('Downloaded file too small');
+    } catch (err) {
+      console.warn(`[WARN] Layer 2 (Unsplash API) failed: ${err.message}`);
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // LAYER 3: Curated direct Unsplash photo IDs — reliable fallback
+  // ─────────────────────────────────────────────────────────────
+  console.log(`[INFO] Layer 3: Using curated fallback photo...`);
   const FALLBACK_POOLS = {
     business: ['1486406146926-c627a92ad1ab', '1454165804606-c3d57bc86b40', '1556742049-0a67e557224f', '1507679799987-c73779587ccf', '1560472354-b33ff0ad5111'],
     news:     ['1540910419892-4a36d2c3266c', '1570125909232-eb263c188f7e', '1504711434969-e33886168f5c', '1585829365295-ab7cd400c167', '1434030216411-0b793f4b6db9'],
@@ -147,20 +204,29 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
 
   try {
     await downloadImageLocally(fallbackUrl, localImgPath);
-    console.log(`[SUCCESS] Fallback image saved: assets/images/${localImgFilename}`);
-  } catch (e2) {
-    console.warn(`[WARN] All image downloads failed: ${e2.message}`);
+    console.log(`[SUCCESS] Layer 3: Fallback image saved: assets/images/${localImgFilename}`);
+  } catch (e3) {
+    console.warn(`[WARN] Layer 3 also failed: ${e3.message} — using CDN URL directly`);
+    return {
+      relativeUrl: fallbackUrl, indexUrl: fallbackUrl,
+      alt: `${topic}`, caption: `${topic}: practical guide.`
+    };
   }
 
+  return buildImageResult(localImgFilename, localImgPath, topic);
+}
+
+// Helper: build standard image result object
+function buildImageResult(filename, localPath, topic) {
+  const valid = fs.existsSync(localPath) && fs.statSync(localPath).size > 5000;
   return {
-    relativeUrl: fs.existsSync(localImgPath) && fs.statSync(localImgPath).size > 5000
-      ? `../assets/images/${localImgFilename}` : fallbackUrl,
-    indexUrl: fs.existsSync(localImgPath) && fs.statSync(localImgPath).size > 5000
-      ? `./assets/images/${localImgFilename}` : fallbackUrl,
-    alt: `${topic} — editorial photo`,
-    caption: `${topic}: in-depth guide and practical insights.`
+    relativeUrl: valid ? `../assets/images/${filename}` : '',
+    indexUrl:    valid ? `./assets/images/${filename}`  : '',
+    alt:     `${topic} — editorial photo`,
+    caption: `${topic}: expert guide and practical insights.`
   };
 }
+
 
 
 const INTERNAL_LINK_MAP = [
