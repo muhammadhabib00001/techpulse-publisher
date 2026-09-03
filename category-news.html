@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./assets/css/style.css?v=20260903_ticker_fixed">
+  <link rel="stylesheet" href="./assets/css/style.css?v=20260903_mobiledropdown_v1">
 
   <link rel="icon" type="image/svg+xml" href="./assets/images/favicon.svg">
   <link rel="alternate icon" href="./favicon.ico">
@@ -17,6 +17,7 @@
   <meta name="theme-color" content="#c1121e">
 </head>
 <body>
+  <div id="menu-backdrop" class="menu-backdrop"></div>
   
   <!-- Top Utility Bar (Seeker Style) -->
   <div class="top-bar">
@@ -151,21 +152,29 @@
     </div>
   </header>
 
-  <!-- Sticky Navigation Bar on Scroll -->
+  <!-- Sticky Navigation Bar with Mobile Dropdown -->
   <nav class="main-nav-wrapper">
-      <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-        <nav class="main-nav" aria-label="Main Navigation">
-          <ul class="main-nav-links">
-            <li><a href="./index.html" class="">Home</a></li>
-            <li><a href="./category-news.html" class="active">News</a></li>
-            <li><a href="./category-community.html" class="">Community & Events</a></li>
-            <li><a href="./category-business.html" class="">Business & Economy</a></li>
-            <li><a href="./category-arts.html" class="">Arts & Entertainment</a></li>
-            <li><a href="./category-lifestyle.html" class="">Lifestyle</a></li>
-            <li><a href="./category-voices.html" class="">Voices</a></li>
-            <li><a href="./categories.html" class="">All Topics</a></li>
-          </ul>
-        </nav>
+    <div class="container mobile-nav-bar-inner">
+      <div class="mobile-nav-title" style="display: none;">
+        <span>📰 Departments</span>
+      </div>
+      <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle Navigation Menu" aria-expanded="false">
+        <span>☰ Menu</span>
+      </button>
+      <div id="main-nav" class="main-nav" aria-label="Main Navigation">
+        <ul class="main-nav-links">
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./category-news.html">News & Civic</a></li>
+          <li><a href="./category-community.html">Community & Events</a></li>
+          <li><a href="./category-business.html">Business & Economy</a></li>
+          <li><a href="./category-arts.html">Arts & Entertainment</a></li>
+          <li><a href="./category-lifestyle.html">Lifestyle & Culture</a></li>
+          <li><a href="./category-voices.html">Voices & Essays</a></li>
+          <li><a href="./categories.html">All 100+ Topics</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
       </div>
     </nav>
 
