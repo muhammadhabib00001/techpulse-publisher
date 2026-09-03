@@ -167,9 +167,7 @@
           </ol>
         </div>
 
-        <div class="article-body">
-          <section id="executive-summary">
-            <h2>1. Executive Summary: The Agentic Paradigm Shift</h2>
+        
             <p>
               In the preceding generation of generative artificial intelligence implementations, enterprise systems operated predominantly in a stateless, query-and-response pattern. Users submitted prompts, and Large Language Models (LLMs) generated non-deterministic text completions in isolation. While effective for summarization and ad-hoc question answering, this architecture routinely failed enterprise software requirements requiring state consistency, transactional integrity, multi-step verification, and deterministic external side effects.
             </p>
@@ -211,7 +209,7 @@
           <section id="planning-reasoning">
             <h2>3. Deterministic Planning vs. Autonomous Reasoning</h2>
             <p>
-              One of the most persistent failure modes in early agent implementations was allowing the language model unconstrained freedom to decide both the sequence of operations and the validation criteria. In high-consequence enterprise environments—such as financial ledger processing or automated infrastructure orchestration—unconstrained autonomy introduces unacceptable operational risk.
+              One of the most persistent failure modes in early agent implementations was allowing the language model unconstrained freedom to decide both the sequence of operations and the validation criteria. In high-consequence enterprise environments, such as financial ledger processing or automated infrastructure orchestration, unconstrained autonomy introduces unacceptable operational risk.
             </p>
             <p>
               Modern architectures deploy <strong>hybrid graph-based state machines</strong> (such as directed acyclic execution graphs). In this model, high-level business workflow transitions are hardcoded and deterministic (e.g., Step 1: Ingest Data &rarr; Step 2: Extract Entities &rarr; Step 3: Validate Compliance &rarr; Step 4: Dispatch Webhook). The language model's autonomy is strictly isolated to reasoning <em>within</em> each node of the graph.
@@ -234,7 +232,7 @@
               Reliable tool integration is the lifeblood of agentic utility. When agents interact with enterprise microservices, they must do so via strictly typed contracts. In 2026, standard practice mandates defining all tool interfaces using strict JSON Schema or OpenAPI 3.1 specifications with runtime schema attestation.
             </p>
             <p>
-              To prevent security vulnerabilities—such as Prompt Injection attacks attempting to manipulate tool parameters—tool execution buses implement parameter sanitization filters. For example, if an agent generates an SQL query tool call, the execution bus intercepts the string, parses the Abstract Syntax Tree (AST), validates that the statement is strictly a read-only <code>SELECT</code> query restricted to approved tables, and applies tenant-isolation row-level filtering prior to database execution.
+              To prevent security vulnerabilities, such as Prompt Injection attacks attempting to manipulate tool parameters, tool execution buses implement parameter sanitization filters. For example, if an agent generates an SQL query tool call, the execution bus intercepts the string, parses the Abstract Syntax Tree (AST), validates that the statement is strictly a read-only <code>SELECT</code> query restricted to approved tables, and applies tenant-isolation row-level filtering prior to database execution.
             </p>
             <blockquote>
               "Never execute a tool call emitted by a language model with the raw permissions of the calling service. Always enforce least-privilege scoping, parameter schema enforcement, and explicit user-in-the-loop approvals for destructive operations."
@@ -253,7 +251,7 @@
               High-performance systems bifurcate memory into two distinct tiers:
             </p>
             <ol>
-              <li><strong>Short-Term Working Memory:</strong> Maintained in ultra-fast in-memory stores (e.g., Redis clusters), holding the active state graph, the last 4–6 turns of dialogue, and the immediate inputs and outputs of active tool calls.</li>
+              <li><strong>Short-Term Working Memory:</strong> Maintained in ultra-fast in-memory stores (e.g., Redis clusters), holding the active state graph, the last 4, 6 turns of dialogue, and the immediate inputs and outputs of active tool calls.</li>
               <li><strong>Long-Term Semantic Memory:</strong> Backed by hybrid vector and full-text databases (e.g., Qdrant, pgvector, or Milvus). Observations, summarized historical decisions, and domain knowledge are embedded, indexed, and retrieved using semantic similarity filtered by exact metadata tags.</li>
             </ol>
             <p>
@@ -322,7 +320,7 @@ interface AgentExecutionEnvelope&lt;TInput, TOutput&gt; {
               The transition to agentic computing marks a permanent shift in how enterprise software is constructed. Language models have evolved from novel conversational interfaces into high-speed reasoning microprocessors. However, the reliability of the system as a whole remains rooted in disciplined software engineering: rigorous schema validation, stateful workflow boundaries, robust observability, and strict adherence to least-privilege security principles.
             </p>
             <p>
-              Organizations that master this hybrid architecture—combining the probabilistic creativity of frontier AI models with the deterministic reliability of modern cloud engineering—will lead the next decade of digital automation.
+              Organizations that master this hybrid architecture, combining the probabilistic creativity of frontier AI models with the deterministic reliability of modern cloud engineering, will lead the next decade of digital automation.
             </p>
           </section>
         </div>

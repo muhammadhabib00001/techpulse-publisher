@@ -141,7 +141,9 @@
           <figcaption style="font-size: 0.85rem; color: var(--text-muted); padding: 0.6rem 0.25rem 0.5rem; border-bottom: 1px solid var(--border-color);">Post-Quantum Cryptography Implementation in Cloud Storage: 2026 Architecture Guide</figcaption>
         </figure>
 
-        <div class="toc-box">
+        <div class="article-body">
+          <section id="overview">
+            <p><div class="toc-box">
           <h3 class="toc-title">Table of Contents</h3>
           <ol class="toc-list">
             <li><a href="#quantum-threat-landscape">1. The Quantum Threat Horizon: Harvest Now, Decrypt Later</a></li>
@@ -154,17 +156,14 @@
           </ol>
         </div>
 
-        <div class="article-body">
-          
-          <section id="quantum-threat-landscape">
-            <h2>1. The Quantum Threat Horizon: Harvest Now, Decrypt Later</h2>
+        
             
-            <p>For more than four decades, enterprise cloud security has relied universally on classical asymmetric public-key cryptography—principally RSA with 2048 to 4096-bit keys and Elliptic Curve Cryptography based on NIST P-256 and Curve25519. These foundational algorithms secure everything from HTTPS transport sessions and identity tokens to cloud storage envelope encryption keys. Their mathematical security is rooted in the immense computational difficulty of factoring large prime numbers and calculating discrete logarithms over finite fields using classical binary computers.</p>
+            <p>For more than four decades, enterprise cloud security has relied universally on classical asymmetric public-key cryptography, principally RSA with 2048 to 4096-bit keys and Elliptic Curve Cryptography based on NIST P-256 and Curve25519. These foundational algorithms secure everything from HTTPS transport sessions and identity tokens to cloud storage envelope encryption keys. Their mathematical security is rooted in the immense computational difficulty of factoring large prime numbers and calculating discrete logarithms over finite fields using classical binary computers.</p>
             <p>However, the rapid progression of quantum computing fundamentally threatens this paradigm. When sufficiently large, fault-tolerant quantum computers running Shor's Algorithm emerge, they will reduce the mathematical complexity of breaking RSA and Elliptic Curve cryptography from exponential time to polynomial time. A quantum computer with approximately 4,000 stable logical qubits could easily decrypt modern 2048-bit RSA keys in a matter of hours.</p>
             <p>While fully fault-tolerant commercial quantum hardware is still developing, the danger to enterprise cloud data is occurring right now through the <strong>Harvest Now, Decrypt Later (HNDL)</strong> attack strategy. Adversaries and nation-state intelligence agencies are actively intercepting and archiving encrypted enterprise cloud backups, proprietary source code repositories, and sensitive government databases. Once a cryptanalytically relevant quantum computer is operational, these archived historical assets will be decrypted retroactively unless organizations migrate to quantum-resistant encryption today.</p>
             <div class="key-takeaway">
               <h4>Strategic Imperative for Technology Leaders</h4>
-              <p style="margin: 0;">Any enterprise data with an operational, regulatory, or confidentiality lifespan exceeding five to ten years—such as patient healthcare histories, financial transaction ledgers, and critical intellectual property—must be secured with Post-Quantum Cryptography immediately to neutralize retroactive decryption risks.</p>
+              <p style="margin: 0;">Any enterprise data with an operational, regulatory, or confidentiality lifespan exceeding five to ten years, such as patient healthcare histories, financial transaction ledgers, and critical intellectual property, must be secured with Post-Quantum Cryptography immediately to neutralize retroactive decryption risks.</p>
             </div>
           </section>
 

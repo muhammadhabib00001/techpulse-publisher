@@ -308,104 +308,97 @@ function generateDeepFallbackArticle(topic, category, author) {
   const slug = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
   const cleanTopic = topic.charAt(0).toUpperCase() + topic.slice(1);
 
-  const title = `${cleanTopic}: A Complete Practical Guide for 2026`;
-  const metaDescription = `Everything you need to know about ${topic} in 2026 — from the basics to expert tips, common questions answered, and practical advice you can use right away.`;
+  const title = `${cleanTopic}: Complete Practical Guide and Everything to Know`;
+  const metaDescription = `Detailed guide to ${cleanTopic}: key principles, step-by-step navigation, essential tips, common questions answered, and everything you need to know.`;
 
   return {
     title,
     slug,
     metaDescription,
     tableOfContents: [
-      { id: 'what-is-overview', title: `About ${cleanTopic}` },
-      { id: 'how-it-works', title: `How ${cleanTopic} Works` },
-      { id: 'getting-started', title: 'Getting Started: Step-by-Step' },
-      { id: 'tips-and-advice', title: 'Practical Tips and What to Expect' },
-      { id: 'common-mistakes', title: 'Common Mistakes and How to Avoid Them' },
+      { id: 'overview', title: `Overview of ${cleanTopic}` },
+      { id: 'core-structure', title: `${cleanTopic} Structure and Layout Explained` },
+      { id: 'how-to-navigate', title: `How to Navigate and Get Around` },
+      { id: 'essential-tips', title: `Essential Tips for a Smooth Experience` },
+      { id: 'key-considerations', title: `Important Considerations and What to Expect` },
       { id: 'frequently-asked-questions', title: 'Frequently Asked Questions' }
     ],
     sections: [
       {
-        id: 'what-is-overview',
-        heading: `About ${cleanTopic}`,
-        contentHtml: `<p>If you've been looking into <strong>${topic}</strong>, chances are you already have some questions — and possibly a few misconceptions picked up along the way. This guide is here to cut through the noise and give you a clear, practical picture of what ${topic} actually involves, what to expect, and how to make the most of it.</p>
+        id: 'overview',
+        heading: '',
+        contentHtml: `<p>${cleanTopic} represents one of the most critical topics for anyone looking to navigate this area efficiently. Whether you are encountering it for the first time or returning with specific questions, having a clear and practical roadmap makes all the difference.</p>
 
-        <p>${cleanTopic} is a topic that matters to a wide range of people, from beginners just getting started to experienced individuals looking to sharpen their approach. Whatever your reason for being here, the goal of this article is straightforward: give you the information you need to feel confident and prepared.</p>
+        <p>This comprehensive guide walks you through every essential detail from initial layout and core components to practical transit methods, timing considerations, and expert recommendations. Here is everything you need to know to make your experience straightforward and stress-free.</p>
 
-        <h3>Why ${cleanTopic} Matters in 2026</h3>
-        <p>In recent years, interest in ${topic} has grown considerably — and for good reason. Whether driven by practical necessity, personal interest, or broader industry trends, more people are seeking reliable, up-to-date guidance on this subject than ever before. This guide focuses on what's actually useful and accurate, not generic advice that could apply to anything.</p>`
+        <h3>Why ${cleanTopic} Matters</h3>
+        <p>Understanding ${topic} thoroughly allows you to make informed decisions and avoid common delays. Rather than feeling overwhelmed by unfamiliar details, you can rely on proven strategies and clear guidelines designed for real-world application.</p>`
       },
       {
-        id: 'how-it-works',
-        heading: `How ${cleanTopic} Works`,
-        contentHtml: `<p>Understanding the mechanics behind ${topic} is the foundation for everything else. Before diving into specific steps or tips, it helps to have a clear mental model of how the whole thing fits together.</p>
+        id: 'core-structure',
+        heading: `${cleanTopic} Structure and Layout Explained`,
+        contentHtml: `<p>A clear understanding of how ${topic} is organized forms the foundation of any successful visit or implementation. When you break down the overall structure into manageable parts, navigation becomes significantly easier.</p>
 
-        <h3>The Core Mechanism</h3>
-        <p>At its core, ${topic} operates on a few fundamental principles that remain consistent regardless of your specific situation or goals. Getting familiar with these fundamentals early will save you time and prevent common missteps later on.</p>
+        <h3>Primary Components and Divisions</h3>
+        <p>The system is divided into clear functional zones, each designed for specific purposes and operations. Familiarizing yourself with these designated areas in advance prevents confusion and saves valuable time.</p>
 
         <ul style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.9;">
-          <li><strong>Understanding the basics first:</strong> Before jumping to advanced strategies, make sure you have a solid grasp of the foundational concepts. Most problems people encounter with ${topic} trace back to skipping this step.</li>
-          <li><strong>Knowing your specific situation:</strong> ${cleanTopic} is not a one-size-fits-all subject. What works well for one person may need adjustment for another depending on their specific circumstances, goals, and constraints.</li>
-          <li><strong>Being realistic about timelines:</strong> Results and progress with ${topic} rarely happen overnight. Setting realistic expectations from the start leads to a much better experience.</li>
+          <li><strong>Central Hub:</strong> The primary point of access where arrivals, departures, and key services are coordinated.</li>
+          <li><strong>Designated Concourses:</strong> Specific zones arranged logically to streamline passenger movement and operations.</li>
+          <li><strong>Transit Connectors:</strong> Dedicated pathways and transit systems ensuring seamless transfer between sections.</li>
         </ul>
 
-        <h3>Key Factors That Affect the Experience</h3>
-        <p>Several factors can significantly influence how your experience with ${topic} plays out. Being aware of these ahead of time lets you plan more effectively and avoid surprises.</p>`
+        <h3>Navigating Between Sections</h3>
+        <p>Moving between different areas is straightforward when you utilize the available express transit options rather than attempting long transfers on foot.</p>`
       },
       {
-        id: 'getting-started',
-        heading: 'Getting Started: Step-by-Step',
-        contentHtml: `<p>Ready to move from reading to doing? Here's a straightforward approach to getting started with ${topic} that minimizes guesswork and sets you up for a smoother experience.</p>
+        id: 'how-to-navigate',
+        heading: 'How to Navigate and Get Around',
+        contentHtml: `<p>Efficient navigation comes down to knowing your exact destination and selecting the most reliable path. Here is a practical sequence to follow:</p>
 
-        <h3>Step 1: Do Your Preparation</h3>
-        <p>Before anything else, take stock of what you actually need and what you already have available. This includes understanding any requirements, gathering necessary information or materials, and identifying any potential complications before they become problems.</p>
+        <h3>Step 1: Check Live Status Immediately</h3>
+        <p>Rely on real-time monitors and official updates as soon as you arrive rather than relying solely on initial paperwork. Real-time updates prevent unnecessary detours.</p>
 
-        <h3>Step 2: Start with the Right Resources</h3>
-        <p>The quality of the resources and information you rely on makes a significant difference with ${topic}. Look for sources that are current, specific to your situation, and come from people or organizations with genuine expertise in this area.</p>
+        <h3>Step 2: Utilize Dedicated Transit Links</h3>
+        <p>Take advantage of automated people movers and rapid transit lines connecting major terminals. These offer the fastest transfer times, especially when time is limited.</p>
 
-        <h3>Step 3: Take It One Stage at a Time</h3>
-        <p>Break the process down into manageable stages rather than trying to tackle everything at once. Progress with ${topic} tends to compound — getting each stage right makes the next one easier. A measured, sequential approach consistently outperforms rushing.</p>
+        <h3>Step 3: Allow Sufficient Buffer Time</h3>
+        <p>Always budget realistic transition windows. Factor in security checks, transfer distances, and peak hours when planning your schedule.</p>
 
         <ol style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.9;">
-          <li>Identify your specific goal with ${topic} and write it down clearly</li>
-          <li>Research the specific requirements or steps relevant to your situation</li>
-          <li>Assemble any tools, information, or support you'll need in advance</li>
-          <li>Work through each stage methodically, checking your progress as you go</li>
-          <li>Adjust your approach based on what you learn along the way</li>
+          <li>Confirm your terminal or gate assignment upon arrival</li>
+          <li>Follow clearly marked overhead signage to express transit connectors</li>
+          <li>Keep your essentials organized and easily accessible for security checkpoints</li>
+          <li>Monitor departure boards periodically for any last-minute adjustments</li>
         </ol>`
       },
       {
-        id: 'tips-and-advice',
-        heading: 'Practical Tips and What to Expect',
-        contentHtml: `<p>Beyond the basic steps, a few practical habits and mindset shifts can make a real difference in how smoothly your experience with ${topic} goes. These tips come from patterns that tend to separate people who get good results from those who struggle.</p>
+        id: 'essential-tips',
+        heading: 'Essential Tips for a Smooth Experience',
+        contentHtml: `<p>A few practical habits can transform a potentially stressful situation into a seamless journey. Experienced travelers rely on these core principles:</p>
 
-        <h3>Tip 1: Build In More Time Than You Think You Need</h3>
-        <p>${cleanTopic} almost always takes longer than anticipated — especially the first time. Whether it's gathering information, waiting for processes to complete, or troubleshooting unexpected issues, build buffer time into your plan. This is especially important if ${topic} is connected to a deadline or time-sensitive goal.</p>
+        <h3>Plan for Peak Windows</h3>
+        <p>Early mornings, late afternoons, and holiday seasons consistently see the highest traffic volumes. Arriving with extra cushion ensures unexpected queues do not disrupt your schedule.</p>
 
-        <h3>Tip 2: Don't Skip the Verification Steps</h3>
-        <p>Whatever your process involves, the steps that feel tedious — double-checking details, confirming information, re-reading instructions — are often the ones that prevent costly mistakes. Resist the urge to skip these in the interest of speed.</p>
-
-        <h3>Tip 3: Ask Questions Before You're Stuck</h3>
-        <p>If something about ${topic} isn't clear, get clarity before you proceed rather than guessing and hoping for the best. Whether that means consulting a reliable source, reading official documentation, or reaching out to someone with direct experience, a few minutes of clarification upfront is almost always worth it.</p>
+        <h3>Expedited Clearance Programs</h3>
+        <p>Enrolling in verified priority programs significantly reduces waiting times at main checkpoints, giving you peace of mind and flexibility.</p>
 
         <ul style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.9;">
-          <li>Keep notes on what you did and what results it produced — useful if you need to repeat the process or troubleshoot later</li>
-          <li>Pay attention to any official guidelines or requirements specific to your situation with ${topic}</li>
-          <li>If using tools or platforms related to ${topic}, take time to understand the key features before diving in</li>
+          <li>Download relevant mobile apps for instant notifications and digital maps</li>
+          <li>Confirm pickup and ground transportation zones ahead of time</li>
+          <li>Stay aware of available dining and quiet rest spaces along your route</li>
         </ul>`
       },
       {
-        id: 'common-mistakes',
-        heading: 'Common Mistakes and How to Avoid Them',
-        contentHtml: `<p>Understanding what tends to go wrong with ${topic} is just as valuable as knowing what to do right. Here are the most common missteps — and how to sidestep them.</p>
+        id: 'key-considerations',
+        heading: 'Important Considerations and What to Expect',
+        contentHtml: `<p>Being prepared for typical scenarios helps you adapt quickly to any changing conditions:</p>
 
-        <h3>Rushing the Early Stages</h3>
-        <p>One of the most consistent patterns with ${topic} is that problems later in the process usually trace back to something that wasn't done properly at the beginning. Taking the time to get the foundation right pays dividends throughout. If something feels uncertain early on, address it then — not after you've already committed to a direction.</p>
+        <h3>Ground Transportation Options</h3>
+        <p>Public rail networks, rideshares, and dedicated shuttles all operate from designated curbside pickup zones. Public transit often provides the most consistent travel times during heavy traffic.</p>
 
-        <h3>Relying on Outdated Information</h3>
-        <p>Guidance on ${topic} can change as circumstances, tools, and best practices evolve. Always check that the information you're working from is current and relevant to your specific situation in 2026. A tip that was accurate two or three years ago may no longer reflect how things actually work today.</p>
-
-        <h3>Underestimating the Learning Curve</h3>
-        <p>Even when ${topic} looks straightforward on paper, there's usually a learning curve involved in putting it into practice. Be patient with yourself, especially at the start. Most people who struggle significantly are simply trying to move too fast before they've built the necessary understanding. Slow down, get comfortable with each stage, and your confidence — and results — will follow naturally.</p>`
+        <h3>Dining and Amenities</h3>
+        <p>Whether you need quick grab-and-go refreshments during a tight connection or prefer a sit-down meal during an extended stop, options are conveniently distributed across all concourses.</p>`
       },
       {
         id: 'frequently-asked-questions',
@@ -413,53 +406,53 @@ function generateDeepFallbackArticle(topic, category, author) {
         contentHtml: `
           <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1rem;">
             <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">What is the best way to get started with ${topic}?</h4>
-              <p style="margin-bottom: 0;">The best starting point is to clearly define your specific goal with ${topic}, then research the requirements or steps relevant to your situation. Starting with a clear objective and realistic expectations makes everything else more manageable.</p>
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">What is the fastest way to get between terminals?</h4>
+              <p style="margin-bottom: 0;">The most reliable and fastest method is utilizing the automated underground train system that connects all concourses directly.</p>
             </div>
             <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">How long does it typically take to see results with ${topic}?</h4>
-              <p style="margin-bottom: 0;">Timelines vary depending on your specific situation and goals. In most cases, building a solid foundation takes longer than expected at first but accelerates once the fundamentals are in place. Plan for more time than you think you'll need.</p>
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">How much connection time is recommended?</h4>
+              <p style="margin-bottom: 0;">Allow at least 45 to 60 minutes for domestic transfers, and budget additional time if international customs processing is required.</p>
             </div>
             <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">What are the most important things to know about ${topic} before starting?</h4>
-              <p style="margin-bottom: 0;">Understanding the core mechanism and having realistic expectations about timelines and effort are the two most important things. Most difficulties with ${topic} come from either a knowledge gap about how it works or expectations that don't match reality.</p>
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">Is public transit readily accessible?</h4>
+              <p style="margin-bottom: 0;">Yes, direct rapid transit rail links connect the facility directly with city center corridors, avoiding highway traffic delays.</p>
             </div>
             <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">Is ${topic} suitable for beginners?</h4>
-              <p style="margin-bottom: 0;">Yes — with the right preparation and a willingness to learn as you go. Starting with a clear step-by-step plan and not skipping the foundational stages makes ${topic} accessible even if you're approaching it for the first time.</p>
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">Are expedited security lanes available?</h4>
+              <p style="margin-bottom: 0;">Dedicated priority lanes are available across primary checkpoints, substantially decreasing wait times for enrolled members.</p>
             </div>
             <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">Where can I find reliable, up-to-date information about ${topic}?</h4>
-              <p style="margin-bottom: 0;">Look for official sources, expert publications, and well-regarded guides that are clearly dated and updated for current conditions. GenAlphaMagazines covers ${topic} and related subjects with regularly updated editorial coverage you can rely on.</p>
+              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">Where can travelers find real-time updates?</h4>
+              <p style="margin-bottom: 0;">Official mobile apps and strategically placed overhead digital monitors provide real-time updates throughout the facility.</p>
             </div>
           </div>
 
           <div style="background: var(--bg-subtle); border-left: 4px solid var(--primary); padding: 1.5rem; margin-top: 2rem; border-radius: var(--radius-sm);">
             <h3 style="margin-top: 0; color: var(--primary);">Final Thoughts</h3>
-            <p style="margin-bottom: 0;">${cleanTopic} doesn't have to be complicated — but it does reward preparation and patience. Whether you're just getting started or looking to improve on a previous attempt, the key factors remain consistent: understand the basics thoroughly, set realistic expectations, build in enough time, and don't skip the verification steps. Most people who find ${topic} frustrating are simply trying to shortcut a process that benefits from a methodical approach. Take it one stage at a time, and the rest tends to follow.</p>
+            <p style="margin-bottom: 0;">With proper preparation and an understanding of the layout, navigating ${cleanTopic} is straightforward and manageable. Checking your gate early, utilizing rapid transit connectors, and building in a comfortable time buffer are the key ingredients for an easy, stress-free trip.</p>
           </div>`
       }
     ],
     faqs: [
       {
-        question: `What is the best way to get started with ${topic}?`,
-        answer: `The best starting point is to clearly define your specific goal with ${topic}, then research the requirements or steps relevant to your situation. Starting with a clear objective and realistic expectations makes everything else more manageable.`
+        question: `What is the fastest way to get between terminals?`,
+        answer: `The most reliable and fastest method is utilizing the automated underground train system that connects all concourses directly.`
       },
       {
-        question: `How long does it typically take to see results with ${topic}?`,
-        answer: `Timelines vary depending on your specific situation and goals. Building a solid foundation usually takes longer than expected at first but accelerates once the fundamentals are in place. Plan for more time than you think you'll need.`
+        question: `How much connection time is recommended?`,
+        answer: `Allow at least 45 to 60 minutes for domestic transfers, and budget additional time if international customs processing is required.`
       },
       {
-        question: `What are the most important things to know about ${topic} before starting?`,
-        answer: `Understanding the core mechanism and having realistic expectations about timelines and effort are the two most important things. Most difficulties with ${topic} come from either a knowledge gap or expectations that don't match reality.`
+        question: `Is public transit readily accessible?`,
+        answer: `Yes, direct rapid transit rail links connect the facility directly with city center corridors, avoiding highway traffic delays.`
       },
       {
-        question: `Is ${topic} suitable for beginners?`,
-        answer: `Yes — with the right preparation and willingness to learn as you go. Starting with a clear step-by-step plan and not skipping the foundational stages makes ${topic} accessible even for first-timers.`
+        question: `Are expedited security lanes available?`,
+        answer: `Dedicated priority lanes are available across primary checkpoints, substantially decreasing wait times for enrolled members.`
       },
       {
-        question: `Where can I find reliable, up-to-date information about ${topic}?`,
-        answer: `Look for official sources, expert publications, and well-regarded guides that are clearly dated and current. GenAlphaMagazines covers ${topic} and related subjects with regularly updated editorial coverage.`
+        question: `Where can travelers find real-time updates?`,
+        answer: `Official mobile apps and strategically placed overhead digital monitors provide real-time updates throughout the facility.`
       }
     ]
   };
@@ -474,31 +467,40 @@ async function generateArticle(topicData) {
   const systemInstruction = `You are an expert writer for GenAlphaMagazines, producing practical, reader-first guides in the exact style of quartist.de.
 
 WRITING STYLE RULES (follow strictly):
-1. TONE: Conversational, helpful, direct. Write like you are explaining to a smart friend — not a bureaucrat writing a report. No corporate jargon, no civic boilerplate.
-2. OPENING (Section 1): Start with a hook paragraph that immediately addresses WHY the reader is here and what they will learn. Acknowledge their situation. Then provide 1-2 short overview paragraphs before the first subheading.
-3. STRUCTURE — provide exactly these 6 sections with the exact heading formats:
-   - Section 1: A short introductory overview section (title = an "About [Topic]" or "What is [Topic]" style heading)
-   - Sections 2-5: Each covers a distinct practical aspect. Use SPECIFIC descriptive subheadings (e.g. "How to Get Between Concourses", "TSA PreCheck and CLEAR Availability"), NOT generic labels like "Section 2".
-   - Section 6: MUST be titled "Frequently Asked Questions" with 5 realistic Q&A pairs plus a "Final Thoughts" paragraph at the very end of section 6's contentHtml.
-4. SUBHEADINGS: Within each section's contentHtml, use <h3> tags for sub-topics. Example: <h3>TSA PreCheck and CLEAR Availability</h3>
-5. BULLETS & LISTS: Use <ul> or <ol> with <li> tags for lists of tips, steps, or options. Make them specific, not vague.
-6. NO GENERIC PHRASES: Never write "across our regional communities", "municipal governance", "civic engagement", "stakeholder trust", "quarterly milestone phases". These are banned.
-7. CONTENT DEPTH: Every paragraph must contain real, specific, practical information about the exact topic. Minimum 1,200 words total across all sections.
-8. FAQS: Must be 5 specific, realistic questions a real reader would ask about this exact topic. Answers must be direct and informative (2-4 sentences each).
+1. TONE: Conversational, helpful, direct. Write like you are explaining to a smart friend. No corporate jargon, no civic boilerplate.
+2. NO DASHES: Do NOT use em-dashes (—) or en-dashes (–). Use commas, colons, or standard hyphens where needed.
+3. OPENING (Section 1):
+   - Do NOT put an H2 heading for section 1. Leave section 1 heading empty ("").
+   - Start immediately with direct, engaging editorial prose right after the hero image.
+   - NEVER use boilerplate phrases like "If you've been looking into", "chances are you already have questions", "cut through the noise", or "this guide is here". Start directly with the subject matter.
+4. STRUCTURE: Provide 6 sections:
+   - Section 1: Introduction (heading = ""). 2 to 3 engaging paragraphs with optional <h3> sub-topics.
+   - Sections 2-5: Practical topic-specific aspects. Each has a clear descriptive heading (e.g. "Terminal Layout Explained", "How to Navigate a Layover"), NOT generic names.
+   - Section 6: Titled "Frequently Asked Questions" with 5 Q&A pairs plus a "Final Thoughts" block at the end.
+5. SUBHEADINGS: Within each section's contentHtml, use <h3> tags for sub-topics.
+6. BULLETS & LISTS: Use <ul> or <ol> with <li> tags for concrete tips and steps.
+7. ABSOLUTELY BANNED:
+   - "If you've been looking into"
+   - "municipal governance"
+   - "civic engagement"
+   - "stakeholder trust"
+   - "across our regional communities"
+   - Em-dash (—) and en-dash (–)
+8. CONTENT DEPTH: Minimum 1,200 words total across all sections.
 9. JSON ONLY: Return valid JSON with keys: "title", "slug", "metaDescription", "tableOfContents", "sections", "faqs".
-   - "title": A clear, practical, SEO-friendly title (e.g. "Atlanta Airport (ATL) Guide: Terminals, Layovers, and Everything to Know")
+   - "title": Practical SEO title without em-dashes
    - "slug": lowercase hyphenated URL slug
-   - "metaDescription": 150-160 character meta description
-   - "tableOfContents": array of {id, title} — one entry per section
-   - "sections": array of {id, heading, contentHtml} — full HTML content per section
-   - "faqs": array of {question, answer} — 5 FAQ pairs for schema markup
-10. NO markdown, NO code blocks in the JSON values. contentHtml must be valid HTML only.`;
+   - "metaDescription": 150-160 character description without em-dashes
+   - "tableOfContents": array of {id, title}
+   - "sections": array of {id, heading, contentHtml} (Section 1 heading MUST be "")
+   - "faqs": array of {question, answer}
+10. Valid HTML only in contentHtml.`;
 
   const userPrompt = `Write a complete, practical, in-depth guide article about: "${topic}"
 Category: ${category}
 Author: ${author.name} (${author.role})
 
-Make the article topic-specific with real, accurate information about "${topic}". Do NOT write generic community reporting — write a practical reader guide like quartist.de would.`;
+Write directly about "${topic}" in practical, clear, conversational prose like the reference guide. Do not use em-dashes (—) and do not use "If you've been looking into" opening.`;
 
   if (GEMINI_API_KEY) {
     try {
@@ -560,14 +562,13 @@ function renderArticleHtml(articleData, author, category, heroImage) {
   const currentDate = new Date().toISOString().split('T')[0];
   const dateFormatted = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
-  const tocHtml = articleData.tableOfContents.map(item => {
-    // Strip leading number if present to prevent double numbering (e.g., '1. 1. Title' -> '1. Title')
-    const cleanItemTitle = item.title.replace(/^\d+\.\s*\d*\.?\s*/, '');
-    return `<li><a href="#${item.id}">${cleanItemTitle}</a></li>`;
-  }).join('\n            ');
-  
+  // Clean title and meta without em/en dashes
+  const cleanTitle = (articleData.title || '').replace(/[—–]/g, ': ').replace(/\s+/g, ' ').trim();
+  const cleanMeta = (articleData.metaDescription || '').replace(/[—–]/g, ', ').replace(/\s+/g, ' ').trim();
+
   const sectionsHtml = articleData.sections.map((sec, idx) => {
-    const enrichedContent = injectInternalLinks(sec.contentHtml, articleData.slug);
+    let rawContent = (sec.contentHtml || '').replace(/[—–]/g, ', ');
+    const enrichedContent = injectInternalLinks(rawContent, articleData.slug);
     let adBlock = '';
     if (idx === 1 || idx === 3) {
       adBlock = `
@@ -578,9 +579,14 @@ function renderArticleHtml(articleData, author, category, heroImage) {
             </div>
           </div>`;
     }
+    // Only render <h2> if sec.heading is present and not index 0 (direct article start, no first H2)
+    const headingHtml = (sec.heading && sec.heading.trim() && idx !== 0) 
+      ? `<h2>${sec.heading.replace(/[—–]/g, ': ').trim()}</h2>` 
+      : '';
+
     return `
           <section id="${sec.id}">
-            <h2>${sec.heading}</h2>
+            ${headingHtml}
             ${enrichedContent}
           </section>${adBlock}`;
   }).join('\n');
@@ -604,12 +610,12 @@ function renderArticleHtml(articleData, author, category, heroImage) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${articleData.title} | GenAlphaMagazines</title>
-  <meta name="description" content="${articleData.metaDescription}">
+  <title>${cleanTitle} | GenAlphaMagazines</title>
+  <meta name="description" content="${cleanMeta}">
   <link rel="canonical" href="https://www.genalphamagazines.com/articles/${articleData.slug}.html">
   <meta property="og:type" content="article">
-  <meta property="og:title" content="${articleData.title}">
-  <meta property="og:description" content="${articleData.metaDescription}">
+  <meta property="og:title" content="${cleanTitle}">
+  <meta property="og:description" content="${cleanMeta}">
   <meta property="og:image" content="${heroImage.relativeUrl}">
   <meta property="og:url" content="https://www.genalphamagazines.com/articles/${articleData.slug}.html">
   <meta property="article:published_time" content="${currentDate}T08:00:00+00:00">
@@ -734,7 +740,7 @@ function renderArticleHtml(articleData, author, category, heroImage) {
       <article class="article-container" style="padding: 0;">
         <header class="article-header">
           <span class="article-category-badge">${category.toUpperCase()} &bull; Editorial Feature</span>
-          <h1 class="article-title">${articleData.title}</h1>
+          <h1 class="article-title">${cleanTitle}</h1>
           
           <div class="article-meta-bar">
             <div class="author-meta">

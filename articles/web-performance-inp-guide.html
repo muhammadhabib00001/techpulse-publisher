@@ -162,9 +162,7 @@
           </ol>
         </div>
 
-        <div class="article-body">
-          <section id="vitals-2026">
-            <h2>1. The State of Google Core Web Vitals in 2026</h2>
+        
             <p>
               User experience and page speed are not merely engineering vanity metrics; they are fundamental pillars of organic search visibility, user retention, and monetization efficiency under Google's 2026 Search and AdSense ranking algorithms. Websites that deliver immediate interactivity, zero layout instability, and rapid visual rendering capture significantly higher search impressions and advertiser bid density.
             </p>
@@ -181,7 +179,7 @@
           <section id="demystifying-inp">
             <h2>2. Demystifying Interaction to Next Paint (INP)</h2>
             <p>
-              Unlike its predecessor First Input Delay (FID)—which only measured the delay of the user's very first interaction—INP observes all clicks, taps, and keyboard presses throughout the entire duration of a visitor's session. INP captures the 98th percentile of interaction latency across the entire user journey.
+              Unlike its predecessor First Input Delay (FID), which only measured the delay of the user's very first interaction, INP observes all clicks, taps, and keyboard presses throughout the entire duration of a visitor's session. INP captures the 98th percentile of interaction latency across the entire user journey.
             </p>
             <p>
               INP latency is composed of three distinct sequential phases:
@@ -203,7 +201,7 @@
           <section id="scheduler-api">
             <h2>3. Breaking Up Long Tasks with modern yield() & Scheduler APIs</h2>
             <p>
-              The primary culprit behind poor INP scores is the presence of <em>Long Tasks</em>—any continuous JavaScript execution occupying the main thread for greater than 50 milliseconds. When a long task runs, the browser is completely unresponsive to user taps or scrolls.
+              The primary culprit behind poor INP scores is the presence of <em>Long Tasks</em>, any continuous JavaScript execution occupying the main thread for greater than 50 milliseconds. When a long task runs, the browser is completely unresponsive to user taps or scrolls.
             </p>
             <p>
               Modern web engineering breaks up heavy processing loops using the standardized <code>scheduler.yield()</code> API:
