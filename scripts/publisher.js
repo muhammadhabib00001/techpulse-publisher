@@ -798,15 +798,73 @@ function updateSiteIndex(articleData, author, category, heroImage) {
     }
   }
 
-  // 2. Feed Card snippet
-  const cardSnippet = `
+  // 2. VIP Homepage Auto-Update (Section 1: Latest Stories Main Lead + Ticker)
+  const indexPath = path.join(ROOT_DIR, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    let indexHtml = fs.readFileSync(indexPath, 'utf8');
+
+    // Create the Main Lead Card for Section 1
+    const newLeadMainCard = `<div class="pattern-a-main">
+            <article class="card">
+              <div class="card-img-wrap">
+                <img src="${heroImage.indexUrl}" alt="${articleData.title}" loading="lazy">
+              </div>
+              <div class="card-content">
+                <span class="card-tag">${category.toUpperCase()} &bull; Editorial Lead Feature</span>
+                <h3 class="card-title">
+                  <a href="./articles/${articleData.slug}.html">${articleData.title}</a>
+                </h3>
+                <p class="card-excerpt">${articleData.metaDescription}</p>
+                <div class="card-meta">
+                  <span>By <a href="./author/${author.slug}.html">${author.name}</a></span>
+                  <span>${dateFormatted}</span>
+                </div>
+              </div>
+            </article>
+          </div>`;
+
+    // Also create mini side card for cascading
+    const newMiniSideCard = `
+            <article class="mini-side-card">
+              <div class="mini-side-thumb">
+                <img src="${heroImage.indexUrl}" alt="${articleData.title}" loading="lazy">
+              </div>
+              <div class="mini-side-content">
+                <span class="mini-side-tag">${category.toUpperCase()}</span>
+                <h4 class="mini-side-title"><a href="./articles/${articleData.slug}.html">${articleData.title}</a></h4>
+                <span class="mini-side-meta">By ${author.name} &bull; ${dateFormatted}</span>
+              </div>
+            </article>`;
+
+    // Replace the 1st section main lead article with the newly published article!
+    if (indexHtml.includes('<div class="pattern-a-main">')) {
+      indexHtml = indexHtml.replace(/<div class="pattern-a-main">[sS]*?</div>s*(?=<div class="pattern-a-side-list">)/i, newLeadMainCard + '\n\n          ');
+      console.log(`[INFO] Successfully set ${articleData.title} as the #1 Main Lead Feature on Homepage!`);
+    }
+
+    // Auto-prepend into Breaking News Marquee Ticker
+    const tickerItem = `<a href="./articles/${articleData.slug}.html" class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> ${articleData.title}</a>\n          `;
+    if (!indexHtml.includes(`href="./articles/${articleData.slug}.html"`)) {
+      indexHtml = indexHtml.replace('<div class="breaking-ticker-track">', '<div class="breaking-ticker-track">\n          ' + tickerItem);
+      console.log(`[INFO] Added headline to Breaking News Ticker in index.html`);
+    }
+
+    fs.writeFileSync(indexPath, indexHtml, 'utf8');
+  }
+
+  // 3. Category Department Page Auto-Update
+  const categoryFile = `category-${category}.html`;
+  const categoryPath = path.join(ROOT_DIR, categoryFile);
+  if (fs.existsSync(categoryPath)) {
+    let catHtml = fs.readFileSync(categoryPath, 'utf8');
+    const catCardSnippet = `
           <!-- Article: ${articleData.slug}.html -->
           <article class="card">
-            <div class="card-img-wrap" style="aspect-ratio: 16/9; overflow: hidden;">
-              <img src="${heroImage.indexUrl}" alt="${heroImage.alt}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+            <div class="card-img-wrap">
+              <img src="${heroImage.indexUrl}" alt="${articleData.title}" loading="lazy">
             </div>
             <div class="card-content">
-              <span class="card-tag">${category.toUpperCase()} &bull; Editorial Feature</span>
+              <span class="card-tag">${category.toUpperCase()} &bull; Feature</span>
               <h3 class="card-title">
                 <a href="./articles/${articleData.slug}.html">${articleData.title}</a>
               </h3>
@@ -818,35 +876,12 @@ function updateSiteIndex(articleData, author, category, heroImage) {
             </div>
           </article>\n`;
 
-  // 3. Homepage update (Feed + Trending Stream + Breaking Ticker)
-  const indexPath = path.join(ROOT_DIR, 'index.html');
-  if (fs.existsSync(indexPath)) {
-    let indexHtml = fs.readFileSync(indexPath, 'utf8');
-    
-    // Add to Latest Stories feed if not present
-    if (!indexHtml.includes(articleData.slug)) {
-      indexHtml = indexHtml.replace('<div class="articles-grid">', '<div class="articles-grid">\n' + cardSnippet);
-    }
-    
-    // Auto-insert into Breaking Ticker
-    const tickerItem = `<a href="./articles/${articleData.slug}.html" class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> ${articleData.title}</a>\n          `;
-    if (!indexHtml.includes(`href="./articles/${articleData.slug}.html"`)) {
-      indexHtml = indexHtml.replace('<div class="breaking-ticker-track">', '<div class="breaking-ticker-track">\n          ' + tickerItem);
-    }
-    
-    fs.writeFileSync(indexPath, indexHtml, 'utf8');
-    console.log(`[INFO] Added card and ticker item to index.html`);
-  }
-
-  // 4. Category Department update
-  const categoryFile = `category-${category}.html`;
-  const categoryPath = path.join(ROOT_DIR, categoryFile);
-  if (fs.existsSync(categoryPath)) {
-    let catHtml = fs.readFileSync(categoryPath, 'utf8');
     if (!catHtml.includes(articleData.slug)) {
-      catHtml = catHtml.replace('<div class="articles-grid">', '<div class="articles-grid">\n' + cardSnippet);
+      if (catHtml.includes('<div class="articles-grid">')) {
+        catHtml = catHtml.replace('<div class="articles-grid">', '<div class="articles-grid">\n' + catCardSnippet);
+      }
       fs.writeFileSync(categoryPath, catHtml, 'utf8');
-      console.log(`[INFO] Added card to ${categoryFile}`);
+      console.log(`[INFO] Added ${articleData.slug} to ${categoryFile}`);
     }
   }
 }
