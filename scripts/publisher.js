@@ -823,23 +823,13 @@ function updateSiteIndex(articleData, author, category, heroImage) {
             </article>
           </div>`;
 
-    // Also create mini side card for cascading
-    const newMiniSideCard = `
-            <article class="mini-side-card">
-              <div class="mini-side-thumb">
-                <img src="${heroImage.indexUrl}" alt="${articleData.title}" loading="lazy">
-              </div>
-              <div class="mini-side-content">
-                <span class="mini-side-tag">${category.toUpperCase()}</span>
-                <h4 class="mini-side-title"><a href="./articles/${articleData.slug}.html">${articleData.title}</a></h4>
-                <span class="mini-side-meta">By ${author.name} &bull; ${dateFormatted}</span>
-              </div>
-            </article>`;
+    // Safe string slice replacement without regex errors
+    const mainStart = indexHtml.indexOf('<div class="pattern-a-main">');
+    const sideStart = indexHtml.indexOf('<div class="pattern-a-side-list">');
 
-    // Replace the 1st section main lead article with the newly published article!
-    if (indexHtml.includes('<div class="pattern-a-main">')) {
-      indexHtml = indexHtml.replace(/<div class="pattern-a-main">[sS]*?</div>s*(?=<div class="pattern-a-side-list">)/i, newLeadMainCard + '\n\n          ');
-      console.log(`[INFO] Successfully set ${articleData.title} as the #1 Main Lead Feature on Homepage!`);
+    if (mainStart !== -1 && sideStart !== -1 && mainStart < sideStart) {
+      indexHtml = indexHtml.slice(0, mainStart) + newLeadMainCard + '\n\n          ' + indexHtml.slice(sideStart);
+      console.log(`[INFO] Successfully set ${articleData.title} as #1 Main Feature on Homepage!`);
     }
 
     // Auto-prepend into Breaking News Marquee Ticker
