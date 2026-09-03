@@ -229,37 +229,81 @@ function buildImageResult(filename, localPath, topic) {
 
 
 
-const INTERNAL_LINK_MAP = [
-  { keyword: 'municipal governance', url: '../articles/municipal-election-analysis-candidate-platforms.html' },
-  { keyword: 'civic engagement', url: '../category-news.html' },
-  { keyword: 'small business vitality', url: '../articles/main-street-commercial-revitalization.html' },
-  { keyword: 'commercial revitalization', url: '../articles/main-street-commercial-revitalization.html' },
-  { keyword: 'clean energy transition', url: '../articles/energy-efficient-home-modernization.html' },
-  { keyword: 'infrastructure modernization', url: '../articles/energy-efficient-home-modernization.html' },
-  { keyword: 'community cultural festival', url: '../articles/annual-waterfront-heritage-festival.html' },
-  { keyword: 'neighborhood connections', url: '../articles/the-power-of-neighborly-connection-in-a-digital-world-a-columnist-perspective.html' },
-  { keyword: 'arts and theater', url: '../articles/spotlight-on-independent-theater.html' },
-  { keyword: 'Marcus Reid', url: '../author/marcus-reid.html' },
-  { keyword: 'Julia Vance', url: '../author/julia-vance.html' },
-  { keyword: 'News & Announcements', url: '../category-news.html' },
-  { keyword: 'Community & Events', url: '../category-community.html' },
-  { keyword: 'Business & Economy', url: '../category-business.html' },
-  { keyword: 'Arts & Entertainment', url: '../category-arts.html' },
-  { keyword: 'Lifestyle & Culture', url: '../category-lifestyle.html' },
-  { keyword: 'Voices & Columnists', url: '../category-voices.html' },
-  { keyword: 'Editorial Standards', url: '../pages/editorial-policy.html' }
-];
+// DYNAMIC TARGET-KEYWORD INTERNAL LINKING ENGINE
+function getInternalLinkMap() {
+  const linkMap = [
+    // Core Categories
+    { keyword: 'Business & Economy', url: '../category-business.html' },
+    { keyword: 'Community & Events', url: '../category-community.html' },
+    { keyword: 'Arts & Entertainment', url: '../category-arts.html' },
+    { keyword: 'Lifestyle & Culture', url: '../category-lifestyle.html' },
+    { keyword: 'News & Announcements', url: '../category-news.html' },
+    { keyword: 'Voices & Columnists', url: '../category-voices.html' },
+    { keyword: 'Editorial Policy', url: '../pages/editorial-policy.html' },
+    { keyword: 'Editorial Standards', url: '../pages/editorial-policy.html' },
+
+    // Core Topic Keywords to Target Articles
+    { keyword: 'electric vehicle charging', url: '../articles/electric-vehicle-charging-stations-guide.html' },
+    { keyword: 'EV charging stations', url: '../articles/electric-vehicle-charging-stations-guide.html' },
+    { keyword: 'charging infrastructure', url: '../articles/electric-vehicle-charging-stations-guide.html' },
+    { keyword: 'Atlanta Airport', url: '../articles/atlanta-airport-atl-guide-terminals-layovers-and-everything-to-know.html' },
+    { keyword: 'airport layover', url: '../articles/atlanta-airport-atl-guide-terminals-layovers-and-everything-to-know.html' },
+    { keyword: 'airports guide', url: '../articles/airports.html' },
+    { keyword: 'agentic AI workflows', url: '../articles/agentic-ai-workflows-2026.html' },
+    { keyword: 'autonomous agent', url: '../articles/autonomous-agent-architectures.html' },
+    { keyword: 'artificial intelligence', url: '../articles/artificial-intelligence.html' },
+    { keyword: 'clean energy transition', url: '../articles/regional-clean-energy-transition-and-solar-farm-initiatives-in-2026.html' },
+    { keyword: 'solar arrays', url: '../articles/energy-efficient-home-modernization.html' },
+    { keyword: 'heat pumps', url: '../articles/energy-efficient-home-modernization.html' },
+    { keyword: 'commercial revitalization', url: '../articles/main-street-commercial-revitalization.html' },
+    { keyword: 'small business vitality', url: '../articles/main-street-commercial-revitalization-small-businesses-thriving-in-2026.html' },
+    { keyword: 'waterfront heritage festival', url: '../articles/annual-waterfront-heritage-festival.html' },
+    { keyword: 'independent theater', url: '../articles/spotlight-on-independent-theater.html' },
+    { keyword: 'zero trust cloud security', url: '../articles/zero-trust-cloud-security.html' },
+    { keyword: 'quantum cryptography', url: '../articles/post-quantum-cryptography-implementation-in-cloud-storage.html' },
+    { keyword: 'web performance', url: '../articles/web-performance-inp-guide.html' },
+    { keyword: 'INP optimization', url: '../articles/web-performance-inp-guide.html' },
+    { keyword: 'crypto news', url: '../articles/crypto-news.html' },
+    { keyword: 'finance jobs', url: '../articles/finance-jobs.html' },
+    { keyword: 'outdoor recreation', url: '../articles/outdoor-recreation.html' },
+    { keyword: 'municipal election', url: '../articles/municipal-election-analysis.html' }
+  ];
+
+  // Dynamically index all articles in articles directory for automatic cross-linking
+  try {
+    const articlesDir = path.join(ROOT_DIR, 'articles');
+    if (fs.existsSync(articlesDir)) {
+      const files = fs.readdirSync(articlesDir).filter(f => f.endsWith('.html'));
+      for (const f of files) {
+        const baseSlug = f.replace('.html', '');
+        // Extract meaningful 2-3 word phrases from slug
+        const words = baseSlug.split('-').filter(w => w.length > 3 && !['guide', '2026', 'complete', 'practical'].includes(w));
+        if (words.length >= 2) {
+          const phrase = words.slice(0, 3).join(' ');
+          linkMap.push({ keyword: phrase, url: `../articles/${f}` });
+        }
+      }
+    }
+  } catch (err) {
+    // Graceful fallback to static map
+  }
+
+  return linkMap;
+}
 
 function injectInternalLinks(htmlContent, currentSlug) {
   let processed = htmlContent;
   const linkedKeywords = new Set();
+  const linkMap = getInternalLinkMap();
 
-  INTERNAL_LINK_MAP.forEach(({ keyword, url }) => {
+  linkMap.forEach(({ keyword, url }) => {
+    if (!keyword || keyword.length < 4) return;
     if (url.includes(currentSlug)) return;
     if (linkedKeywords.has(keyword.toLowerCase())) return;
 
+    // Word-boundary case-insensitive search, avoiding existing <a> tags or HTML attributes
     const escaped = keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
-    const regex = new RegExp('(\\b' + escaped + '\\b)(?![^<]*>|[^<>]*<\\/a>)', 'i');
+    const regex = new RegExp('(?<!<[^>]*)(\\b' + escaped + '\\b)(?![^<]*<\\/a>|[^<]*>)', 'i');
     
     if (regex.test(processed)) {
       processed = processed.replace(regex, (match) => {
@@ -305,11 +349,21 @@ function callGoogleAIStudio(apiKey, prompt, systemInstruction) {
 }
 
 function generateDeepFallbackArticle(topic, category, author) {
-  const slug = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-  const cleanTopic = topic.charAt(0).toUpperCase() + topic.slice(1);
+  // Clean topic for natural readability
+  const cleanTopic = topic.replace(/[:—–-]/g, ' ').replace(/\s+/g, ' ').trim();
+  const capitalizedTopic = cleanTopic.charAt(0).toUpperCase() + cleanTopic.slice(1);
 
-  const title = `${cleanTopic}: Complete Practical Guide and Everything to Know`;
-  const metaDescription = `Detailed guide to ${cleanTopic}: key principles, step-by-step navigation, essential tips, common questions answered, and everything you need to know.`;
+  // SEO-Optimized Title adhering to Google Search Central policies:
+  // Informative, unique, under 60 characters, concise and natural
+  const title = `${capitalizedTopic}: Complete Practical Guide`;
+
+  // URL slug matching the title (Google SEO Best Practice: simple, descriptive, lowercase hyphens)
+  const slug = title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
+  const metaDescription = `Detailed practical guide to ${cleanTopic}: key principles, navigation, expert tips, and common questions answered.`;
 
   return {
     title,
@@ -487,10 +541,10 @@ WRITING STYLE RULES (follow strictly):
    - "across our regional communities"
    - Em-dash (—) and en-dash (–)
 8. CONTENT DEPTH: Minimum 1,200 words total across all sections.
-9. JSON ONLY: Return valid JSON with keys: "title", "slug", "metaDescription", "tableOfContents", "sections", "faqs".
-   - "title": Practical SEO title without em-dashes
-   - "slug": lowercase hyphenated URL slug
-   - "metaDescription": 150-160 character description without em-dashes
+9. GOOGLE SEO POLICY FOR TITLE & URL:
+   - "title": Must strictly follow Google Search Central guidelines: 50-60 characters, descriptive, target keyword placed prominently, no clickbait or keyword stuffing, no em-dashes. Example: "Atlanta Airport ATL Guide: Terminals and Layover Tips"
+   - "slug": Must be directly derived from the title: lowercase, clean, hyphenated words matching title keywords (e.g. "atlanta-airport-atl-guide-terminals-and-layover-tips")
+   - "metaDescription": 140-155 characters summarizing the article with primary keyword.
    - "tableOfContents": array of {id, title}
    - "sections": array of {id, heading, contentHtml} (Section 1 heading MUST be "")
    - "faqs": array of {question, answer}
@@ -500,7 +554,7 @@ WRITING STYLE RULES (follow strictly):
 Category: ${category}
 Author: ${author.name} (${author.role})
 
-Write directly about "${topic}" in practical, clear, conversational prose like the reference guide. Do not use em-dashes (—) and do not use "If you've been looking into" opening.`;
+Follow Google SEO title policies (under 60 characters with main keyword) and derive the slug directly from the title. Do not use em-dashes and start directly with helpful content.`;
 
   if (GEMINI_API_KEY) {
     try {
