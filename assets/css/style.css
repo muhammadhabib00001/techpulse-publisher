@@ -1620,3 +1620,181 @@ img {
   line-height: 1.35;
   margin: 0;
 }
+
+/* ==========================================================================
+   VIP Full-Width Homepage Editorial Architecture
+   ========================================================================== */
+.home-main-container {
+  max-width: 1280px;
+  margin: 1.5rem auto 4rem auto;
+  padding: 0 1.25rem;
+}
+
+/* Category Quick Explorer Pill Bar */
+.category-quick-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding: 0.75rem 0 1.25rem 0;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.category-quick-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.cat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.95rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: var(--transition);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.cat-pill:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.cat-pill.featured-pill {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Pattern A VIP Full Width (1 Big Lead + 5 Stacked Side Cards) */
+.pattern-a-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1.75rem;
+  align-items: stretch;
+}
+
+.pattern-a-main .card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.pattern-a-main .card-img-wrap {
+  aspect-ratio: 16/10;
+}
+
+.pattern-a-main .card-title {
+  font-size: 1.45rem;
+  line-height: 1.3;
+}
+
+.pattern-a-side-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  justify-content: space-between;
+}
+
+.mini-side-card {
+  display: flex;
+  gap: 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.65rem 0.85rem;
+  transition: var(--transition);
+  align-items: center;
+}
+
+.mini-side-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+  border-color: var(--primary);
+}
+
+.mini-side-thumb {
+  width: 105px;
+  height: 75px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.mini-side-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.mini-side-card:hover .mini-side-thumb img {
+  transform: scale(1.06);
+}
+
+.mini-side-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.mini-side-tag {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 0.2rem;
+  letter-spacing: 0.5px;
+}
+
+.mini-side-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 0.25rem;
+}
+
+.mini-side-meta {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+/* Pattern B VIP Full Width (4 Straight Cards in 4-Column or 2x2 Clean Grid) */
+.pattern-b-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+@media (max-width: 1100px) {
+  .pattern-b-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .pattern-b-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .pattern-a-grid {
+    grid-template-columns: 1fr;
+  }
+  .pattern-a-main .card-title {
+    font-size: 1.25rem;
+  }
+}
