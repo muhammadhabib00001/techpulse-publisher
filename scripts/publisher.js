@@ -277,22 +277,23 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
       // Build smart query candidates: full words, first 2 words, or core topic words
       const words = topic.replace(/[^a-zA-Z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length > 1);
       
-      // Technical acronym / synonym dictionary for Unsplash accuracy
+      // Topic-specific keyword enhancements
       const expansions = [];
       const lowerTopic = topic.toLowerCase();
-      if (lowerTopic.includes('ups') || lowerTopic.includes('battery')) {
-        expansions.push('battery backup', 'power supply computer', 'server battery');
-      }
-      if (lowerTopic.includes('iran') || lowerTopic.includes('trump')) {
-        expansions.push('Trump Iran', 'Iran politics', 'Middle East diplomacy');
+      if (lowerTopic.includes('crypto') || lowerTopic.includes('bitcoin') || lowerTopic.includes('blockchain')) {
+        expansions.push('cryptocurrency', 'bitcoin blockchain', 'digital currency technology');
+      } else if (lowerTopic.includes('ups') || lowerTopic.includes('battery')) {
+        expansions.push('battery backup power', 'power supply computer', 'server battery');
+      } else if (lowerTopic.includes('iran')) {
+        expansions.push('Iran Middle East politics', 'Middle East diplomacy');
+      } else if (lowerTopic.includes('trump')) {
+        expansions.push('US politics capital', 'Washington DC government');
       }
 
       const queryCandidates = [
-        ...expansions,
         words.slice(0, 3).join(' '),
         words.slice(0, 2).join(' '),
-        words.length > 2 ? `${words[0]} ${words[words.length - 1]}` : '',
-        words[words.length - 1], // e.g. 'battery'
+        ...expansions,
         words[0],
         category
       ].filter(q => q && q.trim().length >= 3);
