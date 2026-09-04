@@ -615,11 +615,15 @@ WRITING STYLE RULES (follow strictly):
    - "tableOfContents": array of {id, title}
    - "sections": array of {id, heading, contentHtml} (Section 1 heading MUST be "")
    - "faqs": array of {question, answer}
-11. Valid HTML only in contentHtml.`;
+11. CURRENT YEAR & TIMELINESS (CRITICAL):
+   - The current year is 2026. All current events, market data, tax credits, standards, technology benchmarks, and temporal references MUST reflect 2026.
+   - NEVER refer to 2024 or 2025 as the current or upcoming year. If referring to 2024 or 2025, refer to them explicitly in the past tense.
+12. Valid HTML only in contentHtml.`;
 
   const userPrompt = `Write a complete, practical, in-depth guide article about: "${topic}"
 Category: ${category}
 Author: ${author.name} (${author.role})
+Current Year: 2026 (Ensure all market data, trends, and guidelines reflect 2026)
 
 Follow Google SEO title policies (under 60 characters with main keyword) and derive the slug directly from the title. Do not use em-dashes and start directly with helpful content. Naturally reference related cross-topic contexts like energy efficiency, digital performance, or market implications so internal links can connect seamlessly.`;
 

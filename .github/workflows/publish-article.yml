@@ -40,9 +40,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: 'npm'
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci || npm install
 
       - name: Run Gemini / Vertex AI Content Engine
         env:
@@ -64,7 +65,7 @@ jobs:
 
       - name: Commit and Push New Article & Updated Feeds
         run: |
-          git add articles/ assets/images/ index.html category-*.html categories.html sitemap.xml
+          git add articles/ assets/images/ index.html category-*.html categories.html pages/ sitemap.xml
           if git diff --staged --quiet; then
             echo "No changes to commit. Article generation might have been skipped."
           else
