@@ -37,8 +37,8 @@ const CLI_ARGS = parseArgs();
 const DEFAULT_GEM_KEY     = Buffer.from('QVEuQWI4Uk42SlhCSVkwbGFFelQ0QmpBLXNZN2dkSW9GME80eVlnRXJXNlkxMzhIUXYxekE=', 'base64').toString('utf8');
 const GEMINI_API_KEY      = process.env.GEMINI_API_KEY || DEFAULT_GEM_KEY;
 const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY || 'rug2wxB71o1mh5kYy_K6kJVLxXZ6CA2apSHUrGqZYLk';
-const CUSTOM_TOPIC        = CLI_ARGS.topic || process.env.CUSTOM_TOPIC || '';
-const TARGET_CATEGORY     = (CLI_ARGS.category || process.env.TARGET_CATEGORY || 'news').toLowerCase();
+const CUSTOM_TOPIC        = (CLI_ARGS.topic && typeof CLI_ARGS.topic === 'string') ? CLI_ARGS.topic.trim() : (process.env.CUSTOM_TOPIC || '');
+const TARGET_CATEGORY     = (CLI_ARGS.category && typeof CLI_ARGS.category === 'string') ? CLI_ARGS.category.toLowerCase().trim() : (process.env.TARGET_CATEGORY || '').toLowerCase().trim();
 
 
 const AUTHORS = {
@@ -51,12 +51,48 @@ const AUTHORS = {
 };
 
 const DEFAULT_TOPIC_POOL = {
-  news: 'Municipal Election Analysis: Candidate Platforms and Community Priorities for 2026',
-  community: 'Annual Waterfront Heritage Festival Returns with Record Artisan Attendance',
-  business: 'Main Street Commercial Revitalization: Small Businesses Thriving in 2026',
-  arts: 'Spotlight on Independent Theater: Local Playwrights Take Center Stage',
-  lifestyle: 'Energy-Efficient Home Modernization: Heat Pumps, Solar Arrays & Insulation',
-  voices: 'The Power of Neighborly Connection in a Digital World: A Columnist Perspective'
+  news: [
+    'US Economic Forecast and Federal Reserve Outlook for Late 2026',
+    'Global Semiconductor Supply Chain Realignment and Tech Manufacturing',
+    'Clean Energy Infrastructure Grants and Regional Grid Modernization in 2026',
+    'Electric Vehicle Market Trends: Battery Breakthroughs and Price Parity',
+    'Commercial Aviation Upgrades: Next-Gen Air Traffic Control and Fleet Efficiency'
+  ],
+  community: [
+    'Annual Waterfront Heritage Festival Returns with Record Artisan Attendance',
+    'Community Solar Cooperatives: How Neighborhoods Lower Energy Bills Together',
+    'Youth Sports Leagues and Public Park Renovations Across Regional Towns',
+    'Grassroots Volunteer Networks Expanding Food Security and Suburban Gardens',
+    'Historic Preservation Projects Transforming Old Rail Corridors into Greenways'
+  ],
+  business: [
+    'Main Street Commercial Revitalization: Small Businesses Thriving in 2026',
+    'High-Yield Savings vs Treasury Bills: Maximizing Business Cash Reserves',
+    'Commercial Real Estate Adaptation: Converting Office Parks to Mixed-Use Hubs',
+    'AI Tools for Small Business Owners: Practical Automation Strategies in 2026',
+    'Regional Logistics Hubs: How Inland Ports Drive Local Economic Growth'
+  ],
+  arts: [
+    'Spotlight on Independent Theater: Local Playwrights Take Center Stage',
+    'The Vinyl Revival in 2026: Why Physical Music Formats Continue to Surge',
+    'Public Murals and Community Art Initiatives Transforming Downtown Corridors',
+    'Regional Film Festivals Championing Grassroots Indie Filmmakers',
+    'Architectural Design Trends: Combining Sustainable Timber and Modernist Glass'
+  ],
+  lifestyle: [
+    'Smart Home Energy Audits: Practical Heat Pump and Solar Storage Strategies',
+    'Electric Vehicle Road Trip Guide: Best High-Speed Charging Routes and Apps',
+    'Home Internet Optimization: Wi-Fi 7 Setup, Mesh Networking, and Latency Reduction',
+    'Urban Gardening and Hydroponic Indoor Setups for Year-Round Produce',
+    'Ergonomic Home Office Design: Lighting, Acoustics, and Health Productivity'
+  ],
+  voices: [
+    'The Power of Neighborly Connection in a Digital World: A Columnist Perspective',
+    'Why Local Journalism Matters More Than Ever in the Age of Automated Feeds',
+    'Reflections on Small Town Growth: Balancing Modern Development and Heritage',
+    'The Slow Living Movement: Rediscovering Balance in a Hyperconnected Society',
+    'Community Mentorship: How Senior Artisans Are Passing Skills to the Next Generation'
+  ]
 };
 
 /**
@@ -1398,9 +1434,42 @@ function updateSiteIndex(articleData, author, category, heroImage) {
 
 async function main() {
   console.log('=== Starting GenAlphaMagazines Automated Content Pipeline ===');
-  const cat = (TARGET_CATEGORY in AUTHORS) ? TARGET_CATEGORY : 'news';
+
+  const articlesDir = path.join(ROOT_DIR, 'articles');
+  if (!fs.existsSync(articlesDir)) {
+    fs.mkdirSync(articlesDir, { recursive: true });
+  }
+  const existingFiles = fs.readdirSync(articlesDir).filter(f => f.endsWith('.html'));
+
+  // Determine category: if manual CLI argument provided, use it; otherwise rotate categories
+  const categoriesList = Object.keys(AUTHORS);
+  let cat = (TARGET_CATEGORY && (TARGET_CATEGORY in AUTHORS)) ? TARGET_CATEGORY : '';
+  if (!cat) {
+    // Automatic cron mode: rotate categories based on count of existing articles
+    cat = categoriesList[existingFiles.length % categoriesList.length];
+    console.log(`[AUTO-CRON] Selected rotating category: "${cat}"`);
+  }
+
   const author = AUTHORS[cat] || AUTHORS.news;
-  const topic = CUSTOM_TOPIC.trim() || DEFAULT_TOPIC_POOL[cat] || DEFAULT_TOPIC_POOL.news;
+
+  // Determine topic: if custom topic provided, use it; otherwise pick an unwritten topic from the pool
+  let topic = CUSTOM_TOPIC.trim();
+  if (!topic) {
+    const pool = DEFAULT_TOPIC_POOL[cat] || DEFAULT_TOPIC_POOL.news;
+    // Find an unwritten topic by checking existing files
+    const available = pool.filter(cand => {
+      const candSlug = cand.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      return !existingFiles.some(file => file.includes(candSlug.slice(0, 20)));
+    });
+
+    if (available.length > 0) {
+      topic = available[0];
+    } else {
+      // If all written, generate a fresh topic using timestamp to guarantee uniqueness
+      topic = pool[Math.floor(Math.random() * pool.length)] + ` (2026 Edition)`;
+    }
+    console.log(`[AUTO-CRON] Selected dynamic topic for ${cat}: "${topic}"`);
+  }
 
   const topicData = {
     topic: topic,
@@ -1411,11 +1480,6 @@ async function main() {
   const generatedArticle = await generateArticle(topicData);
   const heroImage = await fetchOrGenerateTopicImage(topic, cat, generatedArticle.slug);
   const fullHtml = renderArticleHtml(generatedArticle, topicData.author, topicData.category, heroImage);
-
-  const articlesDir = path.join(ROOT_DIR, 'articles');
-  if (!fs.existsSync(articlesDir)) {
-    fs.mkdirSync(articlesDir, { recursive: true });
-  }
 
   const outputPath = path.join(articlesDir, `${generatedArticle.slug}.html`);
   fs.writeFileSync(outputPath, fullHtml, 'utf8');

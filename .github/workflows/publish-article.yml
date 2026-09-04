@@ -2,8 +2,7 @@ name: Automated Article Publishing Pipeline (Gemini AI + Google Drive)
 
 on:
   schedule:
-    # Runs every Tuesday and Friday at 08:00 UTC
-    - cron: '0 8 * * 2,5'
+    - cron: '0 */6 * * *'
   workflow_dispatch:
     inputs:
       topic:
@@ -56,7 +55,7 @@ jobs:
         run: |
           node scripts/publisher.js \
             --topic "${{ github.event.inputs.topic || '' }}" \
-            --category "${{ github.event.inputs.category || 'news' }}"
+            --category "${{ github.event.inputs.category || '' }}"
 
       - name: Configure Git Committer
         run: |
