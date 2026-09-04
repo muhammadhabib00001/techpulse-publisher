@@ -1258,7 +1258,15 @@ function updateSiteIndex(articleData, author, category, heroImage) {
             const sideListIdx = indexHtml.indexOf(catSideListTag, nextPatternAIndex);
             if (sideListIdx !== -1) {
               const afterSideList = sideListIdx + catSideListTag.length;
-              indexHtml = indexHtml.slice(0, afterSideList) + '\n' + prevCatSideSnippet + indexHtml.slice(afterSideList);
+              // Clean out the empty placeholder message if present in this side list
+              const sideEndIdx = indexHtml.indexOf('</div>', afterSideList);
+              if (sideEndIdx !== -1) {
+                const sideBlock = indexHtml.slice(afterSideList, sideEndIdx);
+                const cleanedSideBlock = sideBlock.replace(/<p style="color: var\(--text-muted\); padding: 2rem 1rem;[^>]*>Headline feed ready for new publications\.<\/p>/i, '').trim();
+                indexHtml = indexHtml.slice(0, afterSideList) + '\n' + prevCatSideSnippet + (cleanedSideBlock ? '            ' + cleanedSideBlock + '\n          ' : '          ') + indexHtml.slice(sideEndIdx);
+              } else {
+                indexHtml = indexHtml.slice(0, afterSideList) + '\n' + prevCatSideSnippet + indexHtml.slice(afterSideList);
+              }
             }
           }
           console.log(`[INFO] Updated main card in ${targetLabel} section on Homepage!`);
