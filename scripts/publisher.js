@@ -39,6 +39,82 @@ const GEMINI_API_KEY      = process.env.GEMINI_API_KEY || DEFAULT_GEM_KEY;
 const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY || 'rug2wxB71o1mh5kYy_K6kJVLxXZ6CA2apSHUrGqZYLk';
 const CUSTOM_TOPIC        = (CLI_ARGS.topic && typeof CLI_ARGS.topic === 'string') ? CLI_ARGS.topic.trim() : (process.env.CUSTOM_TOPIC || '');
 const TARGET_CATEGORY     = (CLI_ARGS.category && typeof CLI_ARGS.category === 'string') ? CLI_ARGS.category.toLowerCase().trim() : (process.env.TARGET_CATEGORY || '').toLowerCase().trim();
+const GOOGLE_DRIVE_FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID || '';
+const GCP_CREDENTIALS_JSON   = process.env.GCP_CREDENTIALS_JSON || '';
+
+/**
+ * Checks Google Drive folder for any topic brief / document / text file
+ * Returns { topic, category } or null if none found or credentials not configured
+ */
+async function fetchGoogleDriveBrief() {
+  if (!GOOGLE_DRIVE_FOLDER_ID || !GCP_CREDENTIALS_JSON) {
+    return null;
+  }
+
+  try {
+    const { google } = require('googleapis');
+    let creds;
+    try {
+      creds = JSON.parse(GCP_CREDENTIALS_JSON);
+    } catch (e) {
+      console.warn('[WARN] GCP_CREDENTIALS_JSON could not be parsed as JSON.');
+      return null;
+    }
+
+    const auth = new google.auth.GoogleAuth({
+      credentials: creds,
+      scopes: ['https://www.googleapis.com/auth/drive.readonly']
+    });
+
+    const drive = google.drive({ version: 'v3', auth });
+    console.log(`[INFO] Checking Google Drive folder (${GOOGLE_DRIVE_FOLDER_ID}) for topic briefs...`);
+
+    const res = await drive.files.list({
+      q: `'${GOOGLE_DRIVE_FOLDER_ID}' in parents and trashed = false`,
+      fields: 'files(id, name, mimeType, modifiedTime)',
+      orderBy: 'modifiedTime desc',
+      pageSize: 10
+    });
+
+    const files = res.data.files;
+    if (!files || files.length === 0) {
+      console.log('[INFO] No files found in Google Drive folder.');
+      return null;
+    }
+
+    for (const file of files) {
+      let fileTitle = file.name.replace(/\.[^/.]+$/, '').trim();
+      let fileContent = '';
+
+      if (file.mimeType === 'application/vnd.google-apps.document') {
+        const docRes = await drive.files.export({
+          fileId: file.id,
+          mimeType: 'text/plain'
+        });
+        fileContent = typeof docRes.data === 'string' ? docRes.data : '';
+      } else if (file.mimeType.startsWith('text/')) {
+        const textRes = await drive.files.get({
+          fileId: file.id,
+          alt: 'media'
+        });
+        fileContent = typeof textRes.data === 'string' ? textRes.data : '';
+      }
+
+      const rawTopic = fileTitle || fileContent.split('\n')[0].trim();
+      if (rawTopic && rawTopic.length > 5) {
+        console.log(`[SUCCESS] Retrieved topic brief from Google Drive file "${file.name}": "${rawTopic}"`);
+        return {
+          topic: rawTopic,
+          briefContent: fileContent
+        };
+      }
+    }
+  } catch (err) {
+    console.warn(`[WARN] Google Drive integration check: ${err.message}`);
+  }
+
+  return null;
+}
 
 
 const AUTHORS = {
@@ -1452,8 +1528,20 @@ async function main() {
 
   const author = AUTHORS[cat] || AUTHORS.news;
 
-  // Determine topic: if custom topic provided, use it; otherwise pick an unwritten topic from the pool
+  // Determine topic:
+  // 1. Manual CLI argument (--topic)
   let topic = CUSTOM_TOPIC.trim();
+
+  // 2. Google Drive Folder check (if configured)
+  if (!topic) {
+    const driveBrief = await fetchGoogleDriveBrief();
+    if (driveBrief && driveBrief.topic) {
+      topic = driveBrief.topic;
+      console.log(`[DRIVE-SYNC] Using article topic from Google Drive brief: "${topic}"`);
+    }
+  }
+
+  // 3. Dynamic rotating topic pool fallback
   if (!topic) {
     const pool = DEFAULT_TOPIC_POOL[cat] || DEFAULT_TOPIC_POOL.news;
     // Find an unwritten topic by checking existing files
