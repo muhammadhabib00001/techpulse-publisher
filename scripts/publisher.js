@@ -1321,6 +1321,75 @@ function updateSiteIndex(articleData, author, category, heroImage) {
       console.log(`[INFO] Added ${articleData.slug} to ${categoryFile}`);
     }
   }
+
+  // 4. Auto-update "Related Investigative Reports" in all existing articles and static pages
+  try {
+    const articlesDir = path.join(ROOT_DIR, 'articles');
+    if (fs.existsSync(articlesDir)) {
+      const artFiles = fs.readdirSync(articlesDir).filter(f => f.endsWith('.html'));
+      const allArts = [];
+      for (const f of artFiles) {
+        const h = fs.readFileSync(path.join(articlesDir, f), 'utf8');
+        const tMatch = h.match(/<title>([^<]+)<\/title>/);
+        let t = tMatch ? tMatch[1].replace(/\s*\|\s*GenAlphaMagazines.*$/, '').trim() : f.replace('.html', '');
+        const cMatch = h.match(/<meta property="article:section" content="([^"]+)"/) || h.match(/<span class="card-tag">([A-Z\s]+)(?:&bull;|•|&middot;|\s)+/);
+        let c = cMatch ? cMatch[1].trim().toUpperCase() : 'FEATURE';
+        allArts.push({ slug: f.replace('.html', ''), title: t, category: c });
+      }
+
+      // Update related block in all articles
+      for (const f of artFiles) {
+        const slug = f.replace('.html', '');
+        const artPath = path.join(articlesDir, f);
+        let h = fs.readFileSync(artPath, 'utf8');
+        const rel = allArts.filter(a => a.slug !== slug).slice(0, 5);
+        if (rel.length > 0 && h.includes('Related Investigative Reports & Department Features')) {
+          const items = rel.map(r => `<li><strong>${r.category}:</strong> <a href="./${r.slug}.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">${r.title}</a></li>`).join('\n            ');
+          const relBlock = `<div style="background: var(--bg-subtle); border-left: 4px solid var(--primary); padding: 1.25rem 1.5rem; margin: 2.5rem 0; border-radius: var(--radius-sm);">
+          <h4 style="color: var(--primary); margin-top: 0; font-size: 1.1rem; text-transform: uppercase;">Related Investigative Reports & Department Features</h4>
+          <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 0.75rem;">
+            Continue reading in-depth community coverage from GenAlphaMagazines:
+          </p>
+          <ul style="margin-left: 1.5rem; line-height: 1.8; font-size: 0.95rem;">
+            ${items}
+          </ul>
+        </div>`;
+          h = h.replace(/<div style="background: var\(--bg-subtle\); border-left: 4px solid var\(--primary\);[\s\S]*?Related Investigative Reports & Department Features[\s\S]*?<\/ul>\s*<\/div>/, relBlock);
+          fs.writeFileSync(artPath, h, 'utf8');
+        }
+      }
+
+      // Update static pages in pages/
+      const pagesDir = path.join(ROOT_DIR, 'pages');
+      if (fs.existsSync(pagesDir)) {
+        const pageFiles = fs.readdirSync(pagesDir).filter(f => f.endsWith('.html'));
+        const pageItemsHtml = allArts.map(r => {
+          let catFile = 'category-news.html';
+          const cLower = r.category.toLowerCase();
+          if (cLower.includes('business')) catFile = 'category-business.html';
+          else if (cLower.includes('community')) catFile = 'category-community.html';
+          else if (cLower.includes('arts')) catFile = 'category-arts.html';
+          else if (cLower.includes('life')) catFile = 'category-lifestyle.html';
+          else if (cLower.includes('voice')) catFile = 'category-voices.html';
+          return `<li><a href="../${catFile}" style="color: var(--primary); font-weight: 700; text-decoration: underline;">${r.category}</a> &ndash; Read <a href="../articles/${r.slug}.html" style="color: var(--primary); font-weight: 600; text-decoration: underline;">${r.title}</a></li>`;
+        }).join('\n              ');
+
+        for (const pf of pageFiles) {
+          const pagePath = path.join(pagesDir, pf);
+          let pHtml = fs.readFileSync(pagePath, 'utf8');
+          if (pHtml.includes('Explore Related Publications & Department Channels')) {
+            const oldListRegex = /<ul style="margin-left: 1\.5rem; line-height: 1\.8; font-size: 0\.95rem;">[\s\S]*?<\/ul>/;
+            const newList = `<ul style="margin-left: 1.5rem; line-height: 1.8; font-size: 0.95rem;">\n              ${pageItemsHtml}\n            </ul>`;
+            pHtml = pHtml.replace(oldListRegex, newList);
+            fs.writeFileSync(pagePath, pHtml, 'utf8');
+          }
+        }
+      }
+      console.log(`[INFO] Synced Related Reports across all articles and static pages!`);
+    }
+  } catch (err) {
+    console.warn(`[WARN] Could not sync related articles: ${err.message}`);
+  }
 }
 
 async function main() {
