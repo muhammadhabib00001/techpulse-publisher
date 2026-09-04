@@ -592,8 +592,8 @@ WRITING STYLE RULES (follow strictly):
 4. STRUCTURE: Provide 6 sections:
    - Section 1: Introduction (heading = ""). 2 to 3 engaging paragraphs with optional <h3> sub-topics.
    - Sections 2-4: Practical topic-specific aspects. Each has a clear descriptive heading (e.g. "Terminal Layout Explained", "Cost Breakdown & Installation"), NOT generic names.
-   - Section 5: "Final Thoughts & Key Takeaways" (heading = "Final Thoughts" or similar topic-relevant conclusion). Thorough wrap-up with practical recommendations.
-   - Section 6: "Frequently Asked Questions" (id: "frequently-asked-questions", heading = "Frequently Asked Questions"). In contentHtml, provide ONLY a 1-sentence friendly lead (e.g. "Here are answers to the most common questions about..."). Do NOT write questions, answers, or Final Thoughts inside section 6 contentHtml because the 5 Q&A cards are rendered automatically from the "faqs" JSON field!
+   - Section 5: Must have heading EXACTLY "Final Thoughts" (id: "final-thoughts", heading: "Final Thoughts"). Thorough wrap-up with practical recommendations and key takeaways.
+   - Section 6: "Frequently Asked Questions" (id: "frequently-asked-questions", heading: "Frequently Asked Questions"). In contentHtml, provide ONLY a 1-sentence friendly lead (e.g. "Here are answers to the most common questions about..."). Do NOT write questions, answers, or Final Thoughts inside section 6 contentHtml because the 5 Q&A cards are rendered automatically from the "faqs" JSON field!
    - Provide exactly 5 distinct Q&A pairs in the "faqs" array.
 5. SUBHEADINGS: Within each section's contentHtml, use <h3> tags for sub-topics.
 6. BULLETS & LISTS: Use <ul> or <ol> with <li> tags for concrete tips and steps.
