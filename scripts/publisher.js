@@ -465,55 +465,75 @@ function buildImageResult(filename, localPath, topic) {
 // DYNAMIC TARGET-KEYWORD INTERNAL LINKING ENGINE
 function getInternalLinkMap() {
   const linkMap = [
-    // Core Categories
+    // Core Categories & Utility Pages (high-frequency editorial anchors)
     { keyword: 'Business & Economy', url: '../category-business.html' },
-    { keyword: 'Community & Events', url: '../category-community.html' },
+    { keyword: 'commercial revitalization', url: '../category-business.html' },
+    { keyword: 'business management', url: '../category-business.html' },
+    { keyword: 'local businesses', url: '../category-business.html' },
     { keyword: 'Arts & Entertainment', url: '../category-arts.html' },
+    { keyword: 'cultural storytelling', url: '../category-arts.html' },
+    { keyword: 'visual storytelling', url: '../category-arts.html' },
+    { keyword: 'performing arts', url: '../category-arts.html' },
     { keyword: 'Lifestyle & Culture', url: '../category-lifestyle.html' },
+    { keyword: 'modern lifestyle', url: '../category-lifestyle.html' },
     { keyword: 'News & Announcements', url: '../category-news.html' },
+    { keyword: 'investigative reporting', url: '../category-news.html' },
+    { keyword: 'Community & Events', url: '../category-community.html' },
+    { keyword: 'civic community', url: '../category-community.html' },
     { keyword: 'Voices & Columnists', url: '../category-voices.html' },
     { keyword: 'Editorial Policy', url: '../pages/editorial-policy.html' },
     { keyword: 'Editorial Standards', url: '../pages/editorial-policy.html' },
 
-    // High-Frequency Cross-Article Contextual Keywords
-    { keyword: 'electric vehicle charging', url: '../articles/electric-vehicle-charging-stations-guide.html' },
-    { keyword: 'EV charging stations', url: '../articles/electric-vehicle-charging-stations-guide.html' },
-    { keyword: 'charging infrastructure', url: '../articles/electric-vehicle-charging-stations-guide.html' },
-    { keyword: 'battery lifespan', url: '../articles/smartphone-battery-life-tips-complete-practical-guide.html' },
-    { keyword: 'battery life tips', url: '../articles/smartphone-battery-life-tips-complete-practical-guide.html' },
-    { keyword: 'battery life', url: '../articles/smartphone-battery-life-tips-complete-practical-guide.html' },
-    { keyword: 'smartphone battery', url: '../articles/smartphone-battery-life-tips-complete-practical-guide.html' },
-    { keyword: 'charging cycles', url: '../articles/smartphone-battery-life-tips-complete-practical-guide.html' },
-    { keyword: 'power supply', url: '../articles/ups-battery-guide-choosing-replacing-and-care-tips.html' },
-    { keyword: 'backup power', url: '../articles/ups-battery-guide-choosing-replacing-and-care-tips.html' },
-    { keyword: 'power surges', url: '../articles/ups-battery-guide-choosing-replacing-and-care-tips.html' },
-    { keyword: 'clean energy transition', url: '../articles/regional-clean-energy-transition-and-solar-farm-initiatives-in-2026.html' },
-    { keyword: 'clean energy', url: '../articles/regional-clean-energy-transition-and-solar-farm-initiatives-in-2026.html' },
-    { keyword: 'solar arrays', url: '../articles/energy-efficient-home-modernization.html' },
-    { keyword: 'heat pumps', url: '../articles/energy-efficient-home-modernization.html' },
-    { keyword: 'commercial revitalization', url: '../articles/main-street-commercial-revitalization.html' },
-    { keyword: 'small business vitality', url: '../articles/main-street-commercial-revitalization-small-businesses-thriving-in-2026.html' },
-    { keyword: 'small businesses', url: '../articles/main-street-commercial-revitalization.html' },
-    { keyword: 'waterfront heritage festival', url: '../articles/annual-waterfront-heritage-festival.html' },
-    { keyword: 'independent theater', url: '../articles/spotlight-on-independent-theater.html' },
-    { keyword: 'zero trust cloud security', url: '../articles/zero-trust-cloud-security.html' },
-    { keyword: 'cloud security', url: '../articles/zero-trust-cloud-security.html' },
-    { keyword: 'quantum cryptography', url: '../articles/post-quantum-cryptography-implementation-in-cloud-storage.html' },
-    { keyword: 'web performance', url: '../articles/web-performance-inp-guide.html' },
-    { keyword: 'INP optimization', url: '../articles/web-performance-inp-guide.html' },
-    { keyword: 'Atlanta Airport', url: '../articles/atlanta-airport-atl-guide-terminals-layovers-and-everything-to-know.html' },
-    { keyword: 'airport layover', url: '../articles/atlanta-airport-atl-guide-terminals-layovers-and-everything-to-know.html' },
-    { keyword: 'airports guide', url: '../articles/airports.html' },
-    { keyword: 'agentic AI workflows', url: '../articles/agentic-ai-workflows-2026.html' },
-    { keyword: 'autonomous agent', url: '../articles/autonomous-agent-architectures.html' },
-    { keyword: 'artificial intelligence', url: '../articles/artificial-intelligence.html' },
-    { keyword: 'crypto news', url: '../articles/crypto-news.html' },
-    { keyword: 'finance jobs', url: '../articles/finance-jobs.html' },
-    { keyword: 'outdoor recreation', url: '../articles/outdoor-recreation.html' },
-    { keyword: 'municipal election', url: '../articles/municipal-election-analysis.html' },
-    { keyword: 'economic sanctions', url: '../articles/trump-vs-iran-tensions-policy-sanctions-and-risks.html' },
-    { keyword: 'international commerce', url: '../articles/trump-vs-iran-tensions-policy-sanctions-and-risks.html' },
-    { keyword: 'trade policy', url: '../articles/trump-vs-canada-trade-and-border-policies-explained.html' }
+    // Cross-Article Topic-Specific Semantic Anchors
+    // Cinema & Theater
+    { keyword: 'independent theater', url: '../articles/local-playwrights-guide-independent-theater-spotlight.html' },
+    { keyword: 'theatrical productions', url: '../articles/local-playwrights-guide-independent-theater-spotlight.html' },
+    { keyword: 'local playwrights', url: '../articles/local-playwrights-guide-independent-theater-spotlight.html' },
+    { keyword: 'cinematic works', url: '../articles/cinematic-masterpieces-unforgettable-films-centering-women.html' },
+    { keyword: 'female-centered cinema', url: '../articles/cinematic-masterpieces-unforgettable-films-centering-women.html' },
+    { keyword: 'contemporary filmmakers', url: '../articles/cinematic-masterpieces-unforgettable-films-centering-women.html' },
+
+    // Smart Home, Tech & Energy
+    { keyword: 'smart home technology', url: '../articles/smart-home-energy-audits-heat-pump-and-solar-storage.html' },
+    { keyword: 'energy efficiency', url: '../articles/smart-home-energy-audits-heat-pump-and-solar-storage.html' },
+    { keyword: 'energy-efficient', url: '../articles/smart-home-energy-audits-heat-pump-and-solar-storage.html' },
+    { keyword: 'heat pump', url: '../articles/smart-home-energy-audits-heat-pump-and-solar-storage.html' },
+    { keyword: 'home energy audit', url: '../articles/smart-home-energy-audits-heat-pump-and-solar-storage.html' },
+    { keyword: 'battery storage', url: '../articles/solar-battery-storage-guide-costs-types-and-savings.html' },
+    { keyword: 'solar battery systems', url: '../articles/solar-battery-storage-guide-costs-types-and-savings.html' },
+    { keyword: 'backup power', url: '../articles/solar-battery-storage-guide-costs-types-and-savings.html' },
+    { keyword: 'clean energy transition', url: '../articles/smart-home-energy-audits-heat-pump-and-solar-storage.html' },
+    { keyword: 'clean energy', url: '../articles/smart-home-energy-audits-heat-pump-and-solar-storage.html' },
+
+    // Business & Retail Vitality
+    { keyword: 'Main Street businesses', url: '../articles/main-street-business-revitalization-guide-for-2026.html' },
+    { keyword: 'retail foot traffic', url: '../articles/main-street-business-revitalization-guide-for-2026.html' },
+    { keyword: 'small businesses', url: '../articles/main-street-business-revitalization-guide-for-2026.html' },
+    { keyword: 'business operations', url: '../articles/how-to-run-a-business-in-2026-a-complete-guide.html' },
+    { keyword: 'operational resilience', url: '../articles/how-to-run-a-business-in-2026-a-complete-guide.html' },
+
+    // Finance & Economics
+    { keyword: 'interest rates', url: '../articles/fomc-meeting-sept-2026-interest-rates-and-market-outlook.html' },
+    { keyword: 'Federal Reserve', url: '../articles/fomc-meeting-sept-2026-interest-rates-and-market-outlook.html' },
+    { keyword: 'monetary policy', url: '../articles/fomc-meeting-sept-2026-interest-rates-and-market-outlook.html' },
+    { keyword: 'economic conditions', url: '../articles/fomc-meeting-sept-2026-interest-rates-and-market-outlook.html' },
+    { keyword: 'crypto regulations', url: '../articles/trump-crypto-policy-guide-2026-regulations-and-impact.html' },
+    { keyword: 'digital asset policy', url: '../articles/trump-crypto-policy-guide-2026-regulations-and-impact.html' },
+
+    // Travel & Transit
+    { keyword: 'travel disruptions', url: '../articles/how-to-handle-flight-delays-and-travel-disruptions.html' },
+    { keyword: 'flight delays', url: '../articles/how-to-handle-flight-delays-and-travel-disruptions.html' },
+    { keyword: 'travel planning', url: '../articles/common-travel-problems-and-solutions-a-complete-guide.html' },
+    { keyword: 'travel problems', url: '../articles/common-travel-problems-and-solutions-a-complete-guide.html' },
+
+    // Gaming, Defense, Community
+    { keyword: 'gaming industry', url: '../articles/gta-6-release-date-map-and-gameplay-guide.html' },
+    { keyword: 'next-gen gaming', url: '../articles/gta-6-release-date-map-and-gameplay-guide.html' },
+    { keyword: 'defense modernization', url: '../articles/us-army-modernization-strategy-tech-and-troop-structure.html' },
+    { keyword: 'troop structure', url: '../articles/us-army-modernization-strategy-tech-and-troop-structure.html' },
+    { keyword: 'heritage festival', url: '../articles/waterfront-heritage-festival-2026-record-artisan-lineup.html' },
+    { keyword: 'artisan lineup', url: '../articles/waterfront-heritage-festival-2026-record-artisan-lineup.html' },
+    { keyword: 'local artisans', url: '../articles/waterfront-heritage-festival-2026-record-artisan-lineup.html' }
   ];
 
   // Dynamically index all articles in articles directory for automatic cross-linking
@@ -524,16 +544,19 @@ function getInternalLinkMap() {
       for (const f of files) {
         const baseSlug = f.replace('.html', '');
         // Extract meaningful 2-3 word phrases from slug
-        const words = baseSlug.split('-').filter(w => w.length > 3 && !['guide', '2026', 'complete', 'practical'].includes(w));
+        const words = baseSlug.split('-').filter(w => w.length > 3 && !['guide', '2026', 'complete', 'practical', 'tips'].includes(w));
         if (words.length >= 2) {
-          const phrase = words.slice(0, 3).join(' ');
-          linkMap.push({ keyword: phrase, url: `../articles/${f}` });
+          linkMap.push({ keyword: words.slice(0, 3).join(' '), url: `../articles/${f}` });
+          linkMap.push({ keyword: words.slice(0, 2).join(' '), url: `../articles/${f}` });
         }
       }
     }
   } catch (err) {
     // Graceful fallback to static map
   }
+
+  // Sort linkMap by keyword length descending (longer, more specific phrases match first)
+  linkMap.sort((a, b) => (b.keyword || '').length - (a.keyword || '').length);
 
   return linkMap;
 }
@@ -819,9 +842,11 @@ WRITING STYLE RULES (follow strictly):
    - "across our regional communities"
    - Em-dash (—) and en-dash (–)
 8. CONTENT DEPTH: Minimum 1,200 words total across all sections.
-9. INTERNAL LINKING CONTEXT: Naturally mention related topics within paragraphs to enable contextual reading:
-   - For technology/lifestyle/hardware: naturally mention topics like "clean energy transition", "smart home technology", "battery life tips", "web performance", or "commercial equipment".
-   - For news/policy: naturally mention topics like "global energy markets", "international commerce", "civic developments", or "regional investments".
+9. INTERNAL LINKING CONTEXT (MANDATORY): Naturally weave relevant cross-topic terms into body paragraphs so readers can discover related departmental reporting:
+   - For arts, entertainment, and culture: naturally mention topics like "independent theater", "visual storytelling", "performing arts", "smart home technology", or "energy efficiency" in home theater and studio discussions.
+   - For technology, lifestyle, and home: naturally mention topics like "smart home technology", "clean energy transition", "energy efficiency", "battery storage", or "commercial equipment".
+   - For business, economy, and retail: naturally mention topics like "Main Street businesses", "retail foot traffic", "business operations", "interest rates", "monetary policy", or "Federal Reserve".
+   - For travel, news, and civic policy: naturally mention topics like "travel disruptions", "flight delays", "travel planning", "investigative reporting", or "crypto regulations".
 10. GOOGLE SEO POLICY FOR TITLE & HEADLINES (CRITICAL ANTI-REPETITION):
    - "title": Must be unique, fresh, journalistic, and under 60 characters.
    - STRICTLY FORBIDDEN TITLE PATTERNS:
@@ -857,7 +882,7 @@ TITLE & WORDING REQUIREMENTS:
 - Derive the slug directly from your unique title.
 - Do not use em-dashes and start directly with helpful, original analysis.
 - Write naturally: do NOT spam the number "2026" repeatedly in headings, paragraphs, or FAQs. Use natural terms like "today", "this season", or "current standards".
-- Ensure unique, topic-specific substance with concrete details, and naturally reference related cross-topic contexts like energy efficiency, digital performance, or market implications so internal links can connect seamlessly in body paragraphs (never in headings).`;
+- Ensure unique, topic-specific substance with concrete details, and naturally weave related cross-topic contexts into body paragraphs (e.g. independent theater, visual storytelling, smart home technology, energy efficiency, Main Street businesses, travel planning, or monetary policy) so internal links can connect seamlessly in body paragraphs (never in headings).`;
 
   if (GEMINI_API_KEY) {
     try {
