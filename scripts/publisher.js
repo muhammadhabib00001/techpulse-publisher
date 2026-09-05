@@ -322,29 +322,38 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
   // ─────────────────────────────────────────────────────────────
   if (UNSPLASH_ACCESS_KEY) {
     try {
-      // Build smart query candidates: full words, first 2 words, or core topic words
-      const words = topic.replace(/[^a-zA-Z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length > 1);
-      
-      // Topic-specific keyword enhancements
+      // Clean keywords from topic (strip filler words and stop words)
+      const stopWords = new Set(['the', 'and', 'for', 'with', 'about', 'how', 'why', 'what', 'when', 'where', 'from', 'into', 'over', 'after', 'under', 'through', 'centering', 'unforgettable']);
+      const topicWords = topic
+        .replace(/[^a-zA-Z0-9\s]/g, ' ')
+        .split(/\s+/)
+        .map(w => w.trim())
+        .filter(w => w.length > 2 && !stopWords.has(w.toLowerCase()));
+
+      // Topic-specific keyword enhancements locked strictly to context
       const expansions = [];
       const lowerTopic = topic.toLowerCase();
-      if (lowerTopic.includes('crypto') || lowerTopic.includes('bitcoin') || lowerTopic.includes('blockchain')) {
-        expansions.push('cryptocurrency', 'bitcoin blockchain', 'digital currency technology');
-      } else if (lowerTopic.includes('ups') || lowerTopic.includes('battery')) {
-        expansions.push('battery backup power', 'power supply computer', 'server battery');
-      } else if (lowerTopic.includes('iran')) {
-        expansions.push('Iran Middle East politics', 'Middle East diplomacy');
-      } else if (lowerTopic.includes('trump')) {
-        expansions.push('US politics capital', 'Washington DC government');
+      if (lowerTopic.includes('cinema') || lowerTopic.includes('film') || lowerTopic.includes('movie')) {
+        expansions.push('cinema film theater', 'movie cinema screen', 'film production camera');
+      } else if (lowerTopic.includes('crypto') || lowerTopic.includes('bitcoin') || lowerTopic.includes('blockchain')) {
+        expansions.push('cryptocurrency bitcoin', 'blockchain finance technology');
+      } else if (lowerTopic.includes('fed') || lowerTopic.includes('interest rate') || lowerTopic.includes('inflation') || lowerTopic.includes('monetary')) {
+        expansions.push('central bank economy finance', 'financial market interest rates');
+      } else if (lowerTopic.includes('ups') || lowerTopic.includes('battery') || lowerTopic.includes('power')) {
+        expansions.push('battery backup power technology', 'uninterruptible power supply hardware');
+      } else if (lowerTopic.includes('ai') || lowerTopic.includes('artificial intelligence') || lowerTopic.includes('machine learning')) {
+        expansions.push('artificial intelligence computer hardware', 'machine learning data technology');
+      } else if (lowerTopic.includes('journalism') || lowerTopic.includes('news') || lowerTopic.includes('press')) {
+        expansions.push('journalism newspaper printing press', 'newsroom press conference');
       }
 
+      // Strictly keyword-focused candidate queries: never broad single words, never category alone
       const queryCandidates = [
-        words.slice(0, 3).join(' '),
-        words.slice(0, 2).join(' '),
         ...expansions,
-        words[0],
-        category
-      ].filter(q => q && q.trim().length >= 3);
+        topicWords.slice(0, 4).join(' '),
+        topicWords.slice(0, 3).join(' '),
+        topicWords.slice(0, 2).join(' ')
+      ].filter(q => q && q.trim().length >= 4);
 
       for (const query of queryCandidates) {
         console.log(`[INFO] Layer 2: Searching Unsplash for "${query}"...`);
@@ -380,16 +389,46 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
   }
 
   // ─────────────────────────────────────────────────────────────
-  // LAYER 3: Curated direct Unsplash photo IDs — reliable fallback
+  // LAYER 3: Curated direct Unsplash photo IDs — topic-relevant fallback
   // ─────────────────────────────────────────────────────────────
   console.log(`[INFO] Layer 3: Using curated fallback photo...`);
   const FALLBACK_POOLS = {
-    business: ['1486406146926-c627a92ad1ab', '1454165804606-c3d57bc86b40', '1556742049-0a67e557224f', '1507679799987-c73779587ccf', '1560472354-b33ff0ad5111'],
-    news:     ['1540910419892-4a36d2c3266c', '1570125909232-eb263c188f7e', '1504711434969-e33886168f5c', '1585829365295-ab7cd400c167', '1434030216411-0b793f4b6db9'],
-    community:['1511578314322-379afb476865', '1559027615-cd4628902d4a', '1529156069898-49953e39b3ac', '1475483768296-75f5e5f55b8a', '1522202176988-66273c2fd55f'],
-    arts:     ['1507676184212-d03ab07a01bf', '1460661419201-fd4cecdf8a8b', '1578321272125-162a75be7e28', '1513364776144-60967b0f800f', '1520166012930-4b4ce4a6a59e'],
-    lifestyle:['1513694203232-719a280e022f', '1500382017468-9049fed747ef', '1505691938895-1758d7feb511', '1496181133206-80ce9b88a853', '1484480974693-6ca0a78fb36b'],
-    voices:   ['1529156069898-49953e39b3ac', '1455390582262-044cdead277a', '1504711434969-e33886168f5c', '1434030216411-0b793f4b6db9', '1507003211169-0a1dd7228f2d']
+    business: [
+      '1486406146926-c627a92ad1ab', // Financial district skyscrapers
+      '1454165804606-c3d57bc86b40', // Analytics and laptop charts
+      '1556742049-0a67e557224f', // Commerce payment
+      '1590283603385-17ffb3a7f29f'  // Stock market charts
+    ],
+    news: [
+      '1504711434969-e33886168f5c', // Newspaper headline reading
+      '1585829365295-ab7cd400c167', // News press media room
+      '1526470608268-f674ce90ebd4', // Breaking news control board
+      '1495020689067-958852a7765e'  // Stacks of newspapers
+    ],
+    community: [
+      '1511578314322-379afb476865', // Community gathering
+      '1559027615-cd4628902d4a', // Neighborhood collaboration
+      '1529156069898-49953e39b3ac', // Diverse smiling group
+      '1522202176988-66273c2fd55f'  // Workshop teamwork
+    ],
+    arts: [
+      '1489599849927-2ee91cede3ba', // Cinema theater red auditorium seats
+      '1478720568477-152d9b164e26', // Film projector beam in dark cinema
+      '1517604931442-7e0c8ed2963c', // Cinema auditorium screen
+      '1460661419201-fd4cecdf8a8b'  // Artist palette and brushes
+    ],
+    lifestyle: [
+      '1500382017468-9049fed747ef', // Quiet morning coffee and journal
+      '1505691938895-1758d7feb511', // Peaceful interior minimalist home
+      '1496181133206-80ce9b88a853', // Outdoor park and nature walk
+      '1484480974693-6ca0a78fb36b'  // Mindful workspace and checklist
+    ],
+    voices: [
+      '1504711434969-e33886168f5c', // Editorial journalism press
+      '1529156069898-49953e39b3ac', // Community perspectives
+      '1455390582262-044cdead277a', // Writer notebook and fountain pen
+      '1511578314322-379afb476865'  // Town hall assembly
+    ]
   };
 
   const pool = FALLBACK_POOLS[category] || FALLBACK_POOLS.business;
