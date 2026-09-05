@@ -598,6 +598,48 @@ function injectInternalLinks(htmlContent, currentSlug) {
   return protectedHtml;
 }
 
+/**
+ * Enforces a strict minimum of internal links in the article body.
+ * If natural keyword injection yielded fewer than 3 links, this helper appends
+ * contextual recommendations to reach the mandatory 3-5 internal link threshold.
+ */
+function enforceMinimumInternalLinks(sectionsHtml, currentSlug, minRequired = 3) {
+  const existingMatches = sectionsHtml.match(/<a\s+[^>]*href=["'](?:\.\.\/|\.\/|\/)?(?:articles\/|category-)[^"']+["'][^>]*>/gi) || [];
+  const currentCount = existingMatches.length;
+
+  if (currentCount >= minRequired) {
+    return sectionsHtml;
+  }
+
+  // Need additional links to meet requirement
+  const needed = minRequired - currentCount;
+  const linkMap = getInternalLinkMap().filter(item => !item.url.includes(currentSlug));
+  
+  // Find candidates not yet linked in sectionsHtml
+  const unusedCandidates = linkMap.filter(item => !sectionsHtml.includes(item.url));
+  const selected = unusedCandidates.slice(0, needed);
+
+  if (selected.length === 0) return sectionsHtml;
+
+  const fallbackRecommendations = selected.map(item => {
+    const cleanLabel = item.keyword.charAt(0).toUpperCase() + item.keyword.slice(1);
+    return `<a href="${item.url}" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cleanLabel}">${cleanLabel}</a>`;
+  });
+
+  const injectionBlock = `
+          <div style="background: var(--bg-card); border-left: 3px solid var(--primary); padding: 0.9rem 1.25rem; margin: 1.5rem 0; font-size: 0.95rem; border-radius: 4px;">
+            <strong>Department Insights:</strong> Explore complementary perspectives and analysis on ${fallbackRecommendations.join(', and ')}.
+          </div>`;
+
+  // Inject before the last closing </section> or before </article>
+  const lastSectionIdx = sectionsHtml.lastIndexOf('</section>');
+  if (lastSectionIdx !== -1) {
+    return sectionsHtml.slice(0, lastSectionIdx) + injectionBlock + '\n' + sectionsHtml.slice(lastSectionIdx);
+  }
+
+  return sectionsHtml + injectionBlock;
+}
+
 async function callGoogleAIStudio(apiKey, prompt, systemInstruction) {
   const modelsToTry = ['gemini-flash-latest', 'gemini-3.6-flash', 'gemini-3.5-flash'];
   let lastError = null;
@@ -1042,6 +1084,9 @@ function renderArticleHtml(articleData, author, category, heroImage) {
     return finalThoughtsBlock ? `${finalThoughtsBlock}\n${currentSectionHtml}` : currentSectionHtml;
   }).join('\n');
 
+  // Hard SEO Guarantee: Never publish an article with fewer than 3 internal links
+  const guaranteedSectionsHtml = enforceMinimumInternalLinks(sectionsHtml, articleData.slug, 3);
+
   // Render visible FAQ section if FAQs exist and not already present in contentHtml
   let visibleFaqHtml = '';
   if (articleData.faqs && articleData.faqs.length > 0) {
@@ -1231,8 +1276,8 @@ function renderArticleHtml(articleData, author, category, heroImage) {
         </figure>
 
         <div class="article-body">
-          ${sectionsHtml}
-          ${sectionsHtml.includes('id="frequently-asked-questions"') ? '' : visibleFaqHtml}
+          ${guaranteedSectionsHtml}
+          ${guaranteedSectionsHtml.includes('id="frequently-asked-questions"') ? '' : visibleFaqHtml}
         </div>
 
         <!-- Related Department Stories -->
