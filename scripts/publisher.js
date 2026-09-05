@@ -854,13 +854,29 @@ function renderArticleHtml(articleData, author, category, heroImage) {
   const currentDate = new Date().toISOString().split('T')[0];
   const dateFormatted = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
-  // Clean title and meta without em/en dashes
-  const cleanTitle = (articleData.title || '').replace(/[—–]/g, ': ').replace(/\s+/g, ' ').trim();
+  // Clean title: strip em-dashes and strictly remove boilerplate endings
+  let cleanTitle = (articleData.title || '')
+    .replace(/[—–]/g, ': ')
+    .replace(/:\s*A Complete Guide/gi, '')
+    .replace(/:\s*Complete Practical Guide/gi, '')
+    .replace(/\s+Guide for 2026/gi, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  // If title was stripped of ending colon
+  cleanTitle = cleanTitle.replace(/:\s*$/, '').trim();
+
   const cleanMeta = (articleData.metaDescription || '').replace(/[—–]/g, ', ').replace(/\s+/g, ' ').trim();
 
   const sectionsHtml = articleData.sections.map((sec, idx) => {
     let rawContent = (sec.contentHtml || '').replace(/[—–]/g, ', ');
     let enrichedContent = injectInternalLinks(rawContent, articleData.slug);
+
+    // Safeguard: Ensure no headings inside enrichedContent contain <a> links
+    enrichedContent = enrichedContent.replace(/(<h[1-6][^>]*>)[\s\S]*?(<\/h[1-6]>)/gi, (fullMatch, openTag, closeTag) => {
+      const strippedText = fullMatch.replace(/<a\s+[^>]*>([\s\S]*?)<\/a>/gi, '$1');
+      return strippedText;
+    });
     let adBlock = '';
     if (idx === 1 || idx === 3) {
       adBlock = `
