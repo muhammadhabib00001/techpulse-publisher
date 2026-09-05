@@ -119,15 +119,17 @@ async function fetchGoogleDriveBrief() {
 
 const AUTHORS = {
   news: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Editor-in-Chief & Civic Affairs Correspondent', initials: 'MR' },
-  business: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Editor-in-Chief & Civic Affairs Correspondent', initials: 'MR' },
-  lifestyle: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Editor-in-Chief & Civic Affairs Correspondent', initials: 'MR' },
-  community: { name: 'Julia Vance', slug: 'julia-vance', role: 'Managing Editor & Arts Lead', initials: 'JV' },
-  arts: { name: 'Julia Vance', slug: 'julia-vance', role: 'Managing Editor & Arts Lead', initials: 'JV' },
-  voices: { name: 'Julia Vance', slug: 'julia-vance', role: 'Managing Editor & Arts Lead', initials: 'JV' }
+  business: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Senior Business & Financial Editor', initials: 'MR' },
+  celebrity: { name: 'Julia Vance', slug: 'julia-vance', role: 'Culture & Entertainment Columnist', initials: 'JV' },
+  entertainment: { name: 'Julia Vance', slug: 'julia-vance', role: 'Managing Editor & Arts Lead', initials: 'JV' },
+  games: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Senior Tech & Gaming Correspondent', initials: 'MR' },
+  health: { name: 'Julia Vance', slug: 'julia-vance', role: 'Health & Wellness Contributor', initials: 'JV' },
+  technology: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Technology & Innovation Editor', initials: 'MR' },
+  others: { name: 'Julia Vance', slug: 'julia-vance', role: 'Managing Editor & Community Lead', initials: 'JV' }
 };
 
 // High-Volume (50k+ searches/mo) & Low Keyword Difficulty (KD < 30) Curated Editorial Topic Pool
-// Categories aligned with GenAlphaMagazines: news, business, community, arts, lifestyle, voices
+// Categories strictly locked to Spot Magazine categories: Business, Celebrity, Entertainment, Games, Health, News, Technology, Others
 const DEFAULT_TOPIC_POOL = {
   news: [
     // Keyword: 'student loan forgiveness' (Vol: 450K+, KD: 26)
@@ -138,74 +140,84 @@ const DEFAULT_TOPIC_POOL = {
     'Federal Reserve Rate Decisions: What Shifting Benchmark Yields Mean for Borrowers',
     // Keyword: 'electric vehicle incentives' (Vol: 65K+, KD: 25)
     'Electric Vehicle Tax Credits: Income Limits and Qualified Models Breakdown',
-    // Keyword: 'mortgage interest rate forecast' (Vol: 80K+, KD: 28)
-    'Mortgage Interest Rate Trends: Housing Market Forecast and Homebuyer Advice',
-    // Keyword: 'first time home buyer programs' (Vol: 110K+, KD: 27)
-    'First-Time Homebuyer Assistance Programs: Down Payment Grants and Qualifications',
-    // Keyword: 'passport renewal processing time' (Vol: 160K+, KD: 19)
-    'Expedited Passport Renewal: Real Processing Times, Fees, and Online Filing Steps'
+    // Keyword: 'va disability pay chart' (Vol: 250K+, KD: 21)
+    'VA Disability Pay Rates: Benefit Tiers and Cost of Living Adjustments',
+    // Keyword: 'usps passport appointment' (Vol: 180K+, KD: 23)
+    'Passport Appointment Scheduling: Required Documents and Expedited Processing Windows'
   ],
   business: [
-    // Keyword: 'high yield savings accounts' (Vol: 350K+, KD: 28)
-    'Best High-Yield Savings Accounts: Comparing APYs, Minimums, and Federal Insurance',
-    // Keyword: 'starting a business checklist' (Vol: 75K+, KD: 21)
-    'How to Start an LLC: Filing Steps, State Fees, and Operating Agreement Essentials',
-    // Keyword: 'business credit card for new business' (Vol: 60K+, KD: 27)
-    'Building Small Business Credit: Top Cards for Cash Flow Management Without Personal Guarantees',
-    // Keyword: 'commercial real estate lease' (Vol: 50K+, KD: 23)
-    'Commercial Lease Negotiation: Protecting Your Brick-and-Mortar Retail Margins',
-    // Keyword: 'inventory management software for small business' (Vol: 55K+, KD: 22)
-    'Small Business Inventory Automation: Eliminating Stockouts with Modern POS Systems',
-    // Keyword: 'small business grants for women and minorities' (Vol: 85K+, KD: 24)
-    'Federal and Private Small Business Grants: Application Strategies That Win Funding',
-    // Keyword: 'best accounting software for small business' (Vol: 95K+, KD: 29)
-    'Automating Bookkeeping: Best Cloud Accounting Tools for Growing Companies'
+    // Keyword: 'small business administration loans' (Vol: 90K+, KD: 25)
+    'SBA Loan Requirements: Application Timelines, Down Payments, and Approval Rates',
+    // Keyword: 'how to start an llc' (Vol: 350K+, KD: 28)
+    'Forming an LLC: Step-by-Step State Registration, Operating Agreements, and Tax Classification',
+    // Keyword: 'commercial property loans' (Vol: 60K+, KD: 24)
+    'Securing Commercial Property Mortgages: Debt Service Ratios and Lender Terms',
+    // Keyword: 'high yield savings accounts business' (Vol: 75K+, KD: 22)
+    'Business Cash Management: Maximizing Treasury Yields with Protected Accounts',
+    // Keyword: 'freelance invoice templates' (Vol: 65K+, KD: 18)
+    'Streamlining Freelance Invoicing: Net Terms, Payment Gateways, and Retainer Contracts'
   ],
-  lifestyle: [
-    // Keyword: 'heat pump tax credit' (Vol: 90K+, KD: 21)
-    'Federal Heat Pump Rebates and Credits: Maximizing Efficiency While Slashing Utility Bills',
-    // Keyword: 'solar panel battery storage cost' (Vol: 70K+, KD: 25)
-    'Whole-Home Battery Storage: Actual Costs, Payback Periods, and Peak-Rate Savings',
-    // Keyword: 'home energy audit checklist' (Vol: 50K+, KD: 18)
-    'DIY Home Energy Audit: Pinpointing Air Leaks, Insulation Gaps, and Power Drain',
-    // Keyword: 'indoor hydroponic garden' (Vol: 80K+, KD: 22)
-    'Indoor Hydroponic Gardening: Setting Up Compact Systems for Year-Round Greens',
-    // Keyword: 'home office ergonomics setup' (Vol: 65K+, KD: 20)
-    'Ergonomic Workstation Setup: Desk Height, Chair Posture, and Reducing Fatigue',
-    // Keyword: 'ev charging stations near me' (Vol: 200K+, KD: 24)
-    'Road Tripping in an Electric Vehicle: Planning High-Speed Charging Across Major Corridors',
-    // Keyword: 'wifi 7 router setup' (Vol: 60K+, KD: 26)
-    'Upgrading to Wi-Fi 7: Mesh Network Coverage, Real Latency Gains, and Device Support'
+  celebrity: [
+    // Keyword: 'red carpet fashion trends' (Vol: 75K+, KD: 21)
+    'Red Carpet Fashion Trends: Haute Couture Highlights and Behind-the-Scenes Stylists',
+    // Keyword: 'celebrity memoirs release dates' (Vol: 55K+, KD: 19)
+    'Anticipated Celebrity Memoirs: Candid Life Stories, Hollywood Reflections, and Literary Debuts',
+    // Keyword: 'method acting documentary' (Vol: 60K+, KD: 23)
+    'Transformative Roles: How Leading Film Actors Prepare for Deep Character Portrayals',
+    // Keyword: 'film festival award winners' (Vol: 85K+, KD: 24)
+    'Film Festival Standouts: Breakout Directors, Star Tributes, and Independent Cinema Honors',
+    // Keyword: 'celebrity philanthropic foundations' (Vol: 50K+, KD: 17)
+    'Cultural Icons in Philanthropy: High-Impact Charitable Foundations Led by Celebrities'
   ],
-  community: [
-    // Keyword: 'community solar programs' (Vol: 75K+, KD: 23)
-    'How Community Solar Works: Subscribing to Local Arrays Without Installing Panels',
-    // Keyword: 'volunteer opportunities near me' (Vol: 180K+, KD: 19)
-    'Grassroots Community Action: How Local Food Banks and Volunteer Hubs Scale Impact',
-    // Keyword: 'community garden rules and setup' (Vol: 55K+, KD: 17)
-    'Starting a Neighborhood Community Garden: Land Permits, Soil Testing, and Plot Sharing',
-    // Keyword: 'public park improvements and funding' (Vol: 50K+, KD: 16)
-    'Revitalizing Public Parks: How Municipal Green Space Grants Transform Neighborhoods',
-    // Keyword: 'youth sports league organizing' (Vol: 60K+, KD: 18)
-    'Managing Youth Sports Leagues: Volunteer Coordination, Safety Standards, and Equipment Budgets',
-    // Keyword: 'historic preservation tax credits' (Vol: 50K+, KD: 22)
-    'Preserving Historic Downtown Corridors: Adaptive Building Reuse and Civic Grants'
-  ],
-  arts: [
+  entertainment: [
     // Keyword: 'independent film festivals' (Vol: 70K+, KD: 22)
     'Grassroots Indie Film Distribution: How Regional Festivals Launch Emerging Directors',
     // Keyword: 'vinyl record collecting guide' (Vol: 90K+, KD: 23)
     'The Vinyl Record Resurgence: Turntable Setups, Pressing Quality, and Collector Care',
-    // Keyword: 'community mural projects' (Vol: 55K+, KD: 15)
-    'Public Art Initiatives: How Downtown Murals Drive Tourism and Civic Pride',
-    // Keyword: 'sustainable architecture design' (Vol: 75K+, KD: 26)
-    'Mass Timber Architecture: How Sustainable Wood Construction Redefines Urban Spaces',
     // Keyword: 'independent theater production' (Vol: 50K+, KD: 19)
     'Staging Independent Theater: Budgeting Black Box Productions and Engaging New Patrons',
-    // Keyword: 'pottery throwing techniques for beginners' (Vol: 65K+, KD: 21)
-    'Community Craft Studios: Hand-Built Ceramics and Local Artisan Apprenticeships'
+    // Keyword: 'best streaming sci fi series' (Vol: 110K+, KD: 25)
+    'The Evolution of Sci-Fi Television: Worldbuilding, Practical VFX, and Modern Story Arcs',
+    // Keyword: 'film score composers' (Vol: 55K+, KD: 20)
+    'The Soundtracks of Modern Cinema: How Film Composers Craft Emotion and Atmosphere'
   ],
-  voices: [
+  games: [
+    // Keyword: 'gta 6 map leaks and facts' (Vol: 240K+, KD: 27)
+    'GTA 6 Vice City Map Comparison: Setting Scale, Landmarks, and Playable Interactivity',
+    // Keyword: 'steam deck best settings' (Vol: 80K+, KD: 21)
+    'Optimizing Handheld PC Gaming: Best Settings, Frame Limits, and Battery Tips',
+    // Keyword: 'esports tournament schedule' (Vol: 95K+, KD: 24)
+    'Competitive Esports Season Outlook: Major Championship Rosters and Meta Shifts',
+    // Keyword: 'unreal engine 5 games' (Vol: 65K+, KD: 23)
+    'Next-Gen Visual Engines: How Nanite and Lumen Are Transforming Game Environments',
+    // Keyword: 'indie game of the year contenders' (Vol: 55K+, KD: 19)
+    'Breakthrough Indie Games: Innovative Mechanics and Compelling Narrative Adventures'
+  ],
+  health: [
+    // Keyword: 'zone 2 cardio benefits' (Vol: 90K+, KD: 22)
+    'Zone 2 Cardio Training: Mitochondrial Health, Endurance Pacing, and Heart Longevity',
+    // Keyword: 'intermittent fasting 16 8 schedule' (Vol: 160K+, KD: 26)
+    'Intermittent Fasting Schedules: Metabolic Flexibility, Meal Planning, and Clinical Evidence',
+    // Keyword: 'sleep hygiene checklist' (Vol: 75K+, KD: 19)
+    'Science-Backed Sleep Hygiene: Circadian Rhythm Tuning, Room Lighting, and Deep Rest',
+    // Keyword: 'anti inflammatory foods list' (Vol: 200K+, KD: 25)
+    'Anti-Inflammatory Nutrition: Essential Whole Foods for Joint Health and Daily Vitality',
+    // Keyword: 'strength training for longevity' (Vol: 65K+, KD: 21)
+    'Functional Strength Training for Longevity: Joint Mobility, Compound Lifts, and Vitality'
+  ],
+  technology: [
+    // Keyword: 'home energy audit diy' (Vol: 50K+, KD: 19)
+    'DIY Home Energy Audit: Pinpointing Air Leaks, Insulation Gaps, and Power Drain',
+    // Keyword: 'solar battery storage systems' (Vol: 90K+, KD: 24)
+    'Solar Battery Storage Systems: Payback Periods, Cell Chemistries, and Off-Grid Resilience',
+    // Keyword: 'wifi 7 router setup' (Vol: 60K+, KD: 26)
+    'Upgrading to Wi-Fi 7: Mesh Network Coverage, Real Latency Gains, and Device Support',
+    // Keyword: 'smart thermostat rebate programs' (Vol: 65K+, KD: 20)
+    'Smart Thermostat Optimization: Scheduling Automation, Utility Rebates, and Grid Savings',
+    // Keyword: 'heat pump water heater efficiency' (Vol: 55K+, KD: 22)
+    'Heat Pump Water Heaters: Operating Costs, Installation Prerequisites, and Energy Tax Credits'
+  ],
+  others: [
     // Keyword: 'slow living lifestyle' (Vol: 110K+, KD: 20)
     'The Slow Living Movement: Practical Steps to Disconnect from Digital Overwhelm',
     // Keyword: 'local journalism importance' (Vol: 50K+, KD: 17)
@@ -1245,11 +1257,13 @@ function renderArticleHtml(articleData, author, category, heroImage) {
           <ul class="main-nav-links">
             <li><a href="../index.html">Home</a></li>
             <li><a href="../category-news.html" class="${category === 'news' ? 'active' : ''}">News</a></li>
-            <li><a href="../category-community.html" class="${category === 'community' ? 'active' : ''}">Community & Events</a></li>
-            <li><a href="../category-business.html" class="${category === 'business' ? 'active' : ''}">Business & Economy</a></li>
-            <li><a href="../category-arts.html" class="${category === 'arts' ? 'active' : ''}">Arts & Entertainment</a></li>
-            <li><a href="../category-lifestyle.html" class="${category === 'lifestyle' ? 'active' : ''}">Lifestyle</a></li>
-            <li><a href="../category-voices.html" class="${category === 'voices' ? 'active' : ''}">Voices</a></li>
+            <li><a href="../category-business.html" class="${category === 'business' ? 'active' : ''}">Business</a></li>
+            <li><a href="../category-celebrity.html" class="${category === 'celebrity' ? 'active' : ''}">Celebrity</a></li>
+            <li><a href="../category-entertainment.html" class="${category === 'entertainment' ? 'active' : ''}">Entertainment</a></li>
+            <li><a href="../category-games.html" class="${category === 'games' ? 'active' : ''}">Games</a></li>
+            <li><a href="../category-health.html" class="${category === 'health' ? 'active' : ''}">Health</a></li>
+            <li><a href="../category-technology.html" class="${category === 'technology' ? 'active' : ''}">Technology</a></li>
+            <li><a href="../category-others.html" class="${category === 'others' ? 'active' : ''}">Others</a></li>
             <li><a href="../categories.html">All Topics</a></li>
           </ul>
         </nav>
@@ -1366,12 +1380,14 @@ function renderArticleHtml(articleData, author, category, heroImage) {
       <div class="footer-col">
         <h5>Categories</h5>
         <ul class="footer-links">
-          <li><a href="../category-news.html">News & Announcements</a></li>
-          <li><a href="../category-community.html">Community & Events</a></li>
-          <li><a href="../category-business.html">Business & Economy</a></li>
-          <li><a href="../category-arts.html">Arts & Entertainment</a></li>
-          <li><a href="../category-lifestyle.html">Lifestyle & Culture</a></li>
-          <li><a href="../category-voices.html">Voices & Columnists</a></li>
+          <li><a href="../category-news.html">News</a></li>
+          <li><a href="../category-business.html">Business</a></li>
+          <li><a href="../category-celebrity.html">Celebrity</a></li>
+          <li><a href="../category-entertainment.html">Entertainment</a></li>
+          <li><a href="../category-games.html">Games</a></li>
+          <li><a href="../category-health.html">Health</a></li>
+          <li><a href="../category-technology.html">Technology</a></li>
+          <li><a href="../category-others.html">Others</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -1534,13 +1550,15 @@ function updateSiteIndex(articleData, author, category, heroImage) {
           </article>`;
 
     // Map categories to homepage section labels
-    const categorySectionLabels = {
-      'business': 'Business & Economy',
-      'community': 'Community & Events',
-      'arts': 'Arts & Entertainment',
-      'lifestyle': 'Lifestyle & Culture',
+        const categorySectionLabels = {
       'news': 'Latest Stories',
-      'voices': 'Arts & Entertainment'
+      'business': 'Business & Economy',
+      'celebrity': 'Entertainment & Arts',
+      'entertainment': 'Entertainment & Arts',
+      'games': 'Games & Others',
+      'health': 'Business & Economy',
+      'technology': 'Technology & Innovation',
+      'others': 'Games & Others'
     };
 
     const targetLabel = categorySectionLabels[category] || 'Business & Economy';
@@ -1717,10 +1735,13 @@ function updateSiteIndex(articleData, author, category, heroImage) {
               let catFile = 'category-news.html';
               const cLower = r.category.toLowerCase();
               if (cLower.includes('business')) catFile = 'category-business.html';
-              else if (cLower.includes('community')) catFile = 'category-community.html';
-              else if (cLower.includes('arts')) catFile = 'category-arts.html';
-              else if (cLower.includes('life')) catFile = 'category-lifestyle.html';
-              else if (cLower.includes('voice')) catFile = 'category-voices.html';
+              else if (cLower.includes('celebrity')) catFile = 'category-celebrity.html';
+              else if (cLower.includes('entertainment') || cLower.includes('arts')) catFile = 'category-entertainment.html';
+              else if (cLower.includes('game')) catFile = 'category-games.html';
+              else if (cLower.includes('health')) catFile = 'category-health.html';
+              else if (cLower.includes('tech')) catFile = 'category-technology.html';
+              else if (cLower.includes('news')) catFile = 'category-news.html';
+              else catFile = 'category-others.html';
               return `<li><a href="../${catFile}" style="color: var(--primary); font-weight: 700; text-decoration: underline;">${r.category}</a> &ndash; Read <a href="../articles/${r.slug}.html" style="color: var(--primary); font-weight: 600; text-decoration: underline;">${r.title}</a></li>`;
             }).join('\n              ');
 
