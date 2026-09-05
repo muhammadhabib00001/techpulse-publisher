@@ -64,7 +64,7 @@ jobs:
 
       - name: Commit and Push New Article & Updated Feeds
         run: |
-          git add articles/ assets/images/ index.html category-*.html categories.html pages/ sitemap.xml
+          git add articles/ assets/images/ data/ index.html category-*.html categories.html pages/ sitemap.xml
           if git diff --staged --quiet; then
             echo "No changes to commit. Article generation might have been skipped."
           else

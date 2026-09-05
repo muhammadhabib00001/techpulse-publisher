@@ -1641,34 +1641,87 @@ async function main() {
   // 3. Dynamic rotating topic pool fallback
   if (!topic) {
     const pool = DEFAULT_TOPIC_POOL[cat] || DEFAULT_TOPIC_POOL.news;
-    // Find an unwritten topic by checking existing files
+
+    // Load published topics ledger
+    const trackingFile = path.join(ROOT_DIR, 'data', 'published_topics.json');
+    let publishedLedger = [];
+    try {
+      if (fs.existsSync(trackingFile)) {
+        publishedLedger = JSON.parse(fs.readFileSync(trackingFile, 'utf8'));
+      }
+    } catch (e) {
+      publishedLedger = [];
+    }
+
+    const allPublishedSlugs = new Set([
+      ...existingFiles.map(f => f.replace('.html', '').toLowerCase()),
+      ...publishedLedger.map(entry => (entry.slug || '').toLowerCase())
+    ]);
+
+    // Function to extract significant keywords from a string
+    const extractWords = (str) => {
+      return str.toLowerCase()
+        .replace(/[^a-z0-9\s]/g, ' ')
+        .split(/\s+/)
+        .filter(w => w.length > 3 && !['guide', '2026', 'complete', 'practical', 'tips', 'about', 'with', 'from', 'that', 'this'].includes(w));
+    };
+
+    // Filter candidate topics to strictly exclude any topic whose primary keywords have already been published
     const available = pool.filter(cand => {
-      const candSlug = cand.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-      return !existingFiles.some(file => file.includes(candSlug.slice(0, 20)));
+      const candWords = extractWords(cand);
+      if (candWords.length === 0) return false;
+
+      // Check if candidate matches any existing slug
+      for (const publishedSlug of allPublishedSlugs) {
+        // Direct word overlap check: if 3 or more significant words match an existing article, consider it a duplicate keyword
+        const matchingWords = candWords.filter(w => publishedSlug.includes(w));
+        if (matchingWords.length >= 3 || (candWords.length <= 3 && matchingWords.length >= 2)) {
+          return false;
+        }
+      }
+      return true;
     });
 
     if (available.length > 0) {
       topic = available[0];
     } else {
-      // If all written, generate a fresh unique editorial angle on one of the high-volume keywords
-      const baseTopic = pool[Math.floor(Math.random() * pool.length)];
-      const angles = [
-        'Strategic Outlook and Critical Updates',
-        'Practical Action Steps and Cost Analysis',
-        'Expert Insights and Operational Strategies',
-        'New Regulations and Compliance Breakdown',
-        'Key Trends and Decision Framework'
-      ];
-      const randomAngle = angles[Math.floor(Math.random() * angles.length)];
-      topic = `${baseTopic.split(':')[0]}: ${randomAngle}`;
+      // If the current category's primary pool is exhausted, search other categories for unwritten high-volume keywords
+      let foundAlternative = null;
+      for (const otherCat of categoriesList) {
+        if (otherCat === cat) continue;
+        const otherPool = DEFAULT_TOPIC_POOL[otherCat] || [];
+        const otherAvailable = otherPool.filter(cand => {
+          const candWords = extractWords(cand);
+          for (const publishedSlug of allPublishedSlugs) {
+            const matchingWords = candWords.filter(w => publishedSlug.includes(w));
+            if (matchingWords.length >= 3 || (candWords.length <= 3 && matchingWords.length >= 2)) {
+              return false;
+            }
+          }
+          return true;
+        });
+        if (otherAvailable.length > 0) {
+          foundAlternative = { topic: otherAvailable[0], category: otherCat };
+          break;
+        }
+      }
+
+      if (foundAlternative) {
+        console.log(`[INFO] Category "${cat}" pool exhausted. Switching to available unwritten keyword in "${foundAlternative.category}".`);
+        cat = foundAlternative.category;
+        topic = foundAlternative.topic;
+      } else {
+        console.warn(`[WARN] All primary pool keywords have been published. Pipeline will safely skip duplicate publication.`);
+        process.exit(0);
+      }
     }
-    console.log(`[AUTO-CRON] Selected dynamic topic for ${cat}: "${topic}"`);
+    console.log(`[AUTO-CRON] Selected dynamic unwritten topic for ${cat}: "${topic}"`);
   }
 
   const topicData = {
     topic: topic,
     category: cat,
-    author: author
+    author: AUTHORS[cat] || author
   };
 
   const generatedArticle = await generateArticle(topicData);
@@ -1678,6 +1731,27 @@ async function main() {
   const outputPath = path.join(articlesDir, `${generatedArticle.slug}.html`);
   fs.writeFileSync(outputPath, fullHtml, 'utf8');
   console.log(`[SUCCESS] Article written to: ${outputPath}`);
+
+  // Record into published topics tracking ledger
+  try {
+    const trackingFile = path.join(ROOT_DIR, 'data', 'published_topics.json');
+    let ledger = [];
+    if (fs.existsSync(trackingFile)) {
+      ledger = JSON.parse(fs.readFileSync(trackingFile, 'utf8'));
+    }
+    ledger.push({
+      file: `${generatedArticle.slug}.html`,
+      slug: generatedArticle.slug,
+      title: generatedArticle.title,
+      category: cat,
+      topic: topic,
+      publishedAt: new Date().toISOString()
+    });
+    fs.writeFileSync(trackingFile, JSON.stringify(ledger, null, 2), 'utf8');
+    console.log(`[INFO] Recorded "${generatedArticle.slug}" in data/published_topics.json`);
+  } catch (err) {
+    console.warn(`[WARN] Could not update published_topics ledger: ${err.message}`);
+  }
 
   updateSiteIndex(generatedArticle, topicData.author, topicData.category, heroImage);
   console.log('=== Pipeline Execution Complete ===');
