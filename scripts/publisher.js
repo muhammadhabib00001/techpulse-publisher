@@ -894,8 +894,9 @@ function getDynamicRelatedArticles(currentSlug) {
     } catch (e) {}
   }
 
-  // Shuffle and pick up to 5 articles
-  return list.sort(() => 0.5 - Math.random()).slice(0, 5);
+  // Shuffle and pick random 3 to 5 articles
+  const count = Math.floor(Math.random() * 3) + 3; // 3, 4, or 5
+  return list.sort(() => 0.5 - Math.random()).slice(0, count);
 }
 
 function renderArticleHtml(articleData, author, category, heroImage) {
@@ -1550,12 +1551,13 @@ function updateSiteIndex(articleData, author, category, heroImage) {
         allArts.push({ slug: f.replace('.html', ''), title: t, category: c });
       }
 
-      // Update related block in all articles
+      // Update related block in all articles with random 3 to 5 articles
       for (const f of artFiles) {
         const slug = f.replace('.html', '');
         const artPath = path.join(articlesDir, f);
         let h = fs.readFileSync(artPath, 'utf8');
-        const rel = allArts.filter(a => a.slug !== slug).slice(0, 5);
+        const count = Math.floor(Math.random() * 3) + 3; // Random 3, 4, or 5
+        const rel = allArts.filter(a => a.slug !== slug).sort(() => 0.5 - Math.random()).slice(0, count);
         if (rel.length > 0 && h.includes('Related Investigative Reports & Department Features')) {
           const items = rel.map(r => `<li><strong>${r.category}:</strong> <a href="./${r.slug}.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">${r.title}</a></li>`).join('\n            ');
           const relBlock = `<div style="background: var(--bg-subtle); border-left: 4px solid var(--primary); padding: 1.25rem 1.5rem; margin: 2.5rem 0; border-radius: var(--radius-sm);">
@@ -1572,25 +1574,28 @@ function updateSiteIndex(articleData, author, category, heroImage) {
         }
       }
 
-      // Update static pages in pages/
+      // Update static pages in pages/ with random 3 to 5 articles limit
       const pagesDir = path.join(ROOT_DIR, 'pages');
       if (fs.existsSync(pagesDir)) {
         const pageFiles = fs.readdirSync(pagesDir).filter(f => f.endsWith('.html'));
-        const pageItemsHtml = allArts.map(r => {
-          let catFile = 'category-news.html';
-          const cLower = r.category.toLowerCase();
-          if (cLower.includes('business')) catFile = 'category-business.html';
-          else if (cLower.includes('community')) catFile = 'category-community.html';
-          else if (cLower.includes('arts')) catFile = 'category-arts.html';
-          else if (cLower.includes('life')) catFile = 'category-lifestyle.html';
-          else if (cLower.includes('voice')) catFile = 'category-voices.html';
-          return `<li><a href="../${catFile}" style="color: var(--primary); font-weight: 700; text-decoration: underline;">${r.category}</a> &ndash; Read <a href="../articles/${r.slug}.html" style="color: var(--primary); font-weight: 600; text-decoration: underline;">${r.title}</a></li>`;
-        }).join('\n              ');
 
         for (const pf of pageFiles) {
           const pagePath = path.join(pagesDir, pf);
           let pHtml = fs.readFileSync(pagePath, 'utf8');
           if (pHtml.includes('Explore Related Publications & Department Channels')) {
+            const pageCount = Math.floor(Math.random() * 3) + 3; // Random 3, 4, or 5
+            const selectedArts = allArts.sort(() => 0.5 - Math.random()).slice(0, pageCount);
+            const pageItemsHtml = selectedArts.map(r => {
+              let catFile = 'category-news.html';
+              const cLower = r.category.toLowerCase();
+              if (cLower.includes('business')) catFile = 'category-business.html';
+              else if (cLower.includes('community')) catFile = 'category-community.html';
+              else if (cLower.includes('arts')) catFile = 'category-arts.html';
+              else if (cLower.includes('life')) catFile = 'category-lifestyle.html';
+              else if (cLower.includes('voice')) catFile = 'category-voices.html';
+              return `<li><a href="../${catFile}" style="color: var(--primary); font-weight: 700; text-decoration: underline;">${r.category}</a> &ndash; Read <a href="../articles/${r.slug}.html" style="color: var(--primary); font-weight: 600; text-decoration: underline;">${r.title}</a></li>`;
+            }).join('\n              ');
+
             const oldListRegex = /<ul style="margin-left: 1\.5rem; line-height: 1\.8; font-size: 0\.95rem;">[\s\S]*?<\/ul>/;
             const newList = `<ul style="margin-left: 1.5rem; line-height: 1.8; font-size: 0.95rem;">\n              ${pageItemsHtml}\n            </ul>`;
             pHtml = pHtml.replace(oldListRegex, newList);
