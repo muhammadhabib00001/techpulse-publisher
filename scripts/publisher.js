@@ -751,10 +751,14 @@ WRITING STYLE RULES (follow strictly):
    - "tableOfContents": array of {id, title}
    - "sections": array of {id, heading, contentHtml} (Section 1 heading MUST be "")
    - "faqs": array of {question, answer}
-11. CURRENT YEAR & TIMELINESS (CRITICAL):
-   - The current year is 2026. All current events, market data, tax credits, standards, technology benchmarks, and temporal references MUST reflect 2026.
+11. CURRENT YEAR & NATURAL WRITING (CRITICAL):
+   - The current temporal context is 2026. All current events, market data, tax credits, standards, technology benchmarks, and temporal references MUST reflect 2026.
    - NEVER refer to 2024 or 2025 as the current or upcoming year. If referring to 2024 or 2025, refer to them explicitly in the past tense.
-12. Valid HTML only in contentHtml.`;
+   - AVOID SPAMMING "2026" IN EVERY PARAGRAPH: Write naturally like professional journalists (e.g. use "today", "currently", "this season", "in modern operations", "recent developments"). Do NOT awkwardly insert the literal number "2026" into every section, heading, or FAQ question.
+12. UNIQUE ANGLE & HIGH CONTENT VALUE:
+   - Each article must bring unique, fresh insights, concrete actionable tips, and original perspectives tailored strictly to its specific topic.
+   - Never output repetitive filler or recycled boilerplate structures across different topics.
+13. Valid HTML only in contentHtml.`;
 
   const userPrompt = `Write an in-depth, original, high-quality editorial article about: "${topic}"
 Category: ${category}
@@ -765,7 +769,8 @@ TITLE & WORDING REQUIREMENTS:
 - Provide an engaging, unique, journalistic title under 60 characters without repeating boilerplate words like "Guide", "Complete Guide", or "Guide for 2026".
 - Derive the slug directly from your unique title.
 - Do not use em-dashes and start directly with helpful, original analysis.
-- Naturally reference related cross-topic contexts like energy efficiency, digital performance, or market implications so internal links can connect seamlessly in body paragraphs (never in headings).`;
+- Write naturally: do NOT spam the number "2026" repeatedly in headings, paragraphs, or FAQs. Use natural terms like "today", "this season", or "current standards".
+- Ensure unique, topic-specific substance with concrete details, and naturally reference related cross-topic contexts like energy efficiency, digital performance, or market implications so internal links can connect seamlessly in body paragraphs (never in headings).`;
 
   if (GEMINI_API_KEY) {
     try {
