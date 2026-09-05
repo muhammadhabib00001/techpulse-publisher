@@ -128,39 +128,39 @@ const AUTHORS = {
 
 const DEFAULT_TOPIC_POOL = {
   news: [
-    'US Economic Forecast and Federal Reserve Outlook for Late 2026',
-    'Global Semiconductor Supply Chain Realignment and Tech Manufacturing',
-    'Clean Energy Infrastructure Grants and Regional Grid Modernization in 2026',
-    'Electric Vehicle Market Trends: Battery Breakthroughs and Price Parity',
-    'Commercial Aviation Upgrades: Next-Gen Air Traffic Control and Fleet Efficiency'
+    'Federal Reserve Policy Shifts: Interest Rates and Regional Banking Impact',
+    'Global Semiconductor Supply Chains and Domestic Chip Manufacturing',
+    'Clean Energy Infrastructure Grants Accelerating Regional Power Grids',
+    'Electric Vehicle Market Evolution: Battery Range and Commercial Fleet Adoption',
+    'Commercial Aviation Upgrades: Next-Gen Air Traffic Routing and Fuel Efficiency'
   ],
   community: [
-    'Annual Waterfront Heritage Festival Returns with Record Artisan Attendance',
-    'Community Solar Cooperatives: How Neighborhoods Lower Energy Bills Together',
-    'Youth Sports Leagues and Public Park Renovations Across Regional Towns',
-    'Grassroots Volunteer Networks Expanding Food Security and Suburban Gardens',
+    'Annual Waterfront Heritage Festival Celebrates Maritime Traditions',
+    'Community Solar Cooperatives: How Neighborhoods Lower Electric Bills',
+    'Youth Sports Leagues and Public Park Renovation Projects',
+    'Grassroots Volunteer Networks Expanding Suburban Food Security',
     'Historic Preservation Projects Transforming Old Rail Corridors into Greenways'
   ],
   business: [
-    'Main Street Commercial Revitalization: Small Businesses Thriving in 2026',
-    'High-Yield Savings vs Treasury Bills: Maximizing Business Cash Reserves',
+    'Main Street Retail Resilience: How Independent Merchants Outperform Big Box Chains',
+    'High-Yield Savings vs Treasury Bills: Maximizing Business Working Capital',
     'Commercial Real Estate Adaptation: Converting Office Parks to Mixed-Use Hubs',
-    'AI Tools for Small Business Owners: Practical Automation Strategies in 2026',
-    'Regional Logistics Hubs: How Inland Ports Drive Local Economic Growth'
+    'AI Tools for Small Business Operations: Practical Workflow Automation',
+    'Regional Logistics Corridors: How Inland Ports Drive Local Commerce'
   ],
   arts: [
-    'Spotlight on Independent Theater: Local Playwrights Take Center Stage',
-    'The Vinyl Revival in 2026: Why Physical Music Formats Continue to Surge',
-    'Public Murals and Community Art Initiatives Transforming Downtown Corridors',
-    'Regional Film Festivals Championing Grassroots Indie Filmmakers',
-    'Architectural Design Trends: Combining Sustainable Timber and Modernist Glass'
+    'Independent Theater Spotlight: Local Playwrights Take Center Stage',
+    'The Vinyl Record Renaissance: Physical Audio Formats Find New Audiences',
+    'Public Murals and Community Art Initiatives Revitalizing Downtown Districts',
+    'Grassroots Film Festivals Championing Regional Indie Directors',
+    'Modern Architectural Design: Sustainable Timber Meets Urban Spaces'
   ],
   lifestyle: [
-    'Smart Home Energy Audits: Practical Heat Pump and Solar Storage Strategies',
-    'Electric Vehicle Road Trip Guide: Best High-Speed Charging Routes and Apps',
-    'Home Internet Optimization: Wi-Fi 7 Setup, Mesh Networking, and Latency Reduction',
-    'Urban Gardening and Hydroponic Indoor Setups for Year-Round Produce',
-    'Ergonomic Home Office Design: Lighting, Acoustics, and Health Productivity'
+    'Smart Home Energy Audits: Heat Pump Efficiencies and Solar Storage',
+    'Cross-Country Electric Vehicle Travel: High-Speed Charging Routes and Planning',
+    'Home Network Performance: Wi-Fi 7 Standards and Whole-Home Coverage',
+    'Urban Gardening Techniques: Hydroponic Setups for Fresh Produce at Home',
+    'Ergonomic Workspaces: Lighting, Posture, and Daily Productivity Improvements'
   ],
   voices: [
     'The Power of Neighborly Connection in a Digital World: A Columnist Perspective',
@@ -452,28 +452,40 @@ function getInternalLinkMap() {
 }
 
 function injectInternalLinks(htmlContent, currentSlug) {
-  let processed = htmlContent;
-  const linkedKeywords = new Set();
   const linkMap = getInternalLinkMap();
+  const linkedKeywords = new Set();
+
+  // Temporarily replace headings and pre-existing tags to avoid modifying them
+  const protectedBlocks = [];
+  let protectedHtml = htmlContent.replace(/<(h[1-6]|a|script|style)[^>]*>[\s\S]*?<\/\1>/gi, (match) => {
+    const placeholder = `__PROTECTED_BLOCK_${protectedBlocks.length}__`;
+    protectedBlocks.push(match);
+    return placeholder;
+  });
 
   linkMap.forEach(({ keyword, url }) => {
     if (!keyword || keyword.length < 4) return;
     if (url.includes(currentSlug)) return;
     if (linkedKeywords.has(keyword.toLowerCase())) return;
 
-    // Match keyword outside existing <a> tags
+    // Match keyword outside HTML tags
     const escaped = keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
-    const regex = new RegExp('(\\b' + escaped + '\\b)(?![^<]*>|[^<>]*<\\/a>)', 'i');
+    const regex = new RegExp('(\\b' + escaped + '\\b)(?![^<]*>)', 'i');
     
-    if (regex.test(processed)) {
-      processed = processed.replace(regex, (match) => {
+    if (regex.test(protectedHtml)) {
+      protectedHtml = protectedHtml.replace(regex, (match) => {
         linkedKeywords.add(keyword.toLowerCase());
         return `<a href="${url}" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${keyword}">${match}</a>`;
       });
     }
   });
 
-  return processed;
+  // Restore protected blocks
+  for (let i = 0; i < protectedBlocks.length; i++) {
+    protectedHtml = protectedHtml.replace(`__PROTECTED_BLOCK_${i}__`, protectedBlocks[i]);
+  }
+
+  return protectedHtml;
 }
 
 async function callGoogleAIStudio(apiKey, prompt, systemInstruction) {
@@ -528,9 +540,11 @@ function generateDeepFallbackArticle(topic, category, author) {
   const cleanTopic = topic.replace(/[:—–-]/g, ' ').replace(/\s+/g, ' ').trim();
   const capitalizedTopic = cleanTopic.charAt(0).toUpperCase() + cleanTopic.slice(1);
 
-  // SEO-Optimized Title adhering to Google Search Central policies:
-  // Informative, unique, under 60 characters, concise and natural
-  const title = `${capitalizedTopic}: Complete Practical Guide`;
+  // Natural editorial title: avoid repetitive ": Complete Practical Guide" suffixes
+  let title = topic.trim();
+  if (title.length > 60) {
+    title = capitalizedTopic.slice(0, 57) + '...';
+  }
 
   // URL slug matching the title (Google SEO Best Practice: simple, descriptive, lowercase hyphens)
   const slug = title
@@ -538,7 +552,7 @@ function generateDeepFallbackArticle(topic, category, author) {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
 
-  const metaDescription = `Detailed practical guide to ${cleanTopic}: key principles, navigation, expert tips, and common questions answered.`;
+  const metaDescription = `Detailed analysis and practical coverage of ${cleanTopic}: key principles, developments, and expert insights.`;
 
   return {
     title,
@@ -721,9 +735,18 @@ WRITING STYLE RULES (follow strictly):
 9. INTERNAL LINKING CONTEXT: Naturally mention related topics within paragraphs to enable contextual reading:
    - For technology/lifestyle/hardware: naturally mention topics like "clean energy transition", "smart home technology", "battery life tips", "web performance", or "commercial equipment".
    - For news/policy: naturally mention topics like "global energy markets", "international commerce", "civic developments", or "regional investments".
-10. GOOGLE SEO POLICY FOR TITLE & URL:
-   - "title": Must strictly follow Google Search Central guidelines: 50-60 characters, descriptive, target keyword placed prominently, no clickbait or keyword stuffing, no em-dashes. Example: "Atlanta Airport ATL Guide: Terminals and Layover Tips"
-   - "slug": Must be directly derived from the title: lowercase, clean, hyphenated words matching title keywords (e.g. "atlanta-airport-atl-guide-terminals-and-layover-tips")
+10. GOOGLE SEO POLICY FOR TITLE & HEADLINES (CRITICAL ANTI-REPETITION):
+   - "title": Must be unique, fresh, journalistic, and under 60 characters.
+   - STRICTLY FORBIDDEN TITLE PATTERNS:
+     * DO NOT end titles with ": A Complete Guide", ": Complete Practical Guide", "Guide for 2026", or repetitive "Guide" suffixes.
+     * DO NOT mindlessly append "in 2026" or "for 2026" onto every single title. Use the year only when referring to a specific dated event (e.g. "FOMC Meeting Sept 2026").
+     * Vary your headline styles across publications: use analytical headlines, questions, action-driven breakdowns, or feature spotlight headlines.
+     * Example good titles:
+       - "Navigating Atlanta Airport: Terminal Layouts and Smart Layover Tips"
+       - "How Independent Retailers Are Outpacing Big-Box Chains"
+       - "Heat Pump Retrofits: Cutting Energy Costs in Historic Properties"
+       - "Federal Reserve Rate Decisions: What Changing Yields Mean for Borrowers"
+   - "slug": Must be directly derived from the title: lowercase, clean, hyphenated words matching title keywords (e.g. "navigating-atlanta-airport-terminal-layouts-and-smart-layover-tips")
    - "metaDescription": 140-155 characters summarizing the article with primary keyword.
    - "tableOfContents": array of {id, title}
    - "sections": array of {id, heading, contentHtml} (Section 1 heading MUST be "")
@@ -733,12 +756,16 @@ WRITING STYLE RULES (follow strictly):
    - NEVER refer to 2024 or 2025 as the current or upcoming year. If referring to 2024 or 2025, refer to them explicitly in the past tense.
 12. Valid HTML only in contentHtml.`;
 
-  const userPrompt = `Write a complete, practical, in-depth guide article about: "${topic}"
+  const userPrompt = `Write an in-depth, original, high-quality editorial article about: "${topic}"
 Category: ${category}
 Author: ${author.name} (${author.role})
 Current Year: 2026 (Ensure all market data, trends, and guidelines reflect 2026)
 
-Follow Google SEO title policies (under 60 characters with main keyword) and derive the slug directly from the title. Do not use em-dashes and start directly with helpful content. Naturally reference related cross-topic contexts like energy efficiency, digital performance, or market implications so internal links can connect seamlessly.`;
+TITLE & WORDING REQUIREMENTS:
+- Provide an engaging, unique, journalistic title under 60 characters without repeating boilerplate words like "Guide", "Complete Guide", or "Guide for 2026".
+- Derive the slug directly from your unique title.
+- Do not use em-dashes and start directly with helpful, original analysis.
+- Naturally reference related cross-topic contexts like energy efficiency, digital performance, or market implications so internal links can connect seamlessly in body paragraphs (never in headings).`;
 
   if (GEMINI_API_KEY) {
     try {
