@@ -1419,6 +1419,18 @@ function updateSiteIndex(articleData, author, category, heroImage) {
     }
   }
 
+  // 1b. LLMs.txt update
+  const llmsPath = path.join(ROOT_DIR, 'llms.txt');
+  if (fs.existsSync(llmsPath)) {
+    let llmsContent = fs.readFileSync(llmsPath, 'utf8');
+    const articleLink = `- [${articleData.title}](https://www.genalphamagazines.com/articles/${articleData.slug}.html): ${articleData.metaDescription}`;
+    if (!llmsContent.includes(articleData.slug)) {
+      llmsContent = llmsContent.replace('## Compliance & Legal', `${articleLink}\n\n## Compliance & Legal`);
+      fs.writeFileSync(llmsPath, llmsContent, 'utf8');
+      console.log(`[INFO] Added ${articleData.slug}.html to llms.txt`);
+    }
+  }
+
   // 2. VIP Homepage Auto-Update (Section 1: Latest Stories + Corresponding Category Section on Homepage)
   const indexPath = path.join(ROOT_DIR, 'index.html');
   if (fs.existsSync(indexPath)) {

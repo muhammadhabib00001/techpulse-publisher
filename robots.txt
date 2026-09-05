@@ -2,4 +2,8 @@ User-agent: *
 Allow: /
 Disallow: /cdn-cgi/
 
+# LLM & AI Discoverability (https://llmstxt.org/)
+# LLMs: https://www.genalphamagazines.com/llms.txt
+# LLMs-Full: https://www.genalphamagazines.com/llms-full.txt
+
 Sitemap: https://www.genalphamagazines.com/sitemap.xml
