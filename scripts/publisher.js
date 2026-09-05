@@ -1127,13 +1127,20 @@ function renderArticleHtml(articleData, author, category, heroImage) {
   <title>${cleanTitle} | GenAlphaMagazines</title>
   <meta name="description" content="${cleanMeta}">
   <link rel="canonical" href="https://www.genalphamagazines.com/articles/${articleData.slug}.html">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta property="og:type" content="article">
   <meta property="og:title" content="${cleanTitle}">
   <meta property="og:description" content="${cleanMeta}">
-  <meta property="og:image" content="${heroImage.relativeUrl}">
+  <meta property="og:image" content="https://www.genalphamagazines.com/assets/images/${articleData.slug}.jpg">
   <meta property="og:url" content="https://www.genalphamagazines.com/articles/${articleData.slug}.html">
   <meta property="article:published_time" content="${currentDate}T08:00:00+00:00">
   <meta property="article:section" content="${category}">
+  <!-- Twitter Card Data -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@GenAlphaMag">
+  <meta name="twitter:title" content="${cleanTitle}">
+  <meta name="twitter:description" content="${cleanMeta}">
+  <meta name="twitter:image" content="https://www.genalphamagazines.com/assets/images/${articleData.slug}.jpg">
   
   <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
   <link rel="alternate icon" href="../favicon.ico">
@@ -1162,7 +1169,7 @@ function renderArticleHtml(articleData, author, category, heroImage) {
         "@id": "https://www.genalphamagazines.com/articles/${articleData.slug}.html#article",
         "headline": "${articleData.title}",
         "description": "${articleData.metaDescription}",
-        "image": "${heroImage.relativeUrl}",
+        "image": "https://www.genalphamagazines.com/assets/images/${articleData.slug}.jpg",
         "datePublished": "${currentDate}T08:00:00+00:00",
         "dateModified": "${currentDate}T08:00:00+00:00",
         "mainEntityOfPage": "https://www.genalphamagazines.com/articles/${articleData.slug}.html",
