@@ -1968,17 +1968,58 @@ function updateSiteIndex(articleData, author, category, heroImage) {
   const currentDate = new Date().toISOString().split('T')[0];
   const dateFormatted = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
-  // 1. Sitemap update
-  const sitemapPath = path.join(ROOT_DIR, 'sitemap.xml');
-  if (fs.existsSync(sitemapPath)) {
-    let sitemap = fs.readFileSync(sitemapPath, 'utf8');
-    const newUrl = `https://www.genalphamagazines.com/articles/${articleData.slug}.html`;
-    if (!sitemap.includes(newUrl)) {
-      const newUrlEntry = `  <url>\n    <loc>${newUrl}</loc>\n    <lastmod>${currentDate}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.9</priority>\n  </url>\n</urlset>`;
-      sitemap = sitemap.replace('</urlset>', newUrlEntry);
-      fs.writeFileSync(sitemapPath, sitemap, 'utf8');
-      console.log(`[INFO] Added ${articleData.slug}.html to sitemap.xml`);
+  // 1. Sitemap permanent dynamic rebuild (all articles, category hubs, and pages)
+  try {
+    const sitemapPath = path.join(ROOT_DIR, 'sitemap.xml');
+    const BASE_URL = 'https://www.genalphamagazines.com';
+    const sitemapUrls = [];
+
+    sitemapUrls.push({ loc: `${BASE_URL}/`, lastmod: currentDate, changefreq: 'daily', priority: '1.0' });
+    sitemapUrls.push({ loc: `${BASE_URL}/categories.html`, lastmod: currentDate, changefreq: 'daily', priority: '0.9' });
+
+    const categories = ['news', 'business', 'celebrity', 'entertainment', 'games', 'health', 'technology', 'others'];
+    for (const c of categories) {
+      const catFile = `category-${c}.html`;
+      if (fs.existsSync(path.join(ROOT_DIR, catFile))) {
+        sitemapUrls.push({ loc: `${BASE_URL}/${catFile}`, lastmod: currentDate, changefreq: 'daily', priority: '0.85' });
+      }
     }
+
+    const pagesDir = path.join(ROOT_DIR, 'pages');
+    if (fs.existsSync(pagesDir)) {
+      const pFiles = fs.readdirSync(pagesDir).filter(f => f.endsWith('.html'));
+      for (const pf of pFiles) {
+        sitemapUrls.push({ loc: `${BASE_URL}/pages/${pf}`, lastmod: currentDate, changefreq: 'monthly', priority: '0.6' });
+      }
+    }
+
+    const authorDir = path.join(ROOT_DIR, 'author');
+    if (fs.existsSync(authorDir)) {
+      const aFiles = fs.readdirSync(authorDir).filter(f => f.endsWith('.html'));
+      for (const af of aFiles) {
+        sitemapUrls.push({ loc: `${BASE_URL}/author/${af}`, lastmod: currentDate, changefreq: 'weekly', priority: '0.7' });
+      }
+    }
+
+    const articlesDir = path.join(ROOT_DIR, 'articles');
+    if (fs.existsSync(articlesDir)) {
+      const artFiles = fs.readdirSync(articlesDir).filter(f => f.endsWith('.html'));
+      for (const f of artFiles) {
+        sitemapUrls.push({
+          loc: `${BASE_URL}/articles/${f}`,
+          lastmod: f === `${articleData.slug}.html` ? currentDate : '2026-09-07',
+          changefreq: 'monthly',
+          priority: '0.8'
+        });
+      }
+    }
+
+    const xmlEntries = sitemapUrls.map(u => `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${u.lastmod}</lastmod>\n    <changefreq>${u.changefreq}</changefreq>\n    <priority>${u.priority}</priority>\n  </url>`).join('\n');
+    const fullSitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${xmlEntries}\n</urlset>\n`;
+    fs.writeFileSync(sitemapPath, fullSitemapXml, 'utf8');
+    console.log(`[INFO] Permanently rebuilt sitemap.xml with all ${sitemapUrls.length} site URLs!`);
+  } catch (smErr) {
+    console.warn(`[WARN] Could not rebuild sitemap: ${smErr.message}`);
   }
 
   // 1b. LLMs.txt update
