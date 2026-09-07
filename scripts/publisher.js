@@ -663,9 +663,6 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
   };
 }
 
-  return buildImageResult(localImgFilename, localImgPath, topic);
-}
-
 // Helper: build standard image result object
 function buildImageResult(filename, localPath, topic) {
   const valid = fs.existsSync(localPath) && fs.statSync(localPath).size > 5000;
