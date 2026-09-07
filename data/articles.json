@@ -174,8 +174,8 @@
     "file": "iphone-18-release-specs-upgrades-and-launch-timeline.html",
     "title": "iPhone 18 Release: Specs, Upgrades, and Launch Timeline",
     "category": "technology",
-    "excerpt": "Complete guide to the iPhone 18 release: discover upcoming features, expected processor improvements, display innovations, and projected pricing.",
-    "image": "./assets/images/iphone-18-release-specs-upgrades-and-launch-timeline.jpg",
+    "excerpt": "iPhone 18 Release: Specs, Upgrades, and Launch Timeline",
+    "image": "./assets/images/default.jpg",
     "date": "2026-09-07",
     "publishedAt": "2026-09-07T06:20:01.951Z"
   },
@@ -208,5 +208,15 @@
     "image": "./assets/images/top-german-celebrities-shaping-global-culture-today.jpg",
     "date": "2026-09-07",
     "publishedAt": "2026-09-07T07:55:58.752Z"
+  },
+  {
+    "slug": "lebron-james-the-evolution-of-nba-royalty-on-and-off-court",
+    "file": "lebron-james-the-evolution-of-nba-royalty-on-and-off-court.html",
+    "title": "LeBron James: The Evolution of NBA Royalty On and Off Court",
+    "category": "celebrity",
+    "excerpt": "Discover how LeBron James built an unmatched athletic legacy while expanding his media empire, venture investments, and cultural influence.",
+    "image": "./assets/images/lebron-james-the-evolution-of-nba-royalty-on-and-off-court.jpg",
+    "date": "2026-09-07",
+    "publishedAt": "2026-09-07T09:22:49.227Z"
   }
 ]
