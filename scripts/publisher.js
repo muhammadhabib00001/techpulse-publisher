@@ -942,7 +942,7 @@ function enforceMinimumInternalLinks(sectionsHtml, currentSlug, minRequired = 3)
 }
 
 async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '', category = '') {
-  const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+  const modelsToTry = ['gemini-3.6-flash', 'gemini-flash-latest'];
   let lastError = null;
 
   for (const model of modelsToTry) {
@@ -1471,7 +1471,7 @@ async function fetchExternalLink(topic, category, usedUrls) {
     'Return ONLY a JSON object with these exact fields (no markdown, no extra text):\n' +
     '{"url":"https://...","anchorKeyword":"the exact 2-4 word keyword from the topic or article to link (e.g. smartphone hardware, Apple Inc, electric vehicles)","label":"Short descriptive title","domain":"domain.com"}';
 
-  const models = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+  const models = ['gemini-3.6-flash', 'gemini-flash-latest'];
   const httpsLib = require('https');
 
   for (const model of models) {
