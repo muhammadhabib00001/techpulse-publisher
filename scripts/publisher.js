@@ -950,6 +950,73 @@ TITLE & WORDING REQUIREMENTS:
 }
 
 
+/**
+ * Fetches a unique authoritative external URL for the article topic.
+ * Uses Gemini AI to identify a REAL high-authority source (Wikipedia, .gov, BBC, Reuters, etc.)
+ * that has not been used in any previously published article.
+ */
+async function fetchExternalLink(topic, category, usedUrls) {
+  if (!GEMINI_API_KEY) return null;
+  const usedList = usedUrls.length > 0 ? 'Do NOT suggest these already-used URLs:\n' + usedUrls.slice(-40).join('\n') : '';
+  const prompt = 'You are an editorial researcher. For the article topic below, provide ONE authoritative external reference URL.\n' +
+    'Requirements:\n' +
+    '1. Must be a REAL, currently live URL (Wikipedia, BBC, Reuters, AP News, .gov, .org, WHO, CDC, etc.)\n' +
+    '2. Highly relevant and directly related to the topic\n' +
+    '3. From a HIGH-AUTHORITY domain (major news outlet, official institution, encyclopedia)\n' +
+    '4. Must NOT be from this list of already-used URLs:\n' + usedList + '\n\n' +
+    'Topic: "' + topic + '"\n' +
+    'Category: ' + category + '\n\n' +
+    'Return ONLY a JSON object with these exact fields (no markdown, no extra text):\n' +
+    '{"url":"https://...","label":"Short descriptive text (5-8 words)","domain":"domain.com"}';
+
+  const models = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+  const httpsLib = require('https');
+
+  for (const model of models) {
+    try {
+      const result = await new Promise((resolve, reject) => {
+        const payload = JSON.stringify({
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          generationConfig: { responseMimeType: 'application/json', temperature: 0.1 }
+        });
+        const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + GEMINI_API_KEY;
+        const req = httpsLib.request(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }
+        }, (res) => {
+          let data = '';
+          res.on('data', c => data += c);
+          res.on('end', () => {
+            try {
+              const parsed = JSON.parse(data);
+              if (parsed.error) return reject(new Error(parsed.error.message));
+              const text = parsed.candidates[0].content.parts[0].text.trim();
+              const clean = text.replace(/^[```json\s]*/,'').replace(/[```\s]*$/,'');
+              resolve(JSON.parse(clean));
+            } catch (e) { reject(e); }
+          });
+        });
+        req.on('error', reject);
+        req.write(payload);
+        req.end();
+      });
+
+      if (result && result.url && result.url.startsWith('http') && result.label && result.domain) {
+        if (!usedUrls.includes(result.url)) {
+          console.log('[INFO] External link: ' + result.url + ' (' + result.domain + ')');
+          return result;
+        }
+        console.warn('[WARN] External link was a duplicate, skipping.');
+        return null;
+      }
+    } catch (err) {
+      console.warn('[WARN] fetchExternalLink model ' + model + ' failed: ' + err.message.slice(0, 80));
+    }
+  }
+  return null;
+}
+
+
 const VECTOR_LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
   <defs>
     <radialGradient id="badgeRadialArt" cx="50%" cy="38%" r="62%">
@@ -1017,7 +1084,7 @@ function getDynamicRelatedArticles(currentSlug) {
   return list.sort(() => 0.5 - Math.random()).slice(0, count);
 }
 
-function renderArticleHtml(articleData, author, category, heroImage) {
+function renderArticleHtml(articleData, author, category, heroImage, externalLink) {
   const currentDate = new Date().toISOString().split('T')[0];
   const dateFormatted = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
@@ -1098,6 +1165,23 @@ function renderArticleHtml(articleData, author, category, heroImage) {
 
   // Hard SEO Guarantee: Never publish an article with fewer than 3 internal links
   const guaranteedSectionsHtml = enforceMinimumInternalLinks(sectionsHtml, articleData.slug, 3);
+
+  // ── External Reference Box ─────────────────────────────────────
+  let externalLinkHtml = '';
+  if (externalLink && externalLink.url && externalLink.label) {
+    const safeUrl = String(externalLink.url).replace(/"/g, '&quot;');
+    const safeLabel = String(externalLink.label).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const safeDomain = String(externalLink.domain || '').replace(/</g, '&lt;') || safeUrl.replace(/^https?:\/\/([^\/]+).*/, '$1');
+    externalLinkHtml = `
+          <div style="background:#eff6ff;border-left:4px solid #2563eb;padding:1.1rem 1.4rem;margin:2rem 0 1.5rem;border-radius:6px;display:flex;align-items:flex-start;gap:0.9rem;">
+            <span style="font-size:1.4rem;line-height:1;flex-shrink:0;">🔗</span>
+            <div>
+              <p style="margin:0 0 0.3rem;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#2563eb;">External Reference</p>
+              <a href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" style="color:#1d4ed8;font-weight:600;font-size:0.97rem;text-decoration:underline;">${safeLabel}</a>
+              <p style="margin:0.25rem 0 0;font-size:0.78rem;color:#64748b;">Source: ${safeDomain}</p>
+            </div>
+          </div>`;
+  }
 
   // Render visible FAQ section if FAQs exist and not already present in contentHtml
   let visibleFaqHtml = '';
@@ -1298,6 +1382,7 @@ function renderArticleHtml(articleData, author, category, heroImage) {
 
         <div class="article-body">
           ${guaranteedSectionsHtml}
+          ${externalLinkHtml}
           ${guaranteedSectionsHtml.includes('id="frequently-asked-questions"') ? '' : visibleFaqHtml}
         </div>
 
@@ -1880,7 +1965,20 @@ async function main() {
 
   const generatedArticle = await generateArticle(topicData);
   const heroImage = await fetchOrGenerateTopicImage(topic, cat, generatedArticle.slug);
-  const fullHtml = renderArticleHtml(generatedArticle, topicData.author, topicData.category, heroImage);
+
+  // Load list of already-used external URLs to prevent duplicates
+  let usedExternalUrls = [];
+  try {
+    const _trackFile = path.join(ROOT_DIR, 'data', 'published_topics.json');
+    if (fs.existsSync(_trackFile)) {
+      const _ledger = JSON.parse(fs.readFileSync(_trackFile, 'utf8'));
+      usedExternalUrls = _ledger.map(e => e.externalUrl).filter(u => u && typeof u === 'string');
+    }
+  } catch (e) {}
+  const externalLink = await fetchExternalLink(topic, cat, usedExternalUrls);
+  console.log('[INFO] External link result:', externalLink ? externalLink.url : 'none');
+
+  const fullHtml = renderArticleHtml(generatedArticle, topicData.author, topicData.category, heroImage, externalLink);
 
   const outputPath = path.join(articlesDir, `${generatedArticle.slug}.html`);
   fs.writeFileSync(outputPath, fullHtml, 'utf8');
@@ -1899,6 +1997,8 @@ async function main() {
       title: generatedArticle.title,
       category: cat,
       topic: topic,
+      externalUrl: externalLink ? externalLink.url : null,
+      externalDomain: externalLink ? externalLink.domain : null,
       publishedAt: new Date().toISOString()
     });
     fs.writeFileSync(trackingFile, JSON.stringify(ledger, null, 2), 'utf8');
