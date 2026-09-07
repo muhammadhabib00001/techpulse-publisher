@@ -2153,15 +2153,15 @@ function updateSiteIndex(articleData, author, category, heroImage) {
           </article>`;
 
     // Map categories to homepage section labels
-        const categorySectionLabels = {
-      'news': 'Latest Stories',
-      'business': 'Business & Economy',
-      'celebrity': 'Entertainment & Arts',
-      'entertainment': 'Entertainment & Arts',
-      'games': 'Games & Others',
-      'health': 'Business & Economy',
-      'technology': 'Technology & Innovation',
-      'others': 'Games & Others'
+    const categorySectionLabels = {
+      'news': 'News',
+      'business': 'Business',
+      'celebrity': 'Celebrity & Health',
+      'entertainment': 'Entertainment',
+      'games': 'Games',
+      'health': 'Celebrity & Health',
+      'technology': 'Technology',
+      'others': 'Others'
     };
 
     const targetLabel = categorySectionLabels[category] || 'Business & Economy';
