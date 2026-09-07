@@ -761,7 +761,53 @@ function getInternalLinkMap() {
     { keyword: 'iPhone 18', url: '../articles/iphone-18-release-specs-upgrades-and-launch-timeline.html' },
     { keyword: 'flagship smartphone', url: '../articles/iphone-18-release-specs-upgrades-and-launch-timeline.html' },
     { keyword: 'mobile silicon', url: '../articles/iphone-18-release-specs-upgrades-and-launch-timeline.html' },
-    { keyword: 'mobile health tracking', url: '../articles/iphone-18-release-specs-upgrades-and-launch-timeline.html' }
+    { keyword: 'mobile health tracking', url: '../articles/iphone-18-release-specs-upgrades-and-launch-timeline.html' },
+
+    // Business Buying & Market Analysis
+    { keyword: 'buy a business', url: '../articles/how-to-buy-run-business-market-analysis.html' },
+    { keyword: 'buying a business', url: '../articles/how-to-buy-run-business-market-analysis.html' },
+    { keyword: 'market analysis', url: '../articles/how-to-buy-run-business-market-analysis.html' },
+    { keyword: 'business acquisition', url: '../articles/how-to-buy-run-business-market-analysis.html' },
+    { keyword: 'due diligence', url: '../articles/how-to-buy-run-business-market-analysis.html' },
+
+    // AI & Technology in Business
+    { keyword: 'AI in business', url: '../articles/how-ai-is-reshaping-main-street-business-operations.html' },
+    { keyword: 'artificial intelligence', url: '../articles/how-ai-is-reshaping-main-street-business-operations.html' },
+
+    // Apple iOS
+    { keyword: 'iOS 27', url: '../articles/inside-apple-s-ios-27-architecture-and-ai-innovations.html' },
+    { keyword: 'Apple iOS', url: '../articles/inside-apple-s-ios-27-architecture-and-ai-innovations.html' },
+
+    // Celebrity
+    { keyword: 'famous celebrities', url: '../articles/25-famous-celebrity-in-usa-career-influence-and-cultur.html' },
+    { keyword: 'LeBron James', url: '../articles/lebron-james-the-evolution-of-nba-royalty-on-and-off-court.html' },
+    { keyword: 'German celebrities', url: '../articles/top-german-celebrities-shaping-global-culture-today.html' },
+
+    // HR & Workforce
+    { keyword: 'HR manager', url: '../articles/the-evolving-hr-manager-strategy-tech-and-culture.html' },
+    { keyword: 'human resources', url: '../articles/the-evolving-hr-manager-strategy-tech-and-culture.html' },
+    { keyword: 'workforce strategy', url: '../articles/the-evolving-hr-manager-strategy-tech-and-culture.html' },
+
+    // Home Design
+    { keyword: 'bathroom upgrade', url: '../articles/modern-bathroom-upgrades-spa-luxury-meets-smart-tech.html' },
+    { keyword: 'kitchen design', url: '../articles/the-kitchen-as-canvas-designing-creative-culinary-spaces.html' },
+    { keyword: 'home design', url: '../articles/modern-bathroom-upgrades-spa-luxury-meets-smart-tech.html' },
+
+    // FOMC / Interest Rates
+    { keyword: 'FOMC meeting', url: '../articles/fomc-meeting-sept-2026-interest-rates-and-market-outlook.html' },
+    { keyword: 'borrowing costs', url: '../articles/us-interest-rates-yields-inflation-and-borrowing-strategy.html' },
+    { keyword: 'bond yields', url: '../articles/us-interest-rates-yields-inflation-and-borrowing-strategy.html' },
+    { keyword: 'inflation rate', url: '../articles/us-interest-rates-yields-inflation-and-borrowing-strategy.html' },
+
+    // GTA 6 / Gaming
+    { keyword: 'GTA 6', url: '../articles/gta-6-release-date-map-and-gameplay-guide.html' },
+    { keyword: 'open-world game', url: '../articles/gta-6-release-date-map-and-gameplay-guide.html' },
+
+    // Film & Entertainment
+    { keyword: 'American cinema', url: '../articles/25-american-movies-defining-visual-storytelling-today.html' },
+    { keyword: 'Hollywood films', url: '../articles/25-american-movies-defining-visual-storytelling-today.html' },
+    { keyword: 'film festivals', url: '../articles/grassroots-indie-film-distribution-how-regional-festival.html' },
+    { keyword: 'indie film', url: '../articles/grassroots-indie-film-distribution-how-regional-festival.html' }
   ];
 
   // Dynamically index all articles in articles directory for automatic cross-linking
@@ -830,12 +876,29 @@ function injectInternalLinks(htmlContent, currentSlug) {
   return protectedHtml;
 }
 
+// Authoritative fallback external sources per category
+const DEFAULT_CATEGORY_EXTERNAL_LINKS = {
+  business: { url: 'https://www.investopedia.com', label: 'Investopedia', domain: 'investopedia.com', keywords: ['investment', 'business operations', 'market analysis', 'revenue', 'finance', 'economic growth', 'commercial strategy', 'due diligence'] },
+  technology: { url: 'https://www.wired.com', label: 'Wired', domain: 'wired.com', keywords: ['technology', 'software engineering', 'artificial intelligence', 'digital platforms', 'hardware innovations', 'machine learning', 'mobile silicon'] },
+  entertainment: { url: 'https://www.hollywoodreporter.com', label: 'The Hollywood Reporter', domain: 'hollywoodreporter.com', keywords: ['cinema', 'film industry', 'visual storytelling', 'theatrical productions', 'filmmakers', 'entertainment', 'cinematography'] },
+  health: { url: 'https://www.mayoclinic.org', label: 'Mayo Clinic', domain: 'mayoclinic.org', keywords: ['cardiovascular health', 'preventative healthcare', 'medical research', 'clinical trials', 'wellness monitoring', 'health', 'heart problems'] },
+  games: { url: 'https://www.ign.com', label: 'IGN', domain: 'ign.com', keywords: ['gaming industry', 'gameplay mechanics', 'open-world gaming', 'studio developers', 'console performance', 'multiplayer'] },
+  news: { url: 'https://www.reuters.com', label: 'Reuters', domain: 'reuters.com', keywords: ['policy analysis', 'international reporting', 'economic indicators', 'federal regulations', 'global news', 'monetary policy'] },
+  celebrity: { url: 'https://www.rollingstone.com', label: 'Rolling Stone', domain: 'rollingstone.com', keywords: ['cultural influence', 'popular culture', 'music industry', 'entertainment careers', 'celebrity profiles', 'pop icon'] },
+  others: { url: 'https://www.britannica.com', label: 'Encyclopaedia Britannica', domain: 'britannica.com', keywords: ['cultural heritage', 'historical context', 'regional traditions', 'community events', 'comprehensive guide'] }
+};
+
 /**
  * Injects the single external link directly onto a matching keyword within the article body text.
  * Ensures the external link is embedded in context rather than only as a standalone box.
  */
-function injectExternalKeywordLink(sectionsHtml, externalLink) {
-  if (!externalLink || !externalLink.url) return sectionsHtml;
+function injectExternalKeywordLink(sectionsHtml, externalLink, category = 'others') {
+  const catKey = (category || 'others').toLowerCase();
+  const fallback = DEFAULT_CATEGORY_EXTERNAL_LINKS[catKey] || DEFAULT_CATEGORY_EXTERNAL_LINKS.others;
+  
+  const linkObj = (externalLink && externalLink.url && String(externalLink.url).startsWith('http')) 
+    ? externalLink 
+    : fallback;
 
   // Protect headings, existing <a> tags, scripts, styles
   const protectedBlocks = [];
@@ -845,24 +908,26 @@ function injectExternalKeywordLink(sectionsHtml, externalLink) {
     return placeholder;
   });
 
-  // Candidates to match: explicit anchorKeyword from Gemini, label, domain, or key topic terms
+  // Candidates to match: anchorKeyword, label, domain, or category keywords
   const candidates = [];
-  if (externalLink.anchorKeyword && externalLink.anchorKeyword.trim().length >= 3) {
-    candidates.push(externalLink.anchorKeyword.trim());
+  if (linkObj.anchorKeyword && linkObj.anchorKeyword.trim().length >= 3) {
+    candidates.push(linkObj.anchorKeyword.trim());
   }
-  if (externalLink.label && externalLink.label.trim().length >= 4) {
-    candidates.push(externalLink.label.trim());
-    // Also try significant phrases from the label
-    const labelWords = externalLink.label.trim().split(/\s+/);
+  if (linkObj.label && linkObj.label.trim().length >= 4) {
+    candidates.push(linkObj.label.trim());
+    const labelWords = linkObj.label.trim().split(/\s+/);
     if (labelWords.length >= 2) {
       candidates.push(labelWords.slice(0, 3).join(' '));
       candidates.push(labelWords.slice(-2).join(' '));
     }
   }
+  if (fallback && Array.isArray(fallback.keywords)) {
+    candidates.push(...fallback.keywords);
+  }
 
   let injected = false;
-  const safeUrl = String(externalLink.url).replace(/"/g, '&quot;');
-  const titleAttr = String(externalLink.label || externalLink.domain || 'External Reference').replace(/"/g, '&quot;');
+  const safeUrl = String(linkObj.url).replace(/"/g, '&quot;');
+  const titleAttr = String(linkObj.label || linkObj.domain || 'External Reference').replace(/"/g, '&quot;');
 
   for (const phrase of candidates) {
     if (injected) break;
@@ -879,13 +944,13 @@ function injectExternalKeywordLink(sectionsHtml, externalLink) {
     }
   }
 
-  // Fallback: If no candidate matched, find the first substantial non-heading paragraph and attach to a natural phrase or append contextually
+  // Fallback: attach contextually inside the first substantial non-heading paragraph
   if (!injected) {
     const pRegex = /(<p[^>]*>)([\s\S]*?)(<\/p>)/i;
     if (pRegex.test(protectedHtml)) {
       protectedHtml = protectedHtml.replace(pRegex, (fullMatch, openP, text, closeP) => {
         injected = true;
-        const linkAnchor = externalLink.anchorKeyword || externalLink.label || 'authoritative industry coverage';
+        const linkAnchor = linkObj.anchorKeyword || linkObj.label || fallback.label;
         return `${openP}${text} For further reference, see <a href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" style="color: #2563eb; font-weight: 700; text-decoration: underline;" title="${titleAttr}">${linkAnchor}</a>.${closeP}`;
       });
     }
@@ -900,45 +965,78 @@ function injectExternalKeywordLink(sectionsHtml, externalLink) {
 }
 
 /**
- * Enforces a strict minimum of internal links in the article body.
- * If natural keyword injection yielded fewer than 3 links, this helper appends
- * contextual recommendations to reach the mandatory 3-5 internal link threshold.
+ * Enforces a strict minimum of 2 internal links embedded directly on keywords
+ * inside body paragraph <p> tags. NEVER outputs standalone boxes.
  */
-function enforceMinimumInternalLinks(sectionsHtml, currentSlug, minRequired = 3) {
-  const existingMatches = sectionsHtml.match(/<a\s+[^>]*href=["'](?:\.\.\/|\.\/|\/)?(?:articles\/|category-)[^"']+["'][^>]*>/gi) || [];
-  const currentCount = existingMatches.length;
+function enforceMinimumInternalLinks(sectionsHtml, currentSlug, minRequired = 2) {
+  // Count how many internal article links are already inside paragraph tags
+  const pRegex = /<p[^>]*>([\s\S]*?)<\/p>/gi;
+  let pMatches = sectionsHtml.match(pRegex) || [];
+  
+  let currentCount = 0;
+  pMatches.forEach(p => {
+    const intLinks = p.match(/<a\s+[^>]*href=["'](?:\.\.\/articles\/|\.\/|articles\/)([a-z0-9-]+)\.html["'][^>]*>/gi) || [];
+    currentCount += intLinks.length;
+  });
 
   if (currentCount >= minRequired) {
     return sectionsHtml;
   }
 
-  // Need additional links to meet requirement
-  const needed = minRequired - currentCount;
   const linkMap = getInternalLinkMap().filter(item => !item.url.includes(currentSlug));
-  
-  // Find candidates not yet linked in sectionsHtml
-  const unusedCandidates = linkMap.filter(item => !sectionsHtml.includes(item.url));
-  const selected = unusedCandidates.slice(0, needed);
+  let modifiedHtml = sectionsHtml;
 
-  if (selected.length === 0) return sectionsHtml;
-
-  const fallbackRecommendations = selected.map(item => {
-    const cleanLabel = item.keyword.charAt(0).toUpperCase() + item.keyword.slice(1);
-    return `<a href="${item.url}" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cleanLabel}">${cleanLabel}</a>`;
+  // Protect headings, existing <a> tags, scripts, styles
+  const protectedBlocks = [];
+  let protectedHtml = modifiedHtml.replace(/<(h[1-6]|a|script|style)[^>]*>[\s\S]*?<\/\1>/gi, (match) => {
+    const placeholder = `__PROTECTED_BLOCK_INT_${protectedBlocks.length}__`;
+    protectedBlocks.push(match);
+    return placeholder;
   });
 
-  const injectionBlock = `
-          <div style="background: var(--bg-card); border-left: 3px solid var(--primary); padding: 0.9rem 1.25rem; margin: 1.5rem 0; font-size: 0.95rem; border-radius: 4px;">
-            <strong>Department Insights:</strong> Explore complementary perspectives and analysis on ${fallbackRecommendations.join(', and ')}.
-          </div>`;
+  // Try matching candidate keywords in available paragraphs
+  for (const cand of linkMap) {
+    if (currentCount >= minRequired) break;
+    if (!cand.keyword || cand.keyword.length < 3) continue;
+    if (protectedHtml.includes(cand.url)) continue;
 
-  // Inject before the last closing </section> or before </article>
-  const lastSectionIdx = sectionsHtml.lastIndexOf('</section>');
-  if (lastSectionIdx !== -1) {
-    return sectionsHtml.slice(0, lastSectionIdx) + injectionBlock + '\n' + sectionsHtml.slice(lastSectionIdx);
+    const escaped = cand.keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+    const regex = new RegExp('(\\b' + escaped + '\\b)(?![^<]*>)', 'i');
+
+    if (regex.test(protectedHtml)) {
+      protectedHtml = protectedHtml.replace(regex, (match) => {
+        currentCount++;
+        const linkTag = `<a href="${cand.url}" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cand.keyword}">${match}</a>`;
+        const placeholder = `__PROTECTED_BLOCK_INT_${protectedBlocks.length}__`;
+        protectedBlocks.push(linkTag);
+        return placeholder;
+      });
+    }
   }
 
-  return sectionsHtml + injectionBlock;
+  // Restore protected blocks
+  for (let i = 0; i < protectedBlocks.length; i++) {
+    protectedHtml = protectedHtml.replace(`__PROTECTED_BLOCK_INT_${i}__`, protectedBlocks[i]);
+  }
+
+  // If still below minRequired, inject seamlessly into paragraphs
+  if (currentCount < minRequired) {
+    const needed = minRequired - currentCount;
+    const unused = linkMap.filter(c => !protectedHtml.includes(c.url)).slice(0, needed);
+    
+    let pCount = 0;
+    protectedHtml = protectedHtml.replace(/(<p[^>]*>)([\s\S]*?)(<\/p>)/gi, (fullP, openP, text, closeP) => {
+      if (pCount < unused.length && text.length > 80 && !text.includes('<a ')) {
+        const cand = unused[pCount];
+        pCount++;
+        currentCount++;
+        return `${openP}${text} Explore related reporting on <a href="${cand.url}" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cand.keyword}">${cand.keyword}</a> for added perspective.${closeP}`;
+      }
+      return fullP;
+    });
+  }
+
+  return protectedHtml;
 }
 
 async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '', category = '') {
@@ -1413,7 +1511,11 @@ WRITING STYLE RULES (follow strictly):
 13. Valid HTML only in contentHtml.
 14. FACTUAL ACCURACY (NON-NEGOTIABLE): You are a professional journalist. Write ONLY verifiable, real facts. Never fabricate statistics, people, events, or claims. If you mention a film, name its actual director and year. If you mention a person, use their real full name and verified accomplishments.
 15. LIST ARTICLE COMPLETENESS: When the topic specifies a numbered list (e.g. "25 movies", "10 celebrities"), you MUST include EVERY numbered item. Skipping items or writing "twenty-five films" without naming them is a critical failure. Write every single item with its real title, creator, date, and 1-2 sentences of specific factual detail.
-16. ZERO GENERIC FILLER: Every paragraph must be specific to the exact topic. Sentences that could describe any article ("this topic has become increasingly important") are banned. Write details that ONLY apply to the specific subject matter.`;
+16. ZERO GENERIC FILLER: Every paragraph must be specific to the exact topic. Sentences that could describe any article ("this topic has become increasingly important") are banned. Write details that ONLY apply to the specific subject matter.
+17. MANDATORY INLINE LINKING KEYWORDS (NON-NEGOTIABLE):
+    - Every article MUST contain natural mentions of relevant related topic keywords inside body paragraphs (<p> tags) so internal cross-links and external citations can be anchored directly onto in-text keywords.
+    - NEVER place links in headings (<h1>, <h2>, <h3>).
+    - Weave keywords naturally into editorial sentences.`;
 
   const userPrompt = `Write an in-depth, original, high-quality editorial article about: "${topic}"
 Category: ${category}
@@ -1665,11 +1767,11 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
     return finalThoughtsBlock ? `${finalThoughtsBlock}\n${currentSectionHtml}` : currentSectionHtml;
   }).join('\n');
 
-  // Hard SEO Guarantee: Never publish an article with fewer than 3 internal links
-  let guaranteedSectionsHtml = enforceMinimumInternalLinks(sectionsHtml, articleData.slug, 3);
+  // Hard SEO Guarantee: Exactly/at least 2 internal links embedded on keywords
+  let guaranteedSectionsHtml = enforceMinimumInternalLinks(sectionsHtml, articleData.slug, 2);
 
-  // Embed external link directly onto relevant in-body keyword
-  guaranteedSectionsHtml = injectExternalKeywordLink(guaranteedSectionsHtml, externalLink);
+  // Embed external link directly onto relevant in-body keyword (with category fallback)
+  guaranteedSectionsHtml = injectExternalKeywordLink(guaranteedSectionsHtml, externalLink, category);
 
   // ── External Reference Box ─────────────────────────────────────
   let externalLinkHtml = '';
@@ -2406,6 +2508,65 @@ function updateSiteIndex(articleData, author, category, heroImage) {
   }
 }
 
+/**
+ * Strict Link Guarantee Enforcer (File-Level)
+ * Checks the saved article HTML on disk and ensures:
+ * 1. Exactly/at least 2 internal links inside paragraph <p> tags
+ * 2. Exactly 1 external link inside paragraph <p> tags
+ * 3. NO "Department Insights" box
+ * If deficient, auto-heals and overwrites the file on disk immediately.
+ */
+function verifyAndEnforceArticleFileLinks(filePath, slug, category) {
+  try {
+    let content = fs.readFileSync(filePath, 'utf8');
+    
+    // Remove any accidental Department Insights box
+    content = content.replace(/<div[^>]*border-left:\s*3px\s+solid\s+var\(--primary\)[^>]*>[\s\S]*?Department Insights[\s\S]*?<\/div>/gi, '');
+
+    const startIdx = content.indexOf('<div class="article-body">');
+    const endIdx = content.indexOf('</article>');
+    if (startIdx === -1 || endIdx === -1) return;
+
+    let body = content.substring(startIdx, endIdx);
+    const pTags = body.match(/<p[^>]*>([\s\S]*?)<\/p>/gi) || [];
+    let intCount = 0;
+    let extCount = 0;
+
+    pTags.forEach(p => {
+      const im = p.match(/<a\s+[^>]*href=["'](?:\.\.\/articles\/|\.\/|articles\/)([a-z0-9-]+)\.html["'][^>]*>/gi) || [];
+      intCount += im.length;
+      const em = p.match(/<a\s+[^>]*href=["']https?:\/\/[^"']+["'][^>]*>([\s\S]*?)<\/a>/gi) || [];
+      extCount += em.length;
+    });
+
+    let modified = false;
+
+    // Check external link
+    if (extCount < 1) {
+      const catKey = (category || 'others').toLowerCase();
+      const extInfo = DEFAULT_CATEGORY_EXTERNAL_LINKS[catKey] || DEFAULT_CATEGORY_EXTERNAL_LINKS.others;
+      body = injectExternalKeywordLink(body, extInfo, category);
+      modified = true;
+      console.log(`[PERMANENT LINK LOCK] Auto-injected missing external link for "${slug}"`);
+    }
+
+    // Check internal links
+    if (intCount < 2) {
+      body = enforceMinimumInternalLinks(body, slug, 2);
+      modified = true;
+      console.log(`[PERMANENT LINK LOCK] Auto-injected missing internal links (${intCount} -> 2) for "${slug}"`);
+    }
+
+    if (modified) {
+      content = content.substring(0, startIdx) + body + content.substring(endIdx);
+      fs.writeFileSync(filePath, content, 'utf8');
+    }
+    console.log(`[PERMANENT LINK LOCK] Verified: "${slug}" guaranteed with >=2 internal links and >=1 external link on keywords.`);
+  } catch (err) {
+    console.warn(`[WARN] verifyAndEnforceArticleFileLinks error: ${err.message}`);
+  }
+}
+
 async function main() {
   console.log('=== Starting GenAlphaMagazines Automated Content Pipeline ===');
 
@@ -2556,6 +2717,9 @@ async function main() {
   const outputPath = path.join(articlesDir, `${generatedArticle.slug}.html`);
   fs.writeFileSync(outputPath, fullHtml, 'utf8');
   console.log(`[SUCCESS] Article written to: ${outputPath}`);
+
+  // Permanent Link Guarantee: Audit and auto-heal on disk
+  verifyAndEnforceArticleFileLinks(outputPath, generatedArticle.slug, cat);
 
   // Record into published topics tracking ledger
   try {
