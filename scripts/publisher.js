@@ -469,6 +469,8 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
         expansions.push('battery backup power technology', 'uninterruptible power supply hardware');
       } else if (lowerTopic.includes('iphone') || lowerTopic.includes('apple') || lowerTopic.includes('ios')) {
         expansions.push('apple iphone smartphone modern', 'iphone smartphone technology');
+      } else if (lowerTopic.includes('phone') || lowerTopic.includes('smartphone') || lowerTopic.includes('mobile') || lowerTopic.includes('handset')) {
+        expansions.push('modern flagship smartphone display', 'smartphone mobile technology desk', 'latest smartphone screen modern');
       } else if (lowerTopic.includes('android') || lowerTopic.includes('samsung') || lowerTopic.includes('pixel')) {
         expansions.push('android smartphone technology', 'samsung pixel mobile device');
       } else if (lowerTopic.includes('laptop') || lowerTopic.includes('macbook') || lowerTopic.includes('computer')) {
