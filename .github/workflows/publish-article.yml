@@ -6,21 +6,24 @@ on:
   workflow_dispatch:
     inputs:
       topic:
-        description: 'Optional custom topic (leave blank to pull from Google Drive brief or default pool)'
+        description: 'Optional custom topic (leave blank for auto-selection from keyword pool)'
         required: false
         default: ''
       category:
-        description: 'Target Category (news, community, business, arts, lifestyle, voices)'
+        description: 'Target Category (leave blank for automatic rotation)'
         required: false
-        default: 'news'
+        default: ''
         type: choice
         options:
+          - ''
           - news
-          - community
           - business
-          - arts
-          - lifestyle
-          - voices
+          - celebrity
+          - entertainment
+          - games
+          - health
+          - technology
+          - others
 
 permissions:
   contents: write
@@ -29,25 +32,34 @@ permissions:
 jobs:
   generate-and-publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js Runtime
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
 
       - name: Install Dependencies
-        run: npm ci || npm install
+        run: npm install --no-audit --prefer-offline || npm install --no-audit
 
-      - name: Run Gemini / Vertex AI Content Engine
+      - name: Ensure data directory exists
+        run: mkdir -p data assets/images
+
+      - name: Configure Git Committer
+        run: |
+          git config --global user.name "TechPulse Publishing Engine"
+          git config --global user.email "bot@techpulse-publisher.vercel.app"
+
+      - name: Run Gemini AI Content Engine
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY || 'rug2wxB71o1mh5kYy_K6kJVLxXZ6CA2apSHUrGqZYLk' }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
           GCP_CREDENTIALS_JSON: ${{ secrets.GCP_CREDENTIALS_JSON }}
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           GCP_REGION: ${{ secrets.GCP_REGION || 'us-central1' }}
@@ -57,18 +69,14 @@ jobs:
             --topic "${{ github.event.inputs.topic || '' }}" \
             --category "${{ github.event.inputs.category || '' }}"
 
-      - name: Configure Git Committer
-        run: |
-          git config --global user.name "GenAlphaMagazines Publishing Engine"
-          git config --global user.email "bot@genalphamagazines.com"
-
       - name: Commit and Push New Article & Updated Feeds
         run: |
-          git add articles/ assets/images/ data/ index.html category-*.html categories.html pages/ sitemap.xml
+          git add -A articles/ assets/images/ data/ index.html category-*.html categories.html pages/ sitemap.xml llms.txt
           if git diff --staged --quiet; then
-            echo "No changes to commit. Article generation might have been skipped."
+            echo "✅ No new article generated (topic pool may be exhausted or skipped). No commit needed."
           else
-            git commit -m "Automated publication: New in-depth community journalism feature [skip ci]"
             git pull --rebase origin main
+            git commit -m "🤖 Auto-published: New SEO article via Gemini AI [skip ci]"
             git push origin main
+            echo "✅ Article successfully published and pushed to GitHub."
           fi
