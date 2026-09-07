@@ -81,8 +81,9 @@ jobs:
             git commit -m "🤖 Auto-published: New SEO article via Gemini AI [skip ci]"
             # Push with retry: if rejected by a concurrent run, rebase and retry once
             if ! git push origin main; then
-              echo "⚠️ Push rejected (concurrent run). Rebasing and retrying..."
-              git pull --rebase origin main
+              echo "⚠️ Push rejected (concurrent run). Pulling changes with merge strategy and retrying..."
+              git fetch origin main
+              git pull --rebase -X theirs origin main || (git rebase --abort && git pull origin main --no-rebase -s recursive -X theirs -m "Merge concurrent changes [skip ci]")
               git push origin main
               echo "✅ Retry push succeeded."
             else
