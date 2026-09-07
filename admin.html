@@ -410,6 +410,474 @@
       gap: 1rem;
       font-size: 0.88rem;
     }
+  
+    /* ==========================================================================
+       WordPress-Style Post Publishing Suite Styles
+       ========================================================================== */
+    .modal-box-wp {
+      max-width: 1400px;
+      width: 96vw;
+      height: 94vh;
+      max-height: 94vh;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+    .wp-header {
+      background: #1e293b;
+      color: #ffffff;
+      padding: 0.65rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #334155;
+      gap: 1rem;
+      flex-shrink: 0;
+    }
+    .wp-header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+    .wp-logo-badge {
+      background: #2563eb;
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.82rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .wp-header-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+    .wp-status-pill {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+      background: #334155;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+    .wp-status-pill.live {
+      background: #065f46;
+      color: #6ee7b7;
+    }
+    .wp-header-stats {
+      font-size: 0.82rem;
+      color: #94a3b8;
+      display: flex;
+      gap: 0.75rem;
+    }
+    .wp-header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .btn-wp-publish {
+      background: #2563eb;
+      color: #fff;
+      font-weight: 700;
+      border: none;
+      padding: 0.5rem 1.25rem;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.92rem;
+      transition: background 0.15s;
+    }
+    .btn-wp-publish:hover {
+      background: #1d4ed8;
+    }
+    .wp-layout {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      background: #f8fafc;
+    }
+    .wp-main-canvas {
+      flex: 1;
+      min-width: 0;
+      background: #ffffff;
+      padding: 1.75rem 2rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .wp-sidebar {
+      width: 360px;
+      min-width: 320px;
+      background: #f8fafc;
+      border-left: 1px solid var(--border-color);
+      overflow-y: auto;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      flex-shrink: 0;
+    }
+    .wp-title-input {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: #0f172a;
+      border: none;
+      border-bottom: 2px solid #e2e8f0;
+      padding: 0.4rem 0;
+      width: 100%;
+      outline: none;
+      font-family: inherit;
+      background: transparent;
+    }
+    .wp-title-input:focus {
+      border-bottom-color: #2563eb;
+    }
+    .wp-permalink-box {
+      font-size: 0.85rem;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.75rem;
+      background: #f1f5f9;
+      border-radius: 4px;
+      flex-wrap: wrap;
+    }
+    .wp-permalink-input {
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.85rem;
+      font-family: monospace;
+      color: #0f172a;
+      flex: 1;
+      min-width: 160px;
+    }
+    .wp-toolbar {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px 6px 0 0;
+      padding: 0.45rem 0.65rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      border-bottom: none;
+    }
+    .wp-tool-btn {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 0.35rem 0.6rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      line-height: 1;
+      transition: background 0.1s, border-color 0.1s;
+    }
+    .wp-tool-btn:hover {
+      background: #eff6ff;
+      border-color: #93c5fd;
+      color: #1d4ed8;
+    }
+    .wp-tool-sep {
+      width: 1px;
+      height: 20px;
+      background: #cbd5e1;
+      margin: 0 0.2rem;
+    }
+    .wp-tab-switch {
+      margin-left: auto;
+      display: flex;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .wp-tab-btn {
+      background: #f1f5f9;
+      border: none;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+    }
+    .wp-tab-btn.active {
+      background: #2563eb;
+      color: #fff;
+    }
+    .wp-editor-wrap {
+      border: 1px solid #cbd5e1;
+      border-radius: 0 0 6px 6px;
+      background: #ffffff;
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+    }
+    .wp-visual-editor {
+      min-height: 380px;
+      padding: 1.25rem;
+      outline: none;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #1e293b;
+      overflow-y: auto;
+      font-family: inherit;
+    }
+    .wp-visual-editor:empty:before {
+      content: attr(placeholder);
+      color: #94a3b8;
+    }
+    .wp-visual-editor h2 { font-size: 1.5rem; font-weight: 800; margin: 1.2rem 0 0.6rem; color: #0f172a; }
+    .wp-visual-editor h3 { font-size: 1.25rem; font-weight: 700; margin: 1rem 0 0.5rem; color: #1e293b; }
+    .wp-visual-editor p { margin-bottom: 1rem; }
+    .wp-visual-editor blockquote {
+      border-left: 4px solid #2563eb;
+      padding: 0.5rem 1rem;
+      margin: 1rem 0;
+      background: #f8fafc;
+      font-style: italic;
+      color: #475569;
+    }
+    .wp-visual-editor ul, .wp-visual-editor ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+    .wp-visual-editor a { color: #2563eb; text-decoration: underline; font-weight: 600; }
+    .wp-html-editor {
+      min-height: 380px;
+      padding: 1rem;
+      border: none;
+      outline: none;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: #0f172a;
+      resize: vertical;
+      display: none;
+      width: 100%;
+      box-sizing: border-box;
+      background: #ffffff;
+    }
+    .wp-panel-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 1.1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .wp-panel-header {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .wp-serp-preview {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 0.85rem;
+      font-family: Arial, sans-serif;
+      margin-top: 0.75rem;
+    }
+    .wp-serp-site {
+      font-size: 0.8rem;
+      color: #202124;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.25rem;
+    }
+    .wp-serp-url {
+      color: #4d5156;
+      font-size: 0.75rem;
+      word-break: break-all;
+    }
+    .wp-serp-title {
+      color: #1a0dab;
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin: 0.2rem 0;
+      line-height: 1.3;
+      cursor: pointer;
+    }
+    .wp-serp-desc {
+      color: #4d5156;
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+    .wp-char-meter {
+      height: 4px;
+      background: #e2e8f0;
+      border-radius: 2px;
+      margin-top: 0.35rem;
+      overflow: hidden;
+    }
+    .wp-char-bar {
+      height: 100%;
+      width: 0%;
+      background: #f59e0b;
+      transition: width 0.2s, background 0.2s;
+    }
+    .wp-char-bar.good { background: #10b981; }
+    .wp-char-bar.too-long { background: #ef4444; }
+    .wp-faq-item {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 0.85rem;
+      margin-bottom: 0.75rem;
+      position: relative;
+    }
+    .wp-faq-remove {
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      background: none;
+      border: none;
+      color: #ef4444;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+    .wp-tag-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: #eff6ff;
+      color: #2563eb;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.25rem 0.55rem;
+      border-radius: 4px;
+    }
+    .wp-img-preview-box {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-bottom: 0.65rem;
+      border: 1px solid #cbd5e1;
+    }
+    .wp-img-preview-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .wp-stock-btns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.35rem;
+      margin-top: 0.5rem;
+    }
+    .wp-stock-btn {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 0.3rem 0.4rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+      text-align: center;
+      color: #334155;
+    }
+    .wp-stock-btn:hover {
+      background: #e2e8f0;
+    }
+    .wp-cat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.4rem;
+    }
+    .wp-cat-label {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      padding: 0.35rem 0.5rem;
+      border-radius: 4px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+    }
+    .wp-cat-label:hover {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    .wp-cat-label input:checked + span {
+      font-weight: 700;
+      color: #2563eb;
+    }
+    .wp-author-card {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+      padding: 0.6rem;
+      background: #f8fafc;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+    }
+    .wp-author-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #2563eb;
+      color: #fff;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+    }
+    /* Full Preview Modal */
+    .wp-preview-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 10050;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .wp-preview-overlay.active {
+      display: flex;
+    }
+    .wp-preview-box {
+      width: 100%;
+      max-width: 1000px;
+      height: 90vh;
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+    }
+
   </style>
 </head>
 <body class="admin-body">
@@ -539,65 +1007,307 @@
     </div>
   </main>
 
-  <!-- Create / Edit Article Modal -->
+  <!-- WordPress-Style Post Publishing Modal -->
   <div class="modal-overlay" id="articleModal">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h3 id="modalTitle">Add New Manual Article</h3>
-        <button class="modal-close" onclick="closeArticleModal()">&times;</button>
-      </div>
-      <form id="articleForm" onsubmit="handleSaveArticle(event)">
-        <div class="modal-body">
-          <input type="hidden" id="editArticleSlug">
-          
-          <div class="form-group">
-            <label for="fTitle">Article Title *</label>
-            <input type="text" id="fTitle" required placeholder="e.g. Breakthrough Innovations in Solar Energy for 2026">
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="fCategory">Category *</label>
-              <select id="fCategory" required>
-                <option value="news">News</option>
-                <option value="business">Business</option>
-                <option value="celebrity">Celebrity</option>
-                <option value="entertainment">Entertainment</option>
-                <option value="games">Games</option>
-                <option value="health">Health</option>
-                <option value="technology">Technology</option>
-                <option value="others">Others</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="fAuthor">Author *</label>
-              <select id="fAuthor" required>
-                <option value="marcus-reid">Marcus Reid (Business / Tech / News)</option>
-                <option value="julia-vance">Julia Vance (Celebrity / Health / Culture)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="fImage">Hero Image URL (or path) *</label>
-            <input type="text" id="fImage" required placeholder="https://images.unsplash.com/... or ./assets/images/my-photo.jpg">
-          </div>
-
-          <div class="form-group">
-            <label for="fExcerpt">Short Excerpt (SEO Meta Description) *</label>
-            <textarea id="fExcerpt" rows="2" required placeholder="A brief 1-2 sentence compelling summary of the article for search engines and cards."></textarea>
-          </div>
-
-          <div class="form-group">
-            <label for="fContent">Article Body (HTML or Paragraphs) *</label>
-            <textarea id="fContent" rows="10" required placeholder="Write or paste your article content here. You can use standard paragraphs or HTML tags like <h2>, <p>, <ul>, etc."></textarea>
+    <div class="modal-box modal-box-wp">
+      <!-- WP Topbar -->
+      <header class="wp-header">
+        <div class="wp-header-left">
+          <div class="wp-logo-badge"><span>W</span> POST</div>
+          <h3 id="modalTitle" class="wp-header-title">Add New Post</h3>
+          <span id="wpStatusPill" class="wp-status-pill">Draft</span>
+          <div class="wp-header-stats">
+            <span id="wpWordCount">0 words</span>
+            <span>&bull;</span>
+            <span id="wpReadTime">1 min read</span>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" onclick="closeArticleModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="saveArticleBtn">Save & Publish to Site</button>
+        <div class="wp-header-right">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="toggleWpPreview()">👁️ Preview Post</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="saveDraftLocally()">💾 Save Draft</button>
+          <button type="submit" class="btn-wp-publish" id="saveArticleBtn" form="articleForm">🚀 Publish to Site</button>
+          <button type="button" class="modal-close" onclick="closeArticleModal()" style="color: #cbd5e1; font-size: 1.5rem; margin-left: 0.5rem; background:none; border:none; cursor:pointer;">&times;</button>
+        </div>
+      </header>
+
+      <!-- Main Form -->
+      <form id="articleForm" onsubmit="handleSaveArticle(event)" style="display: flex; flex: 1; min-height: 0; overflow: hidden; margin: 0;">
+        <input type="hidden" id="editArticleSlug">
+        
+        <div class="wp-layout" style="width: 100%;">
+          
+          <!-- LEFT MAIN CANVAS (Content & SEO) -->
+          <main class="wp-main-canvas">
+            
+            <!-- Post Title -->
+            <div>
+              <input type="text" id="fTitle" class="wp-title-input" required placeholder="Add article title..." oninput="handleTitleInput(this.value)">
+            </div>
+
+            <!-- Permalink Box -->
+            <div class="wp-permalink-box">
+              <span style="font-weight: 700;">Permalink:</span>
+              <span style="color: #64748b;">https://www.genalphamagazines.com/articles/</span>
+              <input type="text" id="fSlug" class="wp-permalink-input" placeholder="article-slug" oninput="handleSlugManualInput(this.value)">
+              <span style="color: #64748b;">.html</span>
+              <button type="button" class="btn btn-secondary btn-sm" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;" onclick="autoGenerateSlug()">Auto-Slug</button>
+            </div>
+
+            <!-- Classic WordPress WYSIWYG Formatting Toolbar -->
+            <div>
+              <div class="wp-toolbar">
+                <!-- Headings -->
+                <select id="wpHeadingSelect" onchange="formatHeading(this.value)" class="filter-select" style="padding: 0.25rem 0.5rem; font-size: 0.82rem; height: 28px;">
+                  <option value="p">Paragraph</option>
+                  <option value="h2">Heading 2 (H2)</option>
+                  <option value="h3">Heading 3 (H3)</option>
+                  <option value="h4">Heading 4 (H4)</option>
+                </select>
+
+                <div class="wp-tool-sep"></div>
+
+                <!-- Text styles -->
+                <button type="button" class="wp-tool-btn" onclick="formatDoc('bold')" title="Bold (Ctrl+B)"><strong>B</strong></button>
+                <button type="button" class="wp-tool-btn" onclick="formatDoc('italic')" title="Italic (Ctrl+I)"><em>I</em></button>
+                <button type="button" class="wp-tool-btn" onclick="formatDoc('underline')" title="Underline (Ctrl+U)"><u>U</u></button>
+                <button type="button" class="wp-tool-btn" onclick="formatDoc('strikeThrough')" title="Strikethrough"><s>S</s></button>
+
+                <div class="wp-tool-sep"></div>
+
+                <!-- Lists & Quote -->
+                <button type="button" class="wp-tool-btn" onclick="formatDoc('insertUnorderedList')" title="Bullet List">• List</button>
+                <button type="button" class="wp-tool-btn" onclick="formatDoc('insertOrderedList')" title="Numbered List">1. List</button>
+                <button type="button" class="wp-tool-btn" onclick="formatBlockQuote()" title="Blockquote">❝ Quote</button>
+                <button type="button" class="wp-tool-btn" onclick="formatDoc('insertHorizontalRule')" title="Horizontal Divider">— Line</button>
+
+                <div class="wp-tool-sep"></div>
+
+                <!-- Insert Link / Media / Citation -->
+                <button type="button" class="wp-tool-btn" onclick="promptInsertLink()" title="Insert Hyperlink">🔗 Link</button>
+                <button type="button" class="wp-tool-btn" onclick="promptInsertImage()" title="Insert In-Body Image">🖼️ Add Media</button>
+                <button type="button" class="wp-tool-btn" onclick="promptExternalCitation()" title="Insert Authoritative Citation Link" style="color: #2563eb;">🌐 Citation Link</button>
+                <button type="button" class="wp-tool-btn" onclick="insertTakeawaysCallout()" title="Insert Key Highlights Box">💡 Takeaway Box</button>
+
+                <!-- Visual / Text Switcher -->
+                <div class="wp-tab-switch">
+                  <button type="button" id="tabVisualBtn" class="wp-tab-btn active" onclick="switchWpEditorTab('visual')">Visual</button>
+                  <button type="button" id="tabTextBtn" class="wp-tab-btn" onclick="switchWpEditorTab('text')">Text (HTML)</button>
+                </div>
+              </div>
+
+              <!-- Editor Writing Surface -->
+              <div class="wp-editor-wrap">
+                <div id="fVisualContent" class="wp-visual-editor" contenteditable="true" placeholder="Start writing or paste your post content here..." oninput="syncFromVisual()"></div>
+                <textarea id="fContent" class="wp-html-editor" placeholder="Write or paste standard paragraphs or raw HTML tags here..." oninput="syncFromText()"></textarea>
+              </div>
+            </div>
+
+            <!-- Rank Math / Yoast SEO Box -->
+            <div class="wp-panel-card">
+              <div class="wp-panel-header">
+                <span>🔍 Search Engine Optimization (Rank Math / Yoast SEO)</span>
+                <span id="seoScoreBadge" style="font-size: 0.78rem; font-weight: 700; color: #10b981; background: #ecfdf5; padding: 0.2rem 0.5rem; border-radius: 4px;">● SEO Good</span>
+              </div>
+
+              <!-- Google SERP Snippet Preview -->
+              <div class="wp-serp-preview">
+                <div class="wp-serp-site">
+                  <span style="font-size: 0.9rem;">🌐</span>
+                  <strong>GenAlphaMagazines</strong>
+                  <span class="wp-serp-url">› articles › <span id="serpSlug">your-article-slug</span></span>
+                </div>
+                <div class="wp-serp-title" id="serpTitle">Your Article Title Will Appear Here</div>
+                <div class="wp-serp-desc" id="serpDesc">Compelling meta description summary will show here in Google search engine result snippets.</div>
+              </div>
+
+              <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.85rem;">
+                <div class="form-group">
+                  <label for="fFocusKeyword" style="font-size: 0.85rem; font-weight: 700;">Focus Keyword / Target Keyword</label>
+                  <input type="text" id="fFocusKeyword" placeholder="e.g. artificial intelligence, renewable energy" oninput="updateSerpPreview()">
+                </div>
+
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <label for="fSeoTitle" style="font-size: 0.85rem; font-weight: 700;">SEO Title</label>
+                    <span id="seoTitleCounter" style="font-size: 0.75rem; color: #64748b;">0 / 60 chars</span>
+                  </div>
+                  <input type="text" id="fSeoTitle" placeholder="Custom SEO Title (defaults to post title)" oninput="updateSerpPreview()">
+                  <div class="wp-char-meter"><div id="seoTitleBar" class="wp-char-bar"></div></div>
+                </div>
+
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <label for="fExcerpt" style="font-size: 0.85rem; font-weight: 700;">Meta Description (Short Excerpt) *</label>
+                    <span id="excerptCounter" style="font-size: 0.75rem; color: #64748b;">0 / 155 chars</span>
+                  </div>
+                  <textarea id="fExcerpt" rows="2" required placeholder="A brief, engaging 1-2 sentence summary for search engines and social media cards." oninput="updateSerpPreview()"></textarea>
+                  <div class="wp-char-meter"><div id="excerptBar" class="wp-char-bar"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ Accordion Builder (Google FAQ Schema) -->
+            <div class="wp-panel-card">
+              <div class="wp-panel-header">
+                <span>❓ Frequently Asked Questions (FAQ Schema Builder)</span>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="addFaqRow()">+ Add Question</button>
+              </div>
+              <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 0.75rem;">
+                Add Q&A pairs. They will be formatted as interactive accordion cards and tagged with Schema.org <code>FAQPage</code> structured data for Google rich snippets.
+              </p>
+              <div id="faqListContainer">
+                <!-- Dynamic FAQ rows populated here -->
+              </div>
+            </div>
+
+            <!-- Key Takeaways / Executive Highlights -->
+            <div class="wp-panel-card">
+              <div class="wp-panel-header">
+                <span>⚡ Key Takeaways / Highlights (Executive Summary)</span>
+              </div>
+              <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 0.75rem;">
+                3 quick summary bullets placed in the highlight box right beneath the hero banner.
+              </p>
+              <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <input type="text" id="fTakeaway1" placeholder="Highlight bullet 1 (e.g. Core breakthrough or key statistic)">
+                <input type="text" id="fTakeaway2" placeholder="Highlight bullet 2 (e.g. Practical industry implication)">
+                <input type="text" id="fTakeaway3" placeholder="Highlight bullet 3 (e.g. Forward-looking projection)">
+              </div>
+            </div>
+
+          </main>
+
+          <!-- RIGHT DOCUMENT SIDEBAR (Settings & Publishing) -->
+          <aside class="wp-sidebar">
+            
+            <!-- Publish Box -->
+            <div class="wp-panel-card">
+              <div class="wp-panel-header">
+                <span>Publish Settings</span>
+              </div>
+              
+              <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.88rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="color: #64748b;">Status:</span>
+                  <select id="fStatus" style="padding: 0.25rem 0.5rem; font-size: 0.82rem; border-radius: 4px; border: 1px solid #cbd5e1;" onchange="updateStatusPill(this.value)">
+                    <option value="published">Published</option>
+                    <option value="draft">Draft</option>
+                  </select>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="color: #64748b;">Visibility:</span>
+                  <span style="font-weight: 700; color: #10b981;">Public 🌐</span>
+                </div>
+
+                <div class="form-group" style="margin-top: 0.25rem;">
+                  <label for="fPubDate" style="font-size: 0.8rem; color: #64748b;">Publish Date:</label>
+                  <input type="date" id="fPubDate" style="padding: 0.35rem 0.5rem; font-size: 0.85rem;">
+                </div>
+
+                <!-- Author Selector -->
+                <div class="form-group">
+                  <label for="fAuthor" style="font-size: 0.8rem; color: #64748b;">Author:</label>
+                  <select id="fAuthor" required onchange="updateAuthorCard(this.value)" style="padding: 0.4rem 0.5rem; font-size: 0.85rem;">
+                    <option value="marcus-reid">Marcus Reid (Business / Tech / News)</option>
+                    <option value="julia-vance">Julia Vance (Celebrity / Health / Culture)</option>
+                  </select>
+                  
+                  <div class="wp-author-card" id="authorPreviewCard">
+                    <div class="wp-author-avatar" id="authorAvatar">MR</div>
+                    <div>
+                      <div id="authorNameText" style="font-weight: 700; font-size: 0.88rem; color: #0f172a;">Marcus Reid</div>
+                      <div id="authorRoleText" style="font-size: 0.75rem; color: #64748b;">Senior Business & Financial Editor</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Featured Image (Hero Image) -->
+            <div class="wp-panel-card">
+              <div class="wp-panel-header">
+                <span>Featured Image *</span>
+              </div>
+              
+              <div class="wp-img-preview-box" id="imagePreviewBox">
+                <span id="imagePlaceholder" style="color: #94a3b8; font-size: 0.85rem;">No Image Selected</span>
+                <img id="imagePreviewEl" src="" alt="" style="display: none;">
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0.6rem;">
+                <label for="fImage" style="font-size: 0.8rem; color: #64748b;">Image URL or Path *</label>
+                <input type="text" id="fImage" required placeholder="https://images.unsplash.com/... or ./assets/images/..." oninput="updateImagePreview(this.value)">
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0.6rem;">
+                <label for="fImageAlt" style="font-size: 0.8rem; color: #64748b;">Alt Text (SEO & Accessibility)</label>
+                <input type="text" id="fImageAlt" placeholder="Descriptive image alt text">
+              </div>
+
+              <div style="margin-top: 0.5rem;">
+                <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Stock Photo Presets (Unsplash):</span>
+                <div class="wp-stock-btns">
+                  <button type="button" class="wp-stock-btn" onclick="applyStockPreset('tech')">💻 Tech</button>
+                  <button type="button" class="wp-stock-btn" onclick="applyStockPreset('business')">📈 Business</button>
+                  <button type="button" class="wp-stock-btn" onclick="applyStockPreset('cinema')">🎬 Cinema</button>
+                  <button type="button" class="wp-stock-btn" onclick="applyStockPreset('health')">🌿 Health</button>
+                  <button type="button" class="wp-stock-btn" onclick="applyStockPreset('gaming')">🎮 Gaming</button>
+                  <button type="button" class="wp-stock-btn" onclick="applyStockPreset('news')">📰 News</button>
+                </div>
+              </div>
+
+              <div style="margin-top: 0.75rem; padding-top: 0.6rem; border-top: 1px dashed #cbd5e1;">
+                <label style="font-size: 0.75rem; color: #64748b; display: block; margin-bottom: 0.25rem;">Or Upload Image File:</label>
+                <input type="file" id="fImageFileInput" accept="image/*" onchange="handleLocalImageUpload(event)" style="font-size: 0.75rem;">
+              </div>
+            </div>
+
+            <!-- Category Selector -->
+            <div class="wp-panel-card">
+              <div class="wp-panel-header">
+                <span>Category *</span>
+              </div>
+              <div class="wp-cat-grid" id="categoryRadioGrid">
+                <label class="wp-cat-label"><input type="radio" name="wpCategory" value="news" checked onchange="handleCatChange(this.value)"> <span>News</span></label>
+                <label class="wp-cat-label"><input type="radio" name="wpCategory" value="business" onchange="handleCatChange(this.value)"> <span>Business</span></label>
+                <label class="wp-cat-label"><input type="radio" name="wpCategory" value="technology" onchange="handleCatChange(this.value)"> <span>Technology</span></label>
+                <label class="wp-cat-label"><input type="radio" name="wpCategory" value="celebrity" onchange="handleCatChange(this.value)"> <span>Celebrity</span></label>
+                <label class="wp-cat-label"><input type="radio" name="wpCategory" value="entertainment" onchange="handleCatChange(this.value)"> <span>Entertainment</span></label>
+                <label class="wp-cat-label"><input type="radio" name="wpCategory" value="health" onchange="handleCatChange(this.value)"> <span>Health</span></label>
+                <label class="wp-cat-label"><input type="radio" name="wpCategory" value="games" onchange="handleCatChange(this.value)"> <span>Games</span></label>
+                <label class="wp-cat-label"><input type="radio" name="wpCategory" value="others" onchange="handleCatChange(this.value)"> <span>Others</span></label>
+              </div>
+              <input type="hidden" id="fCategory" value="news">
+            </div>
+
+            <!-- Tags / Keywords -->
+            <div class="wp-panel-card">
+              <div class="wp-panel-header">
+                <span>Tags / Keywords</span>
+              </div>
+              <div class="form-group">
+                <input type="text" id="fTagInput" placeholder="Add tag and press Enter..." onkeydown="handleTagKey(event)">
+                <div id="wpTagChips" style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem;"></div>
+              </div>
+            </div>
+
+          </aside>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- WordPress-Style Full Live Preview Drawer -->
+  <div class="wp-preview-overlay" id="wpPreviewOverlay">
+    <div class="wp-preview-box">
+      <div style="background: #1e293b; color: #fff; padding: 0.75rem 1.25rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #334155; position: sticky; top: 0; z-index: 10;">
+        <span style="font-weight: 700; font-size: 0.95rem;">👁️ Post Live Preview &bull; GenAlphaMagazines</span>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="toggleWpPreview()">Close Preview</button>
+      </div>
+      <div id="wpPreviewContainer" style="padding: 2rem; background: #ffffff;">
+        <!-- Full rendered article appears here -->
+      </div>
     </div>
   </div>
 
@@ -856,238 +1566,45 @@
       renderTable(filtered);
     }
 
-    // Modal Operations
-    function openCreateModal() {
-      document.getElementById('modalTitle').textContent = 'Add New Manual Article';
-      document.getElementById('editArticleSlug').value = '';
-      document.getElementById('articleForm').reset();
-      document.getElementById('saveArticleBtn').textContent = 'Save & Publish to Site';
-      document.getElementById('articleModal').classList.add('active');
+    function escapeHtml(str) {
+      return (str || '').replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
     }
 
-    async function openEditModal(slug) {
-      const art = allArticles.find(a => a.slug === slug);
-      if (!art) return;
+    function generateSlug(text) {
+      return (text || '').toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+    }
 
-      document.getElementById('modalTitle').textContent = 'Edit Article: ' + art.title;
-      document.getElementById('editArticleSlug').value = art.slug;
-      document.getElementById('fTitle').value = art.title;
-      document.getElementById('fCategory').value = (art.category || 'news').toLowerCase();
-      document.getElementById('fImage').value = art.image || ('./assets/images/' + art.slug + '.jpg');
-      document.getElementById('fExcerpt').value = art.excerpt || '';
-      document.getElementById('fContent').value = 'Loading article content...';
-      document.getElementById('saveArticleBtn').textContent = 'Save Changes';
-      document.getElementById('articleModal').classList.add('active');
-
-      try {
-        const res = await fetch('./articles/' + slug + '.html');
-        if (res.ok) {
-          const html = await res.text();
-          // Extract body text inside article-body
-          const startTag = '<div class="article-body"';
-          const startIdx = html.indexOf(startTag);
-          if (startIdx !== -1) {
-            const contentStart = html.indexOf('>', startIdx) + 1;
-            const endIdx = html.indexOf('</div>', contentStart);
-            if (endIdx !== -1) {
-              document.getElementById('fContent').value = html.slice(contentStart, endIdx).trim();
-            } else {
-              document.getElementById('fContent').value = html.slice(contentStart).trim();
-            }
-          } else {
-            document.getElementById('fContent').value = html;
-          }
+    async function ghGetFile(repo, token, path) {
+      const res = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Accept': 'application/vnd.github.v3+json'
         }
-      } catch (e) {
-        document.getElementById('fContent').value = '';
-      }
-    }
-
-    function closeArticleModal() {
-      document.getElementById('articleModal').classList.remove('active');
-    }
-
-    // Save Article Handler (Direct GitHub API)
-    async function handleSaveArticle(e) {
-      e.preventDefault();
-      const token = getGhToken();
-      const repo = getGhRepo();
-
-      if (!token) {
-        alert('Please connect your GitHub Personal Access Token in "GitHub Sync" (top right) to save changes directly to your live site.');
-        openGhSettingsModal();
-        return;
-      }
-
-      const saveBtn = document.getElementById('saveArticleBtn');
-      const originalText = saveBtn.textContent;
-      saveBtn.disabled = true;
-      saveBtn.textContent = 'Saving to GitHub...';
-
-      const existingSlug = document.getElementById('editArticleSlug').value;
-      const title = document.getElementById('fTitle').value.trim();
-      const category = document.getElementById('fCategory').value;
-      const authorSlug = document.getElementById('fAuthor').value;
-      const authorName = authorSlug === 'marcus-reid' ? 'Marcus Reid' : 'Julia Vance';
-      const imageUrl = document.getElementById('fImage').value.trim();
-      const excerpt = document.getElementById('fExcerpt').value.trim();
-      const bodyContent = document.getElementById('fContent').value.trim();
-
-      const slug = existingSlug || generateSlug(title);
-      const filename = 'articles/' + slug + '.html';
-
-      // Build full HTML
-      const fullHtml = buildArticleHtml({
-        title, slug, category, authorName, authorSlug, imageUrl, excerpt, bodyContent
       });
-
-      try {
-        // 1. Commit article HTML file
-        await ghCommitFile(repo, token, filename, fullHtml, 'Publish article: ' + title);
-
-        // 2. Update data/articles.json
-        const updatedList = [...allArticles];
-        const existingIdx = updatedList.findIndex(a => a.slug === slug);
-        const newEntry = {
-          slug, file: slug + '.html', title, category, excerpt,
-          image: imageUrl, date: new Date().toISOString().split('T')[0],
-          publishedAt: new Date().toISOString()
-        };
-        if (existingIdx !== -1) {
-          updatedList[existingIdx] = newEntry;
-        } else {
-          updatedList.unshift(newEntry);
-        }
-        allArticles = updatedList;
-
-        await ghCommitFile(repo, token, 'data/articles.json', JSON.stringify(updatedList, null, 2), 'Update data/articles.json for ' + slug);
-
-        showToast('Article published successfully! Site redeploying.');
-        closeArticleModal();
-        loadArticles();
-      } catch (err) {
-        alert('Error publishing to GitHub: ' + err.message);
-      } finally {
-        saveBtn.disabled = false;
-        saveBtn.textContent = originalText;
-      }
+      if (res.status === 404) return null;
+      if (!res.ok) throw new Error('GitHub fetch error: ' + res.statusText);
+      return res.json();
     }
 
-    // Delete Operations
-    function promptDelete(slug) {
-      const art = allArticles.find(a => a.slug === slug);
-      if (!art) return;
-      articleToDelete = art;
-      document.getElementById('deleteArticleTitle').textContent = 'Delete "' + art.title + '"?';
-      document.getElementById('deleteModal').classList.add('active');
-    }
+    async function ghCommitFile(repo, token, path, content, message) {
+      const existing = await ghGetFile(repo, token, path);
+      const sha = existing ? existing.sha : undefined;
+      const b64 = btoa(unescape(encodeURIComponent(content)));
 
-    function closeDeleteModal() {
-      document.getElementById('deleteModal').classList.remove('active');
-      articleToDelete = null;
-    }
-
-    async function executeDelete() {
-      if (!articleToDelete) return;
-
-      const token = getGhToken();
-      const repo = getGhRepo();
-
-      if (!token) {
-        alert('Please connect your GitHub Personal Access Token in "GitHub Sync" (top right) to perform automatic 1-click deletions on GitHub.');
-        closeDeleteModal();
-        openGhSettingsModal();
-        return;
-      }
-
-      const delBtn = document.getElementById('confirmDeleteBtn');
-      delBtn.disabled = true;
-      delBtn.textContent = 'Deleting...';
-
-      try {
-        const slug = articleToDelete.slug;
-        const filePath = 'articles/' + slug + '.html';
-
-        // 1. Delete article file via GitHub API
-        await ghDeleteFile(repo, token, filePath, 'Delete article: ' + slug);
-
-        // 2. Update data/articles.json
-        allArticles = allArticles.filter(a => a.slug !== slug);
-        await ghCommitFile(repo, token, 'data/articles.json', JSON.stringify(allArticles, null, 2), 'Remove ' + slug + ' from articles ledger');
-
-        showToast('Article "' + slug + '" deleted successfully!');
-        closeDeleteModal();
-        renderTable(allArticles);
-        document.getElementById('statTotal').textContent = allArticles.length;
-      } catch (err) {
-        alert('Failed to delete file on GitHub: ' + err.message);
-      } finally {
-        delBtn.disabled = false;
-        delBtn.textContent = 'Yes, Delete Article';
-      }
-    }
-
-    // Automated Gemini AI Trigger via GitHub Actions API
-    async function triggerAutomatedPublication() {
-      const token = getGhToken();
-      const repo = getGhRepo();
-
-      if (!token) {
-        alert('To trigger the AI Publisher from this dashboard, enter your GitHub Token under "GitHub Sync".');
-        openGhSettingsModal();
-        return;
-      }
-
-      const btn = document.getElementById('autoPublishBtn');
-      btn.disabled = true;
-      btn.innerHTML = '<span>⏳</span> Triggering Gemini AI Pipeline...';
-
-      try {
-        const res = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/publish-article.yml/dispatches`, {
-          method: 'POST',
-          headers: {
-            'Authorization': 'Bearer ' + token,
-            'Accept': 'application/vnd.github.v3+json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ ref: 'main' })
-        });
-
-        if (res.status === 204) {
-          showToast('⚡ AI Publisher workflow triggered successfully! New article will publish shortly.');
-        } else {
-          const errData = await res.json().catch(() => ({}));
-          alert('Could not trigger GitHub Actions workflow: ' + (errData.message || res.statusText));
-        }
-      } catch (err) {
-        alert('Error triggering GitHub Actions: ' + err.message);
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<span>⚡</span> Run Gemini AI Publisher';
-      }
-    }
-
-    // GitHub API Helper Functions
-    async function ghGetFileSha(repo, token, path) {
-      try {
-        const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
-          headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
-        });
-        if (res.ok) {
-          const data = await res.json();
-          return data.sha;
-        }
-      } catch (e) {}
-      return null;
-    }
-
-    async function ghCommitFile(repo, token, path, contentStr, message) {
-      const sha = await ghGetFileSha(repo, token, path);
-      const encoded = btoa(unescape(encodeURIComponent(contentStr)));
-      const body = { message, content: encoded };
+      const body = {
+        message: message || ('Update ' + path),
+        content: b64,
+        branch: 'main'
+      };
       if (sha) body.sha = sha;
 
-      const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+      const res = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
         method: 'PUT',
         headers: {
           'Authorization': 'Bearer ' + token,
@@ -1104,45 +1621,733 @@
       return res.json();
     }
 
-    async function ghDeleteFile(repo, token, path, message) {
-      const sha = await ghGetFileSha(repo, token, path);
-      if (!sha) return; // File already doesn't exist
+    // =========================================================================
+    // WordPress-Style Post Publishing Suite Engine
+    // =========================================================================
+    let wpTags = [];
+    let wpActiveTab = 'visual';
 
-      const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': 'Bearer ' + token,
-          'Accept': 'application/vnd.github.v3+json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ message, sha })
+    // Tag Management
+    function renderTags() {
+      const container = document.getElementById('wpTagChips');
+      if (!container) return;
+      container.innerHTML = wpTags.map((t, idx) => {
+        return '<span class="wp-tag-pill">' + escapeHtml(t) + ' <span onclick="removeTag(' + idx + ')" style="cursor:pointer; font-weight:bold; margin-left:2px;">&times;</span></span>';
+      }).join('');
+    }
+
+    function handleTagKey(e) {
+      if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        const input = document.getElementById('fTagInput');
+        const val = (input.value || '').replace(/,/g, '').trim();
+        if (val && !wpTags.includes(val)) {
+          wpTags.push(val);
+          renderTags();
+        }
+        input.value = '';
+      }
+    }
+
+    function removeTag(idx) {
+      wpTags.splice(idx, 1);
+      renderTags();
+    }
+
+    // Category Selector
+    function handleCatChange(val) {
+      document.getElementById('fCategory').value = val;
+      const radios = document.querySelectorAll('input[name="wpCategory"]');
+      radios.forEach(r => {
+        r.checked = (r.value === val);
+      });
+    }
+
+    function setCategoryRadio(val) {
+      const target = (val || 'news').toLowerCase();
+      document.getElementById('fCategory').value = target;
+      const radios = document.querySelectorAll('input[name="wpCategory"]');
+      radios.forEach(r => {
+        r.checked = (r.value === target);
+      });
+    }
+
+    // Status Pill
+    function updateStatusPill(val) {
+      const pill = document.getElementById('wpStatusPill');
+      if (!pill) return;
+      if (val === 'published') {
+        pill.textContent = 'Published';
+        pill.className = 'wp-status-pill live';
+      } else {
+        pill.textContent = 'Draft';
+        pill.className = 'wp-status-pill';
+      }
+    }
+
+    // Author Preview Card
+    function updateAuthorCard(authorSlug) {
+      const avatar = document.getElementById('authorAvatar');
+      const name = document.getElementById('authorNameText');
+      const role = document.getElementById('authorRoleText');
+      if (authorSlug === 'julia-vance') {
+        if (avatar) avatar.textContent = 'JV';
+        if (name) name.textContent = 'Julia Vance';
+        if (role) role.textContent = 'Senior Culture, Celebrity & Health Editor';
+      } else {
+        if (avatar) avatar.textContent = 'MR';
+        if (name) name.textContent = 'Marcus Reid';
+        if (role) role.textContent = 'Senior Business & Financial Editor';
+      }
+    }
+
+    // Image Preview & Presets
+    function updateImagePreview(url) {
+      const img = document.getElementById('imagePreviewEl');
+      const ph = document.getElementById('imagePlaceholder');
+      if (!img || !ph) return;
+      if (url && url.trim()) {
+        img.src = url.trim();
+        img.style.display = 'block';
+        ph.style.display = 'none';
+        img.onerror = function() {
+          img.style.display = 'none';
+          ph.style.display = 'block';
+          ph.textContent = 'Image Load Error';
+        };
+      } else {
+        img.style.display = 'none';
+        ph.style.display = 'block';
+        ph.textContent = 'No Image Selected';
+      }
+    }
+
+    const STOCK_PRESETS = {
+      tech: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+      business: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
+      cinema: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1200&q=80',
+      health: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80',
+      gaming: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=1200&q=80',
+      news: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80'
+    };
+
+    function applyStockPreset(type) {
+      const url = STOCK_PRESETS[type] || STOCK_PRESETS.news;
+      const input = document.getElementById('fImage');
+      if (input) {
+        input.value = url;
+        updateImagePreview(url);
+      }
+    }
+
+    function handleLocalImageUpload(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const dataUrl = evt.target.result;
+        document.getElementById('fImage').value = dataUrl;
+        updateImagePreview(dataUrl);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // WYSIWYG Formatting Functions
+    function formatDoc(cmd, value = null) {
+      const visual = document.getElementById('fVisualContent');
+      if (visual) visual.focus();
+      document.execCommand(cmd, false, value);
+      syncFromVisual();
+    }
+
+    function formatHeading(tag) {
+      if (!tag) return;
+      if (tag === 'p') {
+        formatDoc('formatBlock', '<p>');
+      } else {
+        formatDoc('formatBlock', '<' + tag + '>');
+      }
+      document.getElementById('wpHeadingSelect').value = tag;
+    }
+
+    function formatBlockQuote() {
+      formatDoc('formatBlock', '<blockquote>');
+    }
+
+    function promptInsertLink() {
+      const url = prompt('Enter destination URL (e.g. https://...):');
+      if (!url) return;
+      const selText = window.getSelection().toString() || '';
+      const text = prompt('Enter anchor text for link:', selText || 'Click here') || 'Click here';
+      const cleanUrl = url.trim();
+      const html = '<a href="' + cleanUrl + '" target="_blank" rel="noopener noreferrer" style="color:#2563eb; font-weight:600; text-decoration:underline;">' + escapeHtml(text) + '</a>';
+      document.execCommand('insertHTML', false, html);
+      syncFromVisual();
+    }
+
+    function promptInsertImage() {
+      const url = prompt('Enter Image URL (e.g. https://...):');
+      if (!url) return;
+      const alt = prompt('Enter Alt text for image:', 'Illustration') || 'Illustration';
+      const caption = prompt('Optional caption (leave blank to skip):', '') || '';
+      let imgHtml = '<figure style="margin:1.5rem 0;"><img src="' + url.trim() + '" alt="' + escapeHtml(alt) + '" style="width:100%; border-radius:6px; height:auto; display:block;">';
+      if (caption) {
+        imgHtml += '<figcaption style="font-size:0.85rem; color:#64748b; padding-top:0.4rem; text-align:center;">' + escapeHtml(caption) + '</figcaption>';
+      }
+      imgHtml += '</figure><p></p>';
+      document.execCommand('insertHTML', false, imgHtml);
+      syncFromVisual();
+    }
+
+    function promptExternalCitation() {
+      const url = prompt('Enter Authoritative Source URL (e.g. https://www.reuters.com/...):');
+      if (!url) return;
+      const kw = prompt('Enter Exact Keyword / Anchor phrase to link:', 'industry reporting') || 'industry reporting';
+      const label = prompt('Enter Publication / Source Name (e.g. Reuters):', 'Authoritative Source') || 'Authoritative Source';
+      const citeHtml = '<a href="' + url.trim() + '" target="_blank" rel="noopener noreferrer nofollow" style="color:#2563eb; font-weight:700; text-decoration:underline;" title="' + escapeHtml(label) + '">' + escapeHtml(kw) + '</a>';
+      document.execCommand('insertHTML', false, citeHtml);
+      syncFromVisual();
+    }
+
+    function insertTakeawaysCallout() {
+      const boxHtml = '<div style="background:#eff6ff; border-left:4px solid #2563eb; padding:1.25rem; border-radius:4px; margin:1.5rem 0;">' +
+        '<h3 style="margin-top:0; font-size:1.1rem; color:#1e3a8a;">💡 Key Takeaways</h3>' +
+        '<ul style="margin:0; padding-left:1.25rem; color:#1e293b;">' +
+        '<li>First key takeaway insight here...</li>' +
+        '<li>Second important finding or data point...</li>' +
+        '<li>Third strategic takeaway...</li>' +
+        '</ul></div><p></p>';
+      document.execCommand('insertHTML', false, boxHtml);
+      syncFromVisual();
+    }
+
+    // Visual vs Text Tab Switcher
+    function switchWpEditorTab(tab) {
+      wpActiveTab = tab;
+      const visualEl = document.getElementById('fVisualContent');
+      const textEl = document.getElementById('fContent');
+      const vBtn = document.getElementById('tabVisualBtn');
+      const tBtn = document.getElementById('tabTextBtn');
+
+      if (tab === 'text') {
+        textEl.value = visualEl.innerHTML;
+        visualEl.style.display = 'none';
+        textEl.style.display = 'block';
+        vBtn.classList.remove('active');
+        tBtn.classList.add('active');
+      } else {
+        visualEl.innerHTML = textEl.value;
+        textEl.style.display = 'none';
+        visualEl.style.display = 'block';
+        tBtn.classList.remove('active');
+        vBtn.classList.add('active');
+      }
+      updateMetrics();
+    }
+
+    function syncFromVisual() {
+      const visualEl = document.getElementById('fVisualContent');
+      const textEl = document.getElementById('fContent');
+      if (visualEl && textEl && wpActiveTab === 'visual') {
+        textEl.value = visualEl.innerHTML;
+      }
+      updateMetrics();
+    }
+
+    function syncFromText() {
+      const visualEl = document.getElementById('fVisualContent');
+      const textEl = document.getElementById('fContent');
+      if (visualEl && textEl && wpActiveTab === 'text') {
+        visualEl.innerHTML = textEl.value;
+      }
+      updateMetrics();
+    }
+
+    // Word Count & Reading Time
+    function updateMetrics() {
+      const visualEl = document.getElementById('fVisualContent');
+      const text = visualEl ? visualEl.innerText || '' : '';
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      const mins = Math.max(1, Math.ceil(words / 220));
+
+      const wcEl = document.getElementById('wpWordCount');
+      const rtEl = document.getElementById('wpReadTime');
+      if (wcEl) wcEl.textContent = words + ' words';
+      if (rtEl) rtEl.textContent = mins + ' min read';
+    }
+
+    // Title & Slug Handling
+    let slugManuallySet = false;
+
+    function handleTitleInput(val) {
+      if (!slugManuallySet) {
+        autoGenerateSlug();
+      }
+      updateSerpPreview();
+    }
+
+    function handleSlugManualInput(val) {
+      slugManuallySet = true;
+      const clean = generateSlug(val);
+      document.getElementById('fSlug').value = clean;
+      updateSerpPreview();
+    }
+
+    function autoGenerateSlug() {
+      const title = document.getElementById('fTitle').value || '';
+      const slug = generateSlug(title);
+      document.getElementById('fSlug').value = slug;
+      slugManuallySet = false;
+      updateSerpPreview();
+    }
+
+    // SERP Preview & SEO Gauges
+    function updateSerpPreview() {
+      const title = document.getElementById('fTitle').value.trim() || 'Your Article Title Will Appear Here';
+      const seoTitle = document.getElementById('fSeoTitle').value.trim() || title;
+      const slug = document.getElementById('fSlug').value.trim() || 'article-slug';
+      const excerpt = document.getElementById('fExcerpt').value.trim() || 'A brief 1-2 sentence compelling summary of the article for search engines and cards.';
+
+      document.getElementById('serpTitle').textContent = seoTitle;
+      document.getElementById('serpSlug').textContent = slug;
+      document.getElementById('serpDesc').textContent = excerpt;
+
+      // Counters
+      const titleLen = seoTitle.length;
+      document.getElementById('seoTitleCounter').textContent = titleLen + ' / 60 chars';
+      const titleBar = document.getElementById('seoTitleBar');
+      if (titleBar) {
+        const pct = Math.min(100, Math.round((titleLen / 60) * 100));
+        titleBar.style.width = pct + '%';
+        titleBar.className = 'wp-char-bar' + (titleLen >= 45 && titleLen <= 65 ? ' good' : (titleLen > 65 ? ' too-long' : ''));
+      }
+
+      const excLen = excerpt.length;
+      document.getElementById('excerptCounter').textContent = excLen + ' / 155 chars';
+      const excBar = document.getElementById('excerptBar');
+      if (excBar) {
+        const pct = Math.min(100, Math.round((excLen / 155) * 100));
+        excBar.style.width = pct + '%';
+        excBar.className = 'wp-char-bar' + (excLen >= 120 && excLen <= 160 ? ' good' : (excLen > 160 ? ' too-long' : ''));
+      }
+    }
+
+    // FAQ Accordion Rows
+    function addFaqRow(q = '', a = '') {
+      const container = document.getElementById('faqListContainer');
+      if (!container) return;
+      const id = 'faq_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+      const row = document.createElement('div');
+      row.className = 'wp-faq-item';
+      row.id = id;
+      row.innerHTML = 
+        '<button type="button" class="wp-faq-remove" onclick="removeFaqRow(\'' + id + '\')">&times;</button>' +
+        '<div class="form-group" style="margin-bottom:0.5rem; padding-right:1.5rem;">' +
+          '<label style="font-size:0.8rem; font-weight:700;">Question:</label>' +
+          '<input type="text" class="faq-q-input" value="' + escapeHtml(q) + '" placeholder="e.g. How does this technology impact costs?" style="padding:0.35rem 0.5rem; font-size:0.88rem;">' +
+        '</div>' +
+        '<div class="form-group">' +
+          '<label style="font-size:0.8rem; font-weight:700;">Answer:</label>' +
+          '<textarea class="faq-a-input" rows="2" placeholder="Factual and concise explanation..." style="padding:0.35rem 0.5rem; font-size:0.88rem;">' + escapeHtml(a) + '</textarea>' +
+        '</div>';
+      container.appendChild(row);
+    }
+
+    function removeFaqRow(id) {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    }
+
+    function getFaqs() {
+      const container = document.getElementById('faqListContainer');
+      if (!container) return [];
+      const rows = container.querySelectorAll('.wp-faq-item');
+      const faqs = [];
+      rows.forEach(r => {
+        const q = (r.querySelector('.faq-q-input')?.value || '').trim();
+        const a = (r.querySelector('.faq-a-input')?.value || '').trim();
+        if (q && a) {
+          faqs.push({ question: q, answer: a });
+        }
+      });
+      return faqs;
+    }
+
+    // Live Preview
+    function toggleWpPreview() {
+      const overlay = document.getElementById('wpPreviewOverlay');
+      if (!overlay) return;
+      if (overlay.classList.contains('active')) {
+        overlay.classList.remove('active');
+      } else {
+        const previewHtml = generatePreviewMarkup();
+        document.getElementById('wpPreviewContainer').innerHTML = previewHtml;
+        overlay.classList.add('active');
+      }
+    }
+
+    function generatePreviewMarkup() {
+      const title = document.getElementById('fTitle').value || 'Article Title';
+      const category = (document.getElementById('fCategory').value || 'NEWS').toUpperCase();
+      const authorSlug = document.getElementById('fAuthor').value;
+      const authorName = authorSlug === 'julia-vance' ? 'Julia Vance' : 'Marcus Reid';
+      const pubDate = document.getElementById('fPubDate').value || new Date().toISOString().split('T')[0];
+      const imageUrl = document.getElementById('fImage').value || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80';
+      const visualContent = document.getElementById('fVisualContent').innerHTML || '<p>No content written yet.</p>';
+      
+      const t1 = document.getElementById('fTakeaway1').value.trim();
+      const t2 = document.getElementById('fTakeaway2').value.trim();
+      const t3 = document.getElementById('fTakeaway3').value.trim();
+      let takeawaysHtml = '';
+      if (t1 || t2 || t3) {
+        takeawaysHtml = '<div style="background:#eff6ff; border-left:4px solid #2563eb; padding:1.25rem; border-radius:6px; margin-bottom:2rem;">' +
+          '<h3 style="margin:0 0 0.5rem 0; font-size:1.1rem; color:#1e3a8a;">💡 Key Takeaways</h3>' +
+          '<ul style="margin:0; padding-left:1.25rem; color:#1e293b; line-height:1.7;">' +
+          (t1 ? '<li>' + escapeHtml(t1) + '</li>' : '') +
+          (t2 ? '<li>' + escapeHtml(t2) + '</li>' : '') +
+          (t3 ? '<li>' + escapeHtml(t3) + '</li>' : '') +
+          '</ul></div>';
+      }
+
+      const faqs = getFaqs();
+      let faqsHtml = '';
+      if (faqs.length > 0) {
+        faqsHtml = '<section style="margin-top:3rem; border-top:1px solid #e2e8f0; padding-top:2rem;">' +
+          '<h2 style="font-size:1.5rem; font-weight:800; margin-bottom:1.25rem;">Frequently Asked Questions</h2>' +
+          faqs.map(f => {
+            return '<details style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:0.85rem 1.25rem; margin-bottom:0.75rem;">' +
+              '<summary style="font-weight:700; cursor:pointer; font-size:1.05rem;">' + escapeHtml(f.question) + '</summary>' +
+              '<p style="margin-top:0.6rem; margin-bottom:0; color:#475569; line-height:1.7;">' + escapeHtml(f.answer) + '</p>' +
+              '</details>';
+          }).join('') + '</section>';
+      }
+
+      return '<div style="max-width:820px; margin:0 auto; font-family:inherit;">' +
+        '<div style="margin-bottom:1.5rem;">' +
+          '<span style="background:#eff6ff; color:#2563eb; font-weight:700; font-size:0.75rem; padding:0.25rem 0.6rem; border-radius:4px; text-transform:uppercase;">' + category + ' &bull; Editorial</span>' +
+          '<h1 style="font-size:2.25rem; font-weight:800; line-height:1.25; margin:0.85rem 0; color:#0f172a;">' + escapeHtml(title) + '</h1>' +
+          '<div style="color:#64748b; font-size:0.92rem;">By <strong>' + authorName + '</strong> &bull; ' + pubDate + '</div>' +
+        '</div>' +
+        '<div style="aspect-ratio:16/9; overflow:hidden; border-radius:8px; margin-bottom:2rem; background:#f1f5f9;">' +
+          '<img src="' + imageUrl + '" style="width:100%; height:100%; object-fit:cover;">' +
+        '</div>' +
+        takeawaysHtml +
+        '<div class="article-body" style="font-size:1.1rem; line-height:1.8; color:#1e293b;">' + visualContent + '</div>' +
+        faqsHtml +
+      '</div>';
+    }
+
+    // Save Draft Locally
+    function saveDraftLocally() {
+      const draft = {
+        title: document.getElementById('fTitle').value,
+        slug: document.getElementById('fSlug').value,
+        category: document.getElementById('fCategory').value,
+        author: document.getElementById('fAuthor').value,
+        image: document.getElementById('fImage').value,
+        imageAlt: document.getElementById('fImageAlt').value,
+        excerpt: document.getElementById('fExcerpt').value,
+        seoTitle: document.getElementById('fSeoTitle').value,
+        focusKeyword: document.getElementById('fFocusKeyword').value,
+        bodyContent: document.getElementById('fContent').value,
+        tags: wpTags,
+        t1: document.getElementById('fTakeaway1').value,
+        t2: document.getElementById('fTakeaway2').value,
+        t3: document.getElementById('fTakeaway3').value,
+        faqs: getFaqs(),
+        savedAt: new Date().toLocaleString()
+      };
+      localStorage.setItem('gam_wp_draft', JSON.stringify(draft));
+      showToast('Draft saved to browser storage (' + draft.savedAt + ')');
+    }
+
+    // Modal Opening & Editing
+    function openCreateModal() {
+      document.getElementById('modalTitle').textContent = 'Add New Post';
+      document.getElementById('editArticleSlug').value = '';
+      document.getElementById('articleForm').reset();
+      
+      document.getElementById('fTitle').value = '';
+      document.getElementById('fSlug').value = '';
+      document.getElementById('fExcerpt').value = '';
+      document.getElementById('fSeoTitle').value = '';
+      document.getElementById('fFocusKeyword').value = '';
+      document.getElementById('fImage').value = '';
+      document.getElementById('fImageAlt').value = '';
+      document.getElementById('fTakeaway1').value = '';
+      document.getElementById('fTakeaway2').value = '';
+      document.getElementById('fTakeaway3').value = '';
+      
+      document.getElementById('fVisualContent').innerHTML = '';
+      document.getElementById('fContent').value = '';
+      
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('fPubDate').value = today;
+
+      wpTags = [];
+      renderTags();
+      setCategoryRadio('news');
+      updateAuthorCard('marcus-reid');
+      updateImagePreview('');
+      updateStatusPill('draft');
+      switchWpEditorTab('visual');
+
+      // Clear & add sample FAQ
+      const faqCont = document.getElementById('faqListContainer');
+      faqCont.innerHTML = '';
+      addFaqRow('What is the main takeaway from this development?', 'Summary answer highlighting the key impact.');
+      addFaqRow('When will these changes take effect?', 'Timeline and practical milestones.');
+
+      // Check if draft exists
+      const saved = localStorage.getItem('gam_wp_draft');
+      if (saved) {
+        try {
+          const d = JSON.parse(saved);
+          if (confirm('A saved draft from ' + (d.savedAt || 'earlier') + ' was found. Do you want to restore it?')) {
+            document.getElementById('fTitle').value = d.title || '';
+            document.getElementById('fSlug').value = d.slug || '';
+            setCategoryRadio(d.category || 'news');
+            document.getElementById('fAuthor').value = d.author || 'marcus-reid';
+            document.getElementById('fImage').value = d.image || '';
+            document.getElementById('fImageAlt').value = d.imageAlt || '';
+            document.getElementById('fExcerpt').value = d.excerpt || '';
+            document.getElementById('fSeoTitle').value = d.seoTitle || '';
+            document.getElementById('fFocusKeyword').value = d.focusKeyword || '';
+            document.getElementById('fVisualContent').innerHTML = d.bodyContent || '';
+            document.getElementById('fContent').value = d.bodyContent || '';
+            document.getElementById('fTakeaway1').value = d.t1 || '';
+            document.getElementById('fTakeaway2').value = d.t2 || '';
+            document.getElementById('fTakeaway3').value = d.t3 || '';
+            wpTags = d.tags || [];
+            renderTags();
+            updateImagePreview(d.image || '');
+            updateAuthorCard(d.author || 'marcus-reid');
+            if (Array.isArray(d.faqs) && d.faqs.length > 0) {
+              faqCont.innerHTML = '';
+              d.faqs.forEach(f => addFaqRow(f.question, f.answer));
+            }
+          }
+        } catch(e) {}
+      }
+
+      slugManuallySet = false;
+      updateSerpPreview();
+      updateMetrics();
+
+      document.getElementById('saveArticleBtn').textContent = '🚀 Publish to Site';
+      document.getElementById('articleModal').classList.add('active');
+    }
+
+    async function openEditModal(slug) {
+      const art = allArticles.find(a => a.slug === slug);
+      if (!art) return;
+
+      document.getElementById('modalTitle').textContent = 'Edit Post: ' + art.title;
+      document.getElementById('editArticleSlug').value = art.slug;
+      document.getElementById('fTitle').value = art.title;
+      document.getElementById('fSlug').value = art.slug;
+      slugManuallySet = true;
+
+      setCategoryRadio(art.category || 'news');
+      const auth = (art.authorSlug || (art.category === 'celebrity' || art.category === 'health' ? 'julia-vance' : 'marcus-reid'));
+      document.getElementById('fAuthor').value = auth;
+      updateAuthorCard(auth);
+
+      const img = art.image || ('./assets/images/' + art.slug + '.jpg');
+      document.getElementById('fImage').value = img;
+      updateImagePreview(img);
+
+      document.getElementById('fExcerpt').value = art.excerpt || '';
+      document.getElementById('fPubDate').value = art.date || new Date().toISOString().split('T')[0];
+      
+      updateStatusPill('published');
+      document.getElementById('saveArticleBtn').textContent = '💾 Update Live Post';
+      document.getElementById('articleModal').classList.add('active');
+
+      const faqCont = document.getElementById('faqListContainer');
+      faqCont.innerHTML = '';
+
+      try {
+        const res = await fetch('./articles/' + slug + '.html');
+        if (res.ok) {
+          const html = await res.text();
+          
+          // Extract body text inside article-body
+          const startTag = '<div class="article-body"';
+          const startIdx = html.indexOf(startTag);
+          if (startIdx !== -1) {
+            const contentStart = html.indexOf('>', startIdx) + 1;
+            const endIdx = html.indexOf('</div>', contentStart);
+            let bodyHtml = (endIdx !== -1) ? html.slice(contentStart, endIdx).trim() : html.slice(contentStart).trim();
+            document.getElementById('fVisualContent').innerHTML = bodyHtml;
+            document.getElementById('fContent').value = bodyHtml;
+          } else {
+            document.getElementById('fVisualContent').innerHTML = html;
+            document.getElementById('fContent').value = html;
+          }
+
+          // Extract FAQs if present
+          const faqMatches = [...html.matchAll(/<summary[^>]*>([\s\S]*?)<\/summary>[\s\S]*?<p[^>]*>([\s\S]*?)<\/p>/gi)];
+          if (faqMatches.length > 0) {
+            faqMatches.forEach(m => {
+              addFaqRow(m[1].replace(/<[^>]+>/g, '').trim(), m[2].replace(/<[^>]+>/g, '').trim());
+            });
+          } else {
+            addFaqRow('What is the key takeaway of this article?', 'Key finding and implications.');
+          }
+        }
+      } catch (e) {
+        document.getElementById('fVisualContent').innerHTML = '<p>Write your article content here...</p>';
+        document.getElementById('fContent').value = '<p>Write your article content here...</p>';
+      }
+
+      switchWpEditorTab('visual');
+      updateSerpPreview();
+      updateMetrics();
+    }
+
+    function closeArticleModal() {
+      document.getElementById('articleModal').classList.remove('active');
+    }
+
+    // Save Article Handler (Direct GitHub API)
+    async function handleSaveArticle(e) {
+      e.preventDefault();
+      const token = getGhToken();
+      const repo = getGhRepo();
+
+      const existingSlug = document.getElementById('editArticleSlug').value;
+      const title = document.getElementById('fTitle').value.trim();
+      const rawSlug = document.getElementById('fSlug').value.trim() || generateSlug(title);
+      const slug = existingSlug || rawSlug;
+      const category = document.getElementById('fCategory').value;
+      const authorSlug = document.getElementById('fAuthor').value;
+      const authorName = authorSlug === 'marcus-reid' ? 'Marcus Reid' : 'Julia Vance';
+      const imageUrl = document.getElementById('fImage').value.trim();
+      const imageAlt = document.getElementById('fImageAlt').value.trim() || title;
+      const excerpt = document.getElementById('fExcerpt').value.trim();
+      
+      // Get body from whichever tab was active or updated
+      const bodyContent = (wpActiveTab === 'visual') 
+        ? document.getElementById('fVisualContent').innerHTML.trim()
+        : document.getElementById('fContent').value.trim();
+
+      const faqs = getFaqs();
+      const t1 = document.getElementById('fTakeaway1').value.trim();
+      const t2 = document.getElementById('fTakeaway2').value.trim();
+      const t3 = document.getElementById('fTakeaway3').value.trim();
+      const takeaways = [t1, t2, t3].filter(Boolean);
+      const pubDate = document.getElementById('fPubDate').value || new Date().toISOString().split('T')[0];
+
+      const filename = 'articles/' + slug + '.html';
+
+      // Build production-grade canonical HTML
+      const fullHtml = buildArticleHtml({
+        title, slug, category, authorName, authorSlug, imageUrl, imageAlt, excerpt, bodyContent, faqs, takeaways, pubDate, tags: wpTags
       });
 
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.message || res.statusText);
+      if (!token) {
+        // Offer download if token is not connected yet
+        const blob = new Blob([fullHtml], { type: 'text/html' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = slug + '.html';
+        a.click();
+        alert('GitHub Token not configured! Your article HTML has been downloaded locally as ' + slug + '.html.\n\nTo enable 1-click live publishing directly to your website, click "⚙️ GitHub Sync" at the top right and enter your Personal Access Token.');
+        openGhSettingsModal();
+        return;
       }
-      return res.json();
+
+      const saveBtn = document.getElementById('saveArticleBtn');
+      const originalText = saveBtn.textContent;
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving to GitHub...';
+
+      try {
+        // 1. Commit article HTML file
+        await ghCommitFile(repo, token, filename, fullHtml, 'Publish post: ' + title);
+
+        // 2. Update data/articles.json
+        const updatedList = [...allArticles];
+        const existingIdx = updatedList.findIndex(a => a.slug === slug);
+        const newEntry = {
+          slug, file: slug + '.html', title, category, excerpt,
+          image: imageUrl, date: pubDate,
+          publishedAt: new Date().toISOString()
+        };
+        if (existingIdx !== -1) {
+          updatedList[existingIdx] = newEntry;
+        } else {
+          updatedList.unshift(newEntry);
+        }
+        allArticles = updatedList;
+
+        await ghCommitFile(repo, token, 'data/articles.json', JSON.stringify(updatedList, null, 2), 'Update data/articles.json for ' + slug);
+
+        // Clean local draft
+        localStorage.removeItem('gam_wp_draft');
+
+        showToast('Post published successfully! Vercel is auto-deploying.');
+        closeArticleModal();
+        loadArticles();
+      } catch (err) {
+        alert('Error publishing to GitHub: ' + err.message);
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = originalText;
+      }
     }
 
-    function generateSlug(text) {
-      return text.toLowerCase()
-        .replace(/[^a-z0-9s-]/g, '')
-        .trim()
-        .replace(/\s+/g, '-');
-    }
-
-    function escapeHtml(str) {
-      return (str || '').replace(/[&<>"']/g, m => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-      }[m]));
-    }
-
+    // Production-Grade Article HTML Compiler
     function buildArticleHtml(data) {
-      const dateStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-      const isoDate = new Date().toISOString();
-      const H = '\x3c'; // '<'  — prevents browser parser from closing tags prematurely
-      const C = '\x3e'; // '>'
+      const H = '\x3c'; // prevents parser interference
+      const C = '\x3e';
+      const isoDate = (data.pubDate ? new Date(data.pubDate) : new Date()).toISOString();
+      const displayDate = new Date(isoDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const words = (data.bodyContent || '').replace(/<[^>]+>/g, ' ').trim().split(/\s+/).length;
+      const readTime = Math.max(1, Math.ceil(words / 220)) + ' min read';
+
+      // Build FAQs HTML + Schema
+      let faqsHtml = '';
+      let faqSchemaJson = '';
+      if (Array.isArray(data.faqs) && data.faqs.length > 0) {
+        faqsHtml = '<section class="faq-section" style="margin-top: 3rem; border-top: 1px solid var(--border-color); padding-top: 2rem;">' +
+          '<h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 1.5rem;">Frequently Asked Questions</h2>' +
+          data.faqs.map(f => {
+            return '<details class="faq-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem 1.25rem; margin-bottom: 0.85rem;">' +
+              '<summary style="font-weight: 700; cursor: pointer; font-size: 1.05rem; color: var(--text-main);">' + escapeHtml(f.question) + '</summary>' +
+              '<p style="margin-top: 0.75rem; margin-bottom: 0; color: var(--text-muted); line-height: 1.7;">' + escapeHtml(f.answer) + '</p>' +
+              '</details>';
+          }).join('') +
+          '</section>';
+
+        const faqSchemaObj = {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": data.faqs.map(f => ({
+            "@type": "Question",
+            "name": f.question,
+            "acceptedAnswer": { "@type": "Answer", "text": f.answer }
+          }))
+        };
+        faqSchemaJson = H + 'script type="application/ld+json"' + C + JSON.stringify(faqSchemaObj) + H + '/script' + C;
+      }
+
+      // Key Takeaways HTML
+      let takeawaysHtml = '';
+      if (Array.isArray(data.takeaways) && data.takeaways.length > 0) {
+        takeawaysHtml = '<div class="key-takeaways" style="background: #eff6ff; border-left: 4px solid var(--primary); padding: 1.25rem 1.5rem; border-radius: var(--radius-sm); margin-bottom: 2rem;">' +
+          '<h3 style="margin: 0 0 0.6rem 0; font-size: 1.15rem; color: #1e3a8a; display: flex; align-items: center; gap: 0.4rem;">💡 Key Takeaways</h3>' +
+          '<ul style="margin: 0; padding-left: 1.25rem; color: var(--text-main); line-height: 1.8;">' +
+          data.takeaways.map(t => '<li>' + escapeHtml(t) + '</li>').join('') +
+          '</ul>' +
+          '</div>';
+      }
+
+      const authorRole = (data.authorSlug === 'julia-vance') 
+        ? 'Senior Culture, Celebrity & Health Editor' 
+        : 'Senior Business & Financial Editor';
+      const authorAvatar = (data.authorSlug === 'julia-vance') ? 'JV' : 'MR';
 
       const parts = [
         '<!DOCTYPE html>',
@@ -1158,10 +2363,21 @@
         '  <meta property="og:title" content="' + escapeHtml(data.title) + '">',
         '  <meta property="og:description" content="' + escapeHtml(data.excerpt) + '">',
         '  <meta property="og:image" content="' + escapeHtml(data.imageUrl) + '">',
+        '  <meta property="og:url" content="https://www.genalphamagazines.com/articles/' + data.slug + '.html">',
         '  <meta property="article:published_time" content="' + isoDate + '">',
-        '  <meta property="article:section" content="' + data.category + '">',
+        '  <meta property="article:section" content="' + escapeHtml(data.category) + '">',
         '  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">',
         '  <link rel="stylesheet" href="../assets/css/style.css?v=final_stable_v1">',
+        '  ' + H + 'script type="application/ld+json"' + C + JSON.stringify({
+             "@context": "https://schema.org",
+             "@type": "Article",
+             "headline": data.title,
+             "description": data.excerpt,
+             "image": [data.imageUrl],
+             "datePublished": isoDate,
+             "author": [{ "@type": "Person", "name": data.authorName }]
+           }) + H + '/script' + C,
+        faqSchemaJson,
         H + '/head' + C,
         '<body>',
         '  <header class="main-header">',
@@ -1171,31 +2387,71 @@
         '          <div class="brand-main-title"><span>GEN' + H + '/span' + C + '<span class="alpha-word">ALPHA' + H + '/span' + C + '<span class="mag-word">MAGAZINES' + H + '/span' + C + H + '/div' + C,
         '        ' + H + '/div' + C,
         '      ' + H + '/a' + C,
-        '    ' + H + '/div' + C,
+        '      <div class="header-actions">',
+        '        <a href="../pages/contact.html" class="news-tip-btn"><span>✉️</span> News Tip?</a>',
+        '      </div>',
+        '    </div>',
         '  ' + H + '/header' + C,
-        '  <main class="article-page-container container" style="max-width:860px;margin:2.5rem auto;padding:0 1.5rem;">',
-        '    <article>',
-        '      <div class="article-header" style="margin-bottom:2rem;">',
-        '        <span class="card-tag">' + data.category.toUpperCase() + ' &bull; Editorial' + H + '/span' + C,
-        '        <h1 style="font-size:2.2rem;font-weight:800;margin:0.8rem 0;line-height:1.25;">' + escapeHtml(data.title) + H + '/h1' + C,
-        '        <div class="card-meta" style="color:var(--text-muted);font-size:0.95rem;">',
-        '          <span>By ' + data.authorName + H + '/span' + C + ' &bull; <span>' + dateStr + H + '/span' + C,
-        '        ' + H + '/div' + C,
-        '      ' + H + '/div' + C,
-        '      <div class="hero-image-wrap" style="margin-bottom:2rem;border-radius:var(--radius-md);overflow:hidden;">',
-        '        <img src="' + escapeHtml(data.imageUrl) + '" alt="' + escapeHtml(data.title) + '" style="width:100%;height:auto;max-height:480px;object-fit:cover;">',
-        '      ' + H + '/div' + C,
-        '      <div class="article-body" style="font-size:1.1rem;line-height:1.8;color:var(--text-main);">',
-        '        ' + (data.bodyContent.includes('<p>') ? data.bodyContent : data.bodyContent.split('\n\n').map(p => '<p style="margin-bottom:1.5rem;">' + escapeHtml(p) + H + '/p' + C).join('')),
-        '      ' + H + '/div' + C,
-        '    ' + H + '/article' + C,
+        '  <nav class="main-nav-wrapper">',
+        '    <div class="container">',
+        '      <ul class="main-nav-links">',
+        '        <li><a href="../index.html">Home</a></li>',
+        '        <li><a href="../category-news.html">News</a></li>',
+        '        <li><a href="../category-business.html">Business</a></li>',
+        '        <li><a href="../category-celebrity.html">Celebrity</a></li>',
+        '        <li><a href="../category-entertainment.html">Entertainment</a></li>',
+        '        <li><a href="../category-games.html">Games</a></li>',
+        '        <li><a href="../category-health.html">Health</a></li>',
+        '        <li><a href="../category-technology.html">Technology</a></li>',
+        '        <li><a href="../category-others.html">Others</a></li>',
+        '      </ul>',
+        '    </div>',
+        '  ' + H + '/nav' + C,
+        '  <main class="container" style="margin-top: 2rem; margin-bottom: 4rem;">',
+        '    <div class="main-layout">',
+        '      <article class="article-container" style="padding: 0;">',
+        '        <header class="article-header">',
+        '          <span class="article-category-badge">' + data.category.toUpperCase() + ' &bull; Editorial Feature' + H + '/span' + C,
+        '          <h1 class="article-title">' + escapeHtml(data.title) + H + '/h1' + C,
+        '          <div class="article-meta-bar">',
+        '            <div class="author-meta">',
+        '              <div class="author-avatar">' + authorAvatar + H + '/div' + C,
+        '              <div>',
+        '                <div style="font-weight:700; color:var(--text-main);">' + data.authorName + H + '/div' + C,
+        '                <div style="font-size:0.8rem; color:var(--text-muted);">' + authorRole + H + '/div' + C,
+        '              </div>',
+        '            </div>',
+        '            <div style="color:var(--text-muted); font-size:0.88rem;">Published: ' + displayDate + ' &bull; ' + readTime + H + '/div' + C,
+        '          </div>',
+        '        ' + H + '/header' + C,
+        '        <figure class="featured-media" style="margin: 1.5rem 0 2rem 0;">',
+        '          <div style="aspect-ratio: 16/9; overflow: hidden; border-radius: var(--radius-md); background: #f1f5f9;">',
+        '            <img src="' + escapeHtml(data.imageUrl) + '" alt="' + escapeHtml(data.imageAlt) + '" style="width: 100%; height: 100%; object-fit: cover;">',
+        '          </div>',
+        '          <figcaption style="font-size: 0.85rem; color: var(--text-muted); padding: 0.6rem 0.25rem 0; border-bottom: 1px solid var(--border-color);">' + escapeHtml(data.imageAlt) + H + '/figcaption' + C,
+        '        ' + H + '/figure' + C,
+        takeawaysHtml,
+        '        <div class="article-body" style="font-size: 1.1rem; line-height: 1.8; color: var(--text-main);">',
+        '          ' + (data.bodyContent.includes('<p>') ? data.bodyContent : data.bodyContent.split('\n\n').map(p => '<p>' + escapeHtml(p) + H + '/p' + C).join('')),
+        '        </div>',
+        faqsHtml,
+        '        <section class="author-box" style="margin-top: 3.5rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; display: flex; gap: 1.25rem; align-items: center;">',
+        '          <div class="author-avatar" style="width: 54px; height: 54px; font-size: 1.2rem; flex-shrink: 0;">' + authorAvatar + H + '/div' + C,
+        '          <div>',
+        '            <h3 style="margin: 0 0 0.35rem 0; font-size: 1.1rem; color: var(--text-main);">' + data.authorName + H + '/h3' + C,
+        '            <p style="margin: 0; font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">' + authorRole + ' at GenAlphaMagazines covering breaking analysis, market trends, and investigative reporting.' + H + '/p' + C,
+        '          </div>',
+        '        ' + H + '/section' + C,
+        '      ' + H + '/article' + C,
+        '    </div>',
         '  ' + H + '/main' + C,
-        '  <footer style="margin-top:4rem;padding:2rem 0;border-top:1px solid var(--border-color);text-align:center;">',
-        '    <p>&copy; 2026 GenAlphaMagazines. All rights reserved.' + H + '/p' + C,
+        '  <footer class="main-footer" style="margin-top: 4rem; padding: 2.5rem 0; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-muted);">',
+        '    <p>&copy; 2026 GenAlphaMagazines. All rights reserved. Uncompromising journalism and high-impact editorial analysis.' + H + '/p' + C,
         '  ' + H + '/footer' + C,
         H + '/body' + C,
         H + '/html' + C
       ];
+
       return parts.join('\n');
     }
 
