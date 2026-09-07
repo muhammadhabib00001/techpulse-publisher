@@ -79,6 +79,13 @@ jobs:
             echo "✅ No new article generated (topic pool may be exhausted or skipped). No commit needed."
           else
             git commit -m "🤖 Auto-published: New SEO article via Gemini AI [skip ci]"
-            git push origin main
-            echo "✅ Article successfully published and pushed to GitHub."
+            # Push with retry: if rejected by a concurrent run, rebase and retry once
+            if ! git push origin main; then
+              echo "⚠️ Push rejected (concurrent run). Rebasing and retrying..."
+              git pull --rebase origin main
+              git push origin main
+              echo "✅ Retry push succeeded."
+            else
+              echo "✅ Article successfully published and pushed to GitHub."
+            fi
           fi
