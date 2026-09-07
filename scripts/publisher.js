@@ -661,12 +661,16 @@ function injectInternalLinks(htmlContent, currentSlug) {
     if (regex.test(protectedHtml)) {
       protectedHtml = protectedHtml.replace(regex, (match) => {
         linkedKeywords.add(keyword.toLowerCase());
-        return `<a href="${url}" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${keyword}">${match}</a>`;
+        const linkTag = `<a href="${url}" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${keyword}">${match}</a>`;
+        // Protect newly inserted link tag immediately so subsequent keywords don't match inside it
+        const placeholder = `__PROTECTED_BLOCK_${protectedBlocks.length}__`;
+        protectedBlocks.push(linkTag);
+        return placeholder;
       });
     }
   });
 
-  // Restore protected blocks
+  // Restore all protected blocks
   for (let i = 0; i < protectedBlocks.length; i++) {
     protectedHtml = protectedHtml.replace(`__PROTECTED_BLOCK_${i}__`, protectedBlocks[i]);
   }
@@ -723,6 +727,18 @@ function injectExternalKeywordLink(sectionsHtml, externalLink) {
     }
   }
 
+  // Fallback: If no candidate matched, find the first substantial non-heading paragraph and attach to a natural phrase or append contextually
+  if (!injected) {
+    const pRegex = /(<p[^>]*>)([\s\S]*?)(<\/p>)/i;
+    if (pRegex.test(protectedHtml)) {
+      protectedHtml = protectedHtml.replace(pRegex, (fullMatch, openP, text, closeP) => {
+        injected = true;
+        const linkAnchor = externalLink.anchorKeyword || externalLink.label || 'authoritative industry coverage';
+        return `${openP}${text} For further reference, see <a href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" style="color: #2563eb; font-weight: 700; text-decoration: underline;" title="${titleAttr}">${linkAnchor}</a>.${closeP}`;
+      });
+    }
+  }
+
   // Restore protected blocks
   for (let i = 0; i < protectedBlocks.length; i++) {
     protectedHtml = protectedHtml.replace(`__PROTECTED_BLOCK_EXT_${i}__`, protectedBlocks[i]);
@@ -774,7 +790,7 @@ function enforceMinimumInternalLinks(sectionsHtml, currentSlug, minRequired = 3)
 }
 
 async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '', category = '') {
-  const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+  const modelsToTry = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-flash-latest'];
   let lastError = null;
 
   for (const model of modelsToTry) {
@@ -783,7 +799,7 @@ async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '',
         const payload = JSON.stringify({
           contents: [{ role: 'user', parts: [{ text: prompt }] }],
           systemInstruction: { parts: [{ text: systemInstruction }] },
-          generationConfig: { responseMimeType: 'application/json', temperature: 0.2 }
+          generationConfig: { responseMimeType: 'application/json', temperature: 0.2, maxOutputTokens: 8192 }
         });
 
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
@@ -797,8 +813,16 @@ async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '',
             try {
               const parsed = JSON.parse(data);
               if (parsed.error) return reject(new Error(`[${model}] ` + parsed.error.message));
-              const text = parsed.candidates[0].content.parts[0].text;
-              resolve(JSON.parse(text));
+              let text = parsed.candidates[0].content.parts[0].text.trim();
+              if (text.startsWith('```json')) text = text.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+              else if (text.startsWith('```')) text = text.replace(/^```\s*/, '').replace(/\s*```$/, '');
+              try {
+                resolve(JSON.parse(text));
+              } catch (innerErr) {
+                // If direct parse fails, clean unescaped newlines/tabs inside JSON strings
+                const cleaned = text.replace(/[\u0000-\u001F]+/g, (match) => match === '\n' || match === '\r' || match === '\t' ? ' ' : '');
+                resolve(JSON.parse(cleaned));
+              }
             } catch (err) {
               reject(new Error(`Failed to parse response from ${model}: ` + err.message));
             }
@@ -824,23 +848,28 @@ async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '',
           .replace(/\bUSB\s+[Cc]\b/g, 'USB-C')
           .trim();
 
-        // 2. Expand title if under 45 chars (too short for SEO)
+        // 2. Ensure title is between 45 and 60 chars without awkward truncation
         if (res.title.length < 45) {
           const catExpanders = {
-            technology: ': Features, Specs, and What It Means for You',
-            games: ': Release Details, Gameplay, and What to Expect',
-            business: ': Market Analysis and Strategic Insights',
-            celebrity: ': Career Highlights and Cultural Impact',
-            entertainment: ': Critical Reception and Fan Reactions',
-            health: ': Evidence-Based Insights and Expert Guidance',
-            news: ': Full Breakdown and What It Means',
-            others: ': Complete Breakdown and Key Insights'
+            technology: ': Features and Specs',
+            games: ': Gameplay and Details',
+            business: ': Market Analysis',
+            celebrity: ': Career and Impact',
+            entertainment: ': Review and Analysis',
+            health: ': Insights and Guidance',
+            news: ': Analysis and Breakdown',
+            others: ': Key Insights and Overview'
           };
-          const ext = catExpanders[category] || ': Key Facts and Expert Analysis';
-          const candidate = res.title + ext;
-          res.title = candidate.length <= 60 ? candidate : res.title.length > 40 ? res.title : candidate.slice(0, 57) + '...';
+          const ext = catExpanders[category] || ': Facts and Analysis';
+          if ((res.title + ext).length <= 60) {
+            res.title = res.title + ext;
+          }
         }
-        if (res.title.length > 60) res.title = res.title.slice(0, 57) + '...';
+        if (res.title.length > 60) {
+          const cut = res.title.slice(0, 60);
+          const lastSpace = cut.lastIndexOf(' ');
+          res.title = (lastSpace > 35 ? cut.slice(0, lastSpace) : cut).trim().replace(/[:,\-]$/, '');
+        }
 
         // 3. Re-derive clean slug from the corrected title
         res.slug = res.title
@@ -888,20 +917,25 @@ function generateDeepFallbackArticle(topic, category, author) {
   let title = cleanTopic;
   if (title.length < 45) {
     const expansions = {
-      technology: ': Features, Specs, and What to Expect',
-      games: ': Gameplay, Release Details, and Key Features',
-      business: ': Market Analysis and Strategic Insights',
-      celebrity: ': Career, Influence, and Cultural Impact',
-      entertainment: ': What Critics and Fans Are Saying',
-      health: ': Evidence-Based Insights and Expert Guidance',
-      news: ': Background, Impact, and What It Means for You',
-      others: ': Practical Insights and What You Need to Know'
+      technology: ': Features and Specs',
+      games: ': Gameplay and Details',
+      business: ': Market Analysis',
+      celebrity: ': Career and Impact',
+      entertainment: ': Review and News',
+      health: ': Evidence and Guidance',
+      news: ': Background and Analysis',
+      others: ': Insights and Overview'
     };
-    const suffix = expansions[category] || ': A Practical Comprehensive Look';
-    const candidate = cleanTopic + suffix;
-    title = candidate.length <= 60 ? candidate : candidate.slice(0, 57) + '...';
+    const suffix = expansions[category] || ': Insights and Facts';
+    if ((cleanTopic + suffix).length <= 60) {
+      title = cleanTopic + suffix;
+    }
   }
-  if (title.length > 60) title = title.slice(0, 57) + '...';
+  if (title.length > 60) {
+    const cut = title.slice(0, 60);
+    const lastSpace = cut.lastIndexOf(' ');
+    title = (lastSpace > 35 ? cut.slice(0, lastSpace) : cut).trim().replace(/[:,\-]$/, '');
+  }
 
   // Clean slug from generated title
   const slug = title
@@ -911,11 +945,107 @@ function generateDeepFallbackArticle(topic, category, author) {
     .replace(/(^-|-$)/g, '')
     .replace(/-{2,}/g, '-');
 
-  // Topic-specific meta description (140-155 chars)
-  let metaDescription = `Everything you need to know about ${cleanTopic}: in-depth analysis, key specifications, and practical takeaways to keep you informed.`;
+  const isCulture = ['celebrity', 'entertainment', 'arts', 'lifestyle', 'voices'].includes(category);
+  const isHealth = category === 'health';
+  const isBusiness = ['business', 'news'].includes(category);
+
+  let metaDescription = `Everything you need to know about ${cleanTopic}: in-depth analysis, key context, and practical takeaways to keep you informed.`;
   if (metaDescription.length > 155) metaDescription = metaDescription.slice(0, 152) + '...';
 
   const topicKeyword = cleanTopic.split(' ').slice(0, 3).join(' ');
+
+  if (isCulture) {
+    return {
+      title,
+      slug,
+      metaDescription,
+      tableOfContents: [
+        { id: 'overview', title: `Cultural Overview: ${topicKeyword}` },
+        { id: 'creative-impact', title: `Creative Milestones and Public Influence` },
+        { id: 'industry-evolution', title: `Industry Evolution and Cross-Sector Reach` },
+        { id: 'audience-engagement', title: `Audience Engagement and Cultural Legacy` },
+        { id: 'final-thoughts', title: 'Final Thoughts' },
+        { id: 'frequently-asked-questions', title: 'Frequently Asked Questions' }
+      ],
+      sections: [
+        {
+          id: 'overview',
+          heading: '',
+          contentHtml: `<p>${cleanTopic} represents a pivotal conversation across contemporary ${category} and popular culture. Whether examining creative achievements, public influence, or shifting industry dynamics, understanding the broader context reveals why this subject resonates so deeply with modern audiences.</p>
+          <p>From mainstream visibility to grassroots artistic movements, the cultural landscape in the United States continues to be shaped by compelling personalities, visionary storytellers, and defining media moments.</p>
+          <h3>Why ${topicKeyword} Captivates Audiences</h3>
+          <p>The cultural resonance surrounding ${cleanTopic} highlights how creative storytelling, personal branding, and audience connection intersect. In an era driven by digital media and global fandom, key cultural figures and milestones leave an enduring imprint on public discourse.</p>`
+        },
+        {
+          id: 'creative-impact',
+          heading: 'Creative Milestones and Public Influence',
+          contentHtml: `<p>A comprehensive assessment of ${cleanTopic} reveals substantial artistic depth and cultural momentum across the entertainment sphere:</p>
+          <h3>Signature Highlights and Defining Contributions</h3>
+          <ul style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.9;">
+            <li><strong>Artistic Vision:</strong> Delivering memorable performances, creative initiatives, and cultural breakthroughs that shape genre standards.</li>
+            <li><strong>Cross-Platform Influence:</strong> Transitioning seamlessly between traditional cinematic works, musical projects, and digital engagement.</li>
+            <li><strong>Cultural Trailblazing:</strong> Breaking barriers in modern storytelling, advocacy, and diverse representation.</li>
+            <li><strong>Commercial Longevity:</strong> Sustaining audience loyalty and critical acclaim through consistent reinvention and authentic expression.</li>
+          </ul>
+          <h3>Evolution Across Media Platforms</h3>
+          <p>The progression of ${cleanTopic} reflects the dynamic nature of contemporary American entertainment, where cross-disciplinary talent commands both artistic reverence and widespread public admiration.</p>`
+        },
+        {
+          id: 'industry-evolution',
+          heading: 'Industry Evolution and Cross-Sector Reach',
+          contentHtml: `<p>Modern cultural icons and creative initiatives frequently transcend their initial medium to impact commerce, lifestyle, and social conversation:</p>
+          <h3>Commercial and Creative Synergy</h3>
+          <p>From launching entrepreneurial ventures and fashion lines to backing independent theater and community initiatives, contemporary creative forces understand how to leverage cultural visibility into lasting institutions.</p>
+          <h3>Navigating Changing Media Consumption</h3>
+          <p>With streaming platforms, social channels, and direct fan engagement reshaping entertainment, maintaining relevance requires innovative approaches to audience communication and authentic storytelling.</p>`
+        },
+        {
+          id: 'audience-engagement',
+          heading: 'Audience Engagement and Cultural Legacy',
+          contentHtml: `<p>Cultural observers emphasize that ${cleanTopic} illustrates how modern audiences forge personal connections with entertainment icons:</p>
+          <h3>Community and Fandom Dynamics</h3>
+          <p>Today's fans engage with cultural milestones through interactive discussions, community organizing, and shared digital experiences, amplifying the reach and relevance of prominent figures.</p>
+          <h3>Long-Term Legacy Assessment</h3>
+          <p>Looking ahead, the enduring influence of ${cleanTopic} will be measured by its ability to inspire emerging creators and redefine standards of artistic excellence across future generations.</p>`
+        },
+        {
+          id: 'final-thoughts',
+          heading: 'Final Thoughts',
+          contentHtml: `<div style="background: var(--bg-subtle); border-left: 4px solid var(--primary); padding: 1.5rem; border-radius: var(--radius-sm);">
+            <p style="margin-top: 0;">${cleanTopic} marks a captivating dimension of modern American culture and entertainment. By blending creative excellence with widespread cultural connection, it continues to spark inspiration and thoughtful conversation.</p>
+            <p style="margin-bottom: 0;">Stay tuned for ongoing coverage, in-depth profiles, and verified insights as this vibrant cultural story continues to unfold.</p>
+          </div>`
+        },
+        {
+          id: 'frequently-asked-questions',
+          heading: 'Frequently Asked Questions',
+          contentHtml: `<p>Here are concise answers to common questions regarding ${cleanTopic}.</p>`
+        }
+      ],
+      faqs: [
+        {
+          question: `Why is ${cleanTopic} receiving significant public attention?`,
+          answer: `${cleanTopic} showcases significant creative achievements, extensive public engagement, and strong cultural influence across modern entertainment media.`
+        },
+        {
+          question: `How does ${topicKeyword} influence contemporary pop culture?`,
+          answer: `By blending artistic innovation with authentic audience connection, it sets creative trends and drives conversations across multiple media formats.`
+        },
+        {
+          question: `What distinguishes key figures and milestones in this space?`,
+          answer: `The most impactful cultural forces demonstrate exceptional longevity, versatility across disciplines, and an ability to inspire dedicated communities.`
+        },
+        {
+          question: `How does digital media impact audience access to ${topicKeyword}?`,
+          answer: `Social platforms and on-demand streaming allow instant global connectivity, enabling deeper engagement with creative projects and personal narratives.`
+        },
+        {
+          question: `Where can verified updates and profiles about ${topicKeyword} be found?`,
+          answer: `Follow reputable entertainment publications, verified cultural archives, and official statements for authoritative information.`
+        }
+      ]
+    };
+  }
 
   return {
     title,
@@ -1104,6 +1234,7 @@ TITLE & WORDING REQUIREMENTS:
 - Provide an engaging, unique, journalistic title under 60 characters without repeating boilerplate words like "Guide", "Complete Guide", or "Guide for 2026".
 - Derive the slug directly from your unique title.
 - Do not use em-dashes and start directly with helpful, original analysis.
+- Output valid JSON only, without unescaped quotes or raw control characters in contentHtml.
 - Write naturally: do NOT spam the number "2026" repeatedly in headings, paragraphs, or FAQs. Use natural terms like "today", "this season", or "current standards".
 - Ensure unique, topic-specific substance with concrete details, and naturally weave related cross-topic contexts into body paragraphs (e.g. independent theater, visual storytelling, smart home technology, energy efficiency, Main Street businesses, travel planning, or monetary policy) so internal links can connect seamlessly in body paragraphs (never in headings).`;
 
@@ -1138,7 +1269,7 @@ async function fetchExternalLink(topic, category, usedUrls) {
     'Return ONLY a JSON object with these exact fields (no markdown, no extra text):\n' +
     '{"url":"https://...","anchorKeyword":"the exact 2-4 word keyword from the topic or article to link (e.g. smartphone hardware, Apple Inc, electric vehicles)","label":"Short descriptive title","domain":"domain.com"}';
 
-  const models = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+  const models = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-flash-latest'];
   const httpsLib = require('https');
 
   for (const model of models) {
@@ -1555,6 +1686,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
         <div class="article-body">
           ${guaranteedSectionsHtml}
           ${(guaranteedSectionsHtml.includes('id="frequently-asked-questions"') || guaranteedSectionsHtml.includes('Frequently Asked Questions')) ? '' : visibleFaqHtml}
+          ${externalLinkHtml}
         </div>
 
         <!-- Related Department Stories -->
@@ -1971,7 +2103,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
             ${items}
           </ul>
         </div>`;
-          h = h.replace(/<div style="background: var\(--bg-subtle\); border-left: 4px solid var\(--primary\);[\s\S]*?Related Investigative Reports & Department Features[\s\S]*?<\/ul>\s*<\/div>/, relBlock);
+          h = h.replace(/<div style="background: var\(--bg-subtle\); border-left: 4px solid var\(--primary\);[^>]*>\s*<h4[^>]*>Related Investigative Reports & Department Features[\s\S]*?<\/ul>\s*<\/div>/, relBlock);
           fs.writeFileSync(artPath, h, 'utf8');
         }
       }
