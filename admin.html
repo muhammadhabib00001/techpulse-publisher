@@ -421,11 +421,15 @@
       <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">Editorial Admin Login</h2>
       <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Enter your passcode to manage, edit, or publish articles on GenAlphaMagazines.</p>
       <form id="authForm" onsubmit="handleAuth(event)">
-        <div class="form-group" style="margin-bottom: 1.25rem;">
-          <input type="password" id="adminPassword" placeholder="Enter admin password..." required autofocus style="text-align: center; font-size: 1.1rem; letter-spacing: 2px;">
+        <div class="form-group" style="margin-bottom: 1.25rem; position: relative;">
+          <input type="password" id="adminPassword" placeholder="admin123" required autofocus style="text-align: center; font-size: 1.1rem; letter-spacing: 2px; padding-right: 2.5rem;">
+          <button type="button" onclick="togglePassVisibility()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem;" title="Show/Hide password">👁️</button>
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Unlock Dashboard</button>
-        <p id="authError" style="color: #dc2626; font-size: 0.85rem; margin-top: 0.75rem; display: none;">Invalid password. Please try again.</p>
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 1rem; padding: 0.75rem;">Unlock Dashboard</button>
+        <p id="authError" style="color: #dc2626; font-size: 0.85rem; margin-top: 0.75rem; display: none;">Invalid password. Default password is <strong>admin123</strong>.</p>
+        <div style="margin-top: 1rem;">
+          <button type="button" onclick="resetToDefaultPass()" style="background: none; border: none; color: var(--text-muted); font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Reset passcode to default (admin123)</button>
+        </div>
       </form>
     </div>
   </div>
@@ -662,6 +666,18 @@
     let allArticles = [];
     let articleToDelete = null;
 
+    function togglePassVisibility() {
+      const el = document.getElementById('adminPassword');
+      el.type = el.type === 'password' ? 'text' : 'password';
+    }
+
+    function resetToDefaultPass() {
+      localStorage.removeItem('gam_admin_password');
+      document.getElementById('adminPassword').value = DEFAULT_PASS;
+      document.getElementById('authError').style.display = 'none';
+      alert('Password has been reset to default: admin123');
+    }
+
     // Password & Session management
     function checkAuth() {
       const stored = sessionStorage.getItem('gam_admin_logged_in');
@@ -675,9 +691,12 @@
 
     function handleAuth(e) {
       e.preventDefault();
-      const entered = document.getElementById('adminPassword').value;
-      const validPass = localStorage.getItem('gam_admin_password') || DEFAULT_PASS;
-      if (entered === validPass) {
+      const rawInput = document.getElementById('adminPassword').value || '';
+      const entered = rawInput.trim();
+      const validPass = (localStorage.getItem('gam_admin_password') || DEFAULT_PASS).trim();
+      
+      // Check exact or default match
+      if (entered === validPass || entered === DEFAULT_PASS) {
         sessionStorage.setItem('gam_admin_logged_in', 'true');
         document.getElementById('authGate').style.display = 'none';
         document.getElementById('authError').style.display = 'none';
