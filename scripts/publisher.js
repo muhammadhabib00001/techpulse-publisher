@@ -1045,6 +1045,35 @@ async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '',
       }
       // ─────────────────────────────────────────────────────────────────────
 
+      // 5. PERMANENTLY STRIP ALL EM-DASHES AND EN-DASHES from every field
+      //    No dashes in any published article — ever.
+      function stripDashes(str) {
+        if (typeof str !== 'string') return str;
+        return str
+          .replace(/\u2014/g, ',')   // em-dash → comma
+          .replace(/\u2013/g, '-')   // en-dash → hyphen
+          .replace(/,\s*,/g, ',')    // clean accidental double commas
+          .replace(/\s{2,}/g, ' ')   // clean double spaces
+          .trim();
+      }
+      if (res) {
+        if (res.title)           res.title           = stripDashes(res.title);
+        if (res.metaDescription) res.metaDescription = stripDashes(res.metaDescription);
+        if (Array.isArray(res.sections)) {
+          res.sections = res.sections.map(s => ({
+            ...s,
+            heading:     stripDashes(s.heading),
+            contentHtml: stripDashes(s.contentHtml)
+          }));
+        }
+        if (Array.isArray(res.faqs)) {
+          res.faqs = res.faqs.map(f => ({
+            question: stripDashes(f.question),
+            answer:   stripDashes(f.answer)
+          }));
+        }
+      }
+
       return res;
     } catch (err) {
       console.warn(`[WARN] Gemini model ${model} failed (${err.message.slice(0, 120)})... trying fallback model.`);
