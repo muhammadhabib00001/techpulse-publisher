@@ -420,17 +420,17 @@
       <div class="lock-icon">🔒</div>
       <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">Editorial Admin Login</h2>
       <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Enter your passcode to manage, edit, or publish articles on GenAlphaMagazines.</p>
-      <div>
+      <form onsubmit="event.preventDefault(); executeLogin(); return false;">
         <div class="form-group" style="margin-bottom: 1.25rem; position: relative;">
-          <input type="password" id="adminPassword" placeholder="Enter password" autocomplete="current-password" autofocus style="text-align: center; font-size: 1.1rem; letter-spacing: 2px; padding-right: 2.5rem;" onkeydown="if(event.key==='Enter') executeLogin();">
+          <input type="password" id="adminPassword" placeholder="Enter password" autocomplete="current-password" autofocus style="text-align: center; font-size: 1.1rem; letter-spacing: 2px; padding-right: 2.5rem;">
           <button type="button" onclick="togglePassVisibility()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem;" title="Show/Hide password">👁️</button>
         </div>
-        <button type="button" id="loginBtn" onclick="executeLogin()" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 1rem; padding: 0.75rem;">Unlock Dashboard</button>
+        <button type="submit" id="loginBtn" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 1rem; padding: 0.75rem;">Unlock Dashboard</button>
         <p id="authError" style="color: #dc2626; font-size: 0.85rem; margin-top: 0.75rem; display: none;">Invalid password. Please enter the correct admin passcode.</p>
         <div style="margin-top: 1rem;">
           <button type="button" onclick="resetToDefaultPass()" style="background: none; border: none; color: var(--text-muted); font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Reset passcode to default (admin123)</button>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 
@@ -673,21 +673,24 @@
 
     function resetToDefaultPass() {
       localStorage.removeItem('gam_admin_password');
-      document.getElementById('adminPassword').value = DEFAULT_PASS;
-      document.getElementById('authError').style.display = 'none';
-      alert('Password has been reset to default: admin123');
+      const inputEl = document.getElementById('adminPassword');
+      if (inputEl) {
+        inputEl.value = DEFAULT_PASS;
+      }
+      const errEl = document.getElementById('authError');
+      if (errEl) errEl.style.display = 'none';
+      executeLogin();
     }
 
     // Password & Session management
     function checkAuth() {
       const stored = sessionStorage.getItem('gam_admin_logged_in');
+      const gate = document.getElementById('authGate');
       if (stored === 'true') {
-        const gate = document.getElementById('authGate');
-        if (gate) gate.style.display = 'none';
+        if (gate) gate.style.setProperty('display', 'none', 'important');
         initDashboard();
       } else {
-        const gate = document.getElementById('authGate');
-        if (gate) gate.style.display = 'flex';
+        if (gate) gate.style.setProperty('display', 'flex', 'important');
       }
     }
 
@@ -697,16 +700,25 @@
       const entered = (inputEl ? inputEl.value : '').trim();
       const validPass = (localStorage.getItem('gam_admin_password') || DEFAULT_PASS).trim();
 
-      if (entered === validPass || entered === DEFAULT_PASS || entered.toLowerCase() === DEFAULT_PASS.toLowerCase()) {
+      const normEntered = entered.replace(/\s+/g, '').toLowerCase();
+      const normValid = validPass.replace(/\s+/g, '').toLowerCase();
+      const normDefault = DEFAULT_PASS.toLowerCase();
+
+      if (
+        entered === validPass ||
+        entered === DEFAULT_PASS ||
+        normEntered === normValid ||
+        normEntered === normDefault
+      ) {
         sessionStorage.setItem('gam_admin_logged_in', 'true');
         const gate = document.getElementById('authGate');
-        if (gate) gate.style.display = 'none';
+        if (gate) gate.style.setProperty('display', 'none', 'important');
         if (errEl) errEl.style.display = 'none';
         initDashboard();
       } else {
         if (errEl) {
           errEl.style.display = 'block';
-          errEl.textContent = 'Incorrect password. Please try again.';
+          errEl.textContent = 'Incorrect passcode. Default passcode is: ' + DEFAULT_PASS;
         }
       }
     }
@@ -872,9 +884,16 @@
         if (res.ok) {
           const html = await res.text();
           // Extract body text inside article-body
-          const bodyMatch = html.match(/<div class="article-body"[^>]*>([sS]*?)</div>s*</article>/i);
-          if (bodyMatch) {
-            document.getElementById('fContent').value = bodyMatch[1].trim();
+          const startTag = '<div class="article-body"';
+          const startIdx = html.indexOf(startTag);
+          if (startIdx !== -1) {
+            const contentStart = html.indexOf('>', startIdx) + 1;
+            const endIdx = html.indexOf('</div>', contentStart);
+            if (endIdx !== -1) {
+              document.getElementById('fContent').value = html.slice(contentStart, endIdx).trim();
+            } else {
+              document.getElementById('fContent').value = html.slice(contentStart).trim();
+            }
           } else {
             document.getElementById('fContent').value = html;
           }
@@ -1122,57 +1141,62 @@
     function buildArticleHtml(data) {
       const dateStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       const isoDate = new Date().toISOString();
+      const H = '\x3c'; // '<'  — prevents browser parser from closing tags prematurely
+      const C = '\x3e'; // '>'
 
-      return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${escapeHtml(data.title)} | GenAlphaMagazines</title>
-  <meta name="description" content="${escapeHtml(data.excerpt)}">
-  <link rel="canonical" href="https://www.genalphamagazines.com/articles/${data.slug}.html">
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="${escapeHtml(data.title)}">
-  <meta property="og:description" content="${escapeHtml(data.excerpt)}">
-  <meta property="og:image" content="${escapeHtml(data.imageUrl)}">
-  <meta property="article:published_time" content="${isoDate}">
-  <meta property="article:section" content="${data.category}">
-  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
-  <link rel="stylesheet" href="../assets/css/style.css?v=final_stable_v1">
-</head>
-<body>
-  <header class="main-header">
-    <div class="container header-inner">
-      <a href="../index.html" class="brand-logo">
-        <div class="brand-text-block">
-          <div class="brand-main-title"><span>GEN</span><span class="alpha-word">ALPHA</span><span class="mag-word">MAGAZINES</span></div>
-        </div>
-      </a>
-    </div>
-  </header>
-  <main class="article-page-container container" style="max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem;">
-    <article>
-      <div class="article-header" style="margin-bottom: 2rem;">
-        <span class="card-tag">${data.category.toUpperCase()} &bull; Editorial</span>
-        <h1 style="font-size: 2.2rem; font-weight: 800; margin: 0.8rem 0; line-height: 1.25;">${escapeHtml(data.title)}</h1>
-        <div class="card-meta" style="color: var(--text-muted); font-size: 0.95rem;">
-          <span>By ${data.authorName}</span> &bull; <span>${dateStr}</span>
-        </div>
-      </div>
-      <div class="hero-image-wrap" style="margin-bottom: 2rem; border-radius: var(--radius-md); overflow: hidden;">
-        <img src="${escapeHtml(data.imageUrl)}" alt="${escapeHtml(data.title)}" style="width: 100%; height: auto; max-height: 480px; object-fit: cover;">
-      </div>
-      <div class="article-body" style="font-size: 1.1rem; line-height: 1.8; color: var(--text-main);">
-        ${data.bodyContent.includes('<p>') ? data.bodyContent : data.bodyContent.split('\n\n').map(p => '<p style="margin-bottom: 1.5rem;">' + escapeHtml(p) + '</p>').join('')}
-      </div>
-    </article>
-  </main>
-  <footer class="main-footer" style="margin-top: 4rem; padding: 2rem 0; border-top: 1px solid var(--border-color); text-align: center;">
-    <p>&copy; 2026 GenAlphaMagazines. All rights reserved.</p>
-  </footer>
-</body>
-</html>`;
+      const parts = [
+        '<!DOCTYPE html>',
+        '<html lang="en">',
+        '<head>',
+        '  <meta charset="UTF-8">',
+        '  <meta name="viewport" content="width=device-width, initial-scale=1.0">',
+        '  <title>' + escapeHtml(data.title) + ' | GenAlphaMagazines' + H + '/title' + C,
+        '  <meta name="description" content="' + escapeHtml(data.excerpt) + '">',
+        '  <link rel="canonical" href="https://www.genalphamagazines.com/articles/' + data.slug + '.html">',
+        '  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">',
+        '  <meta property="og:type" content="article">',
+        '  <meta property="og:title" content="' + escapeHtml(data.title) + '">',
+        '  <meta property="og:description" content="' + escapeHtml(data.excerpt) + '">',
+        '  <meta property="og:image" content="' + escapeHtml(data.imageUrl) + '">',
+        '  <meta property="article:published_time" content="' + isoDate + '">',
+        '  <meta property="article:section" content="' + data.category + '">',
+        '  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">',
+        '  <link rel="stylesheet" href="../assets/css/style.css?v=final_stable_v1">',
+        H + '/head' + C,
+        '<body>',
+        '  <header class="main-header">',
+        '    <div class="container header-inner">',
+        '      <a href="../index.html" class="brand-logo">',
+        '        <div class="brand-text-block">',
+        '          <div class="brand-main-title"><span>GEN' + H + '/span' + C + '<span class="alpha-word">ALPHA' + H + '/span' + C + '<span class="mag-word">MAGAZINES' + H + '/span' + C + H + '/div' + C,
+        '        ' + H + '/div' + C,
+        '      ' + H + '/a' + C,
+        '    ' + H + '/div' + C,
+        '  ' + H + '/header' + C,
+        '  <main class="article-page-container container" style="max-width:860px;margin:2.5rem auto;padding:0 1.5rem;">',
+        '    <article>',
+        '      <div class="article-header" style="margin-bottom:2rem;">',
+        '        <span class="card-tag">' + data.category.toUpperCase() + ' &bull; Editorial' + H + '/span' + C,
+        '        <h1 style="font-size:2.2rem;font-weight:800;margin:0.8rem 0;line-height:1.25;">' + escapeHtml(data.title) + H + '/h1' + C,
+        '        <div class="card-meta" style="color:var(--text-muted);font-size:0.95rem;">',
+        '          <span>By ' + data.authorName + H + '/span' + C + ' &bull; <span>' + dateStr + H + '/span' + C,
+        '        ' + H + '/div' + C,
+        '      ' + H + '/div' + C,
+        '      <div class="hero-image-wrap" style="margin-bottom:2rem;border-radius:var(--radius-md);overflow:hidden;">',
+        '        <img src="' + escapeHtml(data.imageUrl) + '" alt="' + escapeHtml(data.title) + '" style="width:100%;height:auto;max-height:480px;object-fit:cover;">',
+        '      ' + H + '/div' + C,
+        '      <div class="article-body" style="font-size:1.1rem;line-height:1.8;color:var(--text-main);">',
+        '        ' + (data.bodyContent.includes('<p>') ? data.bodyContent : data.bodyContent.split('\n\n').map(p => '<p style="margin-bottom:1.5rem;">' + escapeHtml(p) + H + '/p' + C).join('')),
+        '      ' + H + '/div' + C,
+        '    ' + H + '/article' + C,
+        '  ' + H + '/main' + C,
+        '  <footer style="margin-top:4rem;padding:2rem 0;border-top:1px solid var(--border-color);text-align:center;">',
+        '    <p>&copy; 2026 GenAlphaMagazines. All rights reserved.' + H + '/p' + C,
+        '  ' + H + '/footer' + C,
+        H + '/body' + C,
+        H + '/html' + C
+      ];
+      return parts.join('\n');
     }
 
     function initDashboard() {
