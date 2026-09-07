@@ -661,6 +661,63 @@ function injectInternalLinks(htmlContent, currentSlug) {
 }
 
 /**
+ * Injects the single external link directly onto a matching keyword within the article body text.
+ * Ensures the external link is embedded in context rather than only as a standalone box.
+ */
+function injectExternalKeywordLink(sectionsHtml, externalLink) {
+  if (!externalLink || !externalLink.url) return sectionsHtml;
+
+  // Protect headings, existing <a> tags, scripts, styles
+  const protectedBlocks = [];
+  let protectedHtml = sectionsHtml.replace(/<(h[1-6]|a|script|style)[^>]*>[\s\S]*?<\/\1>/gi, (match) => {
+    const placeholder = `__PROTECTED_BLOCK_EXT_${protectedBlocks.length}__`;
+    protectedBlocks.push(match);
+    return placeholder;
+  });
+
+  // Candidates to match: explicit anchorKeyword from Gemini, label, domain, or key topic terms
+  const candidates = [];
+  if (externalLink.anchorKeyword && externalLink.anchorKeyword.trim().length >= 3) {
+    candidates.push(externalLink.anchorKeyword.trim());
+  }
+  if (externalLink.label && externalLink.label.trim().length >= 4) {
+    candidates.push(externalLink.label.trim());
+    // Also try significant phrases from the label
+    const labelWords = externalLink.label.trim().split(/\s+/);
+    if (labelWords.length >= 2) {
+      candidates.push(labelWords.slice(0, 3).join(' '));
+      candidates.push(labelWords.slice(-2).join(' '));
+    }
+  }
+
+  let injected = false;
+  const safeUrl = String(externalLink.url).replace(/"/g, '&quot;');
+  const titleAttr = String(externalLink.label || externalLink.domain || 'External Reference').replace(/"/g, '&quot;');
+
+  for (const phrase of candidates) {
+    if (injected) break;
+    if (!phrase || phrase.length < 3) continue;
+
+    const escaped = phrase.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+    const regex = new RegExp('(\\b' + escaped + '\\b)(?![^<]*>)', 'i');
+
+    if (regex.test(protectedHtml)) {
+      protectedHtml = protectedHtml.replace(regex, (match) => {
+        injected = true;
+        return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" style="color: #2563eb; font-weight: 700; text-decoration: underline;" title="${titleAttr}">${match}</a>`;
+      });
+    }
+  }
+
+  // Restore protected blocks
+  for (let i = 0; i < protectedBlocks.length; i++) {
+    protectedHtml = protectedHtml.replace(`__PROTECTED_BLOCK_EXT_${i}__`, protectedBlocks[i]);
+  }
+
+  return protectedHtml;
+}
+
+/**
  * Enforces a strict minimum of internal links in the article body.
  * If natural keyword injection yielded fewer than 3 links, this helper appends
  * contextual recommendations to reach the mandatory 3-5 internal link threshold.
@@ -1056,16 +1113,16 @@ TITLE & WORDING REQUIREMENTS:
 async function fetchExternalLink(topic, category, usedUrls) {
   if (!GEMINI_API_KEY) return null;
   const usedList = usedUrls.length > 0 ? 'Do NOT suggest these already-used URLs:\n' + usedUrls.slice(-40).join('\n') : '';
-  const prompt = 'You are an editorial researcher. For the article topic below, provide ONE authoritative external reference URL.\n' +
+  const prompt = 'You are an editorial researcher. For the article topic below, provide ONE authoritative external reference URL that should be hyperlinked to a natural in-text keyword.\n' +
     'Requirements:\n' +
-    '1. Must be a REAL, currently live URL (Wikipedia, BBC, Reuters, AP News, .gov, .org, WHO, CDC, etc.)\n' +
+    '1. Must be a REAL, currently live URL (Wikipedia, BBC, Reuters, AP News, .gov, .org, WHO, CDC, official organization, etc.)\n' +
     '2. Highly relevant and directly related to the topic\n' +
     '3. From a HIGH-AUTHORITY domain (major news outlet, official institution, encyclopedia)\n' +
     '4. Must NOT be from this list of already-used URLs:\n' + usedList + '\n\n' +
     'Topic: "' + topic + '"\n' +
     'Category: ' + category + '\n\n' +
     'Return ONLY a JSON object with these exact fields (no markdown, no extra text):\n' +
-    '{"url":"https://...","label":"Short descriptive text (5-8 words)","domain":"domain.com"}';
+    '{"url":"https://...","anchorKeyword":"the exact 2-4 word keyword from the topic or article to link (e.g. smartphone hardware, Apple Inc, electric vehicles)","label":"Short descriptive title","domain":"domain.com"}';
 
   const models = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
   const httpsLib = require('https');
@@ -1262,7 +1319,10 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   }).join('\n');
 
   // Hard SEO Guarantee: Never publish an article with fewer than 3 internal links
-  const guaranteedSectionsHtml = enforceMinimumInternalLinks(sectionsHtml, articleData.slug, 3);
+  let guaranteedSectionsHtml = enforceMinimumInternalLinks(sectionsHtml, articleData.slug, 3);
+
+  // Embed external link directly onto relevant in-body keyword
+  guaranteedSectionsHtml = injectExternalKeywordLink(guaranteedSectionsHtml, externalLink);
 
   // ── External Reference Box ─────────────────────────────────────
   let externalLinkHtml = '';
@@ -1480,7 +1540,6 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
 
         <div class="article-body">
           ${guaranteedSectionsHtml}
-          ${externalLinkHtml}
           ${guaranteedSectionsHtml.includes('id="frequently-asked-questions"') ? '' : visibleFaqHtml}
         </div>
 
