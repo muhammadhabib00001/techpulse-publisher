@@ -942,7 +942,7 @@ function enforceMinimumInternalLinks(sectionsHtml, currentSlug, minRequired = 3)
 }
 
 async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '', category = '') {
-  const modelsToTry = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-flash-latest'];
+  const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
   let lastError = null;
 
   for (const model of modelsToTry) {
@@ -1381,7 +1381,10 @@ WRITING STYLE RULES (follow strictly):
 12. UNIQUE ANGLE & HIGH CONTENT VALUE:
    - Each article must bring unique, fresh insights, concrete actionable tips, and original perspectives tailored strictly to its specific topic.
    - Never output repetitive filler or recycled boilerplate structures across different topics.
-13. Valid HTML only in contentHtml.`;
+13. Valid HTML only in contentHtml.
+14. FACTUAL ACCURACY (NON-NEGOTIABLE): You are a professional journalist. Write ONLY verifiable, real facts. Never fabricate statistics, people, events, or claims. If you mention a film, name its actual director and year. If you mention a person, use their real full name and verified accomplishments.
+15. LIST ARTICLE COMPLETENESS: When the topic specifies a numbered list (e.g. "25 movies", "10 celebrities"), you MUST include EVERY numbered item. Skipping items or writing "twenty-five films" without naming them is a critical failure. Write every single item with its real title, creator, date, and 1-2 sentences of specific factual detail.
+16. ZERO GENERIC FILLER: Every paragraph must be specific to the exact topic. Sentences that could describe any article ("this topic has become increasingly important") are banned. Write details that ONLY apply to the specific subject matter.`;
 
   const userPrompt = `Write an in-depth, original, high-quality editorial article about: "${topic}"
 Category: ${category}
@@ -1394,7 +1397,19 @@ TITLE & WORDING REQUIREMENTS:
 - Do not use em-dashes and start directly with helpful, original analysis.
 - Output valid JSON only, without unescaped quotes or raw control characters in contentHtml.
 - Write naturally: do NOT spam the number "2026" repeatedly in headings, paragraphs, or FAQs. Use natural terms like "today", "this season", or "current standards".
-- Ensure unique, topic-specific substance with concrete details, and naturally weave related cross-topic contexts into body paragraphs (e.g. independent theater, visual storytelling, smart home technology, energy efficiency, Main Street businesses, travel planning, or monetary policy) so internal links can connect seamlessly in body paragraphs (never in headings).`;
+- Ensure unique, topic-specific substance with concrete details, and naturally weave related cross-topic contexts into body paragraphs (e.g. independent theater, visual storytelling, smart home technology, energy efficiency, Main Street businesses, travel planning, or monetary policy) so internal links can connect seamlessly in body paragraphs (never in headings).
+
+FACTUAL CONTENT RULES (CRITICAL — MANDATORY):
+- This is a journalism publication. Every article MUST contain REAL, VERIFIABLE facts. No vague generalities.
+- ALWAYS name specific real people (full names), real companies, real products, real places, real statistics with sources.
+- If the topic is a LIST article (e.g. "25 American Movies", "10 Best Laptops", "25 Famous Celebrities"):
+  * You MUST enumerate EVERY SINGLE ITEM on the list by number (1. 2. 3. ... up to the full count stated in the title).
+  * Each list item MUST include: the exact real name/title, the real year/date, real director/creator/person involved, and a concrete fact about why it qualifies.
+  * NEVER write generic placeholder sentences like "twenty-five films" or "several notable works" — always write the ACTUAL names.
+  * Example for movies: "1. Citizen Kane (1941, dir. Orson Welles) — pioneered deep focus photography and non-linear narrative structure."
+  * Example for celebrities: "1. Oprah Winfrey — media mogul, actress, and philanthropist with a net worth exceeding $2.5 billion."
+- For non-list articles: Include specific statistics, named case studies, real research findings, exact dollar amounts, verified dates, and named industry experts or institutions.
+- NEVER write articles that could apply to any topic. Every paragraph must contain details SPECIFIC to "${topic}".`;
 
   if (GEMINI_API_KEY) {
     try {
@@ -1427,7 +1442,7 @@ async function fetchExternalLink(topic, category, usedUrls) {
     'Return ONLY a JSON object with these exact fields (no markdown, no extra text):\n' +
     '{"url":"https://...","anchorKeyword":"the exact 2-4 word keyword from the topic or article to link (e.g. smartphone hardware, Apple Inc, electric vehicles)","label":"Short descriptive title","domain":"domain.com"}';
 
-  const models = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-flash-latest'];
+  const models = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
   const httpsLib = require('https');
 
   for (const model of models) {
