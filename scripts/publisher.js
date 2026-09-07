@@ -13,8 +13,112 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const http = require('http');
+const crypto = require('crypto');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
+
+// Helper to calculate md5 hash of a file or buffer
+function computeHash(bufferOrPath) {
+  try {
+    const buf = Buffer.isBuffer(bufferOrPath) ? bufferOrPath : fs.readFileSync(bufferOrPath);
+    return crypto.createHash('md5').update(buf).digest('hex');
+  } catch (e) {
+    return null;
+  }
+}
+
+// Get set of all image hashes currently present in assets/images
+function getExistingImageHashes(excludeFilename = '') {
+  const hashes = new Set();
+  try {
+    const imgDir = path.join(ROOT_DIR, 'assets', 'images');
+    if (fs.existsSync(imgDir)) {
+      const files = fs.readdirSync(imgDir).filter(f => (f.endsWith('.jpg') || f.endsWith('.png') || f.endsWith('.webp')) && f !== excludeFilename);
+      for (const f of files) {
+        const h = computeHash(path.join(imgDir, f));
+        if (h) hashes.add(h);
+      }
+    }
+  } catch (e) {}
+  return hashes;
+}
+
+// Get list of existing titles and slugs to strictly prevent duplicate titles
+function getExistingTitlesAndSlugs() {
+  const titles = [];
+  const slugs = new Set();
+  try {
+    const trackingFile = path.join(ROOT_DIR, 'data', 'published_topics.json');
+    if (fs.existsSync(trackingFile)) {
+      const ledger = JSON.parse(fs.readFileSync(trackingFile, 'utf8'));
+      for (const item of ledger) {
+        if (item.title) titles.push(item.title.trim().toLowerCase());
+        if (item.slug) slugs.add(item.slug.trim().toLowerCase());
+      }
+    }
+  } catch (e) {}
+
+  try {
+    const articlesDir = path.join(ROOT_DIR, 'articles');
+    if (fs.existsSync(articlesDir)) {
+      const files = fs.readdirSync(articlesDir).filter(f => f.endsWith('.html'));
+      for (const f of files) {
+        slugs.add(f.replace('.html', '').toLowerCase());
+      }
+    }
+  } catch (e) {}
+
+  return { titles, slugs };
+}
+
+// Check title uniqueness against existing titles
+function ensureUniqueTitle(proposedTitle, topic, category) {
+  const { titles, slugs } = getExistingTitlesAndSlugs();
+  let finalTitle = (proposedTitle || '').trim();
+  const lower = finalTitle.toLowerCase();
+
+  const isDuplicate = titles.some(t => {
+    if (t === lower) return true;
+    // Word overlap check (>65% same words)
+    const tWords = t.split(/\s+/).filter(w => w.length > 3);
+    const pWords = lower.split(/\s+/).filter(w => w.length > 3);
+    if (tWords.length > 0 && pWords.length > 0) {
+      const common = pWords.filter(w => tWords.includes(w));
+      if (common.length / Math.max(tWords.length, pWords.length) > 0.65) {
+        return true;
+      }
+    }
+    return false;
+  });
+
+  if (isDuplicate) {
+    console.log(`[WARN] Title "${finalTitle}" is similar or duplicate to existing title. Applying unique differentiation...`);
+    const qualifiers = {
+      technology: ['In-Depth Analysis', 'Key Innovations', 'Technical Outlook', 'Full Breakdown'],
+      business: ['Strategic Outlook', 'Market Impact', 'Financial Analysis', 'Industry Trends'],
+      celebrity: ['Global Perspective', 'Cultural Footprint', 'Defining Milestones', 'Creative Legacy'],
+      entertainment: ['Industry Spotlight', 'Critical Perspectives', 'Cultural Wave', 'Artistic Review'],
+      health: ['Clinical Insights', 'Evidence-Based Review', 'Practical Overview', 'Modern Perspectives'],
+      news: ['Special Report', 'Verified Analysis', 'Executive Briefing', 'Core Developments'],
+      others: ['In-Depth Review', 'Essential Perspectives', 'Modern Blueprint', 'Detailed Guide']
+    };
+    const list = qualifiers[category] || qualifiers.others;
+    const randomQualifier = list[Math.floor(Math.random() * list.length)];
+    
+    // Attempt inserting qualifier or rewriting suffix
+    if (finalTitle.includes(':')) {
+      const parts = finalTitle.split(':');
+      finalTitle = `${parts[0].trim()}: ${randomQualifier}`;
+    } else {
+      finalTitle = `${finalTitle} - ${randomQualifier}`;
+    }
+    if (finalTitle.length > 60) {
+      finalTitle = finalTitle.slice(0, 60).replace(/[:,\-\s]+$/, '').trim();
+    }
+  }
+
+  return finalTitle;
+}
 
 // Parse Command Line Arguments (--topic "..." --category "...")
 function parseArgs() {
@@ -295,6 +399,9 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
   // Unique numeric hash per slug
   const sig = Math.abs(slug.split('').reduce((h, c) => ((h << 5) - h) + c.charCodeAt(0), 0) & 0x7fffffff);
 
+  // Cache existing image hashes to strictly guarantee uniqueness across all articles
+  const existingHashes = getExistingImageHashes(localImgFilename);
+
   // ─────────────────────────────────────────────────────────────
   // LAYER 1: Gemini Imagen — AI-generated topic-specific image
   // ─────────────────────────────────────────────────────────────
@@ -316,6 +423,11 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
       for (const part of response.candidates[0].content.parts) {
         if (part.inlineData && part.inlineData.data) {
           const imgBuffer = Buffer.from(part.inlineData.data, 'base64');
+          const imgHash = computeHash(imgBuffer);
+          if (imgHash && existingHashes.has(imgHash)) {
+            console.warn(`[WARN] Layer 1: Generated image hash ${imgHash} is duplicate to an existing image. Skipping.`);
+            continue;
+          }
           fs.writeFileSync(localImgPath, imgBuffer);
           if (fs.statSync(localImgPath).size > 10000) {
             console.log(`[SUCCESS] Layer 1: Gemini AI image saved: assets/images/${localImgFilename}`);
@@ -345,7 +457,9 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
       // Topic-specific keyword enhancements locked strictly to context
       const expansions = [];
       const lowerTopic = topic.toLowerCase();
-      if (lowerTopic.includes('cinema') || lowerTopic.includes('film') || lowerTopic.includes('movie')) {
+      if (lowerTopic.includes('german') || lowerTopic.includes('germany') || lowerTopic.includes('berlin')) {
+        expansions.push('german cinema film premiere', 'berlin film festival actors', 'german theater arts culture');
+      } else if (lowerTopic.includes('cinema') || lowerTopic.includes('film') || lowerTopic.includes('movie')) {
         expansions.push('cinema film theater', 'movie cinema screen', 'film production camera');
       } else if (lowerTopic.includes('crypto') || lowerTopic.includes('bitcoin') || lowerTopic.includes('blockchain')) {
         expansions.push('cryptocurrency bitcoin', 'blockchain finance technology');
@@ -366,7 +480,7 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
       } else if (lowerTopic.includes('business') || lowerTopic.includes('startup') || lowerTopic.includes('entrepreneur')) {
         expansions.push('business meeting office professional', 'startup entrepreneur modern office');
       } else if (lowerTopic.includes('celebrity') || lowerTopic.includes('actor') || lowerTopic.includes('singer')) {
-        expansions.push('red carpet event celebrity glamour', 'entertainment celebrity spotlight');
+        expansions.push('red carpet cinema film premiere', 'film festival theater stage');
       } else if (lowerTopic.includes('ai') || lowerTopic.includes('artificial intelligence') || lowerTopic.includes('machine learning')) {
         expansions.push('artificial intelligence computer hardware', 'machine learning data technology');
       } else if (lowerTopic.includes('journalism') || lowerTopic.includes('news') || lowerTopic.includes('press')) {
@@ -383,7 +497,7 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
 
       for (const query of queryCandidates) {
         console.log(`[INFO] Layer 2: Searching Unsplash for "${query}"...`);
-        const unsplashApiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&orientation=landscape&per_page=5&client_id=${UNSPLASH_ACCESS_KEY}`;
+        const unsplashApiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&orientation=landscape&per_page=10&client_id=${UNSPLASH_ACCESS_KEY}`;
 
         const photoData = await new Promise((resolve, reject) => {
           const get = https.get;
@@ -398,13 +512,28 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
         });
 
         if (photoData.results && photoData.results.length > 0) {
-          const photoItem = photoData.results[sig % Math.min(photoData.results.length, 3)];
-          const photoUrl = photoItem && photoItem.urls && (photoItem.urls.regular || photoItem.urls.full);
-          if (photoUrl) {
-            await downloadImageLocally(photoUrl, localImgPath);
-            if (fs.existsSync(localImgPath) && fs.statSync(localImgPath).size > 10000) {
-              console.log(`[SUCCESS] Layer 2: Unsplash photo saved for "${query}": assets/images/${localImgFilename}`);
-              return buildImageResult(localImgFilename, localImgPath, topic);
+          // Iterate through results to find an image that is NOT duplicate to existing downloaded files
+          for (let pIdx = 0; pIdx < photoData.results.length; pIdx++) {
+            const photoItem = photoData.results[(sig + pIdx) % photoData.results.length];
+            const photoUrl = photoItem && photoItem.urls && (photoItem.urls.regular || photoItem.urls.full);
+            if (photoUrl) {
+              const tempDest = `${localImgPath}.tmp`;
+              try {
+                await downloadImageLocally(photoUrl, tempDest);
+                if (fs.existsSync(tempDest) && fs.statSync(tempDest).size > 10000) {
+                  const downHash = computeHash(tempDest);
+                  if (downHash && existingHashes.has(downHash)) {
+                    console.log(`[WARN] Layer 2: Downloaded photo is duplicate hash (${downHash}). Trying next photo...`);
+                    try { fs.unlinkSync(tempDest); } catch(e) {}
+                    continue;
+                  }
+                  fs.renameSync(tempDest, localImgPath);
+                  console.log(`[SUCCESS] Layer 2: Unique Unsplash photo saved for "${query}": assets/images/${localImgFilename}`);
+                  return buildImageResult(localImgFilename, localImgPath, topic);
+                }
+              } catch (eDown) {
+                try { if (fs.existsSync(tempDest)) fs.unlinkSync(tempDest); } catch(e) {}
+              }
             }
           }
         }
@@ -417,49 +546,56 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
   // ─────────────────────────────────────────────────────────────
   // LAYER 3: Curated direct Unsplash photo IDs — topic-relevant fallback
   // ─────────────────────────────────────────────────────────────
-  console.log(`[INFO] Layer 3: Using curated fallback photo...`);
+  console.log(`[INFO] Layer 3: Using curated fallback photo with deduplication check...`);
   const FALLBACK_POOLS = {
     business: [
       '1486406146926-c627a92ad1ab', // Financial district skyscrapers
       '1454165804606-c3d57bc86b40', // Analytics and laptop charts
       '1556742049-0a67e557224f', // Commerce payment
-      '1590283603385-17ffb3a7f29f'  // Stock market charts
+      '1590283603385-17ffb3a7f29f', // Stock market charts
+      '1444653614773-995bc3a45f94'  // Modern corporate glass architecture
     ],
     news: [
       '1504711434969-e33886168f5c', // Newspaper headline reading
       '1585829365295-ab7cd400c167', // News press media room
       '1526470608268-f674ce90ebd4', // Breaking news control board
-      '1495020689067-958852a7765e'  // Stacks of newspapers
+      '1495020689067-958852a7765e', // Stacks of newspapers
+      '1586339949916-3e945abeb610'  // World news broadcast monitor
     ],
     technology: [
       '1531297484001-80022131f5a1', // Laptop code screen dark
       '1518770660439-4636190af475', // Circuit board closeup blue
       '1602524811496-36a7f65c7ac5', // Smartphone on desk modern
-      '1451187580459-43490279c0fa'  // Tech abstract dark neon
+      '1451187580459-43490279c0fa', // Tech abstract dark neon
+      '1526374965328-7f61d4dc18c5'  // Code matrix cyber background
     ],
     games: [
       '1511512578047-7bde2e3cd15e', // Gaming controller neon
       '1493711662062-fa541adb3fc8', // Gaming setup RGB lights
       '1550745165-9bc0b252726f', // Gaming desk setup monitor
-      '1612287606636-b3d2ce0c3748'  // Gamer playing console
+      '1612287606636-b3d2ce0c3748', // Gamer playing console
+      '1538481199705-c710c4e965fc'  // Retro arcade video games
     ],
     health: [
       '1571019613454-1cb2f99b2d8b', // Fitness workout gym
       '1506126613408-eca07ce68773', // Healthy food nutrition
       '1559757148-5c350d0d3c56', // Wellness meditation
-      '1584438784894-089d6a62b8fa'  // Medical health concept
+      '1584438784894-089d6a62b8fa', // Medical health concept
+      '1505751172876-fa1923c5c528'  // Stethoscope and healthcare notes
     ],
     celebrity: [
       '1516450360452-9312f5e86fc7', // Red carpet event lights
       '1489599849927-2ee91cede3ba', // Cinema theater glamour
       '1485846234645-a62644f84728', // Entertainment spotlight
-      '1478720568477-152d9b164e26'  // Film cinematic atmosphere
+      '1478720568477-152d9b164e26', // Film cinematic atmosphere
+      '1514306191717-452ec28c7814'  // Classical performance stage hall
     ],
     entertainment: [
       '1489599849927-2ee91cede3ba', // Cinema theater red auditorium seats
       '1478720568477-152d9b164e26', // Film projector beam in dark cinema
       '1517604931442-7e0c8ed2963c', // Cinema auditorium screen
-      '1460661419201-fd4cecdf8a8b'  // Artist palette and brushes
+      '1460661419201-fd4cecdf8a8b', // Artist palette and brushes
+      '1499364615650-ec38552f4f34'  // Live performance musical crowd
     ],
     others: [
       '1500382017468-9049fed747ef', // Quiet morning coffee and journal
@@ -494,19 +630,38 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
   };
 
   const pool = FALLBACK_POOLS[category] || FALLBACK_POOLS.business;
-  const picId = pool[sig % pool.length];
-  const fallbackUrl = `https://images.unsplash.com/photo-${picId}?auto=format&fit=crop&w=1200&h=600&q=80`;
-
-  try {
-    await downloadImageLocally(fallbackUrl, localImgPath);
-    console.log(`[SUCCESS] Layer 3: Fallback image saved: assets/images/${localImgFilename}`);
-  } catch (e3) {
-    console.warn(`[WARN] Layer 3 also failed: ${e3.message} — using CDN URL directly`);
-    return {
-      relativeUrl: fallbackUrl, indexUrl: fallbackUrl,
-      alt: `${topic}`, caption: `${topic}: practical guide.`
-    };
+  
+  // Try each ID in pool to find one whose downloaded image hash is unique
+  for (let offset = 0; offset < pool.length; offset++) {
+    const picId = pool[(sig + offset) % pool.length];
+    const fallbackUrl = `https://images.unsplash.com/photo-${picId}?auto=format&fit=crop&w=1200&h=600&q=80`;
+    const tempDest = `${localImgPath}.tmp`;
+    try {
+      await downloadImageLocally(fallbackUrl, tempDest);
+      if (fs.existsSync(tempDest) && fs.statSync(tempDest).size > 5000) {
+        const fHash = computeHash(tempDest);
+        if (fHash && existingHashes.has(fHash)) {
+          console.log(`[WARN] Layer 3 fallback photo-${picId} is duplicate hash (${fHash}). Trying next fallback...`);
+          try { fs.unlinkSync(tempDest); } catch(e) {}
+          continue;
+        }
+        fs.renameSync(tempDest, localImgPath);
+        console.log(`[SUCCESS] Layer 3: Unique fallback image saved: assets/images/${localImgFilename}`);
+        return buildImageResult(localImgFilename, localImgPath, topic);
+      }
+    } catch (e3) {
+      try { if (fs.existsSync(tempDest)) fs.unlinkSync(tempDest); } catch(e) {}
+    }
   }
+
+  // If all local downloads collided, use fallback with random signature
+  const finalPicId = pool[sig % pool.length];
+  const finalFallbackUrl = `https://images.unsplash.com/photo-${finalPicId}?auto=format&fit=crop&w=1200&h=600&q=80`;
+  return {
+    relativeUrl: finalFallbackUrl, indexUrl: finalFallbackUrl,
+    alt: `${topic}`, caption: `${topic}: practical guide.`
+  };
+}
 
   return buildImageResult(localImgFilename, localImgPath, topic);
 }
@@ -871,6 +1026,9 @@ async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '',
           res.title = (lastSpace > 35 ? cut.slice(0, lastSpace) : cut).trim().replace(/[:,\-]$/, '');
         }
 
+        // Enforce strict title uniqueness against all previously published articles
+        res.title = ensureUniqueTitle(res.title, topic, category);
+
         // 3. Re-derive clean slug from the corrected title
         res.slug = res.title
           .toLowerCase()
@@ -936,6 +1094,9 @@ function generateDeepFallbackArticle(topic, category, author) {
     const lastSpace = cut.lastIndexOf(' ');
     title = (lastSpace > 35 ? cut.slice(0, lastSpace) : cut).trim().replace(/[:,\-]$/, '');
   }
+
+  // Enforce strict title uniqueness against all previously published articles
+  title = ensureUniqueTitle(title, topic, category);
 
   // Clean slug from generated title
   const slug = title
