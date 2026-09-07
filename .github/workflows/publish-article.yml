@@ -40,6 +40,9 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Pull latest changes (before generating content)
+        run: git pull --rebase origin main
+
       - name: Setup Node.js Runtime
         uses: actions/setup-node@v4
         with:
@@ -71,11 +74,10 @@ jobs:
 
       - name: Commit and Push New Article & Updated Feeds
         run: |
-          git add -A articles/ assets/images/ data/ index.html category-*.html categories.html pages/ sitemap.xml llms.txt
+          git add -A
           if git diff --staged --quiet; then
             echo "✅ No new article generated (topic pool may be exhausted or skipped). No commit needed."
           else
-            git pull --rebase origin main
             git commit -m "🤖 Auto-published: New SEO article via Gemini AI [skip ci]"
             git push origin main
             echo "✅ Article successfully published and pushed to GitHub."
