@@ -2072,13 +2072,29 @@ function updateSiteIndex(articleData, author, category, heroImage) {
       // Update Main Lead
       indexHtml = indexHtml.slice(0, mainStart) + newLeadMainCard + '\n\n          ' + indexHtml.slice(sideStart);
 
-      // Prepend previous story into pattern-a-side-list so nothing gets lost
+      // Prepend previous story into pattern-a-side-list so nothing gets lost, keeping exactly 5 posts on the right side
       if (prevLeadSideSnippet) {
         // Clear placeholder text if present
         indexHtml = indexHtml.replace(/<p style="color: var\(--text-muted\); padding: 2rem 1rem;[^>]*>Headline feed ready for new publications\.<\/p>/i, '');
         // Check if article is already in side list
         if (!indexHtml.includes(urlMatch[1])) {
           indexHtml = indexHtml.replace('<div class="pattern-a-side-list">', '<div class="pattern-a-side-list">\n' + prevLeadSideSnippet);
+        }
+      }
+
+      // Enforce exactly 5 cards in the right-side list (pattern-a-side-list)
+      const listTag = '<div class="pattern-a-side-list">';
+      const startPos = indexHtml.indexOf(listTag);
+      if (startPos !== -1) {
+        const afterTag = startPos + listTag.length;
+        const endPos = indexHtml.indexOf('</div>', afterTag);
+        if (endPos !== -1) {
+          const sideBlock = indexHtml.substring(afterTag, endPos);
+          const cardMatches = sideBlock.match(/<article class="mini-side-card">[\s\S]*?<\/article>/g) || [];
+          if (cardMatches.length > 5) {
+            const keptCards = cardMatches.slice(0, 5).join('\n\n            ');
+            indexHtml = indexHtml.slice(0, afterTag) + '\n            ' + keptCards + '\n          ' + indexHtml.slice(endPos);
+          }
         }
       }
       console.log(`[INFO] Successfully set ${articleData.title} as #1 Main Feature in Latest Stories on Homepage!`);
