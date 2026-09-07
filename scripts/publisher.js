@@ -595,7 +595,21 @@ function getInternalLinkMap() {
     { keyword: 'troop structure', url: '../articles/us-army-modernization-strategy-tech-and-troop-structure.html' },
     { keyword: 'heritage festival', url: '../articles/waterfront-heritage-festival-2026-record-artisan-lineup.html' },
     { keyword: 'artisan lineup', url: '../articles/waterfront-heritage-festival-2026-record-artisan-lineup.html' },
-    { keyword: 'local artisans', url: '../articles/waterfront-heritage-festival-2026-record-artisan-lineup.html' }
+    { keyword: 'local artisans', url: '../articles/waterfront-heritage-festival-2026-record-artisan-lineup.html' },
+
+    // Health, Cardiovascular, and Wellness
+    { keyword: 'cardiovascular health', url: '../articles/heart-problems-evidence-based-insights-and-expert-guidance.html' },
+    { keyword: 'heart health', url: '../articles/heart-problems-evidence-based-insights-and-expert-guidance.html' },
+    { keyword: 'heart problems', url: '../articles/heart-problems-evidence-based-insights-and-expert-guidance.html' },
+    { keyword: 'preventative cardiology', url: '../articles/heart-problems-evidence-based-insights-and-expert-guidance.html' },
+    { keyword: 'wellness monitoring', url: '../articles/heart-problems-evidence-based-insights-and-expert-guidance.html' },
+
+    // Mobile Hardware, Flagship Devices & iPhone
+    { keyword: 'iPhone 18 release', url: '../articles/iphone-18-release-specs-upgrades-and-launch-timeline.html' },
+    { keyword: 'iPhone 18', url: '../articles/iphone-18-release-specs-upgrades-and-launch-timeline.html' },
+    { keyword: 'flagship smartphone', url: '../articles/iphone-18-release-specs-upgrades-and-launch-timeline.html' },
+    { keyword: 'mobile silicon', url: '../articles/iphone-18-release-specs-upgrades-and-launch-timeline.html' },
+    { keyword: 'mobile health tracking', url: '../articles/iphone-18-release-specs-upgrades-and-launch-timeline.html' }
   ];
 
   // Dynamically index all articles in articles directory for automatic cross-linking
@@ -759,7 +773,7 @@ function enforceMinimumInternalLinks(sectionsHtml, currentSlug, minRequired = 3)
   return sectionsHtml + injectionBlock;
 }
 
-async function callGoogleAIStudio(apiKey, prompt, systemInstruction) {
+async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '', category = '') {
   const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
   let lastError = null;
 
@@ -1095,7 +1109,7 @@ TITLE & WORDING REQUIREMENTS:
 
   if (GEMINI_API_KEY) {
     try {
-      return await callGoogleAIStudio(GEMINI_API_KEY, userPrompt, systemInstruction);
+      return await callGoogleAIStudio(GEMINI_API_KEY, userPrompt, systemInstruction, topic, category);
     } catch (err) {
       console.warn('[WARN] Gemini API call fallback:', err.message);
     }
@@ -1540,7 +1554,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
 
         <div class="article-body">
           ${guaranteedSectionsHtml}
-          ${guaranteedSectionsHtml.includes('id="frequently-asked-questions"') ? '' : visibleFaqHtml}
+          ${(guaranteedSectionsHtml.includes('id="frequently-asked-questions"') || guaranteedSectionsHtml.includes('Frequently Asked Questions')) ? '' : visibleFaqHtml}
         </div>
 
         <!-- Related Department Stories -->
