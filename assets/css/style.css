@@ -474,7 +474,7 @@ img {
   display: inline-flex !important;
   gap: 2.5rem !important;
   white-space: nowrap !important;
-  animation: ticker-scroll 35s linear infinite !important;
+  animation: ticker-scroll 75s linear infinite !important;
 }
 
 .breaking-ticker-track:hover {
