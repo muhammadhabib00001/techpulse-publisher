@@ -2491,6 +2491,30 @@ async function main() {
     });
     fs.writeFileSync(trackingFile, JSON.stringify(ledger, null, 2), 'utf8');
     console.log(`[INFO] Recorded "${generatedArticle.slug}" in data/published_topics.json`);
+
+    // Also update data/articles.json for the Admin Editorial Dashboard
+    const articlesJsonFile = path.join(ROOT_DIR, 'data', 'articles.json');
+    let articlesList = [];
+    try {
+      if (fs.existsSync(articlesJsonFile)) {
+        articlesList = JSON.parse(fs.readFileSync(articlesJsonFile, 'utf8'));
+      }
+    } catch (e) {
+      articlesList = [];
+    }
+    const newArticleRecord = {
+      slug: generatedArticle.slug,
+      file: `${generatedArticle.slug}.html`,
+      title: generatedArticle.title,
+      category: cat.toLowerCase(),
+      excerpt: generatedArticle.metaDescription || generatedArticle.title,
+      image: heroImage.indexUrl || `./assets/images/${generatedArticle.slug}.jpg`,
+      date: new Date().toISOString().split('T')[0],
+      publishedAt: new Date().toISOString()
+    };
+    articlesList.unshift(newArticleRecord);
+    fs.writeFileSync(articlesJsonFile, JSON.stringify(articlesList, null, 2), 'utf8');
+    console.log(`[INFO] Added "${generatedArticle.slug}" to data/articles.json for Admin Dashboard`);
   } catch (err) {
     console.warn(`[WARN] Could not update published_topics ledger: ${err.message}`);
   }

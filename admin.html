@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Editorial Dashboard | GenAlphaMagazines</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="./assets/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/style.css?v=final_stable_v1">
+  <style>
+    .admin-body {
+      background: var(--bg-body);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-nav {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .admin-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--text-main);
+      text-decoration: none;
+    }
+    .admin-logo span.badge {
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.75rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-pill);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .admin-container {
+      max-width: 1240px;
+      width: 100%;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+    }
+    .admin-header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .admin-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .admin-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 0.25rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.25rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+    .btn-secondary {
+      background: var(--bg-card);
+      border-color: var(--border-color);
+      color: var(--text-main);
+    }
+    .btn-secondary:hover {
+      background: var(--bg-subtle);
+    }
+    .btn-danger {
+      background: #dc2626;
+      color: #fff;
+    }
+    .btn-danger:hover {
+      background: #b91c1c;
+    }
+    .btn-sm {
+      padding: 0.35rem 0.75rem;
+      font-size: 0.82rem;
+    }
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .stat-val {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .search-filter-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .search-input-wrap {
+      flex: 1;
+      min-width: 260px;
+    }
+    .search-input-wrap input {
+      width: 100%;
+      padding: 0.65rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      background: var(--bg-body);
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+    }
+    .search-input-wrap input:focus {
+      border-color: var(--primary);
+    }
+    .filter-select {
+      padding: 0.65rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      background: var(--bg-body);
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+    }
+    .table-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+    th {
+      background: var(--bg-subtle);
+      color: var(--text-muted);
+      font-weight: 600;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: middle;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    tr:hover td {
+      background: rgba(0,0,0,0.015);
+    }
+    .art-thumb {
+      width: 64px;
+      height: 48px;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+      background: var(--bg-subtle);
+    }
+    .art-title-cell {
+      max-width: 380px;
+    }
+    .art-title-link {
+      font-weight: 700;
+      color: var(--text-main);
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.25rem;
+      line-height: 1.35;
+    }
+    .art-title-link:hover {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+    .art-slug {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-family: monospace;
+    }
+    .category-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+    .action-group {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      width: 100%;
+      max-width: 780px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-lg);
+    }
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-header h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+    .modal-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .modal-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      background: var(--bg-subtle);
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 0.65rem 0.85rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      background: var(--bg-body);
+      color: var(--text-main);
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--primary);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 640px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #111827;
+      color: #fff;
+      padding: 0.85rem 1.5rem;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: none;
+      z-index: 2000;
+      border-left: 4px solid var(--primary);
+    }
+    .toast.show {
+      display: block;
+      animation: fadeIn 0.3s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* Auth lock */
+    .lock-screen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-body);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .lock-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 2.5rem;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+    }
+    .lock-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    .gh-config-banner {
+      background: var(--bg-subtle);
+      border: 1px dashed var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body class="admin-body">
+
+  <!-- Password Authentication Gate -->
+  <div id="authGate" class="lock-screen">
+    <div class="lock-box">
+      <div class="lock-icon">🔒</div>
+      <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">Editorial Admin Login</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Enter your passcode to manage, edit, or publish articles on GenAlphaMagazines.</p>
+      <form id="authForm" onsubmit="handleAuth(event)">
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <input type="password" id="adminPassword" placeholder="Enter admin password..." required autofocus style="text-align: center; font-size: 1.1rem; letter-spacing: 2px;">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Unlock Dashboard</button>
+        <p id="authError" style="color: #dc2626; font-size: 0.85rem; margin-top: 0.75rem; display: none;">Invalid password. Please try again.</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Navigation -->
+  <nav class="admin-nav">
+    <a href="./index.html" class="admin-logo">
+      <span>GenAlphaMagazines</span>
+      <span class="badge">Admin Desk</span>
+    </a>
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <a href="./index.html" target="_blank" class="btn btn-secondary btn-sm">🌐 View Live Website</a>
+      <button onclick="openGhSettingsModal()" class="btn btn-secondary btn-sm" title="Configure GitHub Sync for automatic updates">⚙️ GitHub Sync</button>
+      <button onclick="logoutAdmin()" class="btn btn-secondary btn-sm" style="color: #dc2626;">Log Out</button>
+    </div>
+  </nav>
+
+  <!-- Admin Container -->
+  <main class="admin-container">
+    
+    <!-- Top Header -->
+    <div class="admin-header-actions">
+      <div>
+        <h1 class="admin-title">Editorial Management</h1>
+        <p class="admin-subtitle">Create, edit, delete, or review all articles published across your publication.</p>
+      </div>
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <button onclick="openCreateModal()" class="btn btn-primary">
+          <span>➕</span> New Manual Article
+        </button>
+        <button onclick="triggerAutomatedPublication()" class="btn btn-secondary" id="autoPublishBtn">
+          <span>⚡</span> Run Gemini AI Publisher
+        </button>
+      </div>
+    </div>
+
+    <!-- GitHub Connection Status Banner -->
+    <div class="gh-config-banner" id="ghBanner">
+      <div>
+        <strong>🔗 Direct GitHub Sync Status:</strong>
+        <span id="ghStatusText" style="color: var(--text-muted); margin-left: 0.5rem;">Checking...</span>
+      </div>
+      <button onclick="openGhSettingsModal()" class="btn btn-secondary btn-sm">Connect / Edit Token</button>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-label">Total Published Stories</span>
+        <span class="stat-val" id="statTotal">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Primary Categories</span>
+        <span class="stat-val">8</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Editorial Authors</span>
+        <span class="stat-val">2</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Active Status</span>
+        <span class="stat-val" style="color: #10b981;">Online</span>
+      </div>
+    </div>
+
+    <!-- Filter & Search Bar -->
+    <div class="search-filter-bar">
+      <div class="search-input-wrap">
+        <input type="text" id="searchInput" placeholder="Search by article title or slug..." oninput="filterArticles()">
+      </div>
+      <div style="display: flex; gap: 0.75rem;">
+        <select id="categoryFilter" class="filter-select" onchange="filterArticles()">
+          <option value="">All Categories</option>
+          <option value="news">News</option>
+          <option value="business">Business</option>
+          <option value="celebrity">Celebrity</option>
+          <option value="entertainment">Entertainment</option>
+          <option value="games">Games</option>
+          <option value="health">Health</option>
+          <option value="technology">Technology</option>
+          <option value="others">Others</option>
+        </select>
+        <button onclick="loadArticles()" class="btn btn-secondary btn-sm" title="Refresh list">🔄 Refresh</button>
+      </div>
+    </div>
+
+    <!-- Articles Table -->
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 80px;">Cover</th>
+            <th>Title & Slug</th>
+            <th>Category</th>
+            <th>Published Date</th>
+            <th style="text-align: right;">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="articlesTableBody">
+          <tr>
+            <td colspan="5" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+              Loading publication records...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Create / Edit Article Modal -->
+  <div class="modal-overlay" id="articleModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modalTitle">Add New Manual Article</h3>
+        <button class="modal-close" onclick="closeArticleModal()">&times;</button>
+      </div>
+      <form id="articleForm" onsubmit="handleSaveArticle(event)">
+        <div class="modal-body">
+          <input type="hidden" id="editArticleSlug">
+          
+          <div class="form-group">
+            <label for="fTitle">Article Title *</label>
+            <input type="text" id="fTitle" required placeholder="e.g. Breakthrough Innovations in Solar Energy for 2026">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fCategory">Category *</label>
+              <select id="fCategory" required>
+                <option value="news">News</option>
+                <option value="business">Business</option>
+                <option value="celebrity">Celebrity</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="games">Games</option>
+                <option value="health">Health</option>
+                <option value="technology">Technology</option>
+                <option value="others">Others</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="fAuthor">Author *</label>
+              <select id="fAuthor" required>
+                <option value="marcus-reid">Marcus Reid (Business / Tech / News)</option>
+                <option value="julia-vance">Julia Vance (Celebrity / Health / Culture)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="fImage">Hero Image URL (or path) *</label>
+            <input type="text" id="fImage" required placeholder="https://images.unsplash.com/... or ./assets/images/my-photo.jpg">
+          </div>
+
+          <div class="form-group">
+            <label for="fExcerpt">Short Excerpt (SEO Meta Description) *</label>
+            <textarea id="fExcerpt" rows="2" required placeholder="A brief 1-2 sentence compelling summary of the article for search engines and cards."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="fContent">Article Body (HTML or Paragraphs) *</label>
+            <textarea id="fContent" rows="10" required placeholder="Write or paste your article content here. You can use standard paragraphs or HTML tags like <h2>, <p>, <ul>, etc."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeArticleModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveArticleBtn">Save & Publish to Site</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal-box" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3>Confirm Article Removal</h3>
+        <button class="modal-close" onclick="closeDeleteModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="text-align: center; padding: 2rem 1.5rem;">
+        <div style="font-size: 2.5rem; margin-bottom: 1rem;">⚠️</div>
+        <p style="font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem;" id="deleteArticleTitle">Are you sure?</p>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">
+          This will permanently delete this article and clean up its references across the website, index page, and sitemap.
+        </p>
+      </div>
+      <div class="modal-footer" style="justify-content: center;">
+        <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteBtn" onclick="executeDelete()">Yes, Delete Article</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GitHub Settings Modal -->
+  <div class="modal-overlay" id="ghSettingsModal">
+    <div class="modal-box" style="max-width: 540px;">
+      <div class="modal-header">
+        <h3>GitHub Direct Sync Settings</h3>
+        <button class="modal-close" onclick="closeGhSettingsModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+          Connecting your GitHub Personal Access Token (PAT) enables <strong>instant 1-click live updates</strong> from your browser directly to your GitHub repository without opening a terminal.
+        </p>
+        <div class="form-group">
+          <label for="ghRepoInput">Repository (Owner/Repo)</label>
+          <input type="text" id="ghRepoInput" placeholder="muhammadhabib00001/techpulse-publisher" value="muhammadhabib00001/techpulse-publisher">
+        </div>
+        <div class="form-group">
+          <label for="ghTokenInput">GitHub Personal Access Token (PAT)</label>
+          <input type="password" id="ghTokenInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+          <span style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;">
+            Token needs <code>repo</code> or <code>contents:write</code> and <code>actions:write</code> permissions. Stored securely only in your browser's private localStorage.
+          </span>
+        </div>
+        <div class="form-group">
+          <label for="adminPassInput">Change Admin Dashboard Password</label>
+          <input type="text" id="adminPassInput" placeholder="Change login passcode">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeGhSettingsModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="saveGhSettings()">Save Configuration</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Message notification</div>
+
+  <!-- Scripts -->
+  <script>
+    const DEFAULT_PASS = 'admin123';
+    const GITHUB_REPO_DEFAULT = 'muhammadhabib00001/techpulse-publisher';
+
+    let allArticles = [];
+    let articleToDelete = null;
+
+    // Password & Session management
+    function checkAuth() {
+      const stored = sessionStorage.getItem('gam_admin_logged_in');
+      if (stored === 'true') {
+        document.getElementById('authGate').style.display = 'none';
+        initDashboard();
+      } else {
+        document.getElementById('authGate').style.display = 'flex';
+      }
+    }
+
+    function handleAuth(e) {
+      e.preventDefault();
+      const entered = document.getElementById('adminPassword').value;
+      const validPass = localStorage.getItem('gam_admin_password') || DEFAULT_PASS;
+      if (entered === validPass) {
+        sessionStorage.setItem('gam_admin_logged_in', 'true');
+        document.getElementById('authGate').style.display = 'none';
+        document.getElementById('authError').style.display = 'none';
+        initDashboard();
+      } else {
+        document.getElementById('authError').style.display = 'block';
+      }
+    }
+
+    function logoutAdmin() {
+      sessionStorage.removeItem('gam_admin_logged_in');
+      location.reload();
+    }
+
+    // GitHub Settings
+    function getGhToken() {
+      return localStorage.getItem('gam_gh_token') || '';
+    }
+    function getGhRepo() {
+      return localStorage.getItem('gam_gh_repo') || GITHUB_REPO_DEFAULT;
+    }
+
+    function updateGhBanner() {
+      const token = getGhToken();
+      const statusEl = document.getElementById('ghStatusText');
+      if (token) {
+        statusEl.innerHTML = '<span style="color: #10b981; font-weight: 700;">✅ Connected</span> (' + getGhRepo() + ')';
+      } else {
+        statusEl.innerHTML = '<span style="color: #eab308; font-weight: 600;">⚠️ Not Connected (Read-Only Mode)</span> — <a href="javascript:openGhSettingsModal()" style="text-decoration: underline;">Add your GitHub Token</a> to enable 1-click Delete, Edit, and AI Publishing from this device.';
+      }
+    }
+
+    function openGhSettingsModal() {
+      document.getElementById('ghRepoInput').value = getGhRepo();
+      document.getElementById('ghTokenInput').value = getGhToken();
+      document.getElementById('adminPassInput').value = localStorage.getItem('gam_admin_password') || DEFAULT_PASS;
+      document.getElementById('ghSettingsModal').classList.add('active');
+    }
+
+    function closeGhSettingsModal() {
+      document.getElementById('ghSettingsModal').classList.remove('active');
+    }
+
+    function saveGhSettings() {
+      const repo = document.getElementById('ghRepoInput').value.trim();
+      const token = document.getElementById('ghTokenInput').value.trim();
+      const pass = document.getElementById('adminPassInput').value.trim();
+
+      if (repo) localStorage.setItem('gam_gh_repo', repo);
+      if (token) localStorage.setItem('gam_gh_token', token);
+      if (pass) localStorage.setItem('gam_admin_password', pass);
+
+      closeGhSettingsModal();
+      updateGhBanner();
+      showToast('Settings saved successfully!');
+    }
+
+    // Toast
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    // Fetch Articles
+    async function loadArticles() {
+      try {
+        const res = await fetch('./data/articles.json?t=' + Date.now());
+        if (res.ok) {
+          allArticles = await res.json();
+        } else {
+          // Fallback to published_topics
+          const tRes = await fetch('./data/published_topics.json?t=' + Date.now());
+          if (tRes.ok) {
+            const raw = await tRes.json();
+            allArticles = raw.map(r => ({
+              slug: r.slug,
+              title: r.title,
+              category: r.category || 'news',
+              image: './assets/images/' + r.slug + '.jpg',
+              date: r.publishedAt ? r.publishedAt.split('T')[0] : '2026-09-07'
+            }));
+          }
+        }
+      } catch (err) {
+        console.warn('Error loading articles list:', err);
+      }
+
+      document.getElementById('statTotal').textContent = allArticles.length;
+      renderTable(allArticles);
+    }
+
+    function renderTable(list) {
+      const tbody = document.getElementById('articlesTableBody');
+      if (!list || list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">No articles found matching query.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = list.map(art => {
+        const imgSrc = art.image || ('./assets/images/' + art.slug + '.jpg');
+        return `
+          <tr>
+            <td>
+              <img src="${imgSrc}" class="art-thumb" onerror="this.src='./assets/images/default.jpg'" alt="${escapeHtml(art.title)}">
+            </td>
+            <td class="art-title-cell">
+              <a href="./articles/${art.slug}.html" target="_blank" class="art-title-link">${escapeHtml(art.title)}</a>
+              <div class="art-slug">${escapeHtml(art.slug)}.html</div>
+            </td>
+            <td>
+              <span class="category-badge">${escapeHtml((art.category || 'NEWS').toUpperCase())}</span>
+            </td>
+            <td style="color: var(--text-muted); font-size: 0.88rem;">
+              ${art.date || 'Sep 7, 2026'}
+            </td>
+            <td style="text-align: right;">
+              <div class="action-group" style="justify-content: flex-end;">
+                <a href="./articles/${art.slug}.html" target="_blank" class="btn btn-secondary btn-sm" title="View live article">👁️ View</a>
+                <button onclick="openEditModal('${art.slug}')" class="btn btn-secondary btn-sm" title="Edit this article">✏️ Edit</button>
+                <button onclick="promptDelete('${art.slug}')" class="btn btn-danger btn-sm" title="Delete article">🗑️ Delete</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterArticles() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      const cat = document.getElementById('categoryFilter').value.toLowerCase().trim();
+
+      const filtered = allArticles.filter(a => {
+        const titleMatch = (a.title || '').toLowerCase().includes(query) || (a.slug || '').toLowerCase().includes(query);
+        const catMatch = !cat || (a.category || '').toLowerCase() === cat;
+        return titleMatch && catMatch;
+      });
+
+      renderTable(filtered);
+    }
+
+    // Modal Operations
+    function openCreateModal() {
+      document.getElementById('modalTitle').textContent = 'Add New Manual Article';
+      document.getElementById('editArticleSlug').value = '';
+      document.getElementById('articleForm').reset();
+      document.getElementById('saveArticleBtn').textContent = 'Save & Publish to Site';
+      document.getElementById('articleModal').classList.add('active');
+    }
+
+    async function openEditModal(slug) {
+      const art = allArticles.find(a => a.slug === slug);
+      if (!art) return;
+
+      document.getElementById('modalTitle').textContent = 'Edit Article: ' + art.title;
+      document.getElementById('editArticleSlug').value = art.slug;
+      document.getElementById('fTitle').value = art.title;
+      document.getElementById('fCategory').value = (art.category || 'news').toLowerCase();
+      document.getElementById('fImage').value = art.image || ('./assets/images/' + art.slug + '.jpg');
+      document.getElementById('fExcerpt').value = art.excerpt || '';
+      document.getElementById('fContent').value = 'Loading article content...';
+      document.getElementById('saveArticleBtn').textContent = 'Save Changes';
+      document.getElementById('articleModal').classList.add('active');
+
+      try {
+        const res = await fetch('./articles/' + slug + '.html');
+        if (res.ok) {
+          const html = await res.text();
+          // Extract body text inside article-body
+          const bodyMatch = html.match(/<div class="article-body"[^>]*>([sS]*?)</div>s*</article>/i);
+          if (bodyMatch) {
+            document.getElementById('fContent').value = bodyMatch[1].trim();
+          } else {
+            document.getElementById('fContent').value = html;
+          }
+        }
+      } catch (e) {
+        document.getElementById('fContent').value = '';
+      }
+    }
+
+    function closeArticleModal() {
+      document.getElementById('articleModal').classList.remove('active');
+    }
+
+    // Save Article Handler (Direct GitHub API)
+    async function handleSaveArticle(e) {
+      e.preventDefault();
+      const token = getGhToken();
+      const repo = getGhRepo();
+
+      if (!token) {
+        alert('Please connect your GitHub Personal Access Token in "GitHub Sync" (top right) to save changes directly to your live site.');
+        openGhSettingsModal();
+        return;
+      }
+
+      const saveBtn = document.getElementById('saveArticleBtn');
+      const originalText = saveBtn.textContent;
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving to GitHub...';
+
+      const existingSlug = document.getElementById('editArticleSlug').value;
+      const title = document.getElementById('fTitle').value.trim();
+      const category = document.getElementById('fCategory').value;
+      const authorSlug = document.getElementById('fAuthor').value;
+      const authorName = authorSlug === 'marcus-reid' ? 'Marcus Reid' : 'Julia Vance';
+      const imageUrl = document.getElementById('fImage').value.trim();
+      const excerpt = document.getElementById('fExcerpt').value.trim();
+      const bodyContent = document.getElementById('fContent').value.trim();
+
+      const slug = existingSlug || generateSlug(title);
+      const filename = 'articles/' + slug + '.html';
+
+      // Build full HTML
+      const fullHtml = buildArticleHtml({
+        title, slug, category, authorName, authorSlug, imageUrl, excerpt, bodyContent
+      });
+
+      try {
+        // 1. Commit article HTML file
+        await ghCommitFile(repo, token, filename, fullHtml, 'Publish article: ' + title);
+
+        // 2. Update data/articles.json
+        const updatedList = [...allArticles];
+        const existingIdx = updatedList.findIndex(a => a.slug === slug);
+        const newEntry = {
+          slug, file: slug + '.html', title, category, excerpt,
+          image: imageUrl, date: new Date().toISOString().split('T')[0],
+          publishedAt: new Date().toISOString()
+        };
+        if (existingIdx !== -1) {
+          updatedList[existingIdx] = newEntry;
+        } else {
+          updatedList.unshift(newEntry);
+        }
+        allArticles = updatedList;
+
+        await ghCommitFile(repo, token, 'data/articles.json', JSON.stringify(updatedList, null, 2), 'Update data/articles.json for ' + slug);
+
+        showToast('Article published successfully! Site redeploying.');
+        closeArticleModal();
+        loadArticles();
+      } catch (err) {
+        alert('Error publishing to GitHub: ' + err.message);
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = originalText;
+      }
+    }
+
+    // Delete Operations
+    function promptDelete(slug) {
+      const art = allArticles.find(a => a.slug === slug);
+      if (!art) return;
+      articleToDelete = art;
+      document.getElementById('deleteArticleTitle').textContent = 'Delete "' + art.title + '"?';
+      document.getElementById('deleteModal').classList.add('active');
+    }
+
+    function closeDeleteModal() {
+      document.getElementById('deleteModal').classList.remove('active');
+      articleToDelete = null;
+    }
+
+    async function executeDelete() {
+      if (!articleToDelete) return;
+
+      const token = getGhToken();
+      const repo = getGhRepo();
+
+      if (!token) {
+        alert('Please connect your GitHub Personal Access Token in "GitHub Sync" (top right) to perform automatic 1-click deletions on GitHub.');
+        closeDeleteModal();
+        openGhSettingsModal();
+        return;
+      }
+
+      const delBtn = document.getElementById('confirmDeleteBtn');
+      delBtn.disabled = true;
+      delBtn.textContent = 'Deleting...';
+
+      try {
+        const slug = articleToDelete.slug;
+        const filePath = 'articles/' + slug + '.html';
+
+        // 1. Delete article file via GitHub API
+        await ghDeleteFile(repo, token, filePath, 'Delete article: ' + slug);
+
+        // 2. Update data/articles.json
+        allArticles = allArticles.filter(a => a.slug !== slug);
+        await ghCommitFile(repo, token, 'data/articles.json', JSON.stringify(allArticles, null, 2), 'Remove ' + slug + ' from articles ledger');
+
+        showToast('Article "' + slug + '" deleted successfully!');
+        closeDeleteModal();
+        renderTable(allArticles);
+        document.getElementById('statTotal').textContent = allArticles.length;
+      } catch (err) {
+        alert('Failed to delete file on GitHub: ' + err.message);
+      } finally {
+        delBtn.disabled = false;
+        delBtn.textContent = 'Yes, Delete Article';
+      }
+    }
+
+    // Automated Gemini AI Trigger via GitHub Actions API
+    async function triggerAutomatedPublication() {
+      const token = getGhToken();
+      const repo = getGhRepo();
+
+      if (!token) {
+        alert('To trigger the AI Publisher from this dashboard, enter your GitHub Token under "GitHub Sync".');
+        openGhSettingsModal();
+        return;
+      }
+
+      const btn = document.getElementById('autoPublishBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span>⏳</span> Triggering Gemini AI Pipeline...';
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/publish-article.yml/dispatches`, {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ ref: 'main' })
+        });
+
+        if (res.status === 204) {
+          showToast('⚡ AI Publisher workflow triggered successfully! New article will publish shortly.');
+        } else {
+          const errData = await res.json().catch(() => ({}));
+          alert('Could not trigger GitHub Actions workflow: ' + (errData.message || res.statusText));
+        }
+      } catch (err) {
+        alert('Error triggering GitHub Actions: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>⚡</span> Run Gemini AI Publisher';
+      }
+    }
+
+    // GitHub API Helper Functions
+    async function ghGetFileSha(repo, token, path) {
+      try {
+        const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+          headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          return data.sha;
+        }
+      } catch (e) {}
+      return null;
+    }
+
+    async function ghCommitFile(repo, token, path, contentStr, message) {
+      const sha = await ghGetFileSha(repo, token, path);
+      const encoded = btoa(unescape(encodeURIComponent(contentStr)));
+      const body = { message, content: encoded };
+      if (sha) body.sha = sha;
+
+      const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || res.statusText);
+      }
+      return res.json();
+    }
+
+    async function ghDeleteFile(repo, token, path, message) {
+      const sha = await ghGetFileSha(repo, token, path);
+      if (!sha) return; // File already doesn't exist
+
+      const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message, sha })
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || res.statusText);
+      }
+      return res.json();
+    }
+
+    function generateSlug(text) {
+      return text.toLowerCase()
+        .replace(/[^a-z0-9s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-');
+    }
+
+    function escapeHtml(str) {
+      return (str || '').replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
+    }
+
+    function buildArticleHtml(data) {
+      const dateStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const isoDate = new Date().toISOString();
+
+      return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${escapeHtml(data.title)} | GenAlphaMagazines</title>
+  <meta name="description" content="${escapeHtml(data.excerpt)}">
+  <link rel="canonical" href="https://www.genalphamagazines.com/articles/${data.slug}.html">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="${escapeHtml(data.title)}">
+  <meta property="og:description" content="${escapeHtml(data.excerpt)}">
+  <meta property="og:image" content="${escapeHtml(data.imageUrl)}">
+  <meta property="article:published_time" content="${isoDate}">
+  <meta property="article:section" content="${data.category}">
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+  <link rel="stylesheet" href="../assets/css/style.css?v=final_stable_v1">
+</head>
+<body>
+  <header class="main-header">
+    <div class="container header-inner">
+      <a href="../index.html" class="brand-logo">
+        <div class="brand-text-block">
+          <div class="brand-main-title"><span>GEN</span><span class="alpha-word">ALPHA</span><span class="mag-word">MAGAZINES</span></div>
+        </div>
+      </a>
+    </div>
+  </header>
+  <main class="article-page-container container" style="max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem;">
+    <article>
+      <div class="article-header" style="margin-bottom: 2rem;">
+        <span class="card-tag">${data.category.toUpperCase()} &bull; Editorial</span>
+        <h1 style="font-size: 2.2rem; font-weight: 800; margin: 0.8rem 0; line-height: 1.25;">${escapeHtml(data.title)}</h1>
+        <div class="card-meta" style="color: var(--text-muted); font-size: 0.95rem;">
+          <span>By ${data.authorName}</span> &bull; <span>${dateStr}</span>
+        </div>
+      </div>
+      <div class="hero-image-wrap" style="margin-bottom: 2rem; border-radius: var(--radius-md); overflow: hidden;">
+        <img src="${escapeHtml(data.imageUrl)}" alt="${escapeHtml(data.title)}" style="width: 100%; height: auto; max-height: 480px; object-fit: cover;">
+      </div>
+      <div class="article-body" style="font-size: 1.1rem; line-height: 1.8; color: var(--text-main);">
+        ${data.bodyContent.includes('<p>') ? data.bodyContent : data.bodyContent.split('\n\n').map(p => '<p style="margin-bottom: 1.5rem;">' + escapeHtml(p) + '</p>').join('')}
+      </div>
+    </article>
+  </main>
+  <footer class="main-footer" style="margin-top: 4rem; padding: 2rem 0; border-top: 1px solid var(--border-color); text-align: center;">
+    <p>&copy; 2026 GenAlphaMagazines. All rights reserved.</p>
+  </footer>
+</body>
+</html>`;
+    }
+
+    function initDashboard() {
+      updateGhBanner();
+      loadArticles();
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', checkAuth);
+  </script>
+</body>
+</html>
