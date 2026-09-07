@@ -353,6 +353,20 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
         expansions.push('central bank economy finance', 'financial market interest rates');
       } else if (lowerTopic.includes('ups') || lowerTopic.includes('battery') || lowerTopic.includes('power')) {
         expansions.push('battery backup power technology', 'uninterruptible power supply hardware');
+      } else if (lowerTopic.includes('iphone') || lowerTopic.includes('apple') || lowerTopic.includes('ios')) {
+        expansions.push('apple iphone smartphone modern', 'iphone smartphone technology');
+      } else if (lowerTopic.includes('android') || lowerTopic.includes('samsung') || lowerTopic.includes('pixel')) {
+        expansions.push('android smartphone technology', 'samsung pixel mobile device');
+      } else if (lowerTopic.includes('laptop') || lowerTopic.includes('macbook') || lowerTopic.includes('computer')) {
+        expansions.push('laptop computer technology workspace', 'macbook computer modern desk');
+      } else if (lowerTopic.includes('gaming') || lowerTopic.includes('game') || lowerTopic.includes('console') || lowerTopic.includes('gta')) {
+        expansions.push('video game controller gaming setup', 'gaming console controller neon');
+      } else if (lowerTopic.includes('health') || lowerTopic.includes('fitness') || lowerTopic.includes('workout')) {
+        expansions.push('health fitness wellness exercise', 'gym workout fitness training');
+      } else if (lowerTopic.includes('business') || lowerTopic.includes('startup') || lowerTopic.includes('entrepreneur')) {
+        expansions.push('business meeting office professional', 'startup entrepreneur modern office');
+      } else if (lowerTopic.includes('celebrity') || lowerTopic.includes('actor') || lowerTopic.includes('singer')) {
+        expansions.push('red carpet event celebrity glamour', 'entertainment celebrity spotlight');
       } else if (lowerTopic.includes('ai') || lowerTopic.includes('artificial intelligence') || lowerTopic.includes('machine learning')) {
         expansions.push('artificial intelligence computer hardware', 'machine learning data technology');
       } else if (lowerTopic.includes('journalism') || lowerTopic.includes('news') || lowerTopic.includes('press')) {
@@ -417,29 +431,65 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
       '1526470608268-f674ce90ebd4', // Breaking news control board
       '1495020689067-958852a7765e'  // Stacks of newspapers
     ],
-    community: [
-      '1511578314322-379afb476865', // Community gathering
-      '1559027615-cd4628902d4a', // Neighborhood collaboration
-      '1529156069898-49953e39b3ac', // Diverse smiling group
-      '1522202176988-66273c2fd55f'  // Workshop teamwork
+    technology: [
+      '1531297484001-80022131f5a1', // Laptop code screen dark
+      '1518770660439-4636190af475', // Circuit board closeup blue
+      '1602524811496-36a7f65c7ac5', // Smartphone on desk modern
+      '1451187580459-43490279c0fa'  // Tech abstract dark neon
     ],
-    arts: [
+    games: [
+      '1511512578047-7bde2e3cd15e', // Gaming controller neon
+      '1493711662062-fa541adb3fc8', // Gaming setup RGB lights
+      '1550745165-9bc0b252726f', // Gaming desk setup monitor
+      '1612287606636-b3d2ce0c3748'  // Gamer playing console
+    ],
+    health: [
+      '1571019613454-1cb2f99b2d8b', // Fitness workout gym
+      '1506126613408-eca07ce68773', // Healthy food nutrition
+      '1559757148-5c350d0d3c56', // Wellness meditation
+      '1584438784894-089d6a62b8fa'  // Medical health concept
+    ],
+    celebrity: [
+      '1516450360452-9312f5e86fc7', // Red carpet event lights
+      '1489599849927-2ee91cede3ba', // Cinema theater glamour
+      '1485846234645-a62644f84728', // Entertainment spotlight
+      '1478720568477-152d9b164e26'  // Film cinematic atmosphere
+    ],
+    entertainment: [
       '1489599849927-2ee91cede3ba', // Cinema theater red auditorium seats
       '1478720568477-152d9b164e26', // Film projector beam in dark cinema
       '1517604931442-7e0c8ed2963c', // Cinema auditorium screen
       '1460661419201-fd4cecdf8a8b'  // Artist palette and brushes
     ],
-    lifestyle: [
+    others: [
       '1500382017468-9049fed747ef', // Quiet morning coffee and journal
       '1505691938895-1758d7feb511', // Peaceful interior minimalist home
       '1496181133206-80ce9b88a853', // Outdoor park and nature walk
       '1484480974693-6ca0a78fb36b'  // Mindful workspace and checklist
     ],
+    community: [
+      '1511578314322-379afb476865',
+      '1559027615-cd4628902d4a',
+      '1529156069898-49953e39b3ac',
+      '1522202176988-66273c2fd55f'
+    ],
+    arts: [
+      '1489599849927-2ee91cede3ba',
+      '1478720568477-152d9b164e26',
+      '1517604931442-7e0c8ed2963c',
+      '1460661419201-fd4cecdf8a8b'
+    ],
+    lifestyle: [
+      '1500382017468-9049fed747ef',
+      '1505691938895-1758d7feb511',
+      '1496181133206-80ce9b88a853',
+      '1484480974693-6ca0a78fb36b'
+    ],
     voices: [
-      '1504711434969-e33886168f5c', // Editorial journalism press
-      '1529156069898-49953e39b3ac', // Community perspectives
-      '1455390582262-044cdead277a', // Writer notebook and fountain pen
-      '1511578314322-379afb476865'  // Town hall assembly
+      '1504711434969-e33886168f5c',
+      '1529156069898-49953e39b3ac',
+      '1455390582262-044cdead277a',
+      '1511578314322-379afb476865'
     ]
   };
 
@@ -653,7 +703,7 @@ function enforceMinimumInternalLinks(sectionsHtml, currentSlug, minRequired = 3)
 }
 
 async function callGoogleAIStudio(apiKey, prompt, systemInstruction) {
-  const modelsToTry = ['gemini-flash-latest', 'gemini-3.6-flash', 'gemini-3.5-flash'];
+  const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
   let lastError = null;
 
   for (const model of modelsToTry) {
@@ -689,6 +739,57 @@ async function callGoogleAIStudio(apiKey, prompt, systemInstruction) {
       });
 
       console.log(`[SUCCESS] Generated article successfully using Gemini model: ${model}`);
+
+      // ── POST-PROCESSING QUALITY GATE ─────────────────────────────────────
+      // 1. Fix compound brand names in title
+      if (res && res.title) {
+        res.title = res.title
+          .replace(/\bi\s+[Pp]hone\b/g, 'iPhone')
+          .replace(/\bi\s+[Pp]ad\b/g, 'iPad')
+          .replace(/\bi\s+[Mm]ac\b/g, 'iMac')
+          .replace(/\b[Mm]ac\s+[Bb]ook\b/g, 'MacBook')
+          .replace(/\b[Cc]hat\s*[Gg][Pp][Tt]\b/gi, 'ChatGPT')
+          .replace(/\b[Ww]i\s*-?\s*[Ff]i\b/g, 'Wi-Fi')
+          .replace(/\bUSB\s+[Cc]\b/g, 'USB-C')
+          .trim();
+
+        // 2. Expand title if under 45 chars (too short for SEO)
+        if (res.title.length < 45) {
+          const catExpanders = {
+            technology: ': Features, Specs, and What It Means for You',
+            games: ': Release Details, Gameplay, and What to Expect',
+            business: ': Market Analysis and Strategic Insights',
+            celebrity: ': Career Highlights and Cultural Impact',
+            entertainment: ': Critical Reception and Fan Reactions',
+            health: ': Evidence-Based Insights and Expert Guidance',
+            news: ': Full Breakdown and What It Means',
+            others: ': Complete Breakdown and Key Insights'
+          };
+          const ext = catExpanders[category] || ': Key Facts and Expert Analysis';
+          const candidate = res.title + ext;
+          res.title = candidate.length <= 60 ? candidate : res.title.length > 40 ? res.title : candidate.slice(0, 57) + '...';
+        }
+        if (res.title.length > 60) res.title = res.title.slice(0, 57) + '...';
+
+        // 3. Re-derive clean slug from the corrected title
+        res.slug = res.title
+          .toLowerCase()
+          .replace(/[^a-z0-9\s]/g, ' ')
+          .replace(/\s+/g, '-')
+          .replace(/(^-|-$)/g, '')
+          .replace(/-{2,}/g, '-');
+      }
+
+      // 4. Enforce meta description 140-155 chars
+      if (res && (!res.metaDescription || res.metaDescription.length < 80 || res.metaDescription.includes('Detailed analysis and practical coverage'))) {
+        const t = (res && res.title) ? res.title : topic;
+        res.metaDescription = `Discover everything about ${t}: in-depth analysis, key facts, expert insights, and practical takeaways to keep you fully informed and ahead.`;
+      }
+      if (res && res.metaDescription && res.metaDescription.length > 155) {
+        res.metaDescription = res.metaDescription.slice(0, 152) + '...';
+      }
+      // ─────────────────────────────────────────────────────────────────────
+
       return res;
     } catch (err) {
       console.warn(`[WARN] Gemini model ${model} failed (${err.message.slice(0, 120)})... trying fallback model.`);
@@ -700,166 +801,151 @@ async function callGoogleAIStudio(apiKey, prompt, systemInstruction) {
 }
 
 function generateDeepFallbackArticle(topic, category, author) {
-  // Clean topic for natural readability
-  const cleanTopic = topic.replace(/[:—–-]/g, ' ').replace(/\s+/g, ' ').trim();
-  const capitalizedTopic = cleanTopic.charAt(0).toUpperCase() + cleanTopic.slice(1);
+  // Smart topic and category intelligent fallback generator
+  let cleanTopic = topic.replace(/[—–]/g, ' ').replace(/\s+/g, ' ').trim();
+  cleanTopic = cleanTopic
+    .replace(/\bi\s+[Pp]hone\b/g, 'iPhone')
+    .replace(/\bi\s+[Pp]ad\b/g, 'iPad')
+    .replace(/\bi\s+[Mm]ac\b/g, 'iMac')
+    .replace(/\b[Mm]ac\s+[Bb]ook\b/g, 'MacBook')
+    .replace(/\b[Cc]hat\s*[Gg][Pp][Tt]\b/gi, 'ChatGPT')
+    .replace(/\b[Ww]i\s*-?\s*[Ff]i\b/g, 'Wi-Fi')
+    .replace(/\bUSB\s+[Cc]\b/g, 'USB-C')
+    .trim();
 
-  // Natural editorial title: avoid repetitive ": Complete Practical Guide" suffixes
-  let title = topic.trim();
-  if (title.length > 60) {
-    title = capitalizedTopic.slice(0, 57) + '...';
+  // Generate an SEO-quality title from the topic (50-60 chars target)
+  let title = cleanTopic;
+  if (title.length < 45) {
+    const expansions = {
+      technology: ': Features, Specs, and What to Expect',
+      games: ': Gameplay, Release Details, and Key Features',
+      business: ': Market Analysis and Strategic Insights',
+      celebrity: ': Career, Influence, and Cultural Impact',
+      entertainment: ': What Critics and Fans Are Saying',
+      health: ': Evidence-Based Insights and Expert Guidance',
+      news: ': Background, Impact, and What It Means for You',
+      others: ': Practical Insights and What You Need to Know'
+    };
+    const suffix = expansions[category] || ': A Practical Comprehensive Look';
+    const candidate = cleanTopic + suffix;
+    title = candidate.length <= 60 ? candidate : candidate.slice(0, 57) + '...';
   }
+  if (title.length > 60) title = title.slice(0, 57) + '...';
 
-  // URL slug matching the title (Google SEO Best Practice: simple, descriptive, lowercase hyphens)
+  // Clean slug from generated title
   const slug = title
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, '-')
+    .replace(/(^-|-$)/g, '')
+    .replace(/-{2,}/g, '-');
 
-  const metaDescription = `Detailed analysis and practical coverage of ${cleanTopic}: key principles, developments, and expert insights.`;
+  // Topic-specific meta description (140-155 chars)
+  let metaDescription = `Everything you need to know about ${cleanTopic}: in-depth analysis, key specifications, and practical takeaways to keep you informed.`;
+  if (metaDescription.length > 155) metaDescription = metaDescription.slice(0, 152) + '...';
+
+  const topicKeyword = cleanTopic.split(' ').slice(0, 3).join(' ');
 
   return {
     title,
     slug,
     metaDescription,
     tableOfContents: [
-      { id: 'overview', title: `Overview of ${cleanTopic}` },
-      { id: 'core-structure', title: `${cleanTopic} Structure and Layout Explained` },
-      { id: 'how-to-navigate', title: `How to Navigate and Get Around` },
-      { id: 'essential-tips', title: `Essential Tips for a Smooth Experience` },
-      { id: 'key-considerations', title: `Important Considerations and What to Expect` },
+      { id: 'overview', title: `What is ${topicKeyword}?` },
+      { id: 'key-details', title: `Key Details and Specifications` },
+      { id: 'what-to-expect', title: `What to Expect: Timeline and Availability` },
+      { id: 'expert-analysis', title: `Expert Analysis and Industry Perspective` },
+      { id: 'final-thoughts', title: 'Final Thoughts' },
       { id: 'frequently-asked-questions', title: 'Frequently Asked Questions' }
     ],
     sections: [
       {
         id: 'overview',
         heading: '',
-        contentHtml: `<p>${cleanTopic} represents one of the most critical topics for anyone looking to navigate this area efficiently. Whether you are encountering it for the first time or returning with specific questions, having a clear and practical roadmap makes all the difference.</p>
+        contentHtml: `<p>${cleanTopic} is currently attracting substantial attention across the ${category} sector. Whether following developments as an enthusiast or evaluating real-world utility, having a grounded and detailed breakdown clarifies what matters most.</p>
 
-        <p>This comprehensive guide walks you through every essential detail from initial layout and core components to practical transit methods, timing considerations, and expert recommendations. Here is everything you need to know to make your experience straightforward and stress-free.</p>
+        <p>This report covers verified details, expected timelines, core technical improvements, and practical considerations to give you an authoritative perspective on the subject.</p>
 
-        <h3>Why ${cleanTopic} Matters</h3>
-        <p>Understanding ${topic} thoroughly allows you to make informed decisions and avoid common delays. Rather than feeling overwhelmed by unfamiliar details, you can rely on proven strategies and clear guidelines designed for real-world application.</p>`
+        <h3>Why ${topicKeyword} Matters Right Now</h3>
+        <p>Interest in ${cleanTopic} continues to surge as consumers and industry professionals evaluate its long-term impact. Rather than reacting to unverified rumors, reviewing concrete benchmarks and strategic patterns provides clear clarity.</p>`
       },
       {
-        id: 'core-structure',
-        heading: `${cleanTopic} Structure and Layout Explained`,
-        contentHtml: `<p>A clear understanding of how ${topic} is organized forms the foundation of any successful visit or implementation. When you break down the overall structure into manageable parts, navigation becomes significantly easier.</p>
+        id: 'key-details',
+        heading: 'Key Details and Specifications',
+        contentHtml: `<p>A careful review of confirmed specifications surrounding ${cleanTopic} highlights significant refinement and purposeful engineering:</p>
 
-        <h3>Primary Components and Divisions</h3>
-        <p>The system is divided into clear functional zones, each designed for specific purposes and operations. Familiarizing yourself with these designated areas in advance prevents confusion and saves valuable time.</p>
-
+        <h3>Primary Highlights and Capabilities</h3>
         <ul style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.9;">
-          <li><strong>Central Hub:</strong> The primary point of access where arrivals, departures, and key services are coordinated.</li>
-          <li><strong>Designated Concourses:</strong> Specific zones arranged logically to streamline passenger movement and operations.</li>
-          <li><strong>Transit Connectors:</strong> Dedicated pathways and transit systems ensuring seamless transfer between sections.</li>
+          <li><strong>Architecture & Build:</strong> Enhanced durability and premium material efficiency designed for extended longevity.</li>
+          <li><strong>Performance Optimization:</strong> Upgraded processing power delivering faster responsiveness and reliable throughput.</li>
+          <li><strong>Ecosystem Integration:</strong> Seamless compatibility with contemporary standards and connected software platforms.</li>
+          <li><strong>User Experience:</strong> Refined interface workflows focused on accessibility, speed, and sustained battery or operational efficiency.</li>
         </ul>
 
-        <h3>Navigating Between Sections</h3>
-        <p>Moving between different areas is straightforward when you utilize the available express transit options rather than attempting long transfers on foot.</p>`
+        <h3>Technical Advancements</h3>
+        <p>The progression seen in ${cleanTopic} addresses historical bottlenecks, ensuring smoother multitasking and reliable execution under demanding workloads.</p>`
       },
       {
-        id: 'how-to-navigate',
-        heading: 'How to Navigate and Get Around',
-        contentHtml: `<p>Efficient navigation comes down to knowing your exact destination and selecting the most reliable path. Here is a practical sequence to follow:</p>
+        id: 'what-to-expect',
+        heading: 'What to Expect: Timeline and Availability',
+        contentHtml: `<p>Strategic scheduling dictates product availability and rollouts. Here is the operational outlook for ${cleanTopic}:</p>
 
-        <h3>Step 1: Check Live Status Immediately</h3>
-        <p>Rely on real-time monitors and official updates as soon as you arrive rather than relying solely on initial paperwork. Real-time updates prevent unnecessary detours.</p>
-
-        <h3>Step 2: Utilize Dedicated Transit Links</h3>
-        <p>Take advantage of automated people movers and rapid transit lines connecting major terminals. These offer the fastest transfer times, especially when time is limited.</p>
-
-        <h3>Step 3: Allow Sufficient Buffer Time</h3>
-        <p>Always budget realistic transition windows. Factor in security checks, transfer distances, and peak hours when planning your schedule.</p>
-
+        <h3>Rollout and Availability Stages</h3>
         <ol style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.9;">
-          <li>Confirm your terminal or gate assignment upon arrival</li>
-          <li>Follow clearly marked overhead signage to express transit connectors</li>
-          <li>Keep your essentials organized and easily accessible for security checkpoints</li>
-          <li>Monitor departure boards periodically for any last-minute adjustments</li>
-        </ol>`
+          <li>Official briefings and keynote previews outlining core architectural milestones</li>
+          <li>Early developer or reviewer validation windows across key testing environments</li>
+          <li>Primary market availability through official retail and carrier partner channels</li>
+          <li>Global distribution rollout accompanied by localized feature enablement</li>
+        </ol>
+
+        <h3>Pricing Dynamics</h3>
+        <p>Pricing configurations for ${cleanTopic} are anticipated to balance premium positioning with competitive value, offering tiered options based on capacity and hardware requirements.</p>`
       },
       {
-        id: 'essential-tips',
-        heading: 'Essential Tips for a Smooth Experience',
-        contentHtml: `<p>A few practical habits can transform a potentially stressful situation into a seamless journey. Experienced travelers rely on these core principles:</p>
+        id: 'expert-analysis',
+        heading: 'Expert Analysis and Industry Perspective',
+        contentHtml: `<p>Market analysts emphasize that ${cleanTopic} reflects a broader maturation of consumer hardware and software ecosystems:</p>
 
-        <h3>Plan for Peak Windows</h3>
-        <p>Early mornings, late afternoons, and holiday seasons consistently see the highest traffic volumes. Arriving with extra cushion ensures unexpected queues do not disrupt your schedule.</p>
+        <h3>Competitive Differentiation</h3>
+        <p>In a crowded market, standout performance depends on reliability, software synergy, and genuine quality-of-life additions. ${cleanTopic} positions itself strongly by focusing on proven user priorities.</p>
 
-        <h3>Expedited Clearance Programs</h3>
-        <p>Enrolling in verified priority programs significantly reduces waiting times at main checkpoints, giving you peace of mind and flexibility.</p>
-
-        <ul style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.9;">
-          <li>Download relevant mobile apps for instant notifications and digital maps</li>
-          <li>Confirm pickup and ground transportation zones ahead of time</li>
-          <li>Stay aware of available dining and quiet rest spaces along your route</li>
-        </ul>`
+        <h3>Long-Term Value Assessment</h3>
+        <p>For prospective buyers and upgrade candidates, evaluating current generational gaps helps determine whether early adoption or patient timing yields the greatest return on investment.</p>`
       },
       {
-        id: 'key-considerations',
-        heading: 'Important Considerations and What to Expect',
-        contentHtml: `<p>Being prepared for typical scenarios helps you adapt quickly to any changing conditions:</p>
-
-        <h3>Ground Transportation Options</h3>
-        <p>Public rail networks, rideshares, and dedicated shuttles all operate from designated curbside pickup zones. Public transit often provides the most consistent travel times during heavy traffic.</p>
-
-        <h3>Dining and Amenities</h3>
-        <p>Whether you need quick grab-and-go refreshments during a tight connection or prefer a sit-down meal during an extended stop, options are conveniently distributed across all concourses.</p>`
+        id: 'final-thoughts',
+        heading: 'Final Thoughts',
+        contentHtml: `<div style="background: var(--bg-subtle); border-left: 4px solid var(--primary); padding: 1.5rem; border-radius: var(--radius-sm);">
+          <p style="margin-top: 0;">${cleanTopic} marks a notable step forward in modern ${category} development. By focusing on tangible functional enhancements, it provides a compelling case for both newcomers and seasoned users.</p>
+          <p style="margin-bottom: 0;">Keep an eye on official updates and verified testing benchmarks to make the best purchasing or adoption decision tailored to your specific workflow.</p>
+        </div>`
       },
       {
         id: 'frequently-asked-questions',
         heading: 'Frequently Asked Questions',
-        contentHtml: `
-          <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1rem;">
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">What is the fastest way to get between terminals?</h4>
-              <p style="margin-bottom: 0;">The most reliable and fastest method is utilizing the automated underground train system that connects all concourses directly.</p>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">How much connection time is recommended?</h4>
-              <p style="margin-bottom: 0;">Allow at least 45 to 60 minutes for domestic transfers, and budget additional time if international customs processing is required.</p>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">Is public transit readily accessible?</h4>
-              <p style="margin-bottom: 0;">Yes, direct rapid transit rail links connect the facility directly with city center corridors, avoiding highway traffic delays.</p>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">Are expedited security lanes available?</h4>
-              <p style="margin-bottom: 0;">Dedicated priority lanes are available across primary checkpoints, substantially decreasing wait times for enrolled members.</p>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="margin-top: 0; color: var(--primary); font-size: 1.05rem;">Where can travelers find real-time updates?</h4>
-              <p style="margin-bottom: 0;">Official mobile apps and strategically placed overhead digital monitors provide real-time updates throughout the facility.</p>
-            </div>
-          </div>
-
-          <div style="background: var(--bg-subtle); border-left: 4px solid var(--primary); padding: 1.5rem; margin-top: 2rem; border-radius: var(--radius-sm);">
-            <h3 style="margin-top: 0; color: var(--primary);">Final Thoughts</h3>
-            <p style="margin-bottom: 0;">With proper preparation and an understanding of the layout, navigating ${cleanTopic} is straightforward and manageable. Checking your gate early, utilizing rapid transit connectors, and building in a comfortable time buffer are the key ingredients for an easy, stress-free trip.</p>
-          </div>`
+        contentHtml: `<p>Here are concise answers to common questions regarding ${cleanTopic}.</p>`
       }
     ],
     faqs: [
       {
-        question: `What is the fastest way to get between terminals?`,
-        answer: `The most reliable and fastest method is utilizing the automated underground train system that connects all concourses directly.`
+        question: `What makes ${cleanTopic} significant?`,
+        answer: `${cleanTopic} introduces updated engineering standards, optimized performance metrics, and tighter platform integration across the board.`
       },
       {
-        question: `How much connection time is recommended?`,
-        answer: `Allow at least 45 to 60 minutes for domestic transfers, and budget additional time if international customs processing is required.`
+        question: `When is the official release window for ${topicKeyword}?`,
+        answer: `Release dates follow standard seasonal announcement cycles. Official dates and regional availability are confirmed directly via manufacturer statements.`
       },
       {
-        question: `Is public transit readily accessible?`,
-        answer: `Yes, direct rapid transit rail links connect the facility directly with city center corridors, avoiding highway traffic delays.`
+        question: `Who will benefit most from ${topicKeyword}?`,
+        answer: `Users operating older generation devices or those demanding high-performance reliability in their daily routine will experience the most pronounced benefits.`
       },
       {
-        question: `Are expedited security lanes available?`,
-        answer: `Dedicated priority lanes are available across primary checkpoints, substantially decreasing wait times for enrolled members.`
+        question: `What price point is anticipated for ${topicKeyword}?`,
+        answer: `Pricing is structured competitively within the flagship tier, with financing and trade-in opportunities mitigating initial upgrade costs.`
       },
       {
-        question: `Where can travelers find real-time updates?`,
-        answer: `Official mobile apps and strategically placed overhead digital monitors provide real-time updates throughout the facility.`
+        question: `Where can verified updates about ${topicKeyword} be tracked?`,
+        answer: `Follow official press releases, authorized distributors, and recognized industry publications for verified news.`
       }
     ]
   };
@@ -868,7 +954,19 @@ function generateDeepFallbackArticle(topic, category, author) {
 
 
 async function generateArticle(topicData) {
-  const { topic, category, author } = topicData;
+  let { topic, category, author } = topicData;
+
+  // Clean brand names in topic
+  topic = topic
+    .replace(/\bi\s+[Pp]hone\b/g, 'iPhone')
+    .replace(/\bi\s+[Pp]ad\b/g, 'iPad')
+    .replace(/\bi\s+[Mm]ac\b/g, 'iMac')
+    .replace(/\b[Mm]ac\s+[Bb]ook\b/g, 'MacBook')
+    .replace(/\b[Cc]hat\s*[Gg][Pp][Tt]\b/gi, 'ChatGPT')
+    .replace(/\b[Ww]i\s*-?\s*[Ff]i\b/g, 'Wi-Fi')
+    .replace(/\bUSB\s+[Cc]\b/g, 'USB-C')
+    .trim();
+
   console.log(`[INFO] Generating article on: "${topic}" (Category: ${category})`);
 
   const systemInstruction = `You are an expert writer for GenAlphaMagazines, producing practical, reader-first guides in the exact style of quartist.de.
@@ -895,14 +993,14 @@ WRITING STYLE RULES (follow strictly):
    - "stakeholder trust"
    - "across our regional communities"
    - Em-dash (—) and en-dash (–)
-8. CONTENT DEPTH: Minimum 1,200 words total across all sections.
+8. CONTENT DEPTH: Minimum 1,500 words total across all sections. Each section must contain at least 2 substantive paragraphs and at least one <h3> sub-heading with specific, concrete details.
 9. INTERNAL LINKING CONTEXT (MANDATORY): Naturally weave relevant cross-topic terms into body paragraphs so readers can discover related departmental reporting:
    - For arts, entertainment, and culture: naturally mention topics like "independent theater", "visual storytelling", "performing arts", "smart home technology", or "energy efficiency" in home theater and studio discussions.
    - For technology, lifestyle, and home: naturally mention topics like "smart home technology", "clean energy transition", "energy efficiency", "battery storage", or "commercial equipment".
    - For business, economy, and retail: naturally mention topics like "Main Street businesses", "retail foot traffic", "business operations", "interest rates", "monetary policy", or "Federal Reserve".
    - For travel, news, and civic policy: naturally mention topics like "travel disruptions", "flight delays", "travel planning", "investigative reporting", or "crypto regulations".
 10. GOOGLE SEO POLICY FOR TITLE & HEADLINES (CRITICAL ANTI-REPETITION):
-   - "title": Must be unique, fresh, journalistic, and under 60 characters.
+   - "title": Must be unique, fresh, journalistic, and BETWEEN 50 AND 60 CHARACTERS. Count the characters carefully. Titles shorter than 45 characters FAIL the quality check. Do not pad with filler words — use specific, descriptive keywords.
    - STRICTLY FORBIDDEN TITLE PATTERNS:
      * DO NOT end titles with ": A Complete Guide", ": Complete Practical Guide", "Guide for 2026", or repetitive "Guide" suffixes.
      * DO NOT mindlessly append "in 2026" or "for 2026" onto every single title. Use the year only when referring to a specific dated event (e.g. "FOMC Meeting Sept 2026").
@@ -912,7 +1010,7 @@ WRITING STYLE RULES (follow strictly):
        - "How Independent Retailers Are Outpacing Big-Box Chains"
        - "Heat Pump Retrofits: Cutting Energy Costs in Historic Properties"
        - "Federal Reserve Rate Decisions: What Changing Yields Mean for Borrowers"
-   - "slug": Must be directly derived from the title: lowercase, clean, hyphenated words matching title keywords (e.g. "navigating-atlanta-airport-terminal-layouts-and-smart-layover-tips")
+   - "slug": Derived from the title: lowercase, clean, hyphenated. CRITICAL: Do NOT split compound brand names. "iPhone" → "iphone", "iPad" → "ipad", "ChatGPT" → "chatgpt", "MacBook" → "macbook", "Wi-Fi" → "wifi". Never insert hyphens in the middle of a single word.
    - "metaDescription": 140-155 characters summarizing the article with primary keyword.
    - "tableOfContents": array of {id, title}
    - "sections": array of {id, heading, contentHtml} (Section 1 heading MUST be "")
@@ -1956,6 +2054,17 @@ async function main() {
     }
     console.log(`[AUTO-CRON] Selected dynamic unwritten topic for ${cat}: "${topic}"`);
   }
+
+  // Clean and normalize topic formatting for both manual and automated runs
+  topic = (topic || '')
+    .replace(/\bi\s+[Pp]hone\b/g, 'iPhone')
+    .replace(/\bi\s+[Pp]ad\b/g, 'iPad')
+    .replace(/\bi\s+[Mm]ac\b/g, 'iMac')
+    .replace(/\b[Mm]ac\s+[Bb]ook\b/g, 'MacBook')
+    .replace(/\b[Cc]hat\s*[Gg][Pp][Tt]\b/gi, 'ChatGPT')
+    .replace(/\b[Ww]i\s*-?\s*[Ff]i\b/g, 'Wi-Fi')
+    .replace(/\bUSB\s+[Cc]\b/g, 'USB-C')
+    .trim();
 
   const topicData = {
     topic: topic,
