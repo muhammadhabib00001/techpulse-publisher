@@ -336,6 +336,86 @@ const DEFAULT_TOPIC_POOL = {
 };
 
 /**
+ * Dynamically researches fresh High-Volume (50k+ searches/mo) and Low Keyword Difficulty (KD < 30)
+ * search topics for any category using Gemini AI, ensuring strictly zero duplicates with existing slugs.
+ */
+async function researchHighVolumeLowKdTopic(category, existingSlugsSet) {
+  if (!GEMINI_API_KEY) return null;
+
+  const prompt = `Act as an expert SEO keyword research director.
+Your goal is to identify 5 breakout, high-volume (50,000+ monthly searches) and low keyword difficulty (KD < 30) informational keywords for the category: "${category}".
+
+Requirements:
+1. Target keyword must have HIGH monthly search volume (50K - 500K+ searches/mo) with low competitive difficulty (KD under 30).
+2. Informational search intent for a worldwide readership.
+3. Formulate each as a compelling, click-worthy editorial article topic headline (50-60 chars).
+4. Strictly avoid any overlap with previously covered themes.
+5. Return ONLY a JSON array of strings containing the 5 candidate topic titles. Example:
+["Topic Title One", "Topic Title Two", "Topic Title Three", "Topic Title Four", "Topic Title Five"]`;
+
+  const models = [
+    'gemini-3.5-flash',
+    'gemini-3.8-flash',
+    'gemini-3.5-flash-lite',
+    'gemini-3.1-flash-lite',
+    'gemini-flash-lite-latest'
+  ];
+
+  for (const model of models) {
+    try {
+      const candidates = await new Promise((resolve, reject) => {
+        const payload = JSON.stringify({
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          generationConfig: { responseMimeType: 'application/json', temperature: 0.3 }
+        });
+        const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + GEMINI_API_KEY;
+        const req = https.request(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }
+        }, (res) => {
+          let data = '';
+          res.on('data', chunk => data += chunk);
+          res.on('end', () => {
+            try {
+              const parsed = JSON.parse(data);
+              if (parsed.error) return reject(new Error(parsed.error.message));
+              const text = parsed.candidates[0].content.parts[0].text.trim();
+              const list = JSON.parse(text);
+              if (Array.isArray(list)) resolve(list);
+              else reject(new Error('Response is not an array'));
+            } catch (err) {
+              reject(err);
+            }
+          });
+        });
+        req.on('error', reject);
+        req.write(payload);
+        req.end();
+      });
+
+      // Filter against existing slugs
+      for (const cand of candidates) {
+        if (typeof cand !== 'string' || cand.length < 15) continue;
+        const candSlug = cand.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().replace(/\s+/g, '-');
+        let collides = false;
+        for (const existing of existingSlugsSet) {
+          if (existing.includes(candSlug) || candSlug.includes(existing)) {
+            collides = true;
+            break;
+          }
+        }
+        if (!collides) {
+          return cand.replace(/[—–]/g, ' ').replace(/\s+/g, ' ').trim();
+        }
+      }
+    } catch (e) {
+      console.warn(`[WARN] Keyword research model ${model} failed: ${e.message}`);
+    }
+  }
+  return null;
+}
+
+/**
  * Downloads an image from a URL and saves it locally to assets/images/
  */
 function downloadImageLocally(url, destPath) {
@@ -2701,8 +2781,21 @@ async function main() {
         cat = foundAlternative.category;
         topic = foundAlternative.topic;
       } else {
-        console.warn(`[WARN] All primary pool keywords have been published. Pipeline will safely skip duplicate publication.`);
-        process.exit(0);
+        // Automatically research fresh High-Volume (50k+ searches/mo) & Low-Difficulty (KD < 30) keywords via Gemini
+        console.log(`[SEO-RESEARCH] All pre-seeded pool topics published. Launching dynamic AI Keyword Researcher for high volume + low KD in "${cat}"...`);
+        try {
+          const researchedTopic = await researchHighVolumeLowKdTopic(cat, allPublishedSlugs);
+          if (researchedTopic) {
+            topic = researchedTopic;
+            console.log(`[SUCCESS] AI Keyword Researcher discovered fresh High-Volume Low-KD topic: "${topic}"`);
+          } else {
+            console.warn(`[WARN] Could not find fresh topic. Skipping publication.`);
+            process.exit(0);
+          }
+        } catch (researchErr) {
+          console.error(`[ERROR] AI Keyword Researcher error:`, researchErr.message);
+          process.exit(0);
+        }
       }
     }
     console.log(`[AUTO-CRON] Selected dynamic unwritten topic for ${cat}: "${topic}"`);
