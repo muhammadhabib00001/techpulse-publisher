@@ -2124,7 +2124,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
     if (fs.existsSync(pagesDir)) {
       const pFiles = fs.readdirSync(pagesDir).filter(f => f.endsWith('.html'));
       for (const pf of pFiles) {
-        sitemapUrls.push({ loc: `${BASE_URL}/pages/${pf}`, lastmod: currentDate, changefreq: 'monthly', priority: '0.6' });
+        sitemapUrls.push({ loc: `${BASE_URL}/pages/${pf}`, lastmod: currentDate, changefreq: 'daily', priority: '0.6' });
       }
     }
 
@@ -2132,7 +2132,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
     if (fs.existsSync(authorDir)) {
       const aFiles = fs.readdirSync(authorDir).filter(f => f.endsWith('.html'));
       for (const af of aFiles) {
-        sitemapUrls.push({ loc: `${BASE_URL}/author/${af}`, lastmod: currentDate, changefreq: 'weekly', priority: '0.7' });
+        sitemapUrls.push({ loc: `${BASE_URL}/author/${af}`, lastmod: currentDate, changefreq: 'daily', priority: '0.7' });
       }
     }
 
@@ -2143,7 +2143,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
         sitemapUrls.push({
           loc: `${BASE_URL}/${f.replace(".html", "")}`,
           lastmod: f === `${articleData.slug}.html` ? currentDate : '2026-09-07',
-          changefreq: 'monthly',
+          changefreq: 'daily',
           priority: '0.8'
         });
       }

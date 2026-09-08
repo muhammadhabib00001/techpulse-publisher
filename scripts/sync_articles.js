@@ -319,27 +319,51 @@ function syncDeletedArticles() {
     }
   }
 
-  // 4. Sync sitemap.xml
+  // 4. Sync sitemap.xml (Complete dynamic rebuild with daily changefreq on every publish/sync)
   const sitemapPath = path.join(ROOT_DIR, 'sitemap.xml');
   if (fs.existsSync(sitemapPath)) {
-    let original = fs.readFileSync(sitemapPath, 'utf8');
-    let updated = original;
+    const currentDate = new Date().toISOString().split('T')[0];
+    const sitemapUrls = [];
 
-    // Match each <url> block pointing to an article
-    const urlBlockRegex = /<url>[\s\S]*?<loc>https:\/\/www\.genalphamagazines\.com\/articles\/([^<]+)\.html<\/loc>[\s\S]*?<\/url>\s*/g;
-    updated = updated.replace(urlBlockRegex, (match, slug) => {
-      const reservedSlugs = new Set(['categories', 'index', '404', 'admin']);
-      if (!reservedSlugs.has(slug) && !slug.startsWith('category-') && !existingSlugs.has(slug)) {
-        console.log(`[sync_articles] Removing deleted article from sitemap.xml: ${slug}`);
-        return '';
+    // 1. Core Hubs
+    sitemapUrls.push({ loc: `${BASE_URL}/`, lastmod: currentDate, changefreq: 'daily', priority: '1.0' });
+    sitemapUrls.push({ loc: `${BASE_URL}/categories.html`, lastmod: currentDate, changefreq: 'daily', priority: '0.9' });
+
+    // 2. Category Hubs
+    const catFiles = fs.readdirSync(ROOT_DIR).filter(f => f.startsWith('category-') && f.endsWith('.html'));
+    for (const cf of catFiles) {
+      sitemapUrls.push({ loc: `${BASE_URL}/${cf}`, lastmod: currentDate, changefreq: 'daily', priority: '0.85' });
+    }
+
+    // 3. Static Pages
+    const pagesDir = path.join(ROOT_DIR, 'pages');
+    if (fs.existsSync(pagesDir)) {
+      const pFiles = fs.readdirSync(pagesDir).filter(f => f.endsWith('.html'));
+      for (const pf of pFiles) {
+        sitemapUrls.push({ loc: `${BASE_URL}/pages/${pf}`, lastmod: currentDate, changefreq: 'daily', priority: '0.6' });
       }
-      return match;
-    });
+    }
 
-    writeIfChanged(sitemapPath, updated, original);
+    // 4. All Active Articles
+    for (const art of validArticlesList) {
+      sitemapUrls.push({
+        loc: `${BASE_URL}/${art.slug}`,
+        lastmod: (art.publishedAt ? art.publishedAt.split('T')[0] : currentDate),
+        changefreq: 'daily',
+        priority: '0.8'
+      });
+    }
+
+    const xmlEntries = sitemapUrls.map(u => 
+      `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${u.lastmod}</lastmod>\n    <changefreq>${u.changefreq}</changefreq>\n    <priority>${u.priority}</priority>\n  </url>`
+    ).join('\n');
+
+    const fullSitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${xmlEntries}\n</urlset>\n`;
+    writeIfChanged(sitemapPath, fullSitemapXml, fs.readFileSync(sitemapPath, 'utf8'));
+    console.log(`[sync_articles] Sitemap synchronized: ${sitemapUrls.length} URLs with daily changefreq`);
   }
 
-    // 5. Sync llms.txt and llms-full.txt
+  // 5. Sync llms.txt and llms-full.txt
   syncLlmsFiles(existingSlugs, writeIfChanged);
 
   // 6. Sync category-*.html files (Grids, Cards, and Tickers)

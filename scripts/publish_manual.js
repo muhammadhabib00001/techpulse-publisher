@@ -260,7 +260,7 @@ function updateSitemapAndLlms(slug, title, description) {
   if (fs.existsSync(sitemapPath)) {
     let sitemap = fs.readFileSync(sitemapPath, 'utf8');
     if (!sitemap.includes(cleanUrl)) {
-      const entry = `  <url>\n    <loc>${cleanUrl}</loc>\n    <lastmod>${currentDate}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>\n</urlset>`;
+      const entry = `  <url>\n    <loc>${cleanUrl}</loc>\n    <lastmod>${currentDate}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.8</priority>\n  </url>\n</urlset>`;
       sitemap = sitemap.replace('</urlset>', entry);
       fs.writeFileSync(sitemapPath, sitemap, 'utf8');
       console.log(`[publish_manual] Added to sitemap.xml: ${cleanUrl}`);
