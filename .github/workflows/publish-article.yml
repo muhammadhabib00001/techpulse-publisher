@@ -68,6 +68,7 @@ jobs:
           GCP_REGION: ${{ secrets.GCP_REGION || 'us-central1' }}
           GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
         run: |
+          node scripts/sync_articles.js
           node scripts/publisher.js \
             --topic "${{ github.event.inputs.topic || '' }}" \
             --category "${{ github.event.inputs.category || '' }}"
