@@ -1064,9 +1064,8 @@
             <!-- Permalink Box -->
             <div class="wp-permalink-box">
               <span style="font-weight: 700;">Permalink:</span>
-              <span style="color: #64748b;">https://www.genalphamagazines.com/articles/</span>
+              <span style="color: #64748b;">https://www.genalphamagazines.com/</span>
               <input type="text" id="fSlug" class="wp-permalink-input" placeholder="article-slug" oninput="handleSlugManualInput(this.value)">
-              <span style="color: #64748b;">.html</span>
               <button type="button" class="btn btn-secondary btn-sm" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;" onclick="autoGenerateSlug()">Auto-Slug</button>
             </div>
 
@@ -1131,7 +1130,7 @@
                 <div class="wp-serp-site">
                   <span style="font-size: 0.9rem;">🌐</span>
                   <strong>GenAlphaMagazines</strong>
-                  <span class="wp-serp-url">› articles › <span id="serpSlug">your-article-slug</span></span>
+                  <span class="wp-serp-url">› <span id="serpSlug">your-article-slug</span></span>
                 </div>
                 <div class="wp-serp-title" id="serpTitle">Your Article Title Will Appear Here</div>
                 <div class="wp-serp-desc" id="serpDesc">Compelling meta description summary will show here in Google search engine result snippets.</div>
@@ -1554,8 +1553,8 @@
               <img src="${imgSrc}" class="art-thumb" onerror="this.src='./assets/images/default.jpg'" alt="${escapeHtml(art.title)}">
             </td>
             <td class="art-title-cell">
-              <a href="./articles/${art.slug}.html" target="_blank" class="art-title-link">${escapeHtml(art.title)}</a>
-              <div class="art-slug">${escapeHtml(art.slug)}.html</div>
+              <a href="/${art.slug}" target="_blank" class="art-title-link">${escapeHtml(art.title)}</a>
+              <div class="art-slug">/${escapeHtml(art.slug)}</div>
             </td>
             <td>
               <span class="category-badge">${escapeHtml((art.category || 'NEWS').toUpperCase())}</span>
@@ -1565,7 +1564,7 @@
             </td>
             <td style="text-align: right;">
               <div class="action-group" style="justify-content: flex-end;">
-                <a href="./articles/${art.slug}.html" target="_blank" class="btn btn-secondary btn-sm" title="View live article">👁️ View</a>
+                <a href="/${art.slug}" target="_blank" class="btn btn-secondary btn-sm" title="View live article">👁️ View</a>
                 <button onclick="openEditModal('${art.slug}')" class="btn btn-secondary btn-sm" title="Edit this article">✏️ Edit</button>
                 <button onclick="promptDelete('${art.slug}')" class="btn btn-danger btn-sm" title="Delete article">🗑️ Delete</button>
               </div>
@@ -1612,6 +1611,82 @@
       if (res.status === 404) return null;
       if (!res.ok) throw new Error('GitHub fetch error: ' + res.statusText);
       return res.json();
+    }
+
+    
+    async function ghDeleteFile(repo, token, path, message) {
+      const existing = await ghGetFile(repo, token, path);
+      if (!existing || !existing.sha) return null;
+      const res = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: message || ('Delete ' + path),
+          sha: existing.sha,
+          branch: 'main'
+        })
+      });
+      if (!res.ok && res.status !== 404) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || res.statusText);
+      }
+      return true;
+    }
+
+    function promptDelete(slug) {
+      articleToDelete = slug;
+      const art = allArticles.find(a => a.slug === slug);
+      const title = art ? art.title : slug;
+      const el = document.getElementById('deleteArticleTitle');
+      if (el) el.textContent = 'Are you sure you want to delete "' + title + '"?';
+      const modal = document.getElementById('deleteModal');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeDeleteModal() {
+      articleToDelete = null;
+      const modal = document.getElementById('deleteModal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    async function executeDelete() {
+      if (!articleToDelete) return;
+      const slug = articleToDelete;
+      const token = (localStorage.getItem('gam_gh_token') || '').trim();
+      const repo = (localStorage.getItem('gam_gh_repo') || GITHUB_REPO_DEFAULT).trim();
+
+      if (!token) {
+        alert('GitHub Token required to delete articles from the repository. Please configure it in ⚙️ GitHub Sync.');
+        openGhSettingsModal();
+        return;
+      }
+
+      const btn = document.getElementById('confirmDeleteBtn');
+      const origText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Deleting...';
+
+      try {
+        await ghDeleteFile(repo, token, 'articles/' + slug + '.html', 'Delete article: ' + slug);
+        await ghDeleteFile(repo, token, slug + '.html', 'Delete root mirror: ' + slug);
+
+        allArticles = allArticles.filter(a => a.slug !== slug);
+        await ghCommitFile(repo, token, 'data/articles.json', JSON.stringify(allArticles, null, 2), 'Remove ' + slug + ' from articles.json');
+
+        document.getElementById('statTotal').textContent = allArticles.length;
+        renderTable(allArticles);
+        closeDeleteModal();
+        alert('Article deleted successfully!');
+      } catch (err) {
+        alert('Failed to delete article: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = origText;
+      }
     }
 
     async function ghCommitFile(repo, token, path, content, message) {
@@ -2190,7 +2265,8 @@
       faqCont.innerHTML = '';
 
       try {
-        const res = await fetch('./articles/' + slug + '.html');
+        let res = await fetch('./' + slug + '.html');
+        if (!res.ok) res = await fetch('./articles/' + slug + '.html');
         if (res.ok) {
           const html = await res.text();
           
@@ -2288,12 +2364,13 @@
       try {
         // 1. Commit article HTML file
         await ghCommitFile(repo, token, filename, fullHtml, 'Publish post: ' + title);
+        await ghCommitFile(repo, token, slug + '.html', fullHtml, 'Mirror post to root: ' + title);
 
         // 2. Update data/articles.json
         const updatedList = [...allArticles];
         const existingIdx = updatedList.findIndex(a => a.slug === slug);
         const newEntry = {
-          slug, file: slug + '.html', title, category, excerpt,
+          slug, file: slug + '.html', url: '/' + slug, title, category, excerpt,
           image: imageUrl, date: pubDate,
           publishedAt: new Date().toISOString()
         };
@@ -2379,17 +2456,17 @@
         '  <meta name="viewport" content="width=device-width, initial-scale=1.0">',
         '  <title>' + escapeHtml(data.title) + ' | GenAlphaMagazines' + H + '/title' + C,
         '  <meta name="description" content="' + escapeHtml(data.excerpt) + '">',
-        '  <link rel="canonical" href="https://www.genalphamagazines.com/articles/' + data.slug + '.html">',
+        '  <link rel="canonical" href="https://www.genalphamagazines.com/' + data.slug + '">',
         '  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">',
         '  <meta property="og:type" content="article">',
         '  <meta property="og:title" content="' + escapeHtml(data.title) + '">',
         '  <meta property="og:description" content="' + escapeHtml(data.excerpt) + '">',
         '  <meta property="og:image" content="' + escapeHtml(data.imageUrl) + '">',
-        '  <meta property="og:url" content="https://www.genalphamagazines.com/articles/' + data.slug + '.html">',
+        '  <meta property="og:url" content="https://www.genalphamagazines.com/' + data.slug + '">',
         '  <meta property="article:published_time" content="' + isoDate + '">',
         '  <meta property="article:section" content="' + escapeHtml(data.category) + '">',
-        '  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">',
-        '  <link rel="stylesheet" href="../assets/css/style.css?v=final_stable_v1">',
+        '  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">',
+        '  <link rel="stylesheet" href="/assets/css/style.css?v=final_stable_v1">',
         '  ' + H + 'script type="application/ld+json"' + C + JSON.stringify({
              "@context": "https://schema.org",
              "@type": "Article",
@@ -2404,28 +2481,28 @@
         '<body>',
         '  <header class="main-header">',
         '    <div class="container header-inner">',
-        '      <a href="../index.html" class="brand-logo">',
+        '      <a href="/" class="brand-logo">',
         '        <div class="brand-text-block">',
         '          <div class="brand-main-title"><span>GEN' + H + '/span' + C + '<span class="alpha-word">ALPHA' + H + '/span' + C + '<span class="mag-word">MAGAZINES' + H + '/span' + C + H + '/div' + C,
         '        ' + H + '/div' + C,
         '      ' + H + '/a' + C,
         '      <div class="header-actions">',
-        '        <a href="../pages/contact.html" class="news-tip-btn"><span>✉️</span> News Tip?</a>',
+        '        <a href="/pages/contact.html" class="news-tip-btn"><span>✉️</span> News Tip?</a>',
         '      </div>',
         '    </div>',
         '  ' + H + '/header' + C,
         '  <nav class="main-nav-wrapper">',
         '    <div class="container">',
         '      <ul class="main-nav-links">',
-        '        <li><a href="../index.html">Home</a></li>',
-        '        <li><a href="../category-news.html">News</a></li>',
-        '        <li><a href="../category-business.html">Business</a></li>',
-        '        <li><a href="../category-celebrity.html">Celebrity</a></li>',
-        '        <li><a href="../category-entertainment.html">Entertainment</a></li>',
-        '        <li><a href="../category-games.html">Games</a></li>',
-        '        <li><a href="../category-health.html">Health</a></li>',
-        '        <li><a href="../category-technology.html">Technology</a></li>',
-        '        <li><a href="../category-others.html">Others</a></li>',
+        '        <li><a href="/">Home</a></li>',
+        '        <li><a href="/category-news.html">News</a></li>',
+        '        <li><a href="/category-business.html">Business</a></li>',
+        '        <li><a href="/category-celebrity.html">Celebrity</a></li>',
+        '        <li><a href="/category-entertainment.html">Entertainment</a></li>',
+        '        <li><a href="/category-games.html">Games</a></li>',
+        '        <li><a href="/category-health.html">Health</a></li>',
+        '        <li><a href="/category-technology.html">Technology</a></li>',
+        '        <li><a href="/category-others.html">Others</a></li>',
         '      </ul>',
         '    </div>',
         '  ' + H + '/nav' + C,
