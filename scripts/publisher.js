@@ -485,6 +485,10 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
         expansions.push('red carpet cinema film premiere', 'film festival theater stage');
       } else if (lowerTopic.includes('ai') || lowerTopic.includes('artificial intelligence') || lowerTopic.includes('machine learning')) {
         expansions.push('artificial intelligence computer hardware', 'machine learning data technology');
+      } else if (lowerTopic.includes('vinyl') || lowerTopic.includes('turntable') || lowerTopic.includes('record player') || lowerTopic.includes('pressing')) {
+        expansions.push('vinyl record turntable spinning', 'turntable audio stereo vintage vinyl', 'vinyl record collection music');
+      } else if (lowerTopic.includes('buy') && (lowerTopic.includes('business') || lowerTopic.includes('company') || lowerTopic.includes('acquisition'))) {
+        expansions.push('business handshake corporate acquisition', 'business contract signing handshake', 'financial advisor corporate meeting');
       } else if (lowerTopic.includes('journalism') || lowerTopic.includes('news') || lowerTopic.includes('press')) {
         expansions.push('journalism newspaper printing press', 'newsroom press conference');
       }
@@ -1042,7 +1046,15 @@ function enforceMinimumInternalLinks(sectionsHtml, currentSlug, minRequired = 2)
 }
 
 async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '', category = '') {
-  const modelsToTry = ['gemini-3.6-flash', 'gemini-flash-latest'];
+  const modelsToTry = [
+    'gemini-3.5-flash',
+    'gemini-3.8-flash',
+    'gemini-3.5-flash-lite',
+    'gemini-3.1-flash-lite',
+    'gemini-flash-lite-latest',
+    'gemini-3.6-flash',
+    'gemini-flash-latest'
+  ];
   let lastError = null;
 
   for (const model of modelsToTry) {
@@ -1457,32 +1469,37 @@ async function generateArticle(topicData) {
 
   console.log(`[INFO] Generating article on: "${topic}" (Category: ${category})`);
 
-  const systemInstruction = `You are an expert writer for GenAlphaMagazines, producing practical, reader-first guides in the exact style of quartist.de.
+  const systemInstruction = `You are an elite SEO content strategist and master copywriter for GenAlphaMagazines, producing exhaustive, reader-first editorial content for a worldwide audience targeting the keyword with informational intent.
 
-WRITING STYLE RULES (follow strictly):
-1. TONE: Conversational, helpful, direct. Write like you are explaining to a smart friend. No corporate jargon, no civic boilerplate.
-2. NO DASHES: Do NOT use em-dashes (—) or en-dashes (–). Use commas, colons, or standard hyphens where needed.
-3. OPENING (Section 1):
-   - Do NOT put an H2 heading for section 1. Leave section 1 heading empty ("").
-   - Start immediately with direct, engaging editorial prose right after the hero image.
-   - NEVER use boilerplate phrases like "If you've been looking into", "chances are you already have questions", "cut through the noise", or "this guide is here". Start directly with the subject matter.
-4. STRUCTURE: Provide 6 sections:
-   - Section 1: Introduction (heading = ""). 2 to 3 engaging paragraphs with optional <h3> sub-topics.
-   - Sections 2-4: Practical topic-specific aspects. Each has a clear descriptive heading (e.g. "Terminal Layout Explained", "Cost Breakdown & Installation"), NOT generic names.
-   - Section 5: Must have heading EXACTLY "Final Thoughts" (id: "final-thoughts", heading: "Final Thoughts"). Thorough wrap-up with practical recommendations and key takeaways.
-   - Section 6: "Frequently Asked Questions" (id: "frequently-asked-questions", heading: "Frequently Asked Questions"). In contentHtml, provide ONLY a 1-sentence friendly lead (e.g. "Here are answers to the most common questions about..."). Do NOT write questions, answers, or Final Thoughts inside section 6 contentHtml because the 5 Q&A cards are rendered automatically from the "faqs" JSON field!
-   - Provide exactly 5 distinct Q&A pairs in the "faqs" array.
-5. SUBHEADINGS: Within each section's contentHtml, use <h3> tags for sub-topics.
-6. BULLETS & LISTS: Use <ul> or <ol> with <li> tags for concrete tips and steps.
-7. ABSOLUTELY BANNED:
+CORE SEO CONTENT STRATEGY (CRITICAL — NON-NEGOTIABLE):
+1. ROLE & PERSPECTIVE: Act as an authoritative SEO content strategist and senior journalist. Write for a Worldwide audience with high informational intent.
+2. TONE: Professional, authoritative, highly engaging, and clear. Zero corporate boilerplate, zero generic filler, zero fluff.
+3. LSI & SEMANTIC KEYWORDS: Extensively integrate Latent Semantic Indexing (LSI) and topic-relevant semantic keywords throughout every section and body paragraph.
+4. CLICK-WORTHY HEADLINE:
+   - Must be between 50 and 60 characters.
+   - Click-worthy and engaging without being misleading clickbait.
+   - Never use banned suffixes like ": A Complete Guide" or repetitive "Guide for 2026".
+5. OPENING HOOK (Section 1):
+   - Do NOT use an H2 heading for section 1 (heading MUST be "").
+   - Start immediately with a compelling opening hook that captivates the reader in the very first sentence.
+   - Answer the primary search intent early to capture Google Featured Snippets.
+   - NEVER use boilerplate like "If you've been looking into", "cut through the noise", or "this guide is here".
+6. STRUCTURE & SUBHEADINGS:
+   - Section 1: Compelling opening hook and overview (heading = "").
+   - Sections 2-4: Deep technical and practical analysis with descriptive H2 headings and H3 subheadings.
+   - Section 5: "Final Thoughts" (id: "final-thoughts", heading: "Final Thoughts"). Key takeaways, strategic recommendations.
+   - Section 6: "Frequently Asked Questions" (id: "frequently-asked-questions", heading: "Frequently Asked Questions").
+7. FEATURED SNIPPET TARGET: Provide concise, clear factual definitions and bulleted takeaways that Google can extract directly into position zero.
+8. NO DASHES: Do NOT use em-dashes (—) or en-dashes (–). Use commas, colons, or standard hyphens where needed.
+9. ABSOLUTELY BANNED:
    - "If you've been looking into"
    - "municipal governance"
    - "civic engagement"
    - "stakeholder trust"
    - "across our regional communities"
    - Em-dash (—) and en-dash (–)
-8. CONTENT DEPTH: Minimum 1,500 words total across all sections. Each section must contain at least 2 substantive paragraphs and at least one <h3> sub-heading with specific, concrete details.
-9. INTERNAL LINKING CONTEXT (MANDATORY): Naturally weave relevant cross-topic terms into body paragraphs so readers can discover related departmental reporting:
+10. CONTENT DEPTH: Minimum 1,500 words total across all sections. Each section must contain at least 2 substantive paragraphs and at least one <h3> sub-heading with specific, concrete details.
+11. INTERNAL LINKING CONTEXT (MANDATORY): Naturally weave relevant cross-topic terms into body paragraphs so readers can discover related departmental reporting:
    - For arts, entertainment, and culture: naturally mention topics like "independent theater", "visual storytelling", "performing arts", "smart home technology", or "energy efficiency" in home theater and studio discussions.
    - For technology, lifestyle, and home: naturally mention topics like "smart home technology", "clean energy transition", "energy efficiency", "battery storage", or "commercial equipment".
    - For business, economy, and retail: naturally mention topics like "Main Street businesses", "retail foot traffic", "business operations", "interest rates", "monetary policy", or "Federal Reserve".
@@ -1548,11 +1565,12 @@ FACTUAL CONTENT RULES (CRITICAL — MANDATORY):
     try {
       return await callGoogleAIStudio(GEMINI_API_KEY, userPrompt, systemInstruction, topic, category);
     } catch (err) {
-      console.warn('[WARN] Gemini API call fallback:', err.message);
+      console.error('[ERROR] Gemini API failed across all models:', err.message);
+      throw new Error(`Cannot publish article for topic "${topic}": Gemini API failed and generic fallbacks are strictly prohibited.`);
     }
   }
 
-  return generateDeepFallbackArticle(topic, category, author);
+  throw new Error('GEMINI_API_KEY is missing. Generic fallback articles are strictly prohibited.');
 }
 
 
@@ -1575,7 +1593,15 @@ async function fetchExternalLink(topic, category, usedUrls) {
     'Return ONLY a JSON object with these exact fields (no markdown, no extra text):\n' +
     '{"url":"https://...","anchorKeyword":"the exact 2-4 word keyword from the topic or article to link (e.g. smartphone hardware, Apple Inc, electric vehicles)","label":"Short descriptive title","domain":"domain.com"}';
 
-  const models = ['gemini-3.6-flash', 'gemini-flash-latest'];
+  const models = [
+    'gemini-3.5-flash',
+    'gemini-3.8-flash',
+    'gemini-3.5-flash-lite',
+    'gemini-3.1-flash-lite',
+    'gemini-flash-lite-latest',
+    'gemini-3.6-flash',
+    'gemini-flash-latest'
+  ];
   const httpsLib = require('https');
 
   for (const model of models) {
