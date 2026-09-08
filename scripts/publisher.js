@@ -1233,7 +1233,10 @@ async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '',
         res.metaDescription = `Discover everything about ${t}: in-depth analysis, key facts, expert insights, and practical takeaways to keep you fully informed and ahead.`;
       }
       if (res && res.metaDescription && res.metaDescription.length > 155) {
-        res.metaDescription = res.metaDescription.slice(0, 152) + '...';
+        let trimmed = res.metaDescription.slice(0, 152);
+        const lastSpace = trimmed.lastIndexOf(' ');
+        if (lastSpace > 100) trimmed = trimmed.slice(0, lastSpace);
+        res.metaDescription = trimmed.replace(/[,:;.-]+$/, '') + '...';
       }
       // ─────────────────────────────────────────────────────────────────────
 
@@ -2402,7 +2405,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
               <span class="card-tag">${category.toUpperCase()}</span>
               <h3 class="card-title"><a href="./articles/${articleData.slug}.html">${articleData.title}</a></h3>
               <p class="card-excerpt">${articleData.metaDescription}</p>
-              <div class="card-meta"><span>By ${author.name}</span><span>${dateFormatted}</span></div>
+              <div class="card-meta"><span>By <a href="./author/${author.slug}.html">${author.name}</a></span><span>${dateFormatted}</span></div>
             </div>
           </article>`;
 

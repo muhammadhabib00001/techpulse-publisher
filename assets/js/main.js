@@ -1,4 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Dynamic Header Date
+  try {
+    const topDateEl = document.querySelector('.top-date span:first-child');
+    if (topDateEl) {
+      const now = new Date();
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      topDateEl.textContent = '📅 ' + now.toLocaleDateString('en-US', options);
+    }
+  } catch (e) {
+    console.error('Date update error:', e);
+  }
+
   // Theme Toggle
   const t = document.getElementById('theme-toggle');
   const stored = localStorage.getItem('techpulse-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
