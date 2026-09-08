@@ -1841,10 +1841,19 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   <link rel="manifest" href="../site.webmanifest">
   <meta name="theme-color" content="#c1121e">
   
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap">
+  </noscript>
   <link rel="stylesheet" href="../assets/css/style.css?v=final_stable_v1">
+  <link rel="preload" as="image" href="../assets/images/${articleData.slug}.jpg" fetchpriority="high">
   
   <script type="application/ld+json">
   {
@@ -1973,7 +1982,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
 
         <figure class="featured-media" style="margin: 0; position: relative;">
           <div style="aspect-ratio: 16/9; overflow: hidden; border-radius: var(--radius-md);">
-            <img src="${heroImage.relativeUrl}" alt="${articleData.title}" style="width: 100%; height: 100%; object-fit: cover;">
+            <img src="${heroImage.relativeUrl}" alt="${articleData.title}" width="1200" height="675" fetchpriority="high" decoding="async" loading="eager" style="width: 100%; height: 100%; object-fit: cover;">
           </div>
           <figcaption style="font-size: 0.85rem; color: var(--text-muted); padding: 0.6rem 0.25rem 0.5rem; border-bottom: 1px solid var(--border-color);">${articleData.title}</figcaption>
         </figure>
@@ -2179,7 +2188,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
     // Mini side card snippet for previous features pushed to side feed
     const newMiniSideCard = `            <article class="mini-side-card">
               <div class="mini-side-thumb">
-                <img src="${heroImage.indexUrl}" alt="${articleData.title}" loading="lazy">
+                <img src="${heroImage.indexUrl}" alt="${articleData.title}" width="100" height="72" loading="lazy" decoding="async">
               </div>
               <div class="mini-side-content">
                 <span class="mini-side-tag">${category.toUpperCase()}</span>
@@ -2194,7 +2203,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
     const newLeadMainCard = `<div class="pattern-a-main">
             <article class="card">
               <div class="card-img-wrap">
-                <img src="${heroImage.indexUrl}" alt="${articleData.title}" loading="lazy">
+                <img src="${heroImage.indexUrl}" alt="${articleData.title}" width="800" height="450" loading="eager" fetchpriority="high" decoding="async">
               </div>
               <div class="card-content">
                 <span class="card-tag">${category.toUpperCase()} &bull; Editorial Lead Feature</span>
@@ -2214,6 +2223,14 @@ function updateSiteIndex(articleData, author, category, heroImage) {
     const sideStart = indexHtml.indexOf('<div class="pattern-a-side-list">');
 
     if (mainStart !== -1 && sideStart !== -1 && mainStart < sideStart) {
+    // Update preload tag for lead image in index.html head
+    const oldPreload = indexHtml.match(/<link rel="preload" as="image" href="[^"]+" fetchpriority="high">/);
+    const newPreload = `<link rel="preload" as="image" href="${heroImage.indexUrl}" fetchpriority="high">`;
+    if (oldPreload) {
+      indexHtml = indexHtml.replace(oldPreload[0], newPreload);
+    } else if (indexHtml.includes('<link rel="stylesheet" href="./assets/css/style.css')) {
+      indexHtml = indexHtml.replace(/(<link rel="stylesheet" href="\.\/assets\/css\/style\.css[^"]*">)/, `$1\n  ${newPreload}`);
+    }
       // Extract current lead article if it exists and convert to mini-side-card
       const currentMainBlock = indexHtml.slice(mainStart, sideStart);
       const urlMatch = currentMainBlock.match(/href="\.\/articles\/([^"]+)"/);
@@ -2279,7 +2296,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
     const newCardSnippet = `
           <article class="card">
             <div class="card-img-wrap">
-              <img src="${heroImage.indexUrl}" alt="${articleData.title}" loading="lazy">
+              <img src="${heroImage.indexUrl}" alt="${articleData.title}" width="400" height="225" loading="lazy" decoding="async">
             </div>
             <div class="card-content">
               <span class="card-tag">${category.toUpperCase()}</span>
@@ -2393,7 +2410,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
           <!-- Article: ${articleData.slug}.html -->
           <article class="card">
             <div class="card-img-wrap">
-              <img src="${heroImage.indexUrl}" alt="${articleData.title}" loading="lazy">
+              <img src="${heroImage.indexUrl}" alt="${articleData.title}" width="400" height="225" loading="lazy" decoding="async">
             </div>
             <div class="card-content">
               <span class="card-tag">${category.toUpperCase()} &bull; Feature</span>
