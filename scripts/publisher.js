@@ -1642,6 +1642,99 @@ function getDynamicRelatedArticles(currentSlug) {
   return list.sort(() => 0.5 - Math.random()).slice(0, count);
 }
 
+
+/**
+ * Injects an external reference link directly onto a natural keyword in the body paragraphs.
+ * If the exact anchor keyword is not found, smoothly locates a relevant concept or attaches
+ * a clean editorial citation without crashing or producing awkward phrasing.
+ */
+function injectExternalKeywordLink(sectionsHtml, externalLink, category = 'others') {
+  if (!externalLink || !externalLink.url || typeof externalLink.url !== 'string') {
+    return sectionsHtml;
+  }
+
+  const safeUrl = String(externalLink.url).replace(/"/g, '&quot;');
+  const safeLabel = String(externalLink.label || externalLink.anchorKeyword || externalLink.domain || 'External Reference')
+    .replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const titleAttr = safeLabel.replace(/"/g, '&quot;');
+
+  // Collect candidate phrases to search for in body paragraphs
+  const candidates = [];
+  if (externalLink.anchorKeyword && externalLink.anchorKeyword.trim().length >= 3) {
+    const ak = externalLink.anchorKeyword.trim();
+    candidates.push(ak);
+    const words = ak.split(/\s+/);
+    if (words.length >= 3) {
+      candidates.push(words.slice(0, 2).join(' '));
+      candidates.push(words.slice(-2).join(' '));
+    }
+  }
+  if (externalLink.label && externalLink.label.trim().length >= 4) {
+    candidates.push(externalLink.label.trim());
+  }
+  if (externalLink.domain && !externalLink.domain.includes('wikipedia') && !externalLink.domain.includes('gov')) {
+    candidates.push(externalLink.domain.replace(/\.[a-z]+$/i, ''));
+  }
+
+  // Protect headings, existing <a> tags, scripts, styles, figures
+  const protectedBlocks = [];
+  let protectedHtml = sectionsHtml.replace(/<(h[1-6]|a|script|style|figure)[^>]*>[\s\S]*?<\/\1>/gi, (match) => {
+    const placeholder = `__PROTECTED_BLOCK_EXT_${protectedBlocks.length}__`;
+    protectedBlocks.push(match);
+    return placeholder;
+  });
+
+  let injected = false;
+
+  // 1. Try matching candidate keyword phrases on word boundaries
+  for (const phrase of candidates) {
+    if (injected) break;
+    if (!phrase || phrase.length < 3) continue;
+
+    const escaped = phrase.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+    const regex = new RegExp('(\\b' + escaped + '\\b)(?![^<]*>)', 'i');
+
+    if (regex.test(protectedHtml)) {
+      protectedHtml = protectedHtml.replace(regex, (match) => {
+        injected = true;
+        return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${titleAttr}">${match}</a>`;
+      });
+    }
+  }
+
+  // 2. Fallback if keyword is NOT found:
+  // Instead of failing or injecting awkward text, find a substantial body paragraph
+  // and anchor naturally to the external citation
+  if (!injected) {
+    let pIndex = 0;
+    protectedHtml = protectedHtml.replace(/(<p[^>]*>)([\s\S]*?)(<\/p>)/gi, (fullP, openP, text, closeP) => {
+      if (!injected && pIndex >= 1 && text.length > 80 && !text.includes('<a ')) {
+        injected = true;
+        return `${openP}${text} Additional verified documentation is provided by <a href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${titleAttr}">${safeLabel}</a>.${closeP}`;
+      }
+      pIndex++;
+      return fullP;
+    });
+
+    if (!injected) {
+      protectedHtml = protectedHtml.replace(/(<p[^>]*>)([\s\S]*?)(<\/p>)/i, (fullP, openP, text, closeP) => {
+        if (!injected && text.length > 40 && !text.includes('<a ')) {
+          injected = true;
+          return `${openP}${text} Source reference: <a href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${titleAttr}">${safeLabel}</a>.${closeP}`;
+        }
+        return fullP;
+      });
+    }
+  }
+
+  // Restore protected blocks
+  for (let i = 0; i < protectedBlocks.length; i++) {
+    protectedHtml = protectedHtml.replace(`__PROTECTED_BLOCK_EXT_${i}__`, protectedBlocks[i]);
+  }
+
+  return protectedHtml;
+}
+
 function renderArticleHtml(articleData, author, category, heroImage, externalLink) {
   const currentDate = new Date().toISOString().split('T')[0];
   const dateFormatted = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
