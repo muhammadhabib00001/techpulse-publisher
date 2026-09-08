@@ -1834,3 +1834,55 @@ html, body {
     gap: 1.25rem !important;
   }
 }
+
+/* ==========================================================================
+   Ad Slots & Sponsor Containers: Polished Editorial Styling
+   ========================================================================== */
+.ad-slot-wrap {
+  margin: 2.25rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.ad-label {
+  display: inline-block;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+  text-align: center;
+}
+
+.ad-placeholder {
+  width: 100%;
+  min-height: 120px;
+  background-color: var(--bg-subtle);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.ad-placeholder.ad-in-article {
+  min-height: 100px;
+  max-width: 728px;
+  margin: 0 auto;
+}
+
+/* Hide raw developer placeholder strings gracefully while preserving container geometry for live AdSense script */
+.ad-placeholder > span {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  opacity: 0.45;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 500;
+  user-select: none;
+}
+

@@ -1127,13 +1127,12 @@ function enforceMinimumInternalLinks(sectionsHtml, currentSlug, minRequired = 2)
 
 async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '', category = '') {
   const modelsToTry = [
+    'gemini-3.6-flash',
+    'gemini-flash-latest',
     'gemini-3.5-flash',
     'gemini-3.8-flash',
     'gemini-3.5-flash-lite',
-    'gemini-3.1-flash-lite',
-    'gemini-flash-lite-latest',
-    'gemini-3.6-flash',
-    'gemini-flash-latest'
+    'gemini-flash-lite-latest'
   ];
   let lastError = null;
 
@@ -1157,7 +1156,8 @@ async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '',
             try {
               const parsed = JSON.parse(data);
               if (parsed.error) return reject(new Error(`[${model}] ` + parsed.error.message));
-              let text = parsed.candidates[0].content.parts[0].text.trim();
+              const parts = parsed.candidates?.[0]?.content?.parts || [];
+              let text = parts.map(p => p.text || '').join('').trim();
               if (text.startsWith('```json')) text = text.replace(/^```json\s*/, '').replace(/\s*```$/, '');
               else if (text.startsWith('```')) text = text.replace(/^```\s*/, '').replace(/\s*```$/, '');
               try {
@@ -1677,13 +1677,12 @@ async function fetchExternalLink(topic, category, usedUrls) {
     '{"url":"https://...","anchorKeyword":"the exact 2-4 word keyword from the topic or article to link (e.g. smartphone hardware, Apple Inc, electric vehicles)","label":"Short descriptive title","domain":"domain.com"}';
 
   const models = [
+    'gemini-3.6-flash',
+    'gemini-flash-latest',
     'gemini-3.5-flash',
     'gemini-3.8-flash',
     'gemini-3.5-flash-lite',
-    'gemini-3.1-flash-lite',
-    'gemini-flash-lite-latest',
-    'gemini-3.6-flash',
-    'gemini-flash-latest'
+    'gemini-flash-lite-latest'
   ];
   const httpsLib = require('https');
 
