@@ -1193,14 +1193,6 @@ function generateDeepFallbackArticle(topic, category, author) {
       title,
       slug,
       metaDescription,
-      tableOfContents: [
-        { id: 'overview', title: `Cultural Overview: ${topicKeyword}` },
-        { id: 'creative-impact', title: `Creative Milestones and Public Influence` },
-        { id: 'industry-evolution', title: `Industry Evolution and Cross-Sector Reach` },
-        { id: 'audience-engagement', title: `Audience Engagement and Cultural Legacy` },
-        { id: 'final-thoughts', title: 'Final Thoughts' },
-        { id: 'frequently-asked-questions', title: 'Frequently Asked Questions' }
-      ],
       sections: [
         {
           id: 'overview',
@@ -1285,14 +1277,6 @@ function generateDeepFallbackArticle(topic, category, author) {
     title,
     slug,
     metaDescription,
-    tableOfContents: [
-      { id: 'overview', title: `What is ${topicKeyword}?` },
-      { id: 'key-details', title: `Key Details and Specifications` },
-      { id: 'what-to-expect', title: `What to Expect: Timeline and Availability` },
-      { id: 'expert-analysis', title: `Expert Analysis and Industry Perspective` },
-      { id: 'final-thoughts', title: 'Final Thoughts' },
-      { id: 'frequently-asked-questions', title: 'Frequently Asked Questions' }
-    ],
     sections: [
       {
         id: 'overview',
@@ -1452,10 +1436,13 @@ CORE SEO CONTENT STRATEGY (CRITICAL — NON-NEGOTIABLE):
        - "Federal Reserve Rate Decisions: What Changing Yields Mean for Borrowers"
    - "slug": Derived from the title: lowercase, clean, hyphenated. CRITICAL: Do NOT split compound brand names. "iPhone" → "iphone", "iPad" → "ipad", "ChatGPT" → "chatgpt", "MacBook" → "macbook", "Wi-Fi" → "wifi". Never insert hyphens in the middle of a single word.
    - "metaDescription": 140-155 characters summarizing the article with primary keyword.
-   - "tableOfContents": array of {id, title}
+   - "tableOfContents": DO NOT INCLUDE. Tables of contents are strictly banned.
    - "sections": array of {id, heading, contentHtml} (Section 1 heading MUST be "")
    - "faqs": array of {question, answer}
    - CRITICAL FAQ RULE: The "frequently-asked-questions" section contentHtml MUST be an empty string "" or only contain a brief intro sentence like <p>See answers below.</p>. NEVER put <h3>, <h4>, <div class="faq-item">, or raw Q&A pairs inside contentHtml for the FAQ section. All FAQ questions and answers belong ONLY in the "faqs" array as {question, answer} objects. Putting FAQ content inside contentHtml causes duplicate rendering and is strictly forbidden.
+10b. TABLE OF CONTENTS BAN (CRITICAL — STRICTLY ENFORCED):
+   - NEVER generate, output, or include a "Table of Contents" block, TOC box, nav list, or bulleted list of anchor links.
+   - Jump straight from the article header/figure into the opening hook paragraph.
 11. CURRENT YEAR & NATURAL WRITING (CRITICAL):
    - The current temporal context is 2026. All current events, market data, tax credits, standards, technology benchmarks, and temporal references MUST reflect 2026.
    - NEVER refer to 2024 or 2025 as the current or upcoming year. If referring to 2024 or 2025, refer to them explicitly in the past tense.
@@ -2877,6 +2864,13 @@ async function main() {
   }
 
   updateSiteIndex(generatedArticle, topicData.author, topicData.category, heroImage);
+  try {
+    const { execSync } = require('child_process');
+    console.log('[INFO] Invoking sync_articles engine to align index.html, categories, and feeds...');
+    execSync('node scripts/sync_articles.js', { stdio: 'inherit', cwd: ROOT_DIR });
+  } catch (syncErr) {
+    console.warn('[WARN] sync_articles notice: ' + syncErr.message);
+  }
   console.log('=== Pipeline Execution Complete ===');
 }
 

@@ -342,161 +342,172 @@ function syncDeletedArticles() {
     // 5. Sync llms.txt and llms-full.txt
   syncLlmsFiles(existingSlugs, writeIfChanged);
 
-  // 6. Sync category-*.html files
+  // 6. Sync category-*.html files (Grids, Cards, and Tickers)
   const rootFiles = fs.readdirSync(ROOT_DIR);
   const categoryFiles = rootFiles.filter(f => f.startsWith('category-') && f.endsWith('.html'));
+
+  function escapeHtml(str) {
+    return (str || '').replace(/[&<>"']/g, m => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[m]));
+  }
 
   for (const catFile of categoryFiles) {
     const catPath = path.join(ROOT_DIR, catFile);
     let original = fs.readFileSync(catPath, 'utf8');
     let updated = original;
 
-    // A. Remove cards linking to deleted articles
-    // Pattern: optional <!-- Article: slug.html --> followed by <article class="card"> ... </article>
-    const cardRegex = /(?:<!--\s*Article:\s*([a-zA-Z0-9_-]+)\.html\s*-->\s*)?<article class="card">([\s\S]*?)<\/article>\s*/gi;
-    updated = updated.replace(cardRegex, (fullCardMatch, commentSlug, cardInner) => {
-      let slug = commentSlug;
-      if (!slug) {
-        const slugMatch = cardInner.match(/href="(?:\.\/|\.\.\/)?articles\/([a-zA-Z0-9_-]+)\.html"/i);
-        if (slugMatch) slug = slugMatch[1];
-      }
+    // Detect category name from filename, e.g. category-news.html -> news
+    const catName = catFile.replace('category-', '').replace('.html', '').toLowerCase();
 
-      if (slug && !existingSlugs.has(slug)) {
-        console.log(`[sync_articles] Removing deleted article card from ${catFile}: ${slug}`);
-        return '';
-      }
-      return fullCardMatch;
+    // Matching articles for this category
+    const matchingArticles = validArticlesList.filter(a => {
+      const artCat = (a.category || 'news').toLowerCase();
+      if (artCat === catName) return true;
+      if (catName === 'entertainment' && ['entertainment', 'celebrity', 'arts', 'culture'].includes(artCat)) return true;
+      if (catName === 'lifestyle' && ['lifestyle', 'wellness', 'health'].includes(artCat)) return true;
+      return false;
     });
 
-    // B. Remove ticker items linking to deleted articles
-    const tickerRegex = /<a\s+href="(?:\.\/|\.\.\/)?articles\/([a-zA-Z0-9_-]+)\.html"[^>]*class="breaking-ticker-item"[^>]*>[\s\S]*?<\/a>\s*/gi;
-    updated = updated.replace(tickerRegex, (fullMatch, slug) => {
-      const reservedSlugs = new Set(['categories', 'index', '404', 'admin']);
-      if (!reservedSlugs.has(slug) && !slug.startsWith('category-') && !existingSlugs.has(slug)) {
-        return '';
-      }
-      return fullMatch;
-    });
+    if (matchingArticles.length > 0) {
+      // Rebuild <div class="articles-grid"> with all matching articles ordered newest first
+      const gridStart = updated.indexOf('<div class="articles-grid"');
+      if (gridStart !== -1) {
+        const gridContentStart = updated.indexOf('>', gridStart) + 1;
+        const gridEnd = updated.indexOf('</div>', gridContentStart);
+        if (gridEnd !== -1) {
+          const cardsHtml = matchingArticles.map(art => {
+            const imgSrc = art.image || ('./assets/images/' + art.slug + '.jpg');
+            return `
+          <!-- Article: ${art.slug}.html -->
+          <article class="card">
+            <div class="card-img-wrap">
+              <img src="${imgSrc}" alt="${escapeHtml(art.title)}" loading="lazy">
+            </div>
+            <div class="card-content">
+              <span class="card-tag">${(art.category || catName).toUpperCase()} &bull; Feature</span>
+              <h3 class="card-title">
+                <a href="/${art.slug}">${escapeHtml(art.title)}</a>
+              </h3>
+              <p class="card-excerpt">${escapeHtml(art.excerpt || '')}</p>
+              <div class="card-meta">
+                <span>By <a href="./author/${art.authorSlug || 'julia-vance'}.html">${escapeHtml(art.author || 'Julia Vance')}</a></span>
+                <span>${art.date || 'Recent'}</span>
+              </div>
+            </div>
+          </article>`;
+          }).join('\n');
 
-    // C. If grid is empty, inject placeholder
-    const gridMatch = updated.match(/<div class="articles-grid"[^>]*>([\s\S]*?)<\/div>/i);
-    if (gridMatch) {
-      const gridContent = gridMatch[1].trim();
-      if (!gridContent || !gridContent.includes('<article')) {
-        const placeholder = '\n        <p style="color: var(--text-muted); padding: 3rem 1.5rem; text-align: center;">Department archive ready. Newly generated stories will appear here automatically.</p>\n      ';
-        updated = updated.replace(gridMatch[0], `<div class="articles-grid" style="grid-template-columns: 1fr;">${placeholder}</div>`);
+          updated = updated.slice(0, gridContentStart) + cardsHtml + '\n        ' + updated.slice(gridEnd);
+        }
+      }
+    }
+
+    // Refresh Breaking Ticker in category page with top 10 recent articles
+    const tickerTrackStart = updated.indexOf('<div class="breaking-ticker-track">');
+    if (tickerTrackStart !== -1) {
+      const trackContentStart = updated.indexOf('>', tickerTrackStart) + 1;
+      const trackEnd = updated.indexOf('</div>', trackContentStart);
+      if (trackEnd !== -1) {
+        const tickerItems = validArticlesList.slice(0, 10).map(art => 
+          `          <a href="/${art.slug}" class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> ${escapeHtml(art.title)}</a>`
+        ).join('\n');
+        updated = updated.slice(0, trackContentStart) + '\n' + tickerItems + '\n        ' + updated.slice(trackEnd);
       }
     }
 
     writeIfChanged(catPath, updated, original);
   }
 
-  // 7. Sync index.html (Homepage)
+  // 7. Sync index.html (Homepage: Section 1 Latest Stories, Head Preloads, and Breaking Ticker)
   const indexPath = path.join(ROOT_DIR, 'index.html');
-  if (fs.existsSync(indexPath)) {
+  if (fs.existsSync(indexPath) && validArticlesList.length > 0) {
     let original = fs.readFileSync(indexPath, 'utf8');
     let updated = original;
 
-    // A. Remove ticker items linking to deleted articles
-    const tickerRegex = /<a\s+href="(?:\.\/)?articles\/([a-zA-Z0-9_-]+)\.html"[^>]*class="breaking-ticker-item"[^>]*>[\s\S]*?<\/a>\s*/gi;
-    updated = updated.replace(tickerRegex, (fullMatch, slug) => {
-      const reservedSlugs = new Set(['categories', 'index', '404', 'admin']);
-      if (!reservedSlugs.has(slug) && !slug.startsWith('category-') && !existingSlugs.has(slug)) {
-        console.log(`[sync_articles] Removing deleted article ticker from index.html: ${slug}`);
-        return '';
-      }
-      return fullMatch;
-    });
+    const leadArticle = validArticlesList[0];
+    const sideArticles = validArticlesList.slice(1, 8);
 
-    // B. Check Lead Main Card in pattern-a-main
-    const mainStart = updated.indexOf('<div class="pattern-a-main">');
-    const sideStart = updated.indexOf('<div class="pattern-a-side-list">');
-
-    if (mainStart !== -1 && sideStart !== -1 && mainStart < sideStart) {
-      const leadBlock = updated.slice(mainStart, sideStart);
-      const leadSlugMatch = leadBlock.match(/href="(?:\.\/)?articles\/([a-zA-Z0-9_-]+)\.html"/);
-      
-      if (leadSlugMatch && !existingSlugs.has(leadSlugMatch[1])) {
-        const deletedLeadSlug = leadSlugMatch[1];
-        console.log(`[sync_articles] Lead article ${deletedLeadSlug} was deleted! Promoting next available article...`);
-
-        // Find candidate for replacement from validArticlesList or remaining existingSlugs
-        let candidate = null;
-        if (validArticlesList.length > 0) {
-          candidate = validArticlesList.find(a => a.slug !== deletedLeadSlug && existingSlugs.has(a.slug));
-        }
-        
-        if (!candidate && existingSlugs.size > 0) {
-          const firstSlug = Array.from(existingSlugs)[0];
-          candidate = {
-            slug: firstSlug,
-            title: firstSlug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
-            category: 'news',
-            excerpt: 'In-depth reporting from GenAlphaMagazines.',
-            author: 'Julia Vance',
-            authorSlug: 'julia-vance',
-            date: 'Recent'
-          };
-        }
-
-        if (candidate) {
-          const newLeadCard = `<div class="pattern-a-main">
+    // A. Rebuild pattern-a-grid in Latest Stories section
+    const patternAStart = updated.indexOf('<div class="pattern-a-grid">');
+    if (patternAStart !== -1) {
+      const gridContentStart = updated.indexOf('>', patternAStart) + 1;
+      // Find the closing </div> of pattern-a-grid (preceding </section>)
+      const sectionEnd = updated.indexOf('</section>', gridContentStart);
+      if (sectionEnd !== -1) {
+        const gridEnd = updated.lastIndexOf('</div>', sectionEnd);
+        if (gridEnd > gridContentStart) {
+          const leadImgSrc = leadArticle.image || ('./assets/images/' + leadArticle.slug + '.jpg');
+          const leadCardHtml = `
+          <!-- 1 Main Big Lead Article -->
+          <div class="pattern-a-main">
             <article class="card">
               <div class="card-img-wrap">
-                <img src="./assets/images/${candidate.slug}.jpg" alt="${candidate.title}" width="800" height="450" loading="eager" fetchpriority="high" decoding="async">
+                <img src="${leadImgSrc}" alt="${escapeHtml(leadArticle.title)}" width="800" height="450" loading="eager" fetchpriority="high" decoding="async">
               </div>
               <div class="card-content">
-                <span class="card-tag">${(candidate.category || 'NEWS').toUpperCase()} &bull; Editorial Lead Feature</span>
+                <span class="card-tag">${(leadArticle.category || 'NEWS').toUpperCase()} &bull; Editorial Lead Feature</span>
                 <h3 class="card-title">
-                  <a href="/${candidate.slug}">${candidate.title}</a>
+                  <a href="/${leadArticle.slug}">${escapeHtml(leadArticle.title)}</a>
                 </h3>
-                <p class="card-excerpt">${candidate.excerpt || ''}</p>
+                <p class="card-excerpt">${escapeHtml(leadArticle.excerpt || '')}</p>
                 <div class="card-meta">
-                  <span>By <a href="./author/${candidate.authorSlug || 'julia-vance'}.html">${candidate.author || 'Julia Vance'}</a></span>
-                  <span>${candidate.date || 'Recent'}</span>
+                  <span>By <a href="./author/${leadArticle.authorSlug || 'julia-vance'}.html">${escapeHtml(leadArticle.author || 'Julia Vance')}</a></span>
+                  <span>${leadArticle.date || 'Recent'}</span>
                 </div>
               </div>
             </article>
-          </div>\n\n          `;
+          </div>
 
-          updated = updated.slice(0, mainStart) + newLeadCard + updated.slice(sideStart);
+          <div class="pattern-a-side-list">
+${sideArticles.map(art => {
+  const sideImg = art.image || ('./assets/images/' + art.slug + '.jpg');
+  return `            <article class="mini-side-card">
+              <div class="mini-side-thumb">
+                <img src="${sideImg}" alt="${escapeHtml(art.title)}" loading="lazy">
+              </div>
+              <div class="mini-side-content">
+                <span class="mini-side-tag">${(art.category || 'NEWS').toUpperCase()}</span>
+                <h4 class="mini-side-title">
+                  <a href="/${art.slug}">${escapeHtml(art.title)}</a>
+                </h4>
+                <div class="mini-side-meta">${art.date || 'Recent'}</div>
+              </div>
+            </article>`;
+}).join('\n\n')}
+          </div>
+        `;
 
-          // Update preload in head
-          const preloadRegex = /<link\s+rel="preload"\s+as="image"\s+href="[^"]*"\s+fetchpriority="high">/;
-          const newPreload = `<link rel="preload" as="image" href="./assets/images/${candidate.slug}.jpg" fetchpriority="high">`;
-          if (preloadRegex.test(updated)) {
-            updated = updated.replace(preloadRegex, newPreload);
-          }
+          updated = updated.slice(0, gridContentStart) + leadCardHtml + updated.slice(gridEnd);
         }
       }
     }
 
-    // C. Remove mini-side-cards linking to deleted articles
-    const miniSideRegex = /<article class="mini-side-card">([\s\S]*?)<\/article>\s*/gi;
-    updated = updated.replace(miniSideRegex, (fullMatch, inner) => {
-      const slugMatch = inner.match(/href="(?:\.\/)?articles\/([a-zA-Z0-9_-]+)\.html"/i);
-      if (slugMatch && !existingSlugs.has(slugMatch[1])) {
-        console.log(`[sync_articles] Removing deleted mini-side-card from index.html: ${slugMatch[1]}`);
-        return '';
-      }
-      return fullMatch;
-    });
+    // B. Update LCP preload in <head> for the new lead story image
+    const leadImgSrc = leadArticle.image || ('./assets/images/' + leadArticle.slug + '.jpg');
+    const preloadRegex = /<link\s+rel="preload"\s+as="image"\s+href="[^"]*"\s+fetchpriority="high">/;
+    const newPreload = `<link rel="preload" as="image" href="${leadImgSrc}" fetchpriority="high">`;
+    if (preloadRegex.test(updated)) {
+      updated = updated.replace(preloadRegex, newPreload);
+    }
 
-    // D. Remove general grid cards linking to deleted articles
-    const gridCardRegex = /<article class="card">([\s\S]*?)<\/article>\s*/gi;
-    updated = updated.replace(gridCardRegex, (fullMatch, inner) => {
-      const slugMatch = inner.match(/href="(?:\.\/)?articles\/([a-zA-Z0-9_-]+)\.html"/i);
-      if (slugMatch && !existingSlugs.has(slugMatch[1])) {
-        console.log(`[sync_articles] Removing deleted grid card from index.html: ${slugMatch[1]}`);
-        return '';
+    // C. Rebuild Breaking News Ticker Track with top 10 articles
+    const tickerTrackStart = updated.indexOf('<div class="breaking-ticker-track">');
+    if (tickerTrackStart !== -1) {
+      const trackContentStart = updated.indexOf('>', tickerTrackStart) + 1;
+      const trackEnd = updated.indexOf('</div>', trackContentStart);
+      if (trackEnd !== -1) {
+        const tickerItems = validArticlesList.slice(0, 10).map(art => 
+          `          <a href="/${art.slug}" class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> ${escapeHtml(art.title)}</a>`
+        ).join('\n');
+        updated = updated.slice(0, trackContentStart) + '\n' + tickerItems + '\n        ' + updated.slice(trackEnd);
       }
-      return fullMatch;
-    });
+    }
 
     writeIfChanged(indexPath, updated, original);
   }
 
-  // 8. Sync related links inside remaining articles/*.html
+    // 8. Sync related links inside remaining articles/*.html
   for (const artFile of existingArticleFiles) {
     const artPath = path.join(articlesDir, artFile);
     let original = fs.readFileSync(artPath, 'utf8');

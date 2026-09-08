@@ -187,6 +187,12 @@ ${cardsHtml}
     }
   }
 
+  // 8b. Strip any Table of Contents
+  content = content
+    .replace(/<nav class="table-of-contents"[\s\S]*?<\/nav>/gi, '')
+    .replace(/<div class="table-of-contents-box"[\s\S]*?<\/div>/gi, '')
+    .replace(/<div[^>]*class="[^"]*table-of-contents[^"]*"[\s\S]*?<\/div>/gi, '');
+
   // 9. Root-relative assets and internal links
   content = content.replace(/href=["']\.\.\/assets\//gi, 'href="/assets/');
   content = content.replace(/src=["']\.\.\/assets\//gi, 'src="/assets/');
@@ -236,6 +242,13 @@ ${cardsHtml}
     console.log(`[publish_manual] All standards already 100% compliant.`);
   }
 
+  try {
+    const { execSync } = require('child_process');
+    console.log('[publish_manual] Invoking sync_articles engine...');
+    execSync('node scripts/sync_articles.js', { stdio: 'inherit', cwd: ROOT_DIR });
+  } catch (syncErr) {
+    console.warn('[publish_manual] sync_articles notice: ' + syncErr.message);
+  }
   console.log(`[publish_manual] Successfully published & synced "${slug}"!`);
 }
 
