@@ -73,8 +73,10 @@ jobs:
             --topic "${{ github.event.inputs.topic || '' }}" \
             --category "${{ github.event.inputs.category || '' }}"
 
-      - name: Enforce FAQ Card Format
-        run: node scripts/enforce_faq_format.js
+      - name: Enforce Standards & Sync Feeds
+        run: |
+          node scripts/enforce_faq_format.js
+          node scripts/sync_articles.js
 
       - name: Commit and Push New Article & Updated Feeds
         run: |

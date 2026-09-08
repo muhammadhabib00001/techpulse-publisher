@@ -3,7 +3,9 @@
  * Called by the git pre-commit hook for every staged article HTML file.
  * Enforces:
  * 1. ZERO "2026" / "in 2026" in article titles (<title>, <h1>, og:title)
- * 2. Single canonical FAQ card format with semantic H3 headings
+ * 2. Single canonical FAQ card format with semantic H3 headings (.faq-card)
+ * 3. Clean root URLs for canonical and og:url (https://www.genalphamagazines.com/<slug>)
+ * 4. Automatic mirroring from articles/<slug>.html to root <slug>.html
  *
  * Runs automatically before every git commit for both manual and automated articles.
  */
@@ -36,45 +38,52 @@ function sanitizeTitleString(t) {
 }
 
 function renderCard(q, a) {
-  return `\n            <div style="${CARD_BG}">\n              <h3 style="${H3_STYLE}">${q}</h3>\n              <p style="${P_STYLE}">${a}</p>\n            </div>`;
+  return `\n            <div class="faq-card" style="${CARD_BG}">\n              <h3 class="faq-question" style="${H3_STYLE}">${q}</h3>\n              <p class="faq-answer" style="${P_STYLE}">${a}</p>\n            </div>`;
 }
 
 function extractPairs(body) {
   const pairs = [], seen = new Set();
   function add(q, a) {
-    const key = q.toLowerCase().trim().slice(0, 80);
-    if (!seen.has(key) && q.length > 5 && a.length > 5) {
+    const cleanQ = q.replace(/<[^>]+>/g, '').trim();
+    const cleanA = a.replace(/<[^>]+>/g, '').trim();
+    const key = cleanQ.toLowerCase().slice(0, 80);
+    if (!seen.has(key) && cleanQ.length > 5 && cleanA.length > 5) {
       seen.add(key);
-      pairs.push({ q: q.trim(), a: a.trim().replace(/<[^>]+>/g, '') });
+      pairs.push({ q: cleanQ, a: cleanA });
     }
   }
   let m;
-  const r1 = /<div[^>]*class=['"]faq-item['"][^>]*>([\s\S]*?)<\/div>/gi;
+  const r1 = /<div[^>]*class=['"](?:faq-item|faq-card)['"][^>]*>([\s\S]*?)<\/div>/gi;
   while ((m = r1.exec(body)) !== null) {
-    const qm = m[1].match(/<h[234][^>]*>([^<]+)<\/h[234]>/i);
+    const qm = m[1].match(/<h[234][^>]*>([\s\S]*?)<\/h[234]>/i);
     const am = m[1].match(/<p[^>]*>([\s\S]*?)<\/p>/i);
     if (qm && am) add(qm[1], am[1]);
   }
-  const bgToken = "background: var(--bg-card)";
+  const bgToken = "var(--bg-card)";
   const r2 = /<div style="[^"]*"[^>]*>([\s\S]*?)<\/div>/gi;
   while ((m = r2.exec(body)) !== null) {
     if (!m[0].includes(bgToken)) continue;
-    const qm = m[1].match(/<h[234][^>]*>([^<]+)<\/h[234]>/i);
+    const qm = m[1].match(/<h[234][^>]*>([\s\S]*?)<\/h[234]>/i);
     const am = m[1].match(/<p[^>]*>([\s\S]*?)<\/p>/i);
     if (qm && am) add(qm[1], am[1]);
   }
-  const r3 = /<h[234]>([^<]+)<\/h[234]>\s*<p>([\s\S]*?)<\/p>/gi;
-  while ((m = r3.exec(body)) !== null) add(m[1], m[2]);
+  const r3 = /<h[234][^>]*>([^<]+)<\/h[234]>\s*<p[^>]*>([\s\S]*?)<\/p>/gi;
+  while ((m = r3.exec(body)) !== null) {
+    if (/Frequently Asked Questions/i.test(m[1])) continue;
+    add(m[1], m[2]);
+  }
   return pairs;
 }
 
 function isFaqClean(body) {
   if (/class=['"]faq-item['"]/.test(body)) return false;
+  if (!body.includes('class="faq-card"')) return false;
   if (/<h3>[^<]+<\/h3>/.test(body)) return false;
   if (/<h4 style=/.test(body)) return false;
   const qs = []; let m;
-  const qRe = /<h3 style=[^>]*>([^<]+)<\/h3>/gi;
+  const qRe = /<h3[^>]*class="faq-question"[^>]*>([^<]+)<\/h3>/gi;
   while ((m = qRe.exec(body)) !== null) qs.push(m[1].trim().toLowerCase());
+  if (qs.length === 0) return false;
   if (qs.length !== new Set(qs).size) return false;
   return true;
 }
@@ -84,6 +93,8 @@ let fixed = 0, clean = 0, titleCleaned = 0;
 for (const filePath of targetFiles) {
   let content = fs.readFileSync(filePath, 'utf8');
   let fileModified = false;
+  const fileName = path.basename(filePath);
+  const slug = fileName.replace('.html', '');
 
   // 1. Enforce No "2026" in Titles
   const titleMatch = content.match(/<title>([^<]+)<\/title>/i);
@@ -113,7 +124,20 @@ for (const filePath of targetFiles) {
     fileModified = true;
   }
 
-  // 2. Enforce FAQ Card Format
+  // 2. Enforce Clean Root URLs (canonical & og:url)
+  const cleanUrl = `https://www.genalphamagazines.com/${slug}`;
+  const canonicalMatch = content.match(/<link\s+rel="canonical"\s+href="([^"]+)"/i);
+  if (canonicalMatch && (canonicalMatch[1].includes('/articles/') || canonicalMatch[1].endsWith('.html'))) {
+    content = content.replace(canonicalMatch[0], `<link rel="canonical" href="${cleanUrl}"`);
+    fileModified = true;
+  }
+  const ogUrlMatch = content.match(/<meta\s+property="og:url"\s+content="([^"]+)"/i);
+  if (ogUrlMatch && (ogUrlMatch[1].includes('/articles/') || ogUrlMatch[1].endsWith('.html'))) {
+    content = content.replace(ogUrlMatch[0], `<meta property="og:url" content="${cleanUrl}"`);
+    fileModified = true;
+  }
+
+  // 3. Enforce FAQ Card Format
   const sm = content.match(/(<section[^>]*id=["']frequently-asked-questions["'][^>]*>)([\s\S]*?)(<\/section>)/i);
   if (sm) {
     const [full, open, body, close] = sm;
@@ -121,8 +145,8 @@ for (const filePath of targetFiles) {
       const pairs = extractPairs(body);
       if (pairs.length > 0) {
         const cards = pairs.map(p => renderCard(p.q, p.a)).join("");
-        const newBody = `\n            <h2>Frequently Asked Questions</h2>\n            <div style="margin-top: 1.25rem;">${cards}\n            </div>\n          `;
-        content = content.replace(full, open + newBody + close);
+        const newSection = `<section id="frequently-asked-questions" class="faq-section" style="margin-top: 2rem;">\n            <h2>Frequently Asked Questions</h2>\n            <div style="margin-top: 1.25rem;">${cards}\n            </div>\n          </section>`;
+        content = content.replace(full, newSection);
         fileModified = true;
         fixed++;
       }
@@ -133,7 +157,20 @@ for (const filePath of targetFiles) {
 
   if (fileModified) {
     fs.writeFileSync(filePath, content, 'utf8');
-    console.log(`[AUTO-ENFORCED] ${path.basename(filePath)}`);
+    console.log(`[AUTO-ENFORCED] ${fileName}`);
+  }
+
+  // 4. Ensure Mirror in Root (or articles/ if edited in root)
+  if (filePath.startsWith(articlesDir)) {
+    const rootTarget = path.join(ROOT, fileName);
+    if (!fs.existsSync(rootTarget) || fileModified) {
+      fs.writeFileSync(rootTarget, content, 'utf8');
+    }
+  } else if (filePath === path.join(ROOT, fileName)) {
+    const artTarget = path.join(articlesDir, fileName);
+    if (fs.existsSync(artTarget) && fileModified) {
+      fs.writeFileSync(artTarget, content, 'utf8');
+    }
   }
 }
 

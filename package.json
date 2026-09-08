@@ -5,6 +5,7 @@
   "main": "scripts/publisher.js",
   "scripts": {
     "publish-article": "node scripts/publisher.js",
+    "publish-manual": "node scripts/publish_manual.js",
     "sync-articles": "node scripts/sync_articles.js",
     "delete-article": "node scripts/delete_article.js",
     "enforce-faq": "node scripts/enforce_faq_format.js",

@@ -785,75 +785,77 @@ function getInternalLinkMap(category = '') {
 
   // Core Authority Hubs (valid and relevant for any article)
   const coreHubs = [
-    { keyword: 'Editorial Policy', url: '../pages/editorial-policy.html', categories: ['all'] },
-    { keyword: 'Editorial Standards', url: '../pages/editorial-policy.html', categories: ['all'] },
-    { keyword: 'editorial standards', url: '../pages/editorial-policy.html', categories: ['all'] },
-    { keyword: 'editorial policy', url: '../pages/editorial-policy.html', categories: ['all'] },
-    { keyword: 'GenAlphaMagazines', url: '../pages/about.html', categories: ['all'] }
+    { keyword: 'Editorial Policy', url: '/pages/editorial-policy.html', categories: ['all'] },
+    { keyword: 'Editorial Standards', url: '/pages/editorial-policy.html', categories: ['all'] },
+    { keyword: 'editorial standards', url: '/pages/editorial-policy.html', categories: ['all'] },
+    { keyword: 'editorial policy', url: '/pages/editorial-policy.html', categories: ['all'] },
+    { keyword: 'GenAlphaMagazines', url: '/pages/about.html', categories: ['all'] }
   ];
 
   // Category Department Hubs
   const deptHubs = [
-    { keyword: 'Business & Economy', url: '../category-business.html', categories: ['business', 'news'] },
-    { keyword: 'Arts & Entertainment', url: '../category-arts.html', categories: ['arts', 'entertainment', 'celebrity'] },
-    { keyword: 'Lifestyle & Culture', url: '../category-lifestyle.html', categories: ['lifestyle', 'health', 'celebrity', 'others'] },
-    { keyword: 'News & Announcements', url: '../category-news.html', categories: ['news', 'business', 'community'] },
-    { keyword: 'Community & Events', url: '../category-community.html', categories: ['community', 'news', 'others'] },
-    { keyword: 'Voices & Columnists', url: '../category-voices.html', categories: ['voices', 'celebrity', 'others'] }
+    { keyword: 'Business & Economy', url: '/category-business.html', categories: ['business', 'news'] },
+    { keyword: 'Arts & Entertainment', url: '/category-arts.html', categories: ['arts', 'entertainment', 'celebrity'] },
+    { keyword: 'Lifestyle & Culture', url: '/category-lifestyle.html', categories: ['lifestyle', 'health', 'celebrity', 'others'] },
+    { keyword: 'News & Announcements', url: '/category-news.html', categories: ['news', 'business', 'community'] },
+    { keyword: 'Community & Events', url: '/category-community.html', categories: ['community', 'news', 'others'] },
+    { keyword: 'Voices & Columnists', url: '/category-voices.html', categories: ['voices', 'celebrity', 'others'] }
   ];
 
-  // In-Depth Editorial Target Articles strictly segregated by domain
+  // In-Depth Editorial Target Articles with clean root URLs
   const articleLinks = [
     // Celebrity & Entertainment
-    { keyword: 'LeBron James', url: '../articles/lebron-james-the-evolution-of-nba-royalty-on-and-off-court.html', categories: ['celebrity', 'entertainment'] },
-    { keyword: 'contemporary cinema', url: '../articles/25-american-movies-defining-visual-storytelling-today.html', categories: ['celebrity', 'entertainment', 'arts'] },
-    { keyword: 'American cinema', url: '../articles/25-american-movies-defining-visual-storytelling-today.html', categories: ['celebrity', 'entertainment', 'arts'] },
-    { keyword: 'visual storytelling', url: '../articles/25-american-movies-defining-visual-storytelling-today.html', categories: ['arts', 'entertainment'] },
-    { keyword: 'female-centered cinema', url: '../articles/cinematic-masterpieces-unforgettable-films-centering-women.html', categories: ['celebrity', 'entertainment', 'arts'] },
-    { keyword: 'independent theater', url: '../articles/local-playwrights-guide-independent-theater-spotlight.html', categories: ['arts', 'entertainment'] },
-    { keyword: 'theatrical productions', url: '../articles/local-playwrights-guide-independent-theater-spotlight.html', categories: ['arts', 'entertainment'] },
-    { keyword: 'indie film distribution', url: '../articles/grassroots-indie-film-distribution-how-regional-festival.html', categories: ['arts', 'entertainment'] },
-    { keyword: 'German cultural figures', url: '../articles/top-german-celebrities-shaping-global-culture-today.html', categories: ['celebrity', 'entertainment'] },
-    { keyword: 'American cultural figures', url: '../articles/25-famous-celebrity-in-usa-career-influence-and-cultur.html', categories: ['celebrity', 'entertainment'] },
+    { keyword: 'LeBron James', url: '/lebron-james-the-evolution-of-nba-royalty-on-and-off-court', categories: ['celebrity', 'entertainment'] },
+    { keyword: 'Cristiano Ronaldo', url: '/cristiano-ronaldo-career-legacy-and-records', categories: ['celebrity', 'entertainment', 'lifestyle'] },
+    { keyword: 'contemporary cinema', url: '/25-american-movies-defining-visual-storytelling-today', categories: ['celebrity', 'entertainment', 'arts'] },
+    { keyword: 'American cinema', url: '/25-american-movies-defining-visual-storytelling-today', categories: ['celebrity', 'entertainment', 'arts'] },
+    { keyword: 'visual storytelling', url: '/25-american-movies-defining-visual-storytelling-today', categories: ['arts', 'entertainment'] },
+    { keyword: 'female-centered cinema', url: '/cinematic-masterpieces-unforgettable-films-centering-women', categories: ['celebrity', 'entertainment', 'arts'] },
+    { keyword: 'independent theater', url: '/local-playwrights-guide-independent-theater-spotlight', categories: ['arts', 'entertainment'] },
+    { keyword: 'theatrical productions', url: '/local-playwrights-guide-independent-theater-spotlight', categories: ['arts', 'entertainment'] },
+    { keyword: 'indie film distribution', url: '/grassroots-indie-film-distribution-how-regional-festival', categories: ['arts', 'entertainment'] },
+    { keyword: 'German cultural figures', url: '/top-german-celebrities-shaping-global-culture-today', categories: ['celebrity', 'entertainment'] },
+    { keyword: 'American cultural figures', url: '/25-famous-celebrity-in-usa-career-influence-and-cultur', categories: ['celebrity', 'entertainment'] },
 
     // Business & Economy
-    { keyword: 'business operations', url: '../articles/how-to-run-a-business-in-2026-a-complete-guide.html', categories: ['business'] },
-    { keyword: 'operational resilience', url: '../articles/how-to-run-a-business-in-2026-a-complete-guide.html', categories: ['business'] },
-    { keyword: 'business acquisition', url: '../articles/how-to-buy-run-business-market-analysis.html', categories: ['business'] },
-    { keyword: 'Main Street businesses', url: '../articles/main-street-business-revitalization-guide-for-2026.html', categories: ['business', 'community'] },
-    { keyword: 'retail foot traffic', url: '../articles/main-street-business-revitalization-guide-for-2026.html', categories: ['business', 'community'] },
-    { keyword: 'AI in business operations', url: '../articles/how-ai-is-reshaping-main-street-business-operations.html', categories: ['business', 'technology'] },
-    { keyword: 'monetary policy', url: '../articles/fomc-meeting-sept-2026-interest-rates-and-market-outlook.html', categories: ['business', 'news'] },
-    { keyword: 'Federal Reserve', url: '../articles/fomc-meeting-sept-2026-interest-rates-and-market-outlook.html', categories: ['business', 'news'] },
-    { keyword: 'interest rates', url: '../articles/fomc-meeting-sept-2026-interest-rates-and-market-outlook.html', categories: ['business', 'news'] },
-    { keyword: 'borrowing strategies', url: '../articles/us-interest-rates-yields-inflation-and-borrowing-strategy.html', categories: ['business', 'news'] },
-    { keyword: 'crypto regulations', url: '../articles/trump-crypto-policy-guide-2026-regulations-and-impact.html', categories: ['business', 'news', 'technology'] },
-    { keyword: 'human resources', url: '../articles/the-evolving-hr-manager-strategy-tech-and-culture.html', categories: ['business'] },
+    { keyword: 'business operations', url: '/how-ai-is-reshaping-main-street-business-operations', categories: ['business'] },
+    { keyword: 'operational resilience', url: '/how-ai-is-reshaping-main-street-business-operations', categories: ['business'] },
+    { keyword: 'Main Street businesses', url: '/main-street-business-revitalization-guide-for-2026', categories: ['business', 'community'] },
+    { keyword: 'retail foot traffic', url: '/main-street-business-revitalization-guide-for-2026', categories: ['business', 'community'] },
+    { keyword: 'AI in business operations', url: '/how-ai-is-reshaping-main-street-business-operations', categories: ['business', 'technology'] },
+    { keyword: 'monetary policy', url: '/fomc-meeting-sept-2026-interest-rates-and-market-outlook', categories: ['business', 'news'] },
+    { keyword: 'Federal Reserve', url: '/fomc-meeting-sept-2026-interest-rates-and-market-outlook', categories: ['business', 'news'] },
+    { keyword: 'interest rates', url: '/fomc-meeting-sept-2026-interest-rates-and-market-outlook', categories: ['business', 'news'] },
+    { keyword: 'borrowing strategies', url: '/us-interest-rates-yields-inflation-and-borrowing-strategy', categories: ['business', 'news'] },
+    { keyword: 'crypto regulations', url: '/trump-crypto-policy-guide-2026-regulations-and-impact', categories: ['business', 'news', 'technology'] },
+    { keyword: 'human resources', url: '/the-evolving-hr-manager-strategy-tech-and-culture', categories: ['business'] },
+    { keyword: 'US economy', url: '/how-high-interest-rates-are-reshaping-the-us-economy', categories: ['business', 'news'] },
+    { keyword: 'Elon Musk business empire', url: '/inside-the-business-empire-of-elon-musk-today', categories: ['business', 'technology'] },
 
     // Technology & Hardware
-    { keyword: 'smart home energy audits', url: '../articles/smart-home-energy-audits-heat-pump-and-solar-storage.html', categories: ['technology', 'lifestyle'] },
-    { keyword: 'solar battery storage', url: '../articles/solar-battery-storage-guide-costs-types-and-savings.html', categories: ['technology', 'lifestyle'] },
-    { keyword: 'Wi-Fi 7 mesh systems', url: '../articles/wi-fi-7-mesh-upgrades-real-latency-gains-and-hardware.html', categories: ['technology'] },
-    { keyword: 'iOS architecture innovations', url: '../articles/inside-apple-s-ios-27-architecture-and-ai-innovations.html', categories: ['technology'] },
-    { keyword: 'flagship smartphone hardware', url: '../articles/top-7-phone-features-and-specs.html', categories: ['technology'] },
+    { keyword: 'smart home energy audits', url: '/smart-home-energy-audits-heat-pump-and-solar-storage', categories: ['technology', 'lifestyle'] },
+    { keyword: 'solar battery storage', url: '/solar-battery-storage-guide-costs-types-and-savings', categories: ['technology', 'lifestyle'] },
+    { keyword: 'iOS architecture innovations', url: '/inside-apple-s-ios-27-architecture-and-ai-innovations', categories: ['technology'] },
+    { keyword: 'flagship smartphone hardware', url: '/top-7-phone-features-and-specs', categories: ['technology'] },
+    { keyword: 'military technology modernization', url: '/us-army-modernization-strategy-tech-and-troop-structure', categories: ['technology', 'news'] },
 
     // Health & Wellness
-    { keyword: 'cardiovascular health', url: '../articles/heart-problems-evidence-based-insights-and-expert-guidance.html', categories: ['health'] },
-    { keyword: 'heart health', url: '../articles/heart-problems-evidence-based-insights-and-expert-guidance.html', categories: ['health'] },
-    { keyword: 'women health solutions', url: '../articles/key-health-issues-affecting-women-symptoms-and-solutions.html', categories: ['health'] },
-    { keyword: 'Zone 2 cardio training', url: '../articles/zone-2-cardio-training-mitochondrial-health-endurance.html', categories: ['health', 'lifestyle'] },
+    { keyword: 'cardiovascular health', url: '/heart-problems-evidence-based-insights-and-expert-guidance', categories: ['health'] },
+    { keyword: 'heart health', url: '/heart-problems-evidence-based-insights-and-expert-guidance', categories: ['health'] },
+    { keyword: 'women health solutions', url: '/key-health-issues-affecting-women-symptoms-and-solutions', categories: ['health'] },
 
     // Gaming & Interactive
-    { keyword: 'GTA 6 release insights', url: '../articles/gta-6-release-date-map-and-gameplay-guide.html', categories: ['games'] },
-    { keyword: 'Vice City map comparison', url: '../articles/gta-6-vice-city-map-comparison-setting-scale-landmarks.html', categories: ['games'] },
-    { keyword: 'popular games dominating players', url: '../articles/what-are-the-most-popular-games-dominating-players-today.html', categories: ['games'] },
+    { keyword: 'GTA 6 release insights', url: '/gta-6-release-date-map-and-gameplay-guide', categories: ['games'] },
+    { keyword: 'Vice City map comparison', url: '/gta-6-vice-city-map-comparison-setting-scale-landmarks', categories: ['games'] },
+    { keyword: 'popular games dominating players', url: '/what-are-the-most-popular-games-dominating-players-today', categories: ['games'] },
 
     // Lifestyle, Culture & Travel
-    { keyword: 'vinyl record care', url: '../articles/the-vinyl-record-resurgence-turntable-setups-pressing.html', categories: ['lifestyle', 'arts'] },
-    { keyword: 'modern culinary spaces', url: '../articles/the-kitchen-as-canvas-designing-creative-culinary-spaces.html', categories: ['lifestyle'] },
-    { keyword: 'bathroom design upgrades', url: '../articles/modern-bathroom-upgrades-spa-luxury-meets-smart-tech.html', categories: ['lifestyle'] },
-    { keyword: 'travel disruptions', url: '../articles/how-to-handle-flight-delays-and-travel-disruptions.html', categories: ['lifestyle', 'news'] },
-    { keyword: 'travel planning solutions', url: '../articles/common-travel-problems-and-solutions-a-complete-guide.html', categories: ['lifestyle', 'news'] }
+    { keyword: 'vinyl record care', url: '/the-vinyl-record-resurgence-turntable-setups-pressing', categories: ['lifestyle', 'arts'] },
+    { keyword: 'modern culinary spaces', url: '/the-kitchen-as-canvas-designing-creative-culinary-spaces', categories: ['lifestyle'] },
+    { keyword: 'bathroom design upgrades', url: '/modern-bathroom-upgrades-spa-luxury-meets-smart-tech', categories: ['lifestyle'] },
+    { keyword: 'travel disruptions', url: '/how-to-handle-flight-delays-and-travel-disruptions', categories: ['lifestyle', 'news'] },
+    { keyword: 'travel planning solutions', url: '/common-travel-problems-and-solutions-a-complete-guide', categories: ['lifestyle', 'news'] },
+    { keyword: 'waterfront heritage artisan lineup', url: '/waterfront-heritage-festival-2026-record-artisan-lineup', categories: ['lifestyle', 'community', 'arts'] }
   ];
 
   const candidatePool = [...coreHubs, ...deptHubs, ...articleLinks];
@@ -1731,9 +1733,9 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
       
       // Render FAQ cards using semantic <h3> (not <h4>) for proper heading hierarchy
       const faqCards = articleData.faqs.map(f => `
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem;">
-              <h3 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary); font-size: 1.05rem;">${f.question}</h3>
-              <p style="margin-bottom: 0; color: var(--text-main); font-size: 0.95rem; line-height: 1.7;">${f.answer}</p>
+            <div class="faq-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem;">
+              <h3 class="faq-question" style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary); font-size: 1.05rem;">${f.question}</h3>
+              <p class="faq-answer" style="margin-bottom: 0; color: var(--text-main); font-size: 0.95rem; line-height: 1.7;">${f.answer}</p>
             </div>`).join('\n');
       faqBlock = `<div style="margin-top: 1.25rem;">${faqCards}</div>`;
     }
@@ -1776,13 +1778,13 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   let visibleFaqHtml = '';
   if (articleData.faqs && articleData.faqs.length > 0) {
     const faqCards = articleData.faqs.map(f => `
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem;">
-              <h3 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary); font-size: 1.05rem;">${f.question}</h3>
-              <p style="margin-bottom: 0; color: var(--text-main); font-size: 0.95rem; line-height: 1.7;">${f.answer}</p>
+            <div class="faq-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem;">
+              <h3 class="faq-question" style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary); font-size: 1.05rem;">${f.question}</h3>
+              <p class="faq-answer" style="margin-bottom: 0; color: var(--text-main); font-size: 0.95rem; line-height: 1.7;">${f.answer}</p>
             </div>`).join('\n');
 
     visibleFaqHtml = `
-          <section id="frequently-asked-questions" style="margin-top: 2rem;">
+          <section id="frequently-asked-questions" class="faq-section" style="margin-top: 2rem;">
             <h2>Frequently Asked Questions</h2>
             <div style="margin-top: 1.25rem;">
               ${faqCards}
@@ -2254,7 +2256,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
               <div class="mini-side-content">
                 <span class="mini-side-tag">${prevTag}</span>
                 <h4 class="mini-side-title">
-                  <a href="./articles/${prevSlug}">${prevTitle}</a>
+                  <a href="/${prevSlug.replace('.html', '')}">${prevTitle}</a>
                 </h4>
                 <div class="mini-side-meta">${prevMeta}</div>
               </div>
@@ -2361,7 +2363,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
               <div class="mini-side-content">
                 <span class="mini-side-tag">${cTagMatch ? cTagMatch[1].trim() : category.toUpperCase()}</span>
                 <h4 class="mini-side-title">
-                  <a href="./articles/${cUrlMatch[1]}">${cTitleMatch[1]}</a>
+                  <a href="/${cUrlMatch[1].replace('.html', '')}">${cTitleMatch[1]}</a>
                 </h4>
                 <div class="mini-side-meta">${cMetaMatch ? cMetaMatch[1].trim() : dateFormatted}</div>
               </div>
@@ -2620,9 +2622,9 @@ function verifyAndEnforceArticleFaqFormat(filePath) {
     if (!pairs.length) return;
 
     const cards = pairs.map(p => `
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem;">
-              <h3 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary); font-size: 1.05rem;">${p.q}</h3>
-              <p style="margin-bottom: 0; color: var(--text-main); font-size: 0.95rem; line-height: 1.7;">${p.a}</p>
+            <div class="faq-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem;">
+              <h3 class="faq-question" style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary); font-size: 1.05rem;">${p.q}</h3>
+              <p class="faq-answer" style="margin-bottom: 0; color: var(--text-main); font-size: 0.95rem; line-height: 1.7;">${p.a}</p>
             </div>`).join('');
 
     const newBody = `
@@ -2630,8 +2632,13 @@ function verifyAndEnforceArticleFaqFormat(filePath) {
             <div style="margin-top: 1.25rem;">${cards}
             </div>
           `;
-    content = content.replace(full, open + newBody + close);
+    const newSection = `<section id="frequently-asked-questions" class="faq-section" style="margin-top: 2rem;">${newBody}</section>`;
+    content = content.replace(full, newSection);
     fs.writeFileSync(filePath, content, 'utf8');
+    const rootTarget = path.join(ROOT_DIR, path.basename(filePath));
+    if (filePath.startsWith(articlesDir) && (!fs.existsSync(rootTarget) || fs.readFileSync(rootTarget, 'utf8') !== content)) {
+      fs.writeFileSync(rootTarget, content, 'utf8');
+    }
     console.log(`[PERMANENT FAQ LOCK] Enforced clean card format for "${path.basename(filePath)}" (${pairs.length} items)`);
   } catch (err) {
     console.warn(`[WARN] verifyAndEnforceArticleFaqFormat error: ${err.message}`);

@@ -25,9 +25,15 @@ fi
 # Check for added or modified articles
 STAGED=$(git diff --cached --name-only --diff-filter=ACM | grep "^articles/.*\\.html$")
 if [ -n "$STAGED" ]; then
-  echo "[pre-commit] Enforcing FAQ format on staged articles..."
-  node "$FAQ_SCRIPT" $STAGED || { echo "[pre-commit] FAQ enforcer failed. Commit aborted."; exit 1; }
-  for FILE in $STAGED; do [ -f "$FILE" ] && git add "$FILE"; done
+  echo "[pre-commit] Enforcing standards & clean root URLs on staged articles..."
+  node "$FAQ_SCRIPT" $STAGED || { echo "[pre-commit] FAQ/Title enforcer failed. Commit aborted."; exit 1; }
+  node "$SYNC_SCRIPT"
+  for FILE in $STAGED; do
+    [ -f "$FILE" ] && git add "$FILE"
+    ROOT_MIRROR=$(basename "$FILE")
+    [ -f "$ROOT_MIRROR" ] && git add "$ROOT_MIRROR"
+  done
+  git add sitemap.xml llms.txt data/articles.json 2>/dev/null || true
 fi
 
 exit 0

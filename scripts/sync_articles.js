@@ -89,7 +89,8 @@ function syncDeletedArticles() {
     // Match each <url> block pointing to an article
     const urlBlockRegex = /<url>[\s\S]*?<loc>https:\/\/www\.genalphamagazines\.com\/articles\/([^<]+)\.html<\/loc>[\s\S]*?<\/url>\s*/g;
     updated = updated.replace(urlBlockRegex, (match, slug) => {
-      if (!existingSlugs.has(slug)) {
+      const reservedSlugs = new Set(['categories', 'index', '404', 'admin']);
+      if (!reservedSlugs.has(slug) && !slug.startsWith('category-') && !existingSlugs.has(slug)) {
         console.log(`[sync_articles] Removing deleted article from sitemap.xml: ${slug}`);
         return '';
       }
@@ -145,7 +146,8 @@ function syncDeletedArticles() {
     // B. Remove ticker items linking to deleted articles
     const tickerRegex = /<a\s+href="(?:\.\/|\.\.\/)?articles\/([a-zA-Z0-9_-]+)\.html"[^>]*class="breaking-ticker-item"[^>]*>[\s\S]*?<\/a>\s*/gi;
     updated = updated.replace(tickerRegex, (fullMatch, slug) => {
-      if (!existingSlugs.has(slug)) {
+      const reservedSlugs = new Set(['categories', 'index', '404', 'admin']);
+      if (!reservedSlugs.has(slug) && !slug.startsWith('category-') && !existingSlugs.has(slug)) {
         return '';
       }
       return fullMatch;
@@ -173,7 +175,8 @@ function syncDeletedArticles() {
     // A. Remove ticker items linking to deleted articles
     const tickerRegex = /<a\s+href="(?:\.\/)?articles\/([a-zA-Z0-9_-]+)\.html"[^>]*class="breaking-ticker-item"[^>]*>[\s\S]*?<\/a>\s*/gi;
     updated = updated.replace(tickerRegex, (fullMatch, slug) => {
-      if (!existingSlugs.has(slug)) {
+      const reservedSlugs = new Set(['categories', 'index', '404', 'admin']);
+      if (!reservedSlugs.has(slug) && !slug.startsWith('category-') && !existingSlugs.has(slug)) {
         console.log(`[sync_articles] Removing deleted article ticker from index.html: ${slug}`);
         return '';
       }
@@ -277,7 +280,8 @@ function syncDeletedArticles() {
     // Pattern: <li><strong>Category:</strong> <a href="(?:./|../articles/|/)?([a-zA-Z0-9_-]+)(?:.html)?">...</a></li>
     const relatedItemRegex = /<li><strong>[^<]+:<\/strong>\s*<a\s+href="(?:\.\/|\.\.\/articles\/)([a-zA-Z0-9_-]+)\.html"[^>]*>[\s\S]*?<\/a><\/li>\s*/gi;
     updated = updated.replace(relatedItemRegex, (fullMatch, slug) => {
-      if (!existingSlugs.has(slug)) {
+      const reservedSlugs = new Set(['categories', 'index', '404', 'admin']);
+      if (!reservedSlugs.has(slug) && !slug.startsWith('category-') && !existingSlugs.has(slug)) {
         return '';
       }
       return fullMatch;
@@ -319,9 +323,9 @@ function syncDeletedArticles() {
   for (const artFile of existingArticleFiles) {
     const rootPath = path.join(ROOT_DIR, artFile);
     const artPath = path.join(articlesDir, artFile);
-    if (!fs.existsSync(rootPath)) {
+    if (!fs.existsSync(rootPath) || fs.readFileSync(rootPath, 'utf8') !== fs.readFileSync(artPath, 'utf8')) {
       fs.copyFileSync(artPath, rootPath);
-      console.log(`[sync_articles] Mirrored active article to root: ${artFile}`);
+      console.log(`[sync_articles] Mirrored/synced active article to root: ${artFile}`);
       modifiedFiles.push(artFile);
     }
   }
