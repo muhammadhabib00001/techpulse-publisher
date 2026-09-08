@@ -2170,16 +2170,20 @@ function updateSiteIndex(articleData, author, category, heroImage) {
     console.warn(`[WARN] Could not rebuild sitemap: ${smErr.message}`);
   }
 
-  // 1b. LLMs.txt update
-  const llmsPath = path.join(ROOT_DIR, 'llms.txt');
-  if (fs.existsSync(llmsPath)) {
-    let llmsContent = fs.readFileSync(llmsPath, 'utf8');
-    const articleLink = `- [${articleData.title}](https://www.genalphamagazines.com/${articleData.slug}): ${articleData.metaDescription}`;
-    if (!llmsContent.includes(articleData.slug)) {
-      llmsContent = llmsContent.replace('## Compliance & Legal', `${articleLink}\n\n## Compliance & Legal`);
-      fs.writeFileSync(llmsPath, llmsContent, 'utf8');
-      console.log(`[INFO] Added ${articleData.slug}.html to llms.txt`);
-    }
+  // 1b. LLMs.txt & LLMs-full.txt update
+  try {
+    const { syncLlmsFiles } = require('./sync_articles');
+    const existingSlugs = new Set(fs.readdirSync(path.join(ROOT_DIR, 'articles')).filter(f => f.endsWith('.html')).map(f => f.replace('.html', '')));
+    existingSlugs.add(articleData.slug);
+    syncLlmsFiles(existingSlugs, (fPath, updated, original) => {
+      if (updated !== original) {
+        fs.writeFileSync(fPath, updated, 'utf8');
+        console.log(`[INFO] Synchronized ${path.basename(fPath)}`);
+      }
+    });
+    console.log(`[INFO] Rebuilt both llms.txt and llms-full.txt with clean root URLs including ${articleData.slug}`);
+  } catch (llmErr) {
+    console.warn(`[WARN] Could not update LLM files: ${llmErr.message}`);
   }
 
   // 2. VIP Homepage Auto-Update (Section 1: Latest Stories + Corresponding Category Section on Homepage)

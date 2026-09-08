@@ -254,19 +254,19 @@ function updateSitemapAndLlms(slug, title, description) {
     }
   }
 
-  const llmsPath = path.join(ROOT_DIR, 'llms.txt');
-  if (fs.existsSync(llmsPath)) {
-    let llms = fs.readFileSync(llmsPath, 'utf8');
-    if (!llms.includes(slug)) {
-      const linkEntry = `- [${title}](${cleanUrl}): ${description}`;
-      if (llms.includes('## Compliance & Legal')) {
-        llms = llms.replace('## Compliance & Legal', `${linkEntry}\n\n## Compliance & Legal`);
-      } else {
-        llms += `\n${linkEntry}\n`;
+  // Synchronize both llms.txt and llms-full.txt
+  try {
+    const { syncLlmsFiles } = require('./sync_articles');
+    const existingSlugs = new Set(fs.readdirSync(articlesDir).filter(f => f.endsWith('.html')).map(f => f.replace('.html', '')));
+    existingSlugs.add(slug);
+    syncLlmsFiles(existingSlugs, (fPath, updated, original) => {
+      if (updated !== original) {
+        fs.writeFileSync(fPath, updated, 'utf8');
+        console.log(`[publish_manual] Synchronized ${path.basename(fPath)}`);
       }
-      fs.writeFileSync(llmsPath, llms, 'utf8');
-      console.log(`[publish_manual] Added to llms.txt: ${slug}`);
-    }
+    });
+  } catch (e) {
+    console.warn(`[publish_manual] Warning syncing LLM files:`, e.message);
   }
 }
 
