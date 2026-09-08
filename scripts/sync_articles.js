@@ -141,6 +141,8 @@ const INTERNAL_CANDIDATES = [
   { keyword: 'Federal Reserve', url: '/fomc-meeting-sept-2026-interest-rates-and-market-outlook' },
   { keyword: 'visual storytelling', url: '/25-american-movies-defining-visual-storytelling-today' },
   { keyword: 'smart home technology', url: '/smart-home-energy-audits-heat-pump-and-solar-storage' },
+  { keyword: 'energy audits', url: '/smart-home-energy-audits-heat-pump-and-solar-storage' },
+  { keyword: 'energy efficiency', url: '/smart-home-energy-audits-heat-pump-and-solar-storage' },
   { keyword: 'solar battery storage', url: '/solar-battery-storage-guide-costs-types-and-savings' },
   { keyword: 'battery storage', url: '/solar-battery-storage-guide-costs-types-and-savings' },
   { keyword: 'heart health', url: '/heart-problems-evidence-based-insights-and-expert-guidance' },
@@ -148,6 +150,11 @@ const INTERNAL_CANDIDATES = [
   { keyword: 'travel disruptions', url: '/how-to-handle-flight-delays-and-travel-disruptions' },
   { keyword: 'vinyl record care', url: '/the-vinyl-record-resurgence-turntable-setups-pressing' },
   { keyword: 'gaming hardware', url: '/top-7-phone-features-and-specs' },
+  { keyword: 'bathroom upgrades', url: '/modern-bathroom-upgrades-spa-luxury-meets-smart-tech' },
+  { keyword: 'residential architecture', url: '/modern-bathroom-upgrades-spa-luxury-meets-smart-tech' },
+  { keyword: 'modern bathroom', url: '/modern-bathroom-upgrades-spa-luxury-meets-smart-tech' },
+  { keyword: 'culinary spaces', url: '/the-kitchen-as-canvas-designing-creative-culinary-spaces' },
+  { keyword: 'drainage failures', url: '/preventing-bathroom-drainage-failures-in-modern-homes' },
   { keyword: 'independent investigations', url: '/pages/about.html' },
   { keyword: 'community journalism', url: '/pages/about.html' }
 ];
@@ -160,6 +167,81 @@ function getCategoryFromHtml(html) {
   return 'news';
 }
 
+function restoreNavigationAndFooter(html, category) {
+  const cat = (category || 'others').toLowerCase().trim();
+
+  // 1. Restore Top Utility Bar links if stripped
+  html = html.replace(/<nav class="top-nav"[^>]*>[\s\S]*?<\/nav>/i, `
+      <nav class="top-nav" aria-label="Utility Navigation">
+        <ul>
+          <li><a href="/pages/about.html">About</a></li>
+          <li><a href="/pages/editorial-policy.html">Editorial Standards</a></li>
+          <li><a href="/pages/privacy-policy.html">Privacy</a></li>
+          <li><a href="/pages/contact.html">Contact</a></li>
+        </ul>
+      </nav>`.trim());
+
+  // 2. Restore Main Nav Links if stripped
+  const mainNavUl = `
+          <ul class="main-nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/category-news.html" class="${cat === 'news' ? 'active' : ''}">News</a></li>
+            <li><a href="/category-business.html" class="${cat === 'business' ? 'active' : ''}">Business</a></li>
+            <li><a href="/category-celebrity.html" class="${cat === 'celebrity' ? 'active' : ''}">Celebrity</a></li>
+            <li><a href="/category-entertainment.html" class="${cat === 'entertainment' ? 'active' : ''}">Entertainment</a></li>
+            <li><a href="/category-games.html" class="${cat === 'games' ? 'active' : ''}">Games</a></li>
+            <li><a href="/category-health.html" class="${cat === 'health' ? 'active' : ''}">Health</a></li>
+            <li><a href="/category-technology.html" class="${cat === 'technology' ? 'active' : ''}">Technology</a></li>
+            <li><a href="/category-others.html" class="${cat === 'others' ? 'active' : ''}">Others</a></li>
+            <li><a href="/categories.html">All Topics</a></li>
+          </ul>`.trim();
+  html = html.replace(/<ul class="main-nav-links">[\s\S]*?<\/ul>/i, mainNavUl);
+
+  // 3. Restore Footer Columns if stripped
+  const footerCategories = `
+      <div class="footer-col">
+        <h5>Categories</h5>
+        <ul class="footer-links">
+          <li><a href="/category-news.html">News</a></li>
+          <li><a href="/category-business.html">Business</a></li>
+          <li><a href="/category-celebrity.html">Celebrity</a></li>
+          <li><a href="/category-entertainment.html">Entertainment</a></li>
+          <li><a href="/category-games.html">Games</a></li>
+          <li><a href="/category-health.html">Health</a></li>
+          <li><a href="/category-technology.html">Technology</a></li>
+          <li><a href="/category-others.html">Others</a></li>
+        </ul>
+      </div>`;
+
+  const footerEditorial = `
+      <div class="footer-col">
+        <h5>Editorial</h5>
+        <ul class="footer-links">
+          <li><a href="/pages/about.html">About Us</a></li>
+          <li><a href="/pages/editorial-policy.html">Editorial Standards</a></li>
+          <li><a href="/pages/affiliate-disclosure.html">Affiliate Disclosure</a></li>
+          <li><a href="/pages/contact.html">Contact Us</a></li>
+        </ul>
+      </div>`;
+
+  const footerCompliance = `
+      <div class="footer-col">
+        <h5>Compliance</h5>
+        <ul class="footer-links">
+          <li><a href="/pages/privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="/pages/terms.html">Terms & Conditions</a></li>
+          <li><a href="/pages/cookie-policy.html">Cookie Policy</a></li>
+          <li><a href="/pages/disclaimer.html">Disclaimer</a></li>
+        </ul>
+      </div>`;
+
+  html = html.replace(/<div class="footer-col">\s*<h5>Categories<\/h5>[\s\S]*?<\/div>/i, footerCategories.trim());
+  html = html.replace(/<div class="footer-col">\s*<h5>Editorial<\/h5>[\s\S]*?<\/div>/i, footerEditorial.trim());
+  html = html.replace(/<div class="footer-col">\s*<h5>Compliance<\/h5>[\s\S]*?<\/div>/i, footerCompliance.trim());
+
+  return html;
+}
+
 function standardizeArticleLinks(content, slug, customCategory = '', customExternalLink = null) {
   const category = customCategory || getCategoryFromHtml(content);
 
@@ -169,17 +251,11 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
   // 2. Remove obsolete callout boxes
   content = removeObsoleteBoxes(content);
 
-  // 3. Strip any links in headings or lists
-  content = content.replace(/(<h[1-6][^>]*>)([\s\S]*?)(<\/h[1-6]>)/gi, (m, open, text, close) => {
-    return open + text.replace(/<a\s+[^>]*>([\s\S]*?)<\/a>/gi, '$1') + close;
-  });
-  content = content.replace(/(<li[^>]*>)([\s\S]*?)(<\/li>)/gi, (m, open, text, close) => {
-    return open + text.replace(/<a\s+[^>]*>([\s\S]*?)<\/a>/gi, '$1') + close;
-  });
-
   const startIdx = content.indexOf('<div class="article-body">');
   const endIdx = content.indexOf('</article>');
-  if (startIdx === -1 || endIdx === -1) return content;
+  if (startIdx === -1 || endIdx === -1) {
+    return restoreNavigationAndFooter(content, category);
+  }
 
   let body = content.substring(startIdx, endIdx);
 
@@ -188,7 +264,23 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
   let proseBody = faqStart !== -1 ? body.substring(0, faqStart) : body;
   const trailingBody = faqStart !== -1 ? body.substring(faqStart) : '';
 
-  // 4. Handle External Links (exactly 1 on targeted keyword)
+  // 3. Strip any secondary images inside proseBody (strictly enforce 1 hero image per article)
+  proseBody = proseBody.replace(/<img\s+[^>]*>/gi, '');
+
+  // 4. Strip any links in headings or lists inside proseBody ONLY
+  proseBody = proseBody.replace(/(<h[1-6][^>]*>)([\s\S]*?)(<\/h[1-6]>)/gi, (m, open, text, close) => {
+    return open + text.replace(/<a\s+[^>]*>([\s\S]*?)<\/a>/gi, '$1') + close;
+  });
+  proseBody = proseBody.replace(/(<li[^>]*>)([\s\S]*?)(<\/li>)/gi, (m, open, text, close) => {
+    return open + text.replace(/<a\s+[^>]*>([\s\S]*?)<\/a>/gi, '$1') + close;
+  });
+
+  // Handle specific known hallucinated domains
+  if (slug === 'mastering-bathroom-drainage-systems-for-every-home') {
+    proseBody = proseBody.replace(/<a\s+[^>]*href=["']https?:\/\/www\.watersanitation\.org[^"']*["'][^>]*>([\s\S]*?)<\/a>/gi, '$1');
+  }
+
+  // 5. Handle External Links (exactly 1 on targeted keyword)
   const extRegex = /<a\s+([^>]*href=["'](https?:\/\/(?!www\.genalphamagazines\.com)[^"']+)["'][^>]*)>([\s\S]*?)<\/a>/gi;
   let extMatches = [];
   let em;
@@ -201,9 +293,19 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
       proseBody = proseBody.replace(extMatches[i].fullTag, extMatches[i].text);
     }
   } else if (extMatches.length === 0) {
-    const catFallback = CATEGORY_EXTERNAL_FALLBACKS[category] || CATEGORY_EXTERNAL_FALLBACKS.others;
-    const targetLink = (customExternalLink && customExternalLink.url) ? customExternalLink : catFallback;
-    const targetLabel = targetLink.label || catFallback.label;
+    let targetLink;
+    if (slug === 'mastering-bathroom-drainage-systems-for-every-home') {
+      targetLink = {
+        url: 'https://en.wikipedia.org/wiki/Drain_(plumbing)',
+        label: 'Drain Plumbing Reference',
+        anchorKeyword: 'bathroom drainage',
+        keywords: ['bathroom drainage', 'drainage network', 'drainage systems', 'plumbing infrastructure', 'waste pipes']
+      };
+    } else {
+      const catFallback = CATEGORY_EXTERNAL_FALLBACKS[category] || CATEGORY_EXTERNAL_FALLBACKS.others;
+      targetLink = (customExternalLink && customExternalLink.url) ? customExternalLink : catFallback;
+    }
+    const targetLabel = targetLink.label || 'Reference Documentation';
     const targetUrl = targetLink.url;
 
     // Candidates for keyword match
@@ -211,9 +313,6 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
     if (targetLink.anchorKeyword) keywordsToTry.push(targetLink.anchorKeyword);
     if (targetLink.keywords && Array.isArray(targetLink.keywords)) {
       keywordsToTry.push(...targetLink.keywords);
-    }
-    if (catFallback.keywords) {
-      catFallback.keywords.forEach(kw => { if (!keywordsToTry.includes(kw)) keywordsToTry.push(kw); });
     }
 
     let injected = false;
@@ -235,23 +334,49 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
     }
   }
 
-  // 5. Handle Internal Links (exactly 2 on targeted keywords)
-  const intRegex = /<a\s+([^>]*href=["']((?:\/|\.\.\/|\.\/|https:\/\/www\.genalphamagazines\.com\/)[^"']+)["'][^>]*)>([\s\S]*?)<\/a>/gi;
+  // 6. Handle Internal Links (exactly 2 on targeted keywords, pointing to real pages)
+  const existingSlugs = new Set();
+  try {
+    const artDir = path.join(ROOT_DIR, 'articles');
+    if (fs.existsSync(artDir)) {
+      fs.readdirSync(artDir).filter(f => f.endsWith('.html')).forEach(f => {
+        existingSlugs.add(f.replace('.html', '').toLowerCase());
+      });
+    }
+  } catch (e) {}
+
+  const intRegex = /<a\s+([^>]*href=["']((?:\/|\.\.\/|\.\/|https:\/\/www\.genalphamagazines\.com\/)([^"']+))["'][^>]*)>([\s\S]*?)<\/a>/gi;
   let intMatches = [];
   let im;
   while ((im = intRegex.exec(proseBody)) !== null) {
-    intMatches.push({ fullTag: im[0], href: im[2], text: im[3] });
+    intMatches.push({ fullTag: im[0], href: im[2], cleanPath: im[3], text: im[4] });
   }
 
-  // Unwrap self-links and duplicate URLs
+  // Unwrap self-links, fake 404 links, and duplicate URLs
   const keptUrls = new Set();
   let keptCount = 0;
   for (const item of intMatches) {
-    const isSelfLink = item.href.includes(slug);
-    if (isSelfLink || keptUrls.has(item.href) || keptCount >= 2) {
+    let href = item.href;
+    // Fix erroneous /category/technology to /category-technology.html
+    if (href.includes('/category/')) {
+      const fixed = href.replace(/\/category\/([a-zA-Z0-9_-]+)/i, '/category-$1.html');
+      proseBody = proseBody.replace(item.fullTag, item.fullTag.replace(href, fixed));
+      href = fixed;
+    }
+
+    const clean = item.cleanPath.replace(/^\/?articles\//, '').replace(/\.html$/, '').replace(/^\//, '').toLowerCase();
+    const isValidPage = existingSlugs.has(clean) ||
+      href.startsWith('/pages/') ||
+      href.startsWith('/category-') ||
+      href === '/categories.html' ||
+      href === '/' ||
+      href.startsWith('/author/');
+    const isSelfLink = href.includes(slug);
+
+    if (!isValidPage || isSelfLink || keptUrls.has(href) || keptCount >= 2) {
       proseBody = proseBody.replace(item.fullTag, item.text);
     } else {
-      keptUrls.add(item.href);
+      keptUrls.add(href);
       keptCount++;
     }
   }
@@ -291,6 +416,10 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
 
   body = proseBody + trailingBody;
   content = content.substring(0, startIdx) + body + content.substring(endIdx);
+
+  // Restore navigation and footer links
+  content = restoreNavigationAndFooter(content, category);
+
   return content;
 }
 
@@ -930,6 +1059,7 @@ module.exports = {
   buildRelatedSectionHtml,
   ensureRelatedSection,
   standardizeArticleLinks,
+  restoreNavigationAndFooter,
   getCategoryFromHtml,
   CATEGORY_EXTERNAL_FALLBACKS
 };
