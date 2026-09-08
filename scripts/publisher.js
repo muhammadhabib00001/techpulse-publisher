@@ -1643,25 +1643,85 @@ function getDynamicRelatedArticles(currentSlug) {
 }
 
 
+const CATEGORY_EXTERNAL_FALLBACKS = {
+  entertainment: {
+    url: 'https://en.wikipedia.org/wiki/Independent_film',
+    label: 'Independent Film Archive - Wikipedia',
+    domain: 'en.wikipedia.org',
+    keywords: ['independent film', 'indie film', 'film festival', 'film festivals', 'visual storytelling', 'cinematography', 'cinema', 'storytelling', 'theatrical release', 'screenplay', 'director']
+  },
+  celebrity: {
+    url: 'https://en.wikipedia.org/wiki/Celebrity',
+    label: 'Celebrity Culture & Media - Wikipedia',
+    domain: 'en.wikipedia.org',
+    keywords: ['pop culture', 'entertainment industry', 'cultural influence', 'celebrity culture', 'stardom', 'culture', 'athletics', 'career']
+  },
+  business: {
+    url: 'https://www.bls.gov/',
+    label: 'U.S. Bureau of Labor Statistics',
+    domain: 'bls.gov',
+    keywords: ['business operations', 'economic indicators', 'monetary policy', 'labor market', 'retail foot traffic', 'small business', 'commercial operations', 'interest rates', 'inflation']
+  },
+  technology: {
+    url: 'https://www.wired.com/',
+    label: 'Wired Technology Review',
+    domain: 'wired.com',
+    keywords: ['smart home technology', 'mobile operating system', 'energy efficiency', 'hardware benchmarks', 'silicon architecture', 'artificial intelligence', 'battery storage', 'technology']
+  },
+  games: {
+    url: 'https://en.wikipedia.org/wiki/Video_game',
+    label: 'Video Game History & Mechanics - Wikipedia',
+    domain: 'en.wikipedia.org',
+    keywords: ['video game', 'multiplayer', 'gameplay mechanics', 'open-world', 'game development', 'interactive entertainment', 'gaming hardware', 'gameplay']
+  },
+  health: {
+    url: 'https://www.who.int/',
+    label: 'World Health Organization',
+    domain: 'who.int',
+    keywords: ['cardiovascular health', 'health guidelines', 'preventative care', 'wellness', 'clinical research', 'public health', 'symptoms', 'health']
+  },
+  news: {
+    url: 'https://www.reuters.com/',
+    label: 'Reuters News & Financial Markets',
+    domain: 'reuters.com',
+    keywords: ['monetary policy', 'Federal Reserve', 'interest rates', 'economic indicators', 'international commerce', 'trade policy', 'regulatory framework', 'regulations']
+  },
+  lifestyle: {
+    url: 'https://en.wikipedia.org/wiki/Vinyl_revival',
+    label: 'Vinyl Revival Audio Archive - Wikipedia',
+    domain: 'en.wikipedia.org',
+    keywords: ['vinyl records', 'vinyl revival', 'analog audio', 'turntable', 'travel planning', 'passenger rights', 'travel disruptions', 'culinary arts', 'interior design', 'culinary']
+  },
+  others: {
+    url: 'https://www.britannica.com/',
+    label: 'Encyclopaedia Britannica',
+    domain: 'britannica.com',
+    keywords: ['cultural heritage', 'historical context', 'civic engagement', 'community preservation', 'public interest', 'community', 'heritage']
+  }
+};
+
 /**
- * Injects an external reference link directly onto a natural keyword in the body paragraphs.
- * If the exact anchor keyword is not found, smoothly locates a relevant concept or attaches
- * a clean editorial citation without crashing or producing awkward phrasing.
+ * Injects an authoritative external reference link directly onto a natural keyword in the body paragraphs.
+ * Guarantees every article has an external link on a real keyword, using curated topic fallbacks if needed.
  */
 function injectExternalKeywordLink(sectionsHtml, externalLink, category = 'others') {
-  if (!externalLink || !externalLink.url || typeof externalLink.url !== 'string') {
-    return sectionsHtml;
-  }
+  const cat = (category || 'others').toLowerCase().trim();
+  const fallback = CATEGORY_EXTERNAL_FALLBACKS[cat] || CATEGORY_EXTERNAL_FALLBACKS.others;
 
-  const safeUrl = String(externalLink.url).replace(/"/g, '&quot;');
-  const safeLabel = String(externalLink.label || externalLink.anchorKeyword || externalLink.domain || 'External Reference')
+  // Use provided external link or fallback to curated category authority
+  const target = (externalLink && externalLink.url && typeof externalLink.url === 'string') 
+    ? externalLink 
+    : fallback;
+
+  const safeUrl = String(target.url).replace(/"/g, '&quot;');
+  const safeLabel = String(target.label || target.anchorKeyword || target.domain || fallback.label)
     .replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const titleAttr = safeLabel.replace(/"/g, '&quot;');
 
-  // Collect candidate phrases to search for in body paragraphs
+  // Collect candidate phrases to search for in body paragraphs (ordered by specificity)
   const candidates = [];
-  if (externalLink.anchorKeyword && externalLink.anchorKeyword.trim().length >= 3) {
-    const ak = externalLink.anchorKeyword.trim();
+  if (target.anchorKeyword && target.anchorKeyword.trim().length >= 3) {
+    const ak = target.anchorKeyword.trim();
     candidates.push(ak);
     const words = ak.split(/\s+/);
     if (words.length >= 3) {
@@ -1669,11 +1729,15 @@ function injectExternalKeywordLink(sectionsHtml, externalLink, category = 'other
       candidates.push(words.slice(-2).join(' '));
     }
   }
-  if (externalLink.label && externalLink.label.trim().length >= 4) {
-    candidates.push(externalLink.label.trim());
+  if (target.label && target.label.trim().length >= 4 && !target.label.includes('http')) {
+    candidates.push(target.label.trim().replace(/\s*-\s*Wikipedia$/, ''));
   }
-  if (externalLink.domain && !externalLink.domain.includes('wikipedia') && !externalLink.domain.includes('gov')) {
-    candidates.push(externalLink.domain.replace(/\.[a-z]+$/i, ''));
+
+  // Add category-specific keywords
+  if (fallback && fallback.keywords) {
+    fallback.keywords.forEach(kw => {
+      if (!candidates.includes(kw)) candidates.push(kw);
+    });
   }
 
   // Protect headings, existing <a> tags, scripts, styles, figures
@@ -1697,33 +1761,24 @@ function injectExternalKeywordLink(sectionsHtml, externalLink, category = 'other
     if (regex.test(protectedHtml)) {
       protectedHtml = protectedHtml.replace(regex, (match) => {
         injected = true;
-        return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${titleAttr}">${match}</a>`;
+        return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${titleAttr}">${match}</a>`;
       });
     }
   }
 
-  // 2. Fallback if keyword is NOT found:
-  // Instead of failing or injecting awkward text, find a substantial body paragraph
-  // and anchor naturally to the external citation
+  // 2. Fallback if no candidate keyword matched: find first suitable topical noun in text
   if (!injected) {
-    let pIndex = 0;
-    protectedHtml = protectedHtml.replace(/(<p[^>]*>)([\s\S]*?)(<\/p>)/gi, (fullP, openP, text, closeP) => {
-      if (!injected && pIndex >= 1 && text.length > 80 && !text.includes('<a ')) {
-        injected = true;
-        return `${openP}${text} Additional verified documentation is provided by <a href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${titleAttr}">${safeLabel}</a>.${closeP}`;
-      }
-      pIndex++;
-      return fullP;
-    });
-
-    if (!injected) {
-      protectedHtml = protectedHtml.replace(/(<p[^>]*>)([\s\S]*?)(<\/p>)/i, (fullP, openP, text, closeP) => {
-        if (!injected && text.length > 40 && !text.includes('<a ')) {
+    const emergencyWords = ['industry', 'community', 'development', 'research', 'analysis', 'standards', 'operations', 'production', 'strategy', 'framework'];
+    for (const word of emergencyWords) {
+      if (injected) break;
+      const escaped = word.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const regex = new RegExp('(\\b' + escaped + '\\b)(?![^<]*>)', 'i');
+      if (regex.test(protectedHtml)) {
+        protectedHtml = protectedHtml.replace(regex, (match) => {
           injected = true;
-          return `${openP}${text} Source reference: <a href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${titleAttr}">${safeLabel}</a>.${closeP}`;
-        }
-        return fullP;
-      });
+          return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${titleAttr}">${match}</a>`;
+        });
+      }
     }
   }
 
@@ -2890,9 +2945,10 @@ async function main() {
     }
   } catch (e) {}
   const externalLink = await fetchExternalLink(topic, cat, usedExternalUrls);
-  console.log('[INFO] External link result:', externalLink ? externalLink.url : 'none');
+  const finalExternalLink = (externalLink && externalLink.url) ? externalLink : (CATEGORY_EXTERNAL_FALLBACKS[cat] || CATEGORY_EXTERNAL_FALLBACKS.others);
+  console.log('[INFO] External link result:', finalExternalLink ? finalExternalLink.url : 'none');
 
-  const fullHtml = renderArticleHtml(generatedArticle, topicData.author, topicData.category, heroImage, externalLink);
+  const fullHtml = renderArticleHtml(generatedArticle, topicData.author, topicData.category, heroImage, finalExternalLink);
 
   const outputPath = path.join(articlesDir, `${generatedArticle.slug}.html`);
   fs.writeFileSync(outputPath, fullHtml, 'utf8');
@@ -2922,8 +2978,8 @@ async function main() {
       title: generatedArticle.title,
       category: cat,
       topic: topic,
-      externalUrl: externalLink ? externalLink.url : null,
-      externalDomain: externalLink ? externalLink.domain : null,
+      externalUrl: finalExternalLink ? finalExternalLink.url : null,
+      externalDomain: finalExternalLink ? finalExternalLink.domain : null,
       publishedAt: new Date().toISOString()
     });
     fs.writeFileSync(trackingFile, JSON.stringify(ledger, null, 2), 'utf8');
