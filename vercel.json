@@ -1,11 +1,40 @@
 {
   "cleanUrls": true,
   "redirects": [
-    { "source": "/category-community", "destination": "/category-others", "permanent": true },
-    { "source": "/category-community.html", "destination": "/category-others.html", "permanent": true },
-    { "source": "/category-arts", "destination": "/category-entertainment", "permanent": true },
-    { "source": "/category-arts.html", "destination": "/category-entertainment.html", "permanent": true },
-    { "source": "/category-lifestyle", "destination": "/category-others", "permanent": true },
-    { "source": "/category-lifestyle.html", "destination": "/category-others.html", "permanent": true }
+    {
+      "source": "/category-community",
+      "destination": "/category-others",
+      "permanent": true
+    },
+    {
+      "source": "/category-community.html",
+      "destination": "/category-others.html",
+      "permanent": true
+    },
+    {
+      "source": "/category-arts",
+      "destination": "/category-entertainment",
+      "permanent": true
+    },
+    {
+      "source": "/category-arts.html",
+      "destination": "/category-entertainment.html",
+      "permanent": true
+    },
+    {
+      "source": "/category-lifestyle",
+      "destination": "/category-others",
+      "permanent": true
+    },
+    {
+      "source": "/category-lifestyle.html",
+      "destination": "/category-others.html",
+      "permanent": true
+    },
+    {
+      "source": "/articles/cristiano-ronaldo-career-legacy-and-records-in-2026",
+      "destination": "/articles/cristiano-ronaldo-career-legacy-and-records",
+      "permanent": true
+    }
   ]
 }
