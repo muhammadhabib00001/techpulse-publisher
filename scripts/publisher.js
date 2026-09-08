@@ -1616,7 +1616,7 @@ CORE SEO CONTENT STRATEGY (CRITICAL — NON-NEGOTIABLE):
     - NEVER place links in headings (<h1>, <h2>, <h3>).
     - Weave keywords naturally into editorial sentences.`;
 
-  const userPrompt = `Write an in-depth, original, high-quality editorial article about: "${topic}"
+  const userPrompt = `Act as an SEO content strategist and copywriter. Create a detailed article for a blog post targeting the keyword "${topic}" with informational intent. Use LSI Keywords. The audience is World Wide. Include: a click-worthy headline (50-60 characters), an opening hook, H2 and H3 subheadings, key points to cover under each section, internal linking suggestions, a featured snippet target section, and a recommended word count (1,200 to 1,500+ words). The tone should be professional.
 Category: ${category}
 Author: ${author.name} (${author.role})
 Current Year: 2026 (Ensure all market data, trends, and guidelines reflect 2026)
