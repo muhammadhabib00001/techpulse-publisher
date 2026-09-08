@@ -562,9 +562,9 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
         expansions.push('cinema film theater', 'movie cinema screen', 'film production camera');
       } else if (lowerTopic.includes('crypto') || lowerTopic.includes('bitcoin') || lowerTopic.includes('blockchain')) {
         expansions.push('cryptocurrency bitcoin', 'blockchain finance technology');
-      } else if (lowerTopic.includes('fed') || lowerTopic.includes('interest rate') || lowerTopic.includes('inflation') || lowerTopic.includes('monetary')) {
+      } else if (/\bfed\b/i.test(lowerTopic) || lowerTopic.includes('interest rate') || lowerTopic.includes('inflation') || lowerTopic.includes('monetary')) {
         expansions.push('central bank economy finance', 'financial market interest rates');
-      } else if (lowerTopic.includes('ups') || lowerTopic.includes('battery') || lowerTopic.includes('power')) {
+      } else if (/\bups\b/i.test(lowerTopic) || lowerTopic.includes('battery') || lowerTopic.includes('power')) {
         expansions.push('battery backup power technology', 'uninterruptible power supply hardware');
       } else if (lowerTopic.includes('iphone') || lowerTopic.includes('apple') || lowerTopic.includes('ios')) {
         expansions.push('apple iphone smartphone modern', 'iphone smartphone technology');
@@ -582,23 +582,23 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
         expansions.push('business meeting office professional', 'startup entrepreneur modern office');
       } else if (lowerTopic.includes('celebrity') || lowerTopic.includes('actor') || lowerTopic.includes('singer')) {
         expansions.push('red carpet cinema film premiere', 'film festival theater stage');
-      } else if (lowerTopic.includes('ai') || lowerTopic.includes('artificial intelligence') || lowerTopic.includes('machine learning')) {
+      } else if (/\bai\b/i.test(lowerTopic) || lowerTopic.includes('artificial intelligence') || lowerTopic.includes('machine learning')) {
         expansions.push('artificial intelligence computer hardware', 'machine learning data technology');
       } else if (lowerTopic.includes('vinyl') || lowerTopic.includes('turntable') || lowerTopic.includes('record player') || lowerTopic.includes('pressing')) {
         expansions.push('vinyl record turntable spinning', 'turntable audio stereo vintage vinyl', 'vinyl record collection music');
-      } else if (lowerTopic.includes('buy') && (lowerTopic.includes('business') || lowerTopic.includes('company') || lowerTopic.includes('acquisition'))) {
+      } else if (/\bbuy\b/i.test(lowerTopic) && (lowerTopic.includes('business') || lowerTopic.includes('company') || lowerTopic.includes('acquisition'))) {
         expansions.push('business handshake corporate acquisition', 'business contract signing handshake', 'financial advisor corporate meeting');
       } else if (lowerTopic.includes('journalism') || lowerTopic.includes('news') || lowerTopic.includes('press')) {
         expansions.push('journalism newspaper printing press', 'newsroom press conference');
       }
 
-      // Strictly keyword-focused candidate queries: never broad single words, never category alone
+      // Strictly keyword-focused candidate queries: real topic words ALWAYS first, expansions as fallback
       const queryCandidates = [
-        ...expansions,
         topicWords.slice(0, 4).join(' '),
         topicWords.slice(0, 3).join(' '),
-        topicWords.slice(0, 2).join(' ')
-      ].filter(q => q && q.trim().length >= 4);
+        topicWords.slice(0, 2).join(' '),
+        ...expansions
+      ].filter(q => q && q.trim().length >= 3);
 
       for (const query of queryCandidates) {
         console.log(`[INFO] Layer 2: Searching Unsplash for "${query}"...`);
@@ -1852,9 +1852,8 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
     return finalThoughtsBlock ? `${finalThoughtsBlock}\n${currentSectionHtml}` : currentSectionHtml;
   }).join('\n');
 
-  // Seed in-body external & internal links on keywords before full standardization
-  let guaranteedSectionsHtml = enforceMinimumInternalLinks(sectionsHtml, articleData.slug, category, 2);
-  guaranteedSectionsHtml = injectExternalKeywordLink(guaranteedSectionsHtml, externalLink, category);
+  // Pass sections HTML into template, full link standardization happens via standardizeArticleLinks
+  let guaranteedSectionsHtml = sectionsHtml;
 
   // Render visible FAQ section if FAQs exist and not already present in contentHtml
   let visibleFaqHtml = '';
@@ -2191,7 +2190,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   <script src="../assets/js/main.js" defer></script>
 </body>
 </html>`;
-  return standardizeArticleLinks(fullRawHtml, articleData.slug, category);
+  return standardizeArticleLinks(fullRawHtml, articleData.slug, category, externalLink);
 }
 
 function updateSiteIndex(articleData, author, category, heroImage) {

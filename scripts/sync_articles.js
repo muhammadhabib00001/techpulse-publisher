@@ -160,7 +160,7 @@ function getCategoryFromHtml(html) {
   return 'news';
 }
 
-function standardizeArticleLinks(content, slug, customCategory = '') {
+function standardizeArticleLinks(content, slug, customCategory = '', customExternalLink = null) {
   const category = customCategory || getCategoryFromHtml(content);
 
   // 1. Sanitize dashes
@@ -202,20 +202,34 @@ function standardizeArticleLinks(content, slug, customCategory = '') {
     }
   } else if (extMatches.length === 0) {
     const catFallback = CATEGORY_EXTERNAL_FALLBACKS[category] || CATEGORY_EXTERNAL_FALLBACKS.others;
+    const targetLink = (customExternalLink && customExternalLink.url) ? customExternalLink : catFallback;
+    const targetLabel = targetLink.label || catFallback.label;
+    const targetUrl = targetLink.url;
+
+    // Candidates for keyword match
+    const keywordsToTry = [];
+    if (targetLink.anchorKeyword) keywordsToTry.push(targetLink.anchorKeyword);
+    if (targetLink.keywords && Array.isArray(targetLink.keywords)) {
+      keywordsToTry.push(...targetLink.keywords);
+    }
+    if (catFallback.keywords) {
+      catFallback.keywords.forEach(kw => { if (!keywordsToTry.includes(kw)) keywordsToTry.push(kw); });
+    }
+
     let injected = false;
-    for (const kw of catFallback.keywords) {
+    for (const kw of keywordsToTry) {
       if (injected) break;
       const esc = kw.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
       const reg = new RegExp('(\\b' + esc + '\\b)(?![^<]*>)', 'i');
       if (reg.test(proseBody)) {
-        proseBody = proseBody.replace(reg, `<a href="${catFallback.url}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${catFallback.label}">$1</a>`);
+        proseBody = proseBody.replace(reg, `<a href="${targetUrl}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${targetLabel}">$1</a>`);
         injected = true;
       }
     }
     if (!injected) {
       const lastPIdx = proseBody.lastIndexOf('</p>');
       if (lastPIdx !== -1) {
-        const extAddition = ` Authoritative reference documentation and contextual source materials are cataloged via <a href="${catFallback.url}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${catFallback.label}">${catFallback.label}</a>.`;
+        const extAddition = ` Authoritative reference documentation and contextual source materials are cataloged via <a href="${targetUrl}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${targetLabel}">${targetLabel}</a>.`;
         proseBody = proseBody.substring(0, lastPIdx) + extAddition + proseBody.substring(lastPIdx);
       }
     }
