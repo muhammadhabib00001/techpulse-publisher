@@ -46,6 +46,73 @@ function sanitizeTitleString(t) {
     .trim();
 }
 
+function sanitizeAllDashes(html) {
+  if (!html) return '';
+  return html
+    .replace(/(\d+)\s*(?:[\u2013\u2014]|&mdash;|&ndash;)\s*(\d+)/g, '$1 to $2')
+    .replace(/\s*(?:[\u2013\u2014]|&mdash;|&ndash;)\s*/g, ', ')
+    .replace(/,\s*,/g, ', ')
+    .replace(/,\s*\./g, '.')
+    .replace(/,\s*:/g, ':')
+    .replace(/:\s*,/g, ':')
+    .replace(/\(\s*,\s*/g, '(')
+    .replace(/,\s*\)/g, ')')
+    .replace(/\s{2,}/g, ' ');
+}
+
+function removeObsoleteBoxes(html) {
+  if (!html) return '';
+  return html
+    .replace(/<div class="external-resources-box"[\s\S]*?<\/div>\s*<\/div>/gi, '')
+    .replace(/<div class="external-resources-box"[\s\S]*?<\/div>/gi, '');
+}
+
+function buildRelatedSectionHtml(currentSlug, articlesDir) {
+  const files = fs.readdirSync(articlesDir).filter(f => f.endsWith('.html') && f !== `${currentSlug}.html`);
+  const list = [];
+  for (const f of files) {
+    try {
+      const html = fs.readFileSync(path.join(articlesDir, f), 'utf8');
+      const titleMatch = html.match(/<title>([^<]+)<\/title>/);
+      let title = titleMatch ? titleMatch[1].replace(/\s*\|\s*GenAlphaMagazines.*$/, '').trim() : f.replace('.html', '');
+      const catMatch = html.match(/<meta property="article:section" content="([^"]+)"/) || html.match(/<span class="card-tag">([A-Z\s]+)(?:&bull;|•|&middot;|\s)+/);
+      let cat = catMatch ? catMatch[1].trim().toUpperCase() : 'FEATURE';
+      list.push({ slug: f.replace('.html', ''), title, category: cat });
+    } catch (e) {}
+  }
+
+  const count = Math.min(list.length, Math.floor(Math.random() * 3) + 3);
+  const selected = list.sort(() => 0.5 - Math.random()).slice(0, count);
+  const itemsHtml = selected.map(r => 
+    `<li><strong>${r.category}:</strong> <a href="/${r.slug}" style="color: var(--primary); font-weight: 700; text-decoration: underline;">${r.title}</a></li>`
+  ).join('\n            ');
+
+  return `
+        <!-- Related Department Stories -->
+        <div style="background: var(--bg-subtle); border-left: 4px solid var(--primary); padding: 1.25rem 1.5rem; margin: 2.5rem 0; border-radius: var(--radius-sm);">
+          <h4 style="color: var(--primary); margin-top: 0; font-size: 1.1rem; text-transform: uppercase;">Related Investigative Reports & Department Features</h4>
+          <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 0.75rem;">
+            Continue reading in-depth community coverage from GenAlphaMagazines:
+          </p>
+          <ul style="margin-left: 1.5rem; line-height: 1.8; font-size: 0.95rem;">
+            ${itemsHtml}
+          </ul>
+        </div>`;
+}
+
+function ensureRelatedSection(html, currentSlug, articlesDir) {
+  if (html.includes('Related Investigative Reports & Department Features')) {
+    return html;
+  }
+  const relBlock = buildRelatedSectionHtml(currentSlug, articlesDir);
+  if (html.includes('<section class="author-box">')) {
+    return html.replace('<section class="author-box">', `${relBlock}\n\n        <section class="author-box">`);
+  } else if (html.includes('</article>')) {
+    return html.replace('</article>', `${relBlock}\n      </article>`);
+  }
+  return html;
+}
+
 function syncLlmsFiles(existingSlugs, writeIfChanged) {
   const articlesDir = path.join(ROOT_DIR, 'articles');
   if (!fs.existsSync(articlesDir)) return;
@@ -531,17 +598,27 @@ ${sideArticles.map(art => {
     writeIfChanged(indexPath, updated, original);
   }
 
-    // 8. Sync related links inside remaining articles/*.html
+  // 8. Enforce Dash Sanitization, Clean Related Stories, and Remove Obsolete Placeholders inside articles/*.html
   for (const artFile of existingArticleFiles) {
     const artPath = path.join(articlesDir, artFile);
+    const slug = artFile.replace('.html', '');
     let original = fs.readFileSync(artPath, 'utf8');
     let updated = original;
 
-    // Pattern: <li><strong>Category:</strong> <a href="(?:./|../articles/|/)?([a-zA-Z0-9_-]+)(?:.html)?">...</a></li>
-    const relatedItemRegex = /<li><strong>[^<]+:<\/strong>\s*<a\s+href="(?:\.\/|\.\.\/articles\/)([a-zA-Z0-9_-]+)\.html"[^>]*>[\s\S]*?<\/a><\/li>\s*/gi;
-    updated = updated.replace(relatedItemRegex, (fullMatch, slug) => {
+    // A. Strip all em-dashes and en-dashes across the article
+    updated = sanitizeAllDashes(updated);
+
+    // B. Strip obsolete empty external reference box if present
+    updated = removeObsoleteBoxes(updated);
+
+    // C. Guarantee Related Investigative Reports & Department Features block exists
+    updated = ensureRelatedSection(updated, slug, articlesDir);
+
+    // D. Purge any broken links from existing related items
+    const relatedItemRegex = /<li><strong>[^<]+:<\/strong>\s*<a\s+href="(?:\.\/|\.\.\/articles\/|\/)?([a-zA-Z0-9_-]+)(?:\.html)?"[^>]*>[\s\S]*?<\/a><\/li>\s*/gi;
+    updated = updated.replace(relatedItemRegex, (fullMatch, targetSlug) => {
       const reservedSlugs = new Set(['categories', 'index', '404', 'admin']);
-      if (!reservedSlugs.has(slug) && !slug.startsWith('category-') && !existingSlugs.has(slug)) {
+      if (!reservedSlugs.has(targetSlug) && !targetSlug.startsWith('category-') && !existingSlugs.has(targetSlug)) {
         return '';
       }
       return fullMatch;
@@ -615,4 +692,11 @@ if (require.main === module) {
 }
 
 
-module.exports = { syncDeletedArticles, syncLlmsFiles };
+module.exports = {
+  syncDeletedArticles,
+  syncLlmsFiles,
+  sanitizeAllDashes,
+  removeObsoleteBoxes,
+  buildRelatedSectionHtml,
+  ensureRelatedSection
+};

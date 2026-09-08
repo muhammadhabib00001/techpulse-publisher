@@ -14,6 +14,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const articlesDir = path.join(ROOT, 'articles');
+const { sanitizeAllDashes, removeObsoleteBoxes, ensureRelatedSection } = require('./sync_articles');
 
 const args = process.argv.slice(2).filter(f => f.endsWith('.html'));
 const targetFiles = args.length > 0
@@ -153,6 +154,25 @@ for (const filePath of targetFiles) {
     } else {
       clean++;
     }
+  }
+
+  // 3b. Enforce Zero Dashes & Obsolete Box Removal
+  const dashCleaned = sanitizeAllDashes(content);
+  if (dashCleaned !== content) {
+    content = dashCleaned;
+    fileModified = true;
+  }
+  const boxCleaned = removeObsoleteBoxes(content);
+  if (boxCleaned !== content) {
+    content = boxCleaned;
+    fileModified = true;
+  }
+
+  // 3c. Guarantee Related Investigative Reports & Department Features block exists
+  const relatedCleaned = ensureRelatedSection(content, slug, articlesDir);
+  if (relatedCleaned !== content) {
+    content = relatedCleaned;
+    fileModified = true;
   }
 
   if (fileModified) {

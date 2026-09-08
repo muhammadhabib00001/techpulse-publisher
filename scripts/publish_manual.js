@@ -22,6 +22,7 @@ const path = require('path');
 const ROOT_DIR = path.resolve(__dirname, '..');
 const articlesDir = path.join(ROOT_DIR, 'articles');
 const BASE_URL = 'https://www.genalphamagazines.com';
+const { sanitizeAllDashes, removeObsoleteBoxes, ensureRelatedSection, syncLlmsFiles } = require('./sync_articles');
 
 const CARD_BG = "background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem;";
 const H3_STYLE = "margin-top: 0; margin-bottom: 0.5rem; color: var(--primary); font-size: 1.05rem;";
@@ -209,6 +210,21 @@ ${cardsHtml}
     }
     return m;
   });
+
+  // 10b. Enforce Zero Dashes across full article
+  const dashCleaned = sanitizeAllDashes(content);
+  if (dashCleaned !== content) {
+    content = dashCleaned;
+    modifications.push('Sanitized all em-dashes and en-dashes across article');
+  }
+
+  // 10c. Remove Obsolete Boxes & Enforce Related Department Features block
+  content = removeObsoleteBoxes(content);
+  const relatedEnforced = ensureRelatedSection(content, slug, articlesDir);
+  if (relatedEnforced !== content) {
+    content = relatedEnforced;
+    modifications.push('Injected Related Investigative Reports & Department Features block');
+  }
 
   // Write updated file to articles/ and mirror to root
   const artTarget = path.join(articlesDir, fileName);

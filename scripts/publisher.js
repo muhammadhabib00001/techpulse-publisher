@@ -1097,10 +1097,15 @@ async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '',
       function stripDashes(str) {
         if (typeof str !== 'string') return str;
         return str
-          .replace(/\u2014/g, ',')   // em-dash → comma
-          .replace(/\u2013/g, '-')   // en-dash → hyphen
-          .replace(/,\s*,/g, ',')    // clean accidental double commas
-          .replace(/\s{2,}/g, ' ')   // clean double spaces
+          .replace(/(\d+)\s*(?:[\u2013\u2014]|&mdash;|&ndash;)\s*(\d+)/g, '$1 to $2')
+          .replace(/\s*(?:[\u2013\u2014]|&mdash;|&ndash;)\s*/g, ', ')
+          .replace(/,\s*,/g, ', ')
+          .replace(/,\s*\./g, '.')
+          .replace(/,\s*:/g, ':')
+          .replace(/:\s*,/g, ':')
+          .replace(/\(\s*,\s*/g, '(')
+          .replace(/,\s*\)/g, ')')
+          .replace(/\s{2,}/g, ' ')
           .trim();
       }
       if (res) {
@@ -2602,8 +2607,8 @@ function updateSiteIndex(articleData, author, category, heroImage) {
         let h = fs.readFileSync(artPath, 'utf8');
         const count = Math.floor(Math.random() * 3) + 3; // Random 3, 4, or 5
         const rel = allArts.filter(a => a.slug !== slug).sort(() => 0.5 - Math.random()).slice(0, count);
-        if (rel.length > 0 && h.includes('Related Investigative Reports & Department Features')) {
-          const items = rel.map(r => `<li><strong>${r.category}:</strong> <a href="./${r.slug}.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">${r.title}</a></li>`).join('\n            ');
+        if (rel.length > 0) {
+          const items = rel.map(r => `<li><strong>${r.category}:</strong> <a href="/${r.slug}" style="color: var(--primary); font-weight: 700; text-decoration: underline;">${r.title}</a></li>`).join('\n            ');
           const relBlock = `<div style="background: var(--bg-subtle); border-left: 4px solid var(--primary); padding: 1.25rem 1.5rem; margin: 2.5rem 0; border-radius: var(--radius-sm);">
           <h4 style="color: var(--primary); margin-top: 0; font-size: 1.1rem; text-transform: uppercase;">Related Investigative Reports & Department Features</h4>
           <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 0.75rem;">
@@ -2613,7 +2618,13 @@ function updateSiteIndex(articleData, author, category, heroImage) {
             ${items}
           </ul>
         </div>`;
-          h = h.replace(/<div style="background: var\(--bg-subtle\); border-left: 4px solid var\(--primary\);[^>]*>\s*<h4[^>]*>Related Investigative Reports & Department Features[\s\S]*?<\/ul>\s*<\/div>/, relBlock);
+          if (h.includes('Related Investigative Reports & Department Features')) {
+            h = h.replace(/<div style="background: var\(--bg-subtle\); border-left: 4px solid var\(--primary\);[^>]*>\s*<h4[^>]*>Related Investigative Reports & Department Features[\s\S]*?<\/ul>\s*<\/div>/, relBlock);
+          } else if (h.includes('<section class="author-box">')) {
+            h = h.replace('<section class="author-box">', `${relBlock}\n\n        <section class="author-box">`);
+          } else if (h.includes('</article>')) {
+            h = h.replace('</article>', `${relBlock}\n      </article>`);
+          }
           fs.writeFileSync(artPath, h, 'utf8');
         }
       }
@@ -2640,7 +2651,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
               else if (cLower.includes('tech')) catFile = 'category-technology.html';
               else if (cLower.includes('news')) catFile = 'category-news.html';
               else catFile = 'category-others.html';
-              return `<li><a href="../${catFile}" style="color: var(--primary); font-weight: 700; text-decoration: underline;">${r.category}</a> &ndash; Read <a href="../articles/${r.slug}.html" style="color: var(--primary); font-weight: 600; text-decoration: underline;">${r.title}</a></li>`;
+              return `<li><a href="/${catFile}" style="color: var(--primary); font-weight: 700; text-decoration: underline;">${r.category}</a>: Read <a href="/${r.slug}" style="color: var(--primary); font-weight: 600; text-decoration: underline;">${r.title}</a></li>`;
             }).join('\n              ');
 
             const oldListRegex = /<ul style="margin-left: 1\.5rem; line-height: 1\.8; font-size: 0\.95rem;">[\s\S]*?<\/ul>/;
@@ -2784,6 +2795,35 @@ function verifyAndEnforceArticleFaqFormat(filePath) {
   }
 }
 
+function verifyAndEnforceArticleDashesAndRelated(filePath, slug) {
+  try {
+    if (!fs.existsSync(filePath)) return;
+    const { sanitizeAllDashes, removeObsoleteBoxes, ensureRelatedSection } = require('./sync_articles');
+    let content = fs.readFileSync(filePath, 'utf8');
+    let original = content;
+
+    // 1. Sanitize all em-dashes and en-dashes
+    content = sanitizeAllDashes(content);
+
+    // 2. Remove obsolete empty external resources box if present
+    content = removeObsoleteBoxes(content);
+
+    // 3. Ensure Related Investigative Reports & Department Features block exists
+    content = ensureRelatedSection(content, slug, path.dirname(filePath));
+
+    if (content !== original) {
+      fs.writeFileSync(filePath, content, 'utf8');
+      const rootTarget = path.join(ROOT_DIR, path.basename(filePath));
+      if (filePath.startsWith(path.join(ROOT_DIR, 'articles'))) {
+        fs.writeFileSync(rootTarget, content, 'utf8');
+      }
+      console.log(`[PERMANENT DASH & RELATED LOCK] Enforced clean text & Related block on "${path.basename(filePath)}"`);
+    }
+  } catch (err) {
+    console.warn(`[WARN] verifyAndEnforceArticleDashesAndRelated error: ${err.message}`);
+  }
+}
+
 async function main() {
   console.log('=== Starting GenAlphaMagazines Automated Content Pipeline ===');
 
@@ -2793,9 +2833,12 @@ async function main() {
   }
   const existingFiles = fs.readdirSync(articlesDir).filter(f => f.endsWith('.html'));
 
-  // Guarantee FAQ card format across all existing articles at pipeline startup
+  // Guarantee FAQ card format & zero dashes & Related block across all existing articles at pipeline startup
   for (const ef of existingFiles) {
-    verifyAndEnforceArticleFaqFormat(path.join(articlesDir, ef));
+    const efPath = path.join(articlesDir, ef);
+    const efSlug = ef.replace('.html', '');
+    verifyAndEnforceArticleFaqFormat(efPath);
+    verifyAndEnforceArticleDashesAndRelated(efPath, efSlug);
   }
 
   // Determine category: if manual CLI argument provided, use it; otherwise rotate categories
@@ -2959,6 +3002,9 @@ async function main() {
 
   // Permanent FAQ Guarantee: Enforce clean card layout on newly written article
   verifyAndEnforceArticleFaqFormat(outputPath);
+
+  // Permanent Dash & Related Stories Guarantee: Strip all dashes & enforce Related block
+  verifyAndEnforceArticleDashesAndRelated(outputPath, generatedArticle.slug);
 
   // Mirror to root for instant clean URL serving at /slug
   const rootOutputPath = path.join(ROOT_DIR, `${generatedArticle.slug}.html`);
