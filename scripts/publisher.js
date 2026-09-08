@@ -16,13 +16,15 @@ const http = require('http');
 const crypto = require('crypto');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
+const { sanitizeAllDashes, removeObsoleteBoxes, ensureRelatedSection, standardizeArticleLinks } = require('./sync_articles');
 
-// Hard sanitize title: NEVER allow "2026" or calendar years in titles or slugs
+// Hard sanitize title: NEVER allow "2026" or calendar years in titles or slugs, zero dashes
 function sanitizeTitle(rawTitle) {
   if (!rawTitle) return '';
   let t = String(rawTitle)
     .replace(/\b(in|for)?\s*202[0-9]\b/gi, '')
     .replace(/[—–]/g, ': ')
+    .replace(/\s+-\s+/g, ': ')
     .replace(/:\s*A Complete Guide/gi, '')
     .replace(/:\s*Complete Practical Guide/gi, '')
     .replace(/\s+Guide for 2026/gi, '')
@@ -95,12 +97,12 @@ function ensureUniqueTitle(proposedTitle, topic, category) {
 
   const isDuplicate = titles.some(t => {
     if (t === lower) return true;
-    // Word overlap check (>65% same words)
+    // Word overlap check (>60% same words)
     const tWords = t.split(/\s+/).filter(w => w.length > 3);
     const pWords = lower.split(/\s+/).filter(w => w.length > 3);
     if (tWords.length > 0 && pWords.length > 0) {
       const common = pWords.filter(w => tWords.includes(w));
-      if (common.length / Math.max(tWords.length, pWords.length) > 0.65) {
+      if (common.length / Math.max(tWords.length, pWords.length) > 0.60) {
         return true;
       }
     }
@@ -110,24 +112,25 @@ function ensureUniqueTitle(proposedTitle, topic, category) {
   if (isDuplicate) {
     console.log(`[WARN] Title "${finalTitle}" is similar or duplicate to existing title. Applying unique differentiation...`);
     const qualifiers = {
-      technology: ['In-Depth Analysis', 'Key Innovations', 'Technical Outlook', 'Full Breakdown'],
+      technology: ['Features and Specs', 'Technical Outlook', 'Full Breakdown', 'Engineering Insights'],
       business: ['Strategic Outlook', 'Market Impact', 'Financial Analysis', 'Industry Trends'],
       celebrity: ['Global Perspective', 'Cultural Footprint', 'Defining Milestones', 'Creative Legacy'],
       entertainment: ['Industry Spotlight', 'Critical Perspectives', 'Cultural Wave', 'Artistic Review'],
       health: ['Clinical Insights', 'Evidence-Based Review', 'Practical Overview', 'Modern Perspectives'],
       news: ['Special Report', 'Verified Analysis', 'Executive Briefing', 'Core Developments'],
-      others: ['In-Depth Review', 'Essential Perspectives', 'Modern Blueprint', 'Detailed Guide']
+      others: ['In-Depth Review', 'Essential Perspectives', 'Modern Blueprint', 'Detailed Overview']
     };
     const list = qualifiers[category] || qualifiers.others;
     const randomQualifier = list[Math.floor(Math.random() * list.length)];
     
-    // Attempt inserting qualifier or rewriting suffix
+    // Attempt inserting qualifier or rewriting suffix with colon (NEVER dash, NEVER 2026)
     if (finalTitle.includes(':')) {
       const parts = finalTitle.split(':');
       finalTitle = `${parts[0].trim()}: ${randomQualifier}`;
     } else {
-      finalTitle = `${finalTitle} - ${randomQualifier}`;
+      finalTitle = `${finalTitle}: ${randomQualifier}`;
     }
+    finalTitle = sanitizeTitle(finalTitle);
     if (finalTitle.length > 60) {
       finalTitle = finalTitle.slice(0, 60).replace(/[:,\-\s]+$/, '').trim();
     }
@@ -771,8 +774,8 @@ function buildImageResult(filename, localPath, topic) {
   return {
     relativeUrl: valid ? `../assets/images/${filename}` : '',
     indexUrl:    valid ? `./assets/images/${filename}`  : '',
-    alt:     `${topic} — editorial photo`,
-    caption: `${topic}: expert guide and practical insights.`
+    alt:     `${topic} editorial photo`,
+    caption: `${topic}: expert reporting and practical insights.`
   };
 }
 
@@ -1393,105 +1396,63 @@ async function generateArticle(topicData) {
 
   console.log(`[INFO] Generating article on: "${topic}" (Category: ${category})`);
 
-  const systemInstruction = `You are an elite SEO content strategist and master copywriter for GenAlphaMagazines, producing exhaustive, reader-first editorial content for a worldwide audience targeting the keyword with informational intent.
+  const systemInstruction = `Act as an SEO content strategist and copywriter. Create a detailed article for a blog post targeting the keyword with informational intent. Use LSI Keywords. The audience is World Wide. Include: a click-worthy headline, an opening hook, H2 and H3 subheadings, key points to cover under each section, a featured snippet, and 1000-1500 word count. The tone should be professional. remove dash in article, two internal link and one external link on the targeted keyword only, one image on one article and related to keyword and do not repeat same image in all articles and image base on keyword only, headline not repeat only one time do not add 2026 in heading. Donot repeat article 2 time only one article one time.
 
-CORE SEO CONTENT STRATEGY (CRITICAL — NON-NEGOTIABLE):
-1. ROLE & PERSPECTIVE: Act as an authoritative SEO content strategist and senior journalist. Write for a Worldwide audience with high informational intent.
-2. TONE: Professional, authoritative, highly engaging, and clear. Zero corporate boilerplate, zero generic filler, zero fluff.
-3. LSI & SEMANTIC KEYWORDS: Extensively integrate Latent Semantic Indexing (LSI) and topic-relevant semantic keywords throughout every section and body paragraph.
-4. CLICK-WORTHY HEADLINE:
+CORE EDITORIAL & SEO REQUIREMENTS:
+1. ROLE & PERSPECTIVE: Act as an authoritative SEO content strategist and copywriter. Write for a Worldwide audience with informational intent using LSI keywords.
+2. TONE: Professional, authoritative, highly engaging, and clear. Zero generic filler.
+3. CLICK-WORTHY HEADLINE:
    - Must be between 50 and 60 characters.
-   - Click-worthy and engaging without being misleading clickbait.
+   - Click-worthy, engaging, and unique without misleading clickbait.
+   - HEADLINE MUST NEVER REPEAT (100% unique, only one time across all publications).
+   - ABSOLUTELY DO NOT ADD "2026" OR CALENDAR YEARS IN HEADING / TITLE / H1.
    - Never use banned suffixes like ": A Complete Guide" or repetitive "Guide for 2026".
-5. OPENING HOOK (Section 1):
+4. OPENING HOOK (Section 1):
    - Do NOT use an H2 heading for section 1 (heading MUST be "").
-   - Start immediately with a compelling opening hook that captivates the reader in the very first sentence.
+   - Start immediately with a compelling opening hook that captivates the worldwide reader in the very first sentence.
    - Answer the primary search intent early to capture Google Featured Snippets.
    - NEVER use boilerplate like "If you've been looking into", "cut through the noise", or "this guide is here".
-6. STRUCTURE & SUBHEADINGS:
+5. STRUCTURE & SUBHEADINGS:
    - Section 1: Compelling opening hook and overview (heading = "").
-   - Sections 2-4: Deep technical and practical analysis with descriptive H2 headings and H3 subheadings.
+   - Sections 2-4: Deep practical and technical analysis with descriptive H2 headings and H3 subheadings with concrete key points covered under each section.
    - Section 5: "Final Thoughts" (id: "final-thoughts", heading: "Final Thoughts"). Key takeaways, strategic recommendations.
    - Section 6: "Frequently Asked Questions" (id: "frequently-asked-questions", heading: "Frequently Asked Questions").
-7. FEATURED SNIPPET TARGET: Provide concise, clear factual definitions and bulleted takeaways that Google can extract directly into position zero.
-8. NO DASHES: Do NOT use em-dashes (—) or en-dashes (–). Use commas, colons, or standard hyphens where needed.
-9. ABSOLUTELY BANNED:
+6. FEATURED SNIPPET TARGET: Provide concise, clear factual definitions or bulleted takeaways that Google can extract directly into position zero.
+7. WORD COUNT: Strictly between 1,000 and 1,500 words across all body sections.
+8. REMOVE DASH IN ARTICLE: Do NOT use em-dashes (—), en-dashes (–), or spaced hyphens ( - ) in article prose or headings. Use commas, colons, or natural phrasing.
+9. TARGETED KEYWORD LINKING:
+   - Two internal links and one external link on the targeted keyword only.
+   - Weave natural target keywords inside body <p> paragraphs for internal and external links. Never place links in headings.
+10. HERO IMAGE RULE:
+   - Exactly one image per article (hero image), related to the keyword only.
+   - Do not repeat the same image in all articles.
+11. DEDUPLICATION (CRITICAL):
+   - Do not repeat article 2 times, only one article one time.
+   - Headline must not repeat, only one time, do not add 2026 in heading.
+12. ABSOLUTELY BANNED:
    - "If you've been looking into"
    - "municipal governance"
    - "civic engagement"
    - "stakeholder trust"
    - "across our regional communities"
    - Em-dash (—) and en-dash (–)
-10. CONTENT DEPTH: Minimum 1,500 words total across all sections. Each section must contain at least 2 substantive paragraphs and at least one <h3> sub-heading with specific, concrete details.
-11. INTERNAL LINKING CONTEXT (MANDATORY): Naturally weave relevant cross-topic terms into body paragraphs so readers can discover related departmental reporting:
-   - For arts, entertainment, and culture: naturally mention topics like "independent theater", "visual storytelling", "performing arts", "smart home technology", or "energy efficiency" in home theater and studio discussions.
-   - For technology, lifestyle, and home: naturally mention topics like "smart home technology", "clean energy transition", "energy efficiency", "battery storage", or "commercial equipment".
-   - For business, economy, and retail: naturally mention topics like "Main Street businesses", "retail foot traffic", "business operations", "interest rates", "monetary policy", or "Federal Reserve".
-   - For travel, news, and civic policy: naturally mention topics like "travel disruptions", "flight delays", "travel planning", "investigative reporting", or "crypto regulations".
-10. GOOGLE SEO POLICY FOR TITLE & HEADLINES (CRITICAL ANTI-REPETITION):
-   - "title": Must be unique, fresh, journalistic, and BETWEEN 50 AND 60 CHARACTERS. Count the characters carefully. Titles shorter than 45 characters FAIL the quality check. Do not pad with filler words — use specific, descriptive keywords.
-   - STRICTLY FORBIDDEN TITLE PATTERNS:
-     * DO NOT end titles with ": A Complete Guide", ": Complete Practical Guide", "Guide for 2026", or repetitive "Guide" suffixes.
-     * DO NOT mindlessly append "in 2026" or "for 2026" onto every single title. Use the year only when referring to a specific dated event (e.g. "FOMC Meeting Sept 2026").
-     * Vary your headline styles across publications: use analytical headlines, questions, action-driven breakdowns, or feature spotlight headlines.
-     * Example good titles:
-       - "Navigating Atlanta Airport: Terminal Layouts and Smart Layover Tips"
-       - "How Independent Retailers Are Outpacing Big-Box Chains"
-       - "Heat Pump Retrofits: Cutting Energy Costs in Historic Properties"
-       - "Federal Reserve Rate Decisions: What Changing Yields Mean for Borrowers"
-   - "slug": Derived from the title: lowercase, clean, hyphenated. CRITICAL: Do NOT split compound brand names. "iPhone" → "iphone", "iPad" → "ipad", "ChatGPT" → "chatgpt", "MacBook" → "macbook", "Wi-Fi" → "wifi". Never insert hyphens in the middle of a single word.
-   - "metaDescription": 140-155 characters summarizing the article with primary keyword.
-   - "tableOfContents": DO NOT INCLUDE. Tables of contents are strictly banned.
-   - "sections": array of {id, heading, contentHtml} (Section 1 heading MUST be "")
-   - "faqs": array of {question, answer}
-   - CRITICAL FAQ RULE: The "frequently-asked-questions" section contentHtml MUST be an empty string "" or only contain a brief intro sentence like <p>See answers below.</p>. NEVER put <h3>, <h4>, <div class="faq-item">, or raw Q&A pairs inside contentHtml for the FAQ section. All FAQ questions and answers belong ONLY in the "faqs" array as {question, answer} objects. Putting FAQ content inside contentHtml causes duplicate rendering and is strictly forbidden.
-10b. TABLE OF CONTENTS BAN (CRITICAL — STRICTLY ENFORCED):
-   - NEVER generate, output, or include a "Table of Contents" block, TOC box, nav list, or bulleted list of anchor links.
-   - Jump straight from the article header/figure into the opening hook paragraph.
-11. CURRENT YEAR & NATURAL WRITING (CRITICAL):
-   - The current temporal context is 2026. All current events, market data, tax credits, standards, technology benchmarks, and temporal references MUST reflect 2026.
-   - NEVER refer to 2024 or 2025 as the current or upcoming year. If referring to 2024 or 2025, refer to them explicitly in the past tense.
-   - AVOID SPAMMING "2026" IN EVERY PARAGRAPH: Write naturally like professional journalists (e.g. use "today", "currently", "this season", "in modern operations", "recent developments"). Do NOT awkwardly insert the literal number "2026" into every section, heading, or FAQ question.
-12. UNIQUE ANGLE & HIGH CONTENT VALUE:
-   - Each article must bring unique, fresh insights, concrete actionable tips, and original perspectives tailored strictly to its specific topic.
-   - Never output repetitive filler or recycled boilerplate structures across different topics.
-13. Valid HTML only in contentHtml.
-14. FACTUAL ACCURACY (NON-NEGOTIABLE): You are a professional journalist. Write ONLY verifiable, real facts. Never fabricate statistics, people, events, or claims. If you mention a film, name its actual director and year. If you mention a person, use their real full name and verified accomplishments.
-15. LIST ARTICLE COMPLETENESS: When the topic specifies a numbered list (e.g. "25 movies", "10 celebrities"), you MUST include EVERY numbered item. Skipping items or writing "twenty-five films" without naming them is a critical failure. Write every single item with its real title, creator, date, and 1-2 sentences of specific factual detail.
-16. ZERO GENERIC FILLER: Every paragraph must be specific to the exact topic. Sentences that could describe any article ("this topic has become increasingly important") are banned. Write details that ONLY apply to the specific subject matter.
-17. MANDATORY INLINE LINKING KEYWORDS (NON-NEGOTIABLE):
-    - Every article MUST contain natural mentions of relevant related topic keywords inside body paragraphs (<p> tags) so internal cross-links and external citations can be anchored directly onto in-text keywords.
-    - NEVER place links in headings (<h1>, <h2>, <h3>).
-    - Weave keywords naturally into editorial sentences.`;
+   - Calendar year "2026" in headings or titles
+13. Output valid JSON only with keys: "title", "slug", "metaDescription", "sections", "faqs". Section 6 contentHtml must be "" (empty string).`;
 
-  const userPrompt = `Act as an SEO content strategist and copywriter. Create a detailed article for a blog post targeting the keyword "${topic}" with informational intent. Use LSI Keywords. The audience is World Wide. Include: a click-worthy headline (50-60 characters), an opening hook, H2 and H3 subheadings, key points to cover under each section, internal linking suggestions, a featured snippet target section, and a recommended word count (1,200 to 1,500+ words). The tone should be professional.
+  const userPrompt = `Act as an SEO content strategist and copywriter. Create a detailed article for a blog post targeting the keyword "${topic}" with informational intent. Use LSI Keywords. The audience is World Wide. Include: a click-worthy headline, an opening hook, H2 and H3 subheadings, key points to cover under each section, a featured snippet, and 1000-1500 word count. The tone should be professional. remove dash in article, two internal link and one external link on the targeted keyword only, one image on one article and related to keyword and do not repeat same image in all articles and image base on keyword only, headline not repeat only one time do not add 2026 in heading. Donot repeat article 2 time only one article one time.
 Category: ${category}
 Author: ${author.name} (${author.role})
-Current Year: 2026 (Ensure all market data, trends, and guidelines reflect 2026)
 
-TITLE & WORDING REQUIREMENTS:
-- Provide an engaging, unique, journalistic title under 60 characters without repeating boilerplate words like "Guide", "Complete Guide", or "Guide for 2026".
-- Derive the slug directly from your unique title.
-- Do not use em-dashes and start directly with helpful, original analysis.
-- Output valid JSON only, without unescaped quotes or raw control characters in contentHtml.
-- Write naturally: do NOT spam the number "2026" repeatedly in headings, paragraphs, or FAQs. Use natural terms like "today", "this season", or "current standards".
-- Ensure unique, topic-specific substance with concrete details, and naturally weave related cross-topic contexts into body paragraphs (e.g. independent theater, visual storytelling, smart home technology, energy efficiency, Main Street businesses, travel planning, or monetary policy) so internal links can connect seamlessly in body paragraphs (never in headings).
-
-FACTUAL CONTENT RULES (CRITICAL — MANDATORY):
-- This is a journalism publication. Every article MUST contain REAL, VERIFIABLE facts. No vague generalities.
-- ALWAYS name specific real people (full names), real companies, real products, real places, real statistics with sources.
-- If the topic is a LIST article (e.g. "25 American Movies", "10 Best Laptops", "25 Famous Celebrities"):
-  * You MUST enumerate EVERY SINGLE ITEM on the list by number (1. 2. 3. ... up to the full count stated in the title).
-  * Each list item MUST include: the exact real name/title, the real year/date, real director/creator/person involved, and a concrete fact about why it qualifies.
-  * NEVER write generic placeholder sentences like "twenty-five films" or "several notable works" — always write the ACTUAL names.
-  * Example for movies: "1. Citizen Kane (1941, dir. Orson Welles) — pioneered deep focus photography and non-linear narrative structure."
-  * Example for celebrities: "1. Oprah Winfrey — media mogul, actress, and philanthropist with a net worth exceeding $2.5 billion."
-- For non-list articles: Include specific statistics, named case studies, real research findings, exact dollar amounts, verified dates, and named industry experts or institutions.
-- NEVER write articles that could apply to any topic. Every paragraph must contain details SPECIFIC to "${topic}".
-
-FAQ FORMAT RULE (CRITICAL — STRICTLY ENFORCED):
-- The "faqs" array MUST contain 5 specific, topic-relevant question/answer objects.
-- The "frequently-asked-questions" section contentHtml MUST be set to "" (empty string). Do NOT put any <h3>, <h4>, <p>, or <div class="faq-item"> FAQ content inside contentHtml. Putting FAQ HTML in contentHtml causes the FAQ to be rendered TWICE on the page — this is a critical bug that will fail the quality check. FAQ content is rendered automatically from the "faqs" array only.`;
+MANDATORY EDITORIAL & SEO REQUIREMENTS:
+- HEADLINE: Click-worthy headline (50-60 characters). Headline must not repeat (only one time across all publications). Absolutely DO NOT add 2026 in heading.
+- OPENING HOOK: Section 1 heading MUST be "" (empty string). Start immediately with a compelling opening hook.
+- SUBHEADINGS & KEY POINTS: H2 and H3 subheadings with detailed, concrete key points covered under each section.
+- FEATURED SNIPPET: Concise, high-value factual definition or bulleted takeaways targeting position zero.
+- WORD COUNT: Strictly between 1,000 and 1,500 words total across all body sections.
+- REMOVE DASH: Do NOT use em-dashes (—), en-dashes (–), or spaced hyphens ( - ) in prose or headings.
+- TARGETED KEYWORD LINKING: Weave natural target keywords inside body <p> paragraphs for exactly two internal links and one external link on targeted keywords only.
+- FAQS: Exactly 5 unique Q&A pairs in the "faqs" array. Section contentHtml for FAQ MUST be "".
+- Output valid JSON only: { "title": "...", "slug": "...", "metaDescription": "...", "sections": [...], "faqs": [...] }`;
 
   if (GEMINI_API_KEY) {
     try {
@@ -1891,28 +1852,9 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
     return finalThoughtsBlock ? `${finalThoughtsBlock}\n${currentSectionHtml}` : currentSectionHtml;
   }).join('\n');
 
-  // Hard SEO Guarantee: Exactly/at least 2 internal links embedded on keywords
+  // Seed in-body external & internal links on keywords before full standardization
   let guaranteedSectionsHtml = enforceMinimumInternalLinks(sectionsHtml, articleData.slug, category, 2);
-
-  // Embed external link directly onto relevant in-body keyword (with category fallback)
   guaranteedSectionsHtml = injectExternalKeywordLink(guaranteedSectionsHtml, externalLink, category);
-
-  // ── External Reference Box ─────────────────────────────────────
-  let externalLinkHtml = '';
-  if (externalLink && externalLink.url && externalLink.label) {
-    const safeUrl = String(externalLink.url).replace(/"/g, '&quot;');
-    const safeLabel = String(externalLink.label).replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    const safeDomain = String(externalLink.domain || '').replace(/</g, '&lt;') || safeUrl.replace(/^https?:\/\/([^\/]+).*/, '$1');
-    externalLinkHtml = `
-          <div style="background:#eff6ff;border-left:4px solid #2563eb;padding:1.1rem 1.4rem;margin:2rem 0 1.5rem;border-radius:6px;display:flex;align-items:flex-start;gap:0.9rem;">
-            <span style="font-size:1.4rem;line-height:1;flex-shrink:0;">🔗</span>
-            <div>
-              <p style="margin:0 0 0.3rem;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#2563eb;">External Reference</p>
-              <a href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" style="color:#1d4ed8;font-weight:600;font-size:0.97rem;text-decoration:underline;">${safeLabel}</a>
-              <p style="margin:0.25rem 0 0;font-size:0.78rem;color:#64748b;">Source: ${safeDomain}</p>
-            </div>
-          </div>`;
-  }
 
   // Render visible FAQ section if FAQs exist and not already present in contentHtml
   let visibleFaqHtml = '';
@@ -1946,7 +1888,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
       }`;
   }
 
-  return `<!DOCTYPE html>
+  const fullRawHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <!-- Google tag (gtag.js) -->
@@ -2132,7 +2074,6 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
         <div class="article-body">
           ${guaranteedSectionsHtml}
           ${(guaranteedSectionsHtml.includes('id="frequently-asked-questions"') || guaranteedSectionsHtml.includes('Frequently Asked Questions')) ? '' : visibleFaqHtml}
-          ${externalLinkHtml}
         </div>
 
         <!-- Related Department Stories -->
@@ -2250,6 +2191,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   <script src="../assets/js/main.js" defer></script>
 </body>
 </html>`;
+  return standardizeArticleLinks(fullRawHtml, articleData.slug, category);
 }
 
 function updateSiteIndex(articleData, author, category, heroImage) {
@@ -2678,50 +2620,18 @@ function updateSiteIndex(articleData, author, category, heroImage) {
  */
 function verifyAndEnforceArticleFileLinks(filePath, slug, category) {
   try {
+    if (!fs.existsSync(filePath)) return;
     let content = fs.readFileSync(filePath, 'utf8');
-    
-    // Remove any accidental Department Insights box
-    content = content.replace(/<div[^>]*border-left:\s*3px\s+solid\s+var\(--primary\)[^>]*>[\s\S]*?Department Insights[\s\S]*?<\/div>/gi, '');
-
-    const startIdx = content.indexOf('<div class="article-body">');
-    const endIdx = content.indexOf('</article>');
-    if (startIdx === -1 || endIdx === -1) return;
-
-    let body = content.substring(startIdx, endIdx);
-    const pTags = body.match(/<p[^>]*>([\s\S]*?)<\/p>/gi) || [];
-    let intCount = 0;
-    let extCount = 0;
-
-    pTags.forEach(p => {
-      const im = p.match(/<a\s+[^>]*href=["'](?:\.\.\/articles\/|\.\/|articles\/)([a-z0-9-]+)\.html["'][^>]*>/gi) || [];
-      intCount += im.length;
-      const em = p.match(/<a\s+[^>]*href=["']https?:\/\/[^"']+["'][^>]*>([\s\S]*?)<\/a>/gi) || [];
-      extCount += em.length;
-    });
-
-    let modified = false;
-
-    // Check external link
-    if (extCount < 1) {
-      const catKey = (category || 'others').toLowerCase();
-      const extInfo = DEFAULT_CATEGORY_EXTERNAL_LINKS[catKey] || DEFAULT_CATEGORY_EXTERNAL_LINKS.others;
-      body = injectExternalKeywordLink(body, extInfo, category);
-      modified = true;
-      console.log(`[PERMANENT LINK LOCK] Auto-injected missing external link for "${slug}"`);
+    const updated = standardizeArticleLinks(content, slug, category);
+    if (updated !== content) {
+      fs.writeFileSync(filePath, updated, 'utf8');
+      const rootTarget = path.join(ROOT_DIR, path.basename(filePath));
+      if (filePath.startsWith(path.join(ROOT_DIR, 'articles'))) {
+        fs.writeFileSync(rootTarget, updated, 'utf8');
+      }
+      console.log(`[PERMANENT LINK LOCK] Standardized links and healed: "${slug}"`);
     }
-
-    // Check internal links
-    if (intCount < 2) {
-      body = enforceMinimumInternalLinks(body, slug, 2);
-      modified = true;
-      console.log(`[PERMANENT LINK LOCK] Auto-injected missing internal links (${intCount} -> 2) for "${slug}"`);
-    }
-
-    if (modified) {
-      content = content.substring(0, startIdx) + body + content.substring(endIdx);
-      fs.writeFileSync(filePath, content, 'utf8');
-    }
-    console.log(`[PERMANENT LINK LOCK] Verified: "${slug}" guaranteed with >=2 internal links and >=1 external link on keywords.`);
+    console.log(`[PERMANENT LINK LOCK] Verified: "${slug}" guaranteed with exactly 2 internal links and 1 external link on keywords.`);
   } catch (err) {
     console.warn(`[WARN] verifyAndEnforceArticleFileLinks error: ${err.message}`);
   }
@@ -2852,9 +2762,44 @@ async function main() {
 
   const author = AUTHORS[cat] || AUTHORS.news;
 
+  // Load published topics ledger and existing slugs for strict 1:1 deduplication
+  const trackingFile = path.join(ROOT_DIR, 'data', 'published_topics.json');
+  let publishedLedger = [];
+  try {
+    if (fs.existsSync(trackingFile)) {
+      publishedLedger = JSON.parse(fs.readFileSync(trackingFile, 'utf8'));
+    }
+  } catch (e) {
+    publishedLedger = [];
+  }
+
+  const allPublishedSlugs = new Set([
+    ...existingFiles.map(f => f.replace('.html', '').toLowerCase()),
+    ...publishedLedger.map(entry => (entry.slug || '').toLowerCase())
+  ]);
+
+  // Function to extract significant keywords from a string
+  const extractWords = (str) => {
+    return str.toLowerCase()
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .split(/\s+/)
+      .filter(w => w.length > 3 && !['guide', '2026', 'complete', 'practical', 'tips', 'about', 'with', 'from', 'that', 'this'].includes(w));
+  };
+
   // Determine topic:
   // 1. Manual CLI argument (--topic)
   let topic = CUSTOM_TOPIC.trim();
+  if (topic) {
+    const candWords = extractWords(topic);
+    for (const publishedSlug of allPublishedSlugs) {
+      const matchingWords = candWords.filter(w => publishedSlug.includes(w));
+      if (matchingWords.length >= 3 || (candWords.length <= 3 && matchingWords.length >= 2)) {
+        console.error(`[ABORT] Topic "${topic}" conflicts with already published article "${publishedSlug}". Enforcing 1-to-1 publication rule: Donot repeat article 2 time only one article one time.`);
+        process.exit(1);
+      }
+    }
+    console.log(`[TOPIC-LOCK] Manual topic "${topic}" validated: No duplicate exists in published ledger.`);
+  }
 
   // 2. Google Drive Folder check (if configured)
   if (!topic) {
@@ -2868,30 +2813,6 @@ async function main() {
   // 3. Dynamic rotating topic pool fallback
   if (!topic) {
     const pool = DEFAULT_TOPIC_POOL[cat] || DEFAULT_TOPIC_POOL.news;
-
-    // Load published topics ledger
-    const trackingFile = path.join(ROOT_DIR, 'data', 'published_topics.json');
-    let publishedLedger = [];
-    try {
-      if (fs.existsSync(trackingFile)) {
-        publishedLedger = JSON.parse(fs.readFileSync(trackingFile, 'utf8'));
-      }
-    } catch (e) {
-      publishedLedger = [];
-    }
-
-    const allPublishedSlugs = new Set([
-      ...existingFiles.map(f => f.replace('.html', '').toLowerCase()),
-      ...publishedLedger.map(entry => (entry.slug || '').toLowerCase())
-    ]);
-
-    // Function to extract significant keywords from a string
-    const extractWords = (str) => {
-      return str.toLowerCase()
-        .replace(/[^a-z0-9\s]/g, ' ')
-        .split(/\s+/)
-        .filter(w => w.length > 3 && !['guide', '2026', 'complete', 'practical', 'tips', 'about', 'with', 'from', 'that', 'this'].includes(w));
-    };
 
     // Filter candidate topics to strictly exclude any topic whose primary keywords have already been published
     const available = pool.filter(cand => {

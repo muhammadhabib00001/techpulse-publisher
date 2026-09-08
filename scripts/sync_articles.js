@@ -64,7 +64,220 @@ function removeObsoleteBoxes(html) {
   if (!html) return '';
   return html
     .replace(/<div class="external-resources-box"[\s\S]*?<\/div>\s*<\/div>/gi, '')
-    .replace(/<div class="external-resources-box"[\s\S]*?<\/div>/gi, '');
+    .replace(/<div class="external-resources-box"[\s\S]*?<\/div>/gi, '')
+    .replace(/<div style="background:#eff6ff;border-left:4px solid #2563eb;[\s\S]*?<\/div>\s*<\/div>/gi, '')
+    .replace(/<div[^>]*border-left:\s*4px\s+solid\s+#2563eb;[\s\S]*?External Reference[\s\S]*?<\/div>\s*<\/div>/gi, '');
+}
+
+const CATEGORY_EXTERNAL_FALLBACKS = {
+  entertainment: {
+    url: 'https://en.wikipedia.org/wiki/Independent_film',
+    label: 'Independent Film Archive',
+    domain: 'en.wikipedia.org',
+    keywords: ['independent film', 'indie film', 'film festival', 'film festivals', 'visual storytelling', 'cinematography', 'cinema', 'storytelling', 'theatrical release', 'screenplay', 'director', 'entertainment', 'movies', 'films']
+  },
+  celebrity: {
+    url: 'https://en.wikipedia.org/wiki/Celebrity',
+    label: 'Celebrity Culture & Media',
+    domain: 'en.wikipedia.org',
+    keywords: ['pop culture', 'entertainment industry', 'cultural influence', 'celebrity culture', 'stardom', 'culture', 'athletics', 'career', 'celebrity', 'basketball', 'nba', 'championship']
+  },
+  business: {
+    url: 'https://www.bls.gov/',
+    label: 'U.S. Bureau of Labor Statistics',
+    domain: 'bls.gov',
+    keywords: ['business operations', 'economic indicators', 'monetary policy', 'labor market', 'retail foot traffic', 'small business', 'commercial operations', 'interest rates', 'inflation', 'economy', 'business']
+  },
+  technology: {
+    url: 'https://www.wired.com/',
+    label: 'Wired Technology Review',
+    domain: 'wired.com',
+    keywords: ['smart home technology', 'mobile operating system', 'energy efficiency', 'hardware benchmarks', 'silicon architecture', 'artificial intelligence', 'battery storage', 'technology', 'hardware', 'solar', 'energy', 'battery', 'storage']
+  },
+  games: {
+    url: 'https://www.rockstargames.com/VI',
+    label: 'Rockstar Games Grand Theft Auto VI Portal',
+    domain: 'rockstargames.com',
+    keywords: ['video game', 'multiplayer', 'gameplay mechanics', 'open-world', 'game development', 'interactive entertainment', 'gaming hardware', 'gameplay', 'gaming', 'games', 'vice city', 'gta', 'rockstar']
+  },
+  health: {
+    url: 'https://www.who.int/',
+    label: 'World Health Organization',
+    domain: 'who.int',
+    keywords: ['cardiovascular health', 'health guidelines', 'preventative care', 'wellness', 'clinical research', 'public health', 'symptoms', 'health', 'wellness', 'medical']
+  },
+  news: {
+    url: 'https://www.reuters.com/',
+    label: 'Reuters News & Financial Markets',
+    domain: 'reuters.com',
+    keywords: ['monetary policy', 'Federal Reserve', 'interest rates', 'economic indicators', 'international commerce', 'trade policy', 'regulatory framework', 'regulations', 'reporting', 'news', 'policy']
+  },
+  lifestyle: {
+    url: 'https://en.wikipedia.org/wiki/Vinyl_revival',
+    label: 'Vinyl Revival Audio Archive',
+    domain: 'en.wikipedia.org',
+    keywords: ['vinyl records', 'vinyl revival', 'analog audio', 'turntable', 'travel planning', 'passenger rights', 'travel disruptions', 'culinary arts', 'interior design', 'lifestyle', 'culinary', 'records']
+  },
+  others: {
+    url: 'https://www.britannica.com/',
+    label: 'Encyclopaedia Britannica',
+    domain: 'britannica.com',
+    keywords: ['cultural heritage', 'historical context', 'civic engagement', 'community preservation', 'public interest', 'community', 'heritage', 'society']
+  }
+};
+
+const INTERNAL_CANDIDATES = [
+  { keyword: 'editorial standards', url: '/pages/editorial-policy.html' },
+  { keyword: 'editorial policy', url: '/pages/editorial-policy.html' },
+  { keyword: 'Business & Economy', url: '/category-business.html' },
+  { keyword: 'Arts & Entertainment', url: '/category-arts.html' },
+  { keyword: 'Lifestyle & Culture', url: '/category-lifestyle.html' },
+  { keyword: 'News & Announcements', url: '/category-news.html' },
+  { keyword: 'Community & Events', url: '/category-community.html' },
+  { keyword: 'Voices & Columnists', url: '/category-voices.html' },
+  { keyword: 'business operations', url: '/how-ai-is-reshaping-main-street-business-operations' },
+  { keyword: 'Main Street businesses', url: '/main-street-business-revitalization-guide-for-2026' },
+  { keyword: 'interest rates', url: '/fomc-meeting-sept-2026-interest-rates-and-market-outlook' },
+  { keyword: 'Federal Reserve', url: '/fomc-meeting-sept-2026-interest-rates-and-market-outlook' },
+  { keyword: 'visual storytelling', url: '/25-american-movies-defining-visual-storytelling-today' },
+  { keyword: 'smart home technology', url: '/smart-home-energy-audits-heat-pump-and-solar-storage' },
+  { keyword: 'solar battery storage', url: '/solar-battery-storage-guide-costs-types-and-savings' },
+  { keyword: 'battery storage', url: '/solar-battery-storage-guide-costs-types-and-savings' },
+  { keyword: 'heart health', url: '/heart-problems-evidence-based-insights-and-expert-guidance' },
+  { keyword: 'cardiovascular health', url: '/heart-problems-evidence-based-insights-and-expert-guidance' },
+  { keyword: 'travel disruptions', url: '/how-to-handle-flight-delays-and-travel-disruptions' },
+  { keyword: 'vinyl record care', url: '/the-vinyl-record-resurgence-turntable-setups-pressing' },
+  { keyword: 'gaming hardware', url: '/top-7-phone-features-and-specs' },
+  { keyword: 'independent investigations', url: '/pages/about.html' },
+  { keyword: 'community journalism', url: '/pages/about.html' }
+];
+
+function getCategoryFromHtml(html) {
+  const m1 = html.match(/class="article-category-badge">([A-Z\s]+)/i);
+  if (m1) return m1[1].replace(/•[\s\S]*$/, '').trim().toLowerCase();
+  const m2 = html.match(/<meta property="article:section" content="([^"]+)"/i);
+  if (m2) return m2[1].trim().toLowerCase();
+  return 'news';
+}
+
+function standardizeArticleLinks(content, slug, customCategory = '') {
+  const category = customCategory || getCategoryFromHtml(content);
+
+  // 1. Sanitize dashes
+  content = sanitizeAllDashes(content);
+
+  // 2. Remove obsolete callout boxes
+  content = removeObsoleteBoxes(content);
+
+  // 3. Strip any links in headings or lists
+  content = content.replace(/(<h[1-6][^>]*>)([\s\S]*?)(<\/h[1-6]>)/gi, (m, open, text, close) => {
+    return open + text.replace(/<a\s+[^>]*>([\s\S]*?)<\/a>/gi, '$1') + close;
+  });
+  content = content.replace(/(<li[^>]*>)([\s\S]*?)(<\/li>)/gi, (m, open, text, close) => {
+    return open + text.replace(/<a\s+[^>]*>([\s\S]*?)<\/a>/gi, '$1') + close;
+  });
+
+  const startIdx = content.indexOf('<div class="article-body">');
+  const endIdx = content.indexOf('</article>');
+  if (startIdx === -1 || endIdx === -1) return content;
+
+  let body = content.substring(startIdx, endIdx);
+
+  // Parse prose body (before FAQs and Related section)
+  const faqStart = body.search(/<section[^>]*id=["']frequently-asked-questions["']/i);
+  let proseBody = faqStart !== -1 ? body.substring(0, faqStart) : body;
+  const trailingBody = faqStart !== -1 ? body.substring(faqStart) : '';
+
+  // 4. Handle External Links (exactly 1 on targeted keyword)
+  const extRegex = /<a\s+([^>]*href=["'](https?:\/\/(?!www\.genalphamagazines\.com)[^"']+)["'][^>]*)>([\s\S]*?)<\/a>/gi;
+  let extMatches = [];
+  let em;
+  while ((em = extRegex.exec(proseBody)) !== null) {
+    extMatches.push({ fullTag: em[0], href: em[2], text: em[3] });
+  }
+
+  if (extMatches.length > 1) {
+    for (let i = 1; i < extMatches.length; i++) {
+      proseBody = proseBody.replace(extMatches[i].fullTag, extMatches[i].text);
+    }
+  } else if (extMatches.length === 0) {
+    const catFallback = CATEGORY_EXTERNAL_FALLBACKS[category] || CATEGORY_EXTERNAL_FALLBACKS.others;
+    let injected = false;
+    for (const kw of catFallback.keywords) {
+      if (injected) break;
+      const esc = kw.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const reg = new RegExp('(\\b' + esc + '\\b)(?![^<]*>)', 'i');
+      if (reg.test(proseBody)) {
+        proseBody = proseBody.replace(reg, `<a href="${catFallback.url}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${catFallback.label}">$1</a>`);
+        injected = true;
+      }
+    }
+    if (!injected) {
+      const lastPIdx = proseBody.lastIndexOf('</p>');
+      if (lastPIdx !== -1) {
+        const extAddition = ` Authoritative reference documentation and contextual source materials are cataloged via <a href="${catFallback.url}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${catFallback.label}">${catFallback.label}</a>.`;
+        proseBody = proseBody.substring(0, lastPIdx) + extAddition + proseBody.substring(lastPIdx);
+      }
+    }
+  }
+
+  // 5. Handle Internal Links (exactly 2 on targeted keywords)
+  const intRegex = /<a\s+([^>]*href=["']((?:\/|\.\.\/|\.\/|https:\/\/www\.genalphamagazines\.com\/)[^"']+)["'][^>]*)>([\s\S]*?)<\/a>/gi;
+  let intMatches = [];
+  let im;
+  while ((im = intRegex.exec(proseBody)) !== null) {
+    intMatches.push({ fullTag: im[0], href: im[2], text: im[3] });
+  }
+
+  // Unwrap self-links and duplicate URLs
+  const keptUrls = new Set();
+  let keptCount = 0;
+  for (const item of intMatches) {
+    const isSelfLink = item.href.includes(slug);
+    if (isSelfLink || keptUrls.has(item.href) || keptCount >= 2) {
+      proseBody = proseBody.replace(item.fullTag, item.text);
+    } else {
+      keptUrls.add(item.href);
+      keptCount++;
+    }
+  }
+
+  // If keptCount < 2, inject missing internal links on targeted keywords
+  if (keptCount < 2) {
+    for (const cand of INTERNAL_CANDIDATES) {
+      if (keptCount >= 2) break;
+      if (cand.url.includes(slug) || keptUrls.has(cand.url)) continue;
+      const esc = cand.keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const reg = new RegExp('(\\b' + esc + '\\b)(?![^<]*>)', 'i');
+      if (reg.test(proseBody)) {
+        proseBody = proseBody.replace(reg, `<a href="${cand.url}" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cand.keyword}">$1</a>`);
+        keptUrls.add(cand.url);
+        keptCount++;
+      }
+    }
+  }
+
+  // If still keptCount < 2, append natural closing sentence
+  if (keptCount < 2) {
+    const catUrl = `/category-${category}.html`;
+    const catName = category.charAt(0).toUpperCase() + category.slice(1);
+    const lastPIdx = proseBody.lastIndexOf('</p>');
+    if (lastPIdx !== -1) {
+      let addition = '';
+      if (keptCount === 0) {
+        addition = ` Readers can explore extensive departmental reporting in our <a href="${catUrl}" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${catName} Coverage">${catName}</a> department, produced in strict accordance with verified <a href="/pages/editorial-policy.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="Editorial Policy">editorial standards</a>.`;
+        keptCount = 2;
+      } else if (keptCount === 1) {
+        addition = ` Related regional investigations are published under our verified <a href="/pages/editorial-policy.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="Editorial Policy">editorial standards</a>.`;
+        keptCount = 2;
+      }
+      proseBody = proseBody.substring(0, lastPIdx) + addition + proseBody.substring(lastPIdx);
+    }
+  }
+
+  body = proseBody + trailingBody;
+  content = content.substring(0, startIdx) + body + content.substring(endIdx);
+  return content;
 }
 
 function buildRelatedSectionHtml(currentSlug, articlesDir) {
@@ -614,7 +827,10 @@ ${sideArticles.map(art => {
     // C. Guarantee Related Investigative Reports & Department Features block exists
     updated = ensureRelatedSection(updated, slug, articlesDir);
 
-    // D. Purge any broken links from existing related items
+    // D. Enforce Exactly 2 Internal Links and 1 External Link on targeted keywords
+    updated = standardizeArticleLinks(updated, slug);
+
+    // E. Purge any broken links from existing related items
     const relatedItemRegex = /<li><strong>[^<]+:<\/strong>\s*<a\s+href="(?:\.\/|\.\.\/articles\/|\/)?([a-zA-Z0-9_-]+)(?:\.html)?"[^>]*>[\s\S]*?<\/a><\/li>\s*/gi;
     updated = updated.replace(relatedItemRegex, (fullMatch, targetSlug) => {
       const reservedSlugs = new Set(['categories', 'index', '404', 'admin']);
@@ -698,5 +914,8 @@ module.exports = {
   sanitizeAllDashes,
   removeObsoleteBoxes,
   buildRelatedSectionHtml,
-  ensureRelatedSection
+  ensureRelatedSection,
+  standardizeArticleLinks,
+  getCategoryFromHtml,
+  CATEGORY_EXTERNAL_FALLBACKS
 };

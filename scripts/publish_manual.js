@@ -22,7 +22,7 @@ const path = require('path');
 const ROOT_DIR = path.resolve(__dirname, '..');
 const articlesDir = path.join(ROOT_DIR, 'articles');
 const BASE_URL = 'https://www.genalphamagazines.com';
-const { sanitizeAllDashes, removeObsoleteBoxes, ensureRelatedSection, syncLlmsFiles } = require('./sync_articles');
+const { sanitizeAllDashes, removeObsoleteBoxes, ensureRelatedSection, syncLlmsFiles, standardizeArticleLinks, getCategoryFromHtml } = require('./sync_articles');
 
 const CARD_BG = "background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem;";
 const H3_STYLE = "margin-top: 0; margin-bottom: 0.5rem; color: var(--primary); font-size: 1.05rem;";
@@ -226,6 +226,28 @@ ${cardsHtml}
     modifications.push('Injected Related Investigative Reports & Department Features block');
   }
 
+  // 11. Detect Category
+  const category = getCategoryFromHtml(content);
+
+  // 12. Enforce Permanent Link Standard (strictly 2 internal links & 1 external link on targeted keywords, zero dashes)
+  const linksStandardized = standardizeArticleLinks(content, slug, category);
+  if (linksStandardized !== content) {
+    content = linksStandardized;
+    modifications.push('Standardized links: exactly 2 internal & 1 external on targeted keywords, stripped heading/list links');
+  }
+
+  // 13. Word Count Validation (Strictly 1,000 - 1,500 words)
+  const bodyText = (content.substring(content.indexOf('<div class="article-body">'), content.indexOf('</article>')) || '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const wordCount = bodyText ? bodyText.split(/\s+/).length : 0;
+  if (wordCount >= 1000 && wordCount <= 1500) {
+    console.log(`[publish_manual] Word count verified: ${wordCount} words (Compliant: 1,000-1,500 words).`);
+  } else {
+    console.warn(`[publish_manual] [NOTICE] Word count is ${wordCount} words (Target: 1,000-1,500 words).`);
+  }
+
   // Write updated file to articles/ and mirror to root
   const artTarget = path.join(articlesDir, fileName);
   const rootTarget = path.join(ROOT_DIR, fileName);
@@ -234,12 +256,6 @@ ${cardsHtml}
   fs.writeFileSync(rootTarget, content, 'utf8');
   console.log(`[publish_manual] Saved to: ${artTarget}`);
   console.log(`[publish_manual] Mirrored to root: ${rootTarget}`);
-
-  // 11. Detect Category & Metadata for Feed Injections
-  const catMatch = content.match(/class="[^"]*badge[^"]*"[^>]*>([a-zA-Z]+)</i) ||
-                   content.match(/data-category="([a-zA-Z]+)"/i) ||
-                   content.match(/category-([a-zA-Z]+)\.html/i);
-  const category = catMatch ? catMatch[1].toLowerCase() : 'news';
 
   const descMatch = content.match(/<meta\s+name="description"\s+content="([^"]+)"/i);
   const excerpt = descMatch ? descMatch[1] : `In-depth analysis and reporting on ${articleTitle}.`;
@@ -331,6 +347,24 @@ function updateArticlesJson(slug, title, category, excerpt, author) {
 }
 
 // CLI Execution Entrypoint
+const rawArgs = process.argv.slice(2);
+const topicIdx = rawArgs.indexOf('--topic');
+if (topicIdx !== -1) {
+  console.log(`[publish_manual] --topic flag detected. Routing through standardized publisher pipeline...`);
+  const { execFileSync } = require('child_process');
+  try {
+    execFileSync(process.execPath, [path.join(__dirname, 'publisher.js'), ...rawArgs], {
+      stdio: 'inherit',
+      cwd: ROOT_DIR
+    });
+    console.log(`\n🎉 Manual publisher suite finished successfully.`);
+    process.exit(0);
+  } catch (err) {
+    console.error(`[publish_manual] Error during topic publication: ${err.message}`);
+    process.exit(1);
+  }
+}
+
 const targetArg = process.argv[2];
 if (targetArg) {
   let targetPath = targetArg;
