@@ -33,6 +33,12 @@ function stripHtml(html) {
     .trim();
 }
 
+function escapeHtml(str) {
+  return (str || '').replace(/[&<>"']/g, m => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[m]));
+}
+
 function sanitizeTitleString(t) {
   if (!t) return '';
   return t
@@ -677,6 +683,420 @@ function syncLlmsFiles(existingSlugs, writeIfChanged) {
   writeIfChanged(llmsFullPath, llmsFullTxt.trim() + '\n', originalFull);
 }
 
+const VECTOR_LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <radialGradient id="badgeRadial" cx="50%" cy="38%" r="62%">
+      <stop offset="0%" stop-color="#ef233c" />
+      <stop offset="60%" stop-color="#c1121e" />
+      <stop offset="100%" stop-color="#780000" />
+    </radialGradient>
+    <linearGradient id="goldPageGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+    <linearGradient id="wingLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="35%" stop-color="#ffccd5" />
+      <stop offset="100%" stop-color="#c1121e" />
+    </linearGradient>
+    <linearGradient id="wingRight" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffccd5" />
+      <stop offset="50%" stop-color="#e63946" />
+      <stop offset="100%" stop-color="#590d22" />
+    </linearGradient>
+    <filter id="crispShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3.5" flood-color="#780000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+  <circle cx="50" cy="50" r="48" fill="url(#goldPageGrad)" />
+  <circle cx="50" cy="50" r="45" fill="#111827" />
+  <circle cx="50" cy="50" r="43" fill="url(#badgeRadial)" filter="url(#crispShadow)" />
+  <circle cx="50" cy="42" r="28" fill="#ffffff" opacity="0.12" />
+  <g id="magazine-pages">
+    <path d="M 50 78 L 22 68 L 22 55 L 50 64 Z" fill="url(#goldPageGrad)" stroke="#78350f" stroke-width="0.8" />
+    <path d="M 50 78 L 24 70 L 24 58 L 50 66 Z" fill="#ffffff" opacity="0.85" />
+    <path d="M 50 78 L 78 68 L 78 55 L 50 64 Z" fill="url(#goldPageGrad)" stroke="#78350f" stroke-width="0.8" />
+    <path d="M 50 78 L 76 70 L 76 58 L 50 66 Z" fill="#ffffff" opacity="0.95" />
+    <polygon points="48,64 52,64 51,80 49,80" fill="#fef08a" />
+  </g>
+  <g id="soaring-falcon">
+    <polygon points="50,44 24,24 38,40 50,47" fill="url(#wingLeft)" stroke="#590d22" stroke-width="0.75" />
+    <polygon points="24,24 16,34 32,44 38,40" fill="#e63946" stroke="#590d22" stroke-width="0.6" />
+    <polygon points="16,34 12,42 26,46 32,44" fill="#a4161a" stroke="#590d22" stroke-width="0.6" />
+    <polygon points="50,44 76,20 62,38 50,47" fill="url(#wingRight)" stroke="#590d22" stroke-width="0.75" />
+    <polygon points="76,20 84,30 68,42 62,38" fill="#d90429" stroke="#590d22" stroke-width="0.6" />
+    <polygon points="84,30 88,38 74,44 68,42" fill="#800f2f" stroke="#590d22" stroke-width="0.6" />
+    <polygon points="50,48 44,60 50,65 56,60" fill="#590d22" stroke="#ffccd5" stroke-width="0.5" />
+    <polygon points="50,30 46,38 50,48 54,38" fill="#ffffff" stroke="#590d22" stroke-width="0.8" />
+    <polygon points="50,24 53,28 50,32 47,28" fill="#fef08a" stroke="#78350f" stroke-width="0.6" />
+    <polygon points="53,28 57,30 52,31" fill="#f59e0b" />
+  </g>
+  <circle cx="50" cy="18" r="1.8" fill="#fef08a" />
+  <circle cx="28" cy="22" r="1.2" fill="#ffffff" opacity="0.9" />
+  <circle cx="72" cy="18" r="1.2" fill="#ffffff" opacity="0.9" />
+</svg>`;
+
+const CATEGORY_META = {
+  business: {
+    displayName: 'Business & Economy',
+    title: 'Business & Economy • Latest Stories, Guides & Insights | GenAlphaMagazines',
+    description: 'Explore GenAlphaMagazines Business department: Enterprise spotlights, commercial revitalization, small business financing, entrepreneurship, and market economic trends.',
+    subtitle: 'Enterprise spotlights, commercial revitalization, small business financing, entrepreneurship, and market economic trends.',
+    schemaDesc: 'Regional commercial trends, small business strategy, retail insights, and macroeconomic updates.'
+  },
+  celebrity: {
+    displayName: 'Celebrity & Profiles',
+    title: 'Celebrity & Profiles • Cultural Icons & In-Depth Spotlights | GenAlphaMagazines',
+    description: 'Comprehensive profiles of global celebrities, cultural icons, entertainment legends, and transformative artists from GenAlphaMagazines.',
+    subtitle: 'In-depth profiles, career retrospectives, and cultural impact analysis of world-renowned personalities.',
+    schemaDesc: 'Celebrity profiles, cultural impact analysis, and retrospective reporting on iconic figures.'
+  },
+  entertainment: {
+    displayName: 'Arts & Entertainment',
+    title: 'Arts & Entertainment • Cinema, Independent Theater & Culture | GenAlphaMagazines',
+    description: 'Explore GenAlphaMagazines Arts & Entertainment: Film reviews, independent cinema, theatrical productions, and cultural deep dives.',
+    subtitle: 'Independent cinema, award-winning films, theater spotlights, and contemporary cultural discourse.',
+    schemaDesc: 'In-depth coverage of cinematic masterpieces, independent film distribution, and visual storytelling.'
+  },
+  games: {
+    displayName: 'Games & Esports',
+    title: 'Games & Esports • Next-Gen Reviews, Mechanics & Guides | GenAlphaMagazines',
+    description: 'Explore GenAlphaMagazines Games department: Next-gen console analysis, open-world gameplay guides, and gaming culture.',
+    subtitle: 'Next-gen gaming coverage, map analysis, mechanics breakdowns, and player trends.',
+    schemaDesc: 'Comprehensive video game coverage, gameplay breakdowns, and interactive entertainment analysis.'
+  },
+  health: {
+    displayName: 'Health & Wellness',
+    title: 'Health & Wellness • Clinical Insights & Preventive Care | GenAlphaMagazines',
+    description: 'Explore GenAlphaMagazines Health department: Evidence-based health guidance, cardiovascular insights, women\'s wellness, and preventive care.',
+    subtitle: 'Evidence-based clinical insights, disease prevention strategies, and holistic wellness guidance.',
+    schemaDesc: 'Authoritative health reporting, clinical insights, and evidence-based preventive wellness strategies.'
+  },
+  news: {
+    displayName: 'News & Announcements',
+    title: 'News & Announcements • Verified Regional & Global Reporting | GenAlphaMagazines',
+    description: 'Verified investigative reports, monetary policy analysis, macroeconomic developments, and breaking regional news from GenAlphaMagazines.',
+    subtitle: 'Verified investigative reports, central bank policies, and in-depth global economic developments.',
+    schemaDesc: 'Authoritative reporting on regional affairs, monetary policy, and global economic developments.'
+  },
+  others: {
+    displayName: 'Community & Culture',
+    title: 'Community & Culture • Architecture, Travel & Everyday Living | GenAlphaMagazines',
+    description: 'Explore GenAlphaMagazines Community & Culture: Home architecture, travel strategies, local heritage, and everyday practical guides.',
+    subtitle: 'Home architecture, drainage solutions, travel resilience, and enriching cultural features.',
+    schemaDesc: 'Practical home guides, travel solutions, and community features from GenAlphaMagazines.'
+  },
+  technology: {
+    displayName: 'Technology & Hardware',
+    title: 'Technology & Hardware • Operating Systems, AI & Clean Energy | GenAlphaMagazines',
+    description: 'Explore GenAlphaMagazines Technology department: Mobile OS architectures, AI integration, clean energy audits, and hardware benchmarks.',
+    subtitle: 'Next-generation mobile operating systems, artificial intelligence innovation, and sustainable energy tech.',
+    schemaDesc: 'Cutting-edge technology analysis, mobile OS innovations, and sustainable clean tech.'
+  }
+};
+
+function buildCategoryPageHtml(catName, matchingArticles, validArticlesList) {
+  const meta = CATEGORY_META[catName] || {
+    displayName: catName.charAt(0).toUpperCase() + catName.slice(1),
+    title: `${catName.charAt(0).toUpperCase() + catName.slice(1)} • Latest Stories & Insights | GenAlphaMagazines`,
+    description: `Explore GenAlphaMagazines ${catName} department for the latest investigative reporting, news, and analysis.`,
+    subtitle: `Explore authoritative reporting and community coverage in our ${catName} department.`,
+    schemaDesc: `Comprehensive coverage of ${catName} from GenAlphaMagazines.`
+  };
+
+  const now = new Date();
+  const dateFormatted = now.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+
+  const tickerItems = (validArticlesList || []).slice(0, 10).map(art => 
+    `          <a href="/${art.slug}" class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> ${escapeHtml(art.title)}</a>`
+  ).join('\n');
+
+  let cardsHtml = '';
+  if (matchingArticles && matchingArticles.length > 0) {
+    cardsHtml = matchingArticles.map(art => {
+      const imgSrc = art.image || ('./assets/images/' + art.slug + '.jpg');
+      return `          <!-- Article: ${art.slug}.html -->
+          <article class="card">
+            <div class="card-img-wrap">
+              <img src="${imgSrc}" alt="${escapeHtml(art.title)}" loading="lazy" width="400" height="225">
+            </div>
+            <div class="card-content">
+              <span class="card-tag">${(art.category || catName).toUpperCase()} &bull; Feature</span>
+              <h3 class="card-title">
+                <a href="/${art.slug}">${escapeHtml(art.title)}</a>
+              </h3>
+              <p class="card-excerpt">${escapeHtml(art.excerpt || '')}</p>
+              <div class="card-meta">
+                <span>By <a href="/author/${art.authorSlug || 'julia-vance'}.html">${escapeHtml(art.author || 'Julia Vance')}</a></span>
+                <span>${art.date || 'Recent'}</span>
+              </div>
+            </div>
+          </article>`;
+    }).join('\n\n');
+  } else {
+    cardsHtml = `          <p style="color: var(--text-muted); padding: 3rem 1.5rem; text-align: center; grid-column: 1 / -1;">Department archive ready. Newly generated stories will appear here automatically.</p>`;
+  }
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-052TFQ4D4Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-052TFQ4D4Q');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${meta.title}</title>
+  <meta name="description" content="${meta.description}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="${meta.title}">
+  <meta property="og:description" content="${meta.description}">
+  <meta property="og:image" content="https://www.genalphamagazines.com/assets/images/og-banner.jpg">
+  <meta property="og:url" content="https://www.genalphamagazines.com/category-${catName}.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@GenAlphaMag">
+  <meta name="twitter:title" content="${meta.title}">
+  <meta name="twitter:description" content="${meta.description}">
+  <meta name="twitter:image" content="https://www.genalphamagazines.com/assets/images/og-banner.jpg">
+  <link rel="canonical" href="https://www.genalphamagazines.com/category-${catName}.html">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="./assets/css/style.css?v=final_stable_v1">
+  <link rel="icon" type="image/svg+xml" href="./assets/images/favicon.svg">
+  <link rel="alternate icon" href="./favicon.ico">
+  <link rel="manifest" href="./site.webmanifest">
+  <meta name="theme-color" content="#c1121e">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "${meta.displayName} | GenAlphaMagazines",
+    "description": "${meta.schemaDesc}",
+    "url": "https://www.genalphamagazines.com/category-${catName}.html",
+    "publisher": {
+      "@type": "NewsMediaOrganization",
+      "name": "GenAlphaMagazines",
+      "url": "https://www.genalphamagazines.com/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="menu-backdrop" class="menu-backdrop"></div>
+  
+  <!-- Top Utility Bar -->
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-date">
+        <span>📅 ${dateFormatted}</span>
+        <span>&bull;</span>
+        <span>Positively Local, Supporting Regional Community</span>
+      </div>
+      <nav class="top-nav" aria-label="Utility Navigation">
+        <ul>
+          <li><a href="./pages/about.html">About</a></li>
+          <li><a href="./pages/editorial-policy.html">Editorial Standards</a></li>
+          <li><a href="./pages/privacy-policy.html">Privacy</a></li>
+          <li><a href="./pages/contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Main Newspaper Header -->
+  <header class="main-header">
+    <div class="container header-inner">
+      <a href="/" class="brand-logo" aria-label="GenAlphaMagazines Homepage">
+        <div class="creative-logo-badge">
+          ${VECTOR_LOGO_SVG}
+        </div>
+        <div class="brand-text-block">
+          <div class="brand-main-title">
+            <span>GEN</span><span class="alpha-word">ALPHA</span><span class="mag-word">MAGAZINES</span>
+          </div>
+          <div class="brand-sub-tagline">
+            Positively Local &bull; Supporting Community
+          </div>
+        </div>
+      </a>
+      
+      <div class="header-actions">
+        <a href="./pages/contact.html" class="news-tip-btn">
+          <span>✉️</span> News Tip?
+        </a>
+        <button id="theme-toggle" class="theme-btn" aria-label="Toggle Dark/Light Mode">
+          <span class="theme-icon">🌙</span>
+          <span class="theme-text">Dark</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sticky Navigation Bar with Mobile Dropdown -->
+  <nav class="main-nav-wrapper">
+    <div class="container mobile-nav-bar-inner">
+      <div class="mobile-nav-title" style="display: none;">
+        <span>📰 Departments</span>
+      </div>
+      <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle Navigation Menu" aria-expanded="false">
+        <span>☰ Menu</span>
+      </button>
+      <div id="main-nav" class="main-nav" aria-label="Main Navigation">
+        <ul class="main-nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="./category-news.html" class="${catName === 'news' ? 'active' : ''}">News</a></li>
+          <li><a href="./category-business.html" class="${catName === 'business' ? 'active' : ''}">Business</a></li>
+          <li><a href="./category-celebrity.html" class="${catName === 'celebrity' ? 'active' : ''}">Celebrity</a></li>
+          <li><a href="./category-entertainment.html" class="${catName === 'entertainment' ? 'active' : ''}">Entertainment</a></li>
+          <li><a href="./category-games.html" class="${catName === 'games' ? 'active' : ''}">Games</a></li>
+          <li><a href="./category-health.html" class="${catName === 'health' ? 'active' : ''}">Health</a></li>
+          <li><a href="./category-technology.html" class="${catName === 'technology' ? 'active' : ''}">Technology</a></li>
+          <li><a href="./category-others.html" class="${catName === 'others' ? 'active' : ''}">Others</a></li>
+          <li><a href="./categories.html">All Topics</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Multi-Story Dynamic Breaking News Ticker -->
+  <div class="breaking-bar">
+    <div class="container breaking-inner">
+      <div class="breaking-badge">
+        <span class="pulse-dot"></span>
+        <span>BREAKING NEWS</span>
+      </div>
+      <div class="breaking-ticker-wrap">
+        <div class="breaking-ticker-track">
+${tickerItems}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="container" style="margin-top: 2rem; margin-bottom: 4rem;">
+    <div class="section-header">
+      <span class="section-box">${meta.displayName}</span>
+    </div>
+    <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 2rem;">${meta.subtitle}</p>
+
+    <div class="main-layout">
+      <section aria-label="${meta.displayName} Articles">
+        <div class="articles-grid">
+${cardsHtml}
+        </div>
+      </section>
+
+      <aside class="sidebar">
+        <div class="newsletter-box">
+          <h4>Subscribe to ${meta.displayName.toUpperCase()}</h4>
+          <p>Get the latest stories delivered directly to your inbox every week.</p>
+          <form onsubmit="event.preventDefault(); alert('Thank you for subscribing to GenAlphaMagazines!');">
+            <input type="email" placeholder="Enter your email" required aria-label="Email address">
+            <button type="submit">Subscribe Free</button>
+          </form>
+        </div>
+
+        <div class="sidebar-widget">
+          <h3 class="widget-title">Editorial Standards</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+            Every publication in GenAlphaMagazines adheres to strict EEAT guidelines, verified primary sources, and high-standard community journalism.
+          </p>
+          <a href="./pages/editorial-policy.html" style="font-weight: 700; color: var(--primary); font-size: 0.88rem;">Read Editorial Guidelines &rarr;</a>
+        </div>
+
+        <div class="ad-slot-wrap" aria-label="Sponsored Ad Unit">
+          <span class="ad-label">Advertisement</span>
+          <div class="ad-placeholder ad-sidebar">
+            <span>Google AdSense Display Unit (300x250)</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="footer-logo" aria-label="GenAlphaMagazines Homepage">
+          <div class="creative-logo-badge">
+            ${VECTOR_LOGO_SVG}
+          </div>
+          <div class="brand-text-block">
+            <div class="brand-main-title">
+              <span>GEN</span><span class="alpha-word">ALPHA</span><span class="mag-word">MAGAZINES</span>
+            </div>
+            <div class="brand-sub-tagline">
+              Positively Local &bull; Supporting Community
+            </div>
+          </div>
+        </a>
+        <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6;">
+          GenAlphaMagazines is an independent community newsmagazine providing comprehensive coverage of regional affairs, local business innovation, arts, culture, and thoughtful opinion pieces.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h5>Categories</h5>
+        <ul class="footer-links">
+          <li><a href="./category-news.html">News</a></li>
+          <li><a href="./category-business.html">Business</a></li>
+          <li><a href="./category-celebrity.html">Celebrity</a></li>
+          <li><a href="./category-entertainment.html">Entertainment</a></li>
+          <li><a href="./category-games.html">Games</a></li>
+          <li><a href="./category-health.html">Health</a></li>
+          <li><a href="./category-technology.html">Technology</a></li>
+          <li><a href="./category-others.html">Others</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Editorial</h5>
+        <ul class="footer-links">
+          <li><a href="./pages/about.html">About Us</a></li>
+          <li><a href="./pages/editorial-policy.html">Editorial Standards</a></li>
+          <li><a href="./pages/affiliate-disclosure.html">Affiliate Disclosure</a></li>
+          <li><a href="./pages/contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Compliance</h5>
+        <ul class="footer-links">
+          <li><a href="./pages/privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="./pages/terms.html">Terms & Conditions</a></li>
+          <li><a href="./pages/cookie-policy.html">Cookie Policy</a></li>
+          <li><a href="./pages/disclaimer.html">Disclaimer</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 GenAlphaMagazines. All rights reserved. Operating under independent editorial governance.</p>
+    </div>
+  </footer>
+  <script src="./assets/js/main.js" defer></script>
+</body>
+</html>`;
+}
 
 function syncDeletedArticles() {
   console.log('[sync_articles] Starting integrity check across all feeds...');
@@ -789,25 +1209,23 @@ function syncDeletedArticles() {
   // 5. Sync llms.txt and llms-full.txt
   syncLlmsFiles(existingSlugs, writeIfChanged);
 
-  // 6. Sync category-*.html files (Grids, Cards, and Tickers)
-  const rootFiles = fs.readdirSync(ROOT_DIR);
-  const categoryFiles = rootFiles.filter(f => f.startsWith('category-') && f.endsWith('.html'));
+  // 6. Sync category-*.html files (Clean Semantic Grid Rebuild)
+  const activeCategories = [
+    'business',
+    'celebrity',
+    'entertainment',
+    'games',
+    'health',
+    'news',
+    'others',
+    'technology'
+  ];
 
-  function escapeHtml(str) {
-    return (str || '').replace(/[&<>"']/g, m => ({
-      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    }[m]));
-  }
-
-  for (const catFile of categoryFiles) {
+  for (const catName of activeCategories) {
+    const catFile = `category-${catName}.html`;
     const catPath = path.join(ROOT_DIR, catFile);
-    let original = fs.readFileSync(catPath, 'utf8');
-    let updated = original;
+    const original = fs.existsSync(catPath) ? fs.readFileSync(catPath, 'utf8') : '';
 
-    // Detect category name from filename, e.g. category-news.html -> news
-    const catName = catFile.replace('category-', '').replace('.html', '').toLowerCase();
-
-    // Matching articles for this category
     const matchingArticles = validArticlesList.filter(a => {
       const artCat = (a.category || 'news').toLowerCase();
       if (artCat === catName) return true;
@@ -816,54 +1234,8 @@ function syncDeletedArticles() {
       return false;
     });
 
-    if (matchingArticles.length > 0) {
-      // Rebuild <div class="articles-grid"> with all matching articles ordered newest first
-      const gridStart = updated.indexOf('<div class="articles-grid"');
-      if (gridStart !== -1) {
-        const gridContentStart = updated.indexOf('>', gridStart) + 1;
-        const gridEnd = updated.indexOf('</div>', gridContentStart);
-        if (gridEnd !== -1) {
-          const cardsHtml = matchingArticles.map(art => {
-            const imgSrc = art.image || ('./assets/images/' + art.slug + '.jpg');
-            return `
-          <!-- Article: ${art.slug}.html -->
-          <article class="card">
-            <div class="card-img-wrap">
-              <img src="${imgSrc}" alt="${escapeHtml(art.title)}" loading="lazy">
-            </div>
-            <div class="card-content">
-              <span class="card-tag">${(art.category || catName).toUpperCase()} &bull; Feature</span>
-              <h3 class="card-title">
-                <a href="/${art.slug}">${escapeHtml(art.title)}</a>
-              </h3>
-              <p class="card-excerpt">${escapeHtml(art.excerpt || '')}</p>
-              <div class="card-meta">
-                <span>By <a href="./author/${art.authorSlug || 'julia-vance'}.html">${escapeHtml(art.author || 'Julia Vance')}</a></span>
-                <span>${art.date || 'Recent'}</span>
-              </div>
-            </div>
-          </article>`;
-          }).join('\n');
-
-          updated = updated.slice(0, gridContentStart) + cardsHtml + '\n        ' + updated.slice(gridEnd);
-        }
-      }
-    }
-
-    // Refresh Breaking Ticker in category page with top 10 recent articles
-    const tickerTrackStart = updated.indexOf('<div class="breaking-ticker-track">');
-    if (tickerTrackStart !== -1) {
-      const trackContentStart = updated.indexOf('>', tickerTrackStart) + 1;
-      const trackEnd = updated.indexOf('</div>', trackContentStart);
-      if (trackEnd !== -1) {
-        const tickerItems = validArticlesList.slice(0, 10).map(art => 
-          `          <a href="/${art.slug}" class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> ${escapeHtml(art.title)}</a>`
-        ).join('\n');
-        updated = updated.slice(0, trackContentStart) + '\n' + tickerItems + '\n        ' + updated.slice(trackEnd);
-      }
-    }
-
-    writeIfChanged(catPath, updated, original);
+    const cleanHtml = buildCategoryPageHtml(catName, matchingArticles, validArticlesList);
+    writeIfChanged(catPath, cleanHtml, original);
   }
 
   // 7. Sync index.html (Homepage: Section 1 Latest Stories, Head Preloads, and Breaking Ticker)
@@ -1061,5 +1433,8 @@ module.exports = {
   standardizeArticleLinks,
   restoreNavigationAndFooter,
   getCategoryFromHtml,
-  CATEGORY_EXTERNAL_FALLBACKS
+  CATEGORY_EXTERNAL_FALLBACKS,
+  buildCategoryPageHtml,
+  CATEGORY_META,
+  VECTOR_LOGO_SVG
 };

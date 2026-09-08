@@ -2488,43 +2488,8 @@ function updateSiteIndex(articleData, author, category, heroImage) {
     fs.writeFileSync(indexPath, indexHtml, 'utf8');
   }
 
-  // 3. Category Department Page Auto-Update
-  const categoryFile = `category-${category}.html`;
-  const categoryPath = path.join(ROOT_DIR, categoryFile);
-  if (fs.existsSync(categoryPath)) {
-    let catHtml = fs.readFileSync(categoryPath, 'utf8');
-    const catCardSnippet = `
-          <!-- Article: ${articleData.slug}.html -->
-          <article class="card">
-            <div class="card-img-wrap">
-              <img src="${heroImage.indexUrl}" alt="${articleData.title}" width="400" height="225" loading="lazy" decoding="async">
-            </div>
-            <div class="card-content">
-              <span class="card-tag">${category.toUpperCase()} &bull; Feature</span>
-              <h3 class="card-title">
-                <a href="/${articleData.slug}">${articleData.title}</a>
-              </h3>
-              <p class="card-excerpt">${articleData.metaDescription}</p>
-              <div class="card-meta">
-                <span>By <a href="./author/${author.slug}.html">${author.name}</a></span>
-                <span>${dateFormatted}</span>
-              </div>
-            </div>
-          </article>\n`;
-
-    if (!catHtml.includes(articleData.slug)) {
-      const gridMatch = catHtml.match(/<div class="articles-grid"[^>]*>/i);
-      if (gridMatch) {
-        // Clean any placeholder paragraphs or empty styling
-        catHtml = catHtml.replace(/<p style="color: var\(--text-muted\); padding: 3rem 1\.5rem;[^>]*>Department archive ready\. Newly generated stories will appear here automatically\.<\/p>/i, '');
-        catHtml = catHtml.replace(/style="grid-template-columns:\s*1fr;"/i, '');
-        // Inject card directly inside grid
-        catHtml = catHtml.replace(gridMatch[0], `${gridMatch[0]}\n${catCardSnippet}`);
-      }
-      fs.writeFileSync(categoryPath, catHtml, 'utf8');
-      console.log(`[INFO] Added ${articleData.slug} to ${categoryFile}`);
-    }
-  }
+  // 3. Category Department Page Auto-Update (delegated authoritatively to sync_articles engine)
+  console.log(`[INFO] Category department page category-${category}.html will be synchronized by sync_articles engine.`);
 
   // 4. Auto-update "Related Investigative Reports" in all existing articles and static pages
   try {
