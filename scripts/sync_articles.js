@@ -286,6 +286,26 @@ function syncDeletedArticles() {
     writeIfChanged(artPath, updated, original);
   }
 
+  // 9. Clean up orphaned images in assets/images/
+  const imagesDir = path.join(ROOT_DIR, 'assets', 'images');
+  if (fs.existsSync(imagesDir)) {
+    const staticBrandAssets = new Set([
+      'favicon.svg', 'logo.svg', 'logo-dark.svg', 'og-banner.jpg',
+      'creative-badge.svg', '.gitkeep', 'cristiano-ronaldo-career-legacy-and-records-in-2026.jpg'
+    ]);
+    const imgFiles = fs.readdirSync(imagesDir);
+    for (const img of imgFiles) {
+      if (staticBrandAssets.has(img)) continue;
+      const baseSlug = img.replace(/\.(jpg|jpeg|png|webp|svg)$/i, '');
+      if (!existingSlugs.has(baseSlug)) {
+        try {
+          fs.unlinkSync(path.join(imagesDir, img));
+          console.log(`[sync_articles] Removed orphaned image: assets/images/${img}`);
+        } catch (e) {}
+      }
+    }
+  }
+
   console.log(`[sync_articles] Completed! Modified ${modifiedFiles.length} files.`);
   return { modifiedFiles, activeCount: existingSlugs.size };
 }
