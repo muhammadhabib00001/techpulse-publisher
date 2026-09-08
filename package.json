@@ -4,7 +4,10 @@
   "description": "Automated SEO & AdSense article publishing pipeline via Vertex AI, Google Drive API & GitHub Actions",
   "main": "scripts/publisher.js",
   "scripts": {
-    "publish-article": "node scripts/publisher.js"
+    "publish-article": "node scripts/publisher.js",
+    "enforce-faq": "node scripts/enforce_faq_format.js",
+    "setup-hooks": "node scripts/install-hooks.js",
+    "postinstall": "node scripts/install-hooks.js"
   },
   "dependencies": {
     "@google-cloud/vertexai": "^1.9.0",

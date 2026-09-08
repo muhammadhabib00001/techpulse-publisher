@@ -1603,6 +1603,7 @@ CORE SEO CONTENT STRATEGY (CRITICAL — NON-NEGOTIABLE):
    - "tableOfContents": array of {id, title}
    - "sections": array of {id, heading, contentHtml} (Section 1 heading MUST be "")
    - "faqs": array of {question, answer}
+   - CRITICAL FAQ RULE: The "frequently-asked-questions" section contentHtml MUST be an empty string "" or only contain a brief intro sentence like <p>See answers below.</p>. NEVER put <h3>, <h4>, <div class="faq-item">, or raw Q&A pairs inside contentHtml for the FAQ section. All FAQ questions and answers belong ONLY in the "faqs" array as {question, answer} objects. Putting FAQ content inside contentHtml causes duplicate rendering and is strictly forbidden.
 11. CURRENT YEAR & NATURAL WRITING (CRITICAL):
    - The current temporal context is 2026. All current events, market data, tax credits, standards, technology benchmarks, and temporal references MUST reflect 2026.
    - NEVER refer to 2024 or 2025 as the current or upcoming year. If referring to 2024 or 2025, refer to them explicitly in the past tense.
@@ -1642,7 +1643,11 @@ FACTUAL CONTENT RULES (CRITICAL — MANDATORY):
   * Example for movies: "1. Citizen Kane (1941, dir. Orson Welles) — pioneered deep focus photography and non-linear narrative structure."
   * Example for celebrities: "1. Oprah Winfrey — media mogul, actress, and philanthropist with a net worth exceeding $2.5 billion."
 - For non-list articles: Include specific statistics, named case studies, real research findings, exact dollar amounts, verified dates, and named industry experts or institutions.
-- NEVER write articles that could apply to any topic. Every paragraph must contain details SPECIFIC to "${topic}".`;
+- NEVER write articles that could apply to any topic. Every paragraph must contain details SPECIFIC to "${topic}".
+
+FAQ FORMAT RULE (CRITICAL — STRICTLY ENFORCED):
+- The "faqs" array MUST contain 5 specific, topic-relevant question/answer objects.
+- The "frequently-asked-questions" section contentHtml MUST be set to "" (empty string). Do NOT put any <h3>, <h4>, <p>, or <div class="faq-item"> FAQ content inside contentHtml. Putting FAQ HTML in contentHtml causes the FAQ to be rendered TWICE on the page — this is a critical bug that will fail the quality check. FAQ content is rendered automatically from the "faqs" array only.`;
 
   if (GEMINI_API_KEY) {
     try {
@@ -1839,6 +1844,13 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
     const headingHtml = (sec.heading && sec.heading.trim() && idx !== 0) 
       ? `<h2>${sec.heading.replace(/[—–]/g, ': ').trim()}</h2>` 
       : '';
+
+    // NUCLEAR DEFENSE: If this is the FAQ section, completely discard any AI-generated
+    // contentHtml. FAQs are rendered exclusively from articleData.faqs array.
+    // This prevents duplication regardless of what the AI puts in contentHtml.
+    if (sec.id === 'frequently-asked-questions' || sec.id === 'faqs') {
+      enrichedContent = '';
+    }
 
     // If this is the FAQ section and articleData.faqs exists, ensure Final Thoughts appears above FAQs and FAQs are below
     let faqBlock = '';
@@ -2687,6 +2699,69 @@ function verifyAndEnforceArticleFileLinks(filePath, slug, category) {
   }
 }
 
+function verifyAndEnforceArticleFaqFormat(filePath) {
+  try {
+    let content = fs.readFileSync(filePath, 'utf8');
+    const sm = content.match(/(<section[^>]*id=["']frequently-asked-questions["'][^>]*>)([\s\S]*?)(<\/section>)/i);
+    if (!sm) return;
+    const [full, open, body, close] = sm;
+    
+    // Check if already in perfect card format
+    if (!/class=['"]faq-item['"]/i.test(body) && !/<h3>(?![\s\S]{0,10}style=)[^<]+<\/h3>/i.test(body) && !/<h4 style=/i.test(body)) {
+      const qs = []; let m;
+      const qRe = /<h3 style=[^>]*>([^<]+)<\/h3>/gi;
+      while ((m = qRe.exec(body)) !== null) qs.push(m[1].trim().toLowerCase());
+      if (qs.length === new Set(qs).size) return; // Clean
+    }
+
+    const pairs = [];
+    const seen = new Set();
+    function add(q, a) {
+      const key = q.toLowerCase().trim().slice(0, 80);
+      if (!seen.has(key) && q.length > 5 && a.length > 5) {
+        seen.add(key);
+        pairs.push({ q: q.trim(), a: a.trim().replace(/<[^>]+>/g, '') });
+      }
+    }
+
+    let m;
+    const r1 = /<div[^>]*class=['"]faq-item['"][^>]*>([\s\S]*?)<\/div>/gi;
+    while ((m = r1.exec(body)) !== null) {
+      const qm = m[1].match(/<h[234][^>]*>([^<]+)<\/h[234]>/i);
+      const am = m[1].match(/<p[^>]*>([\s\S]*?)<\/p>/i);
+      if (qm && am) add(qm[1], am[1]);
+    }
+    const r2 = /<div style="[^"]*"[^>]*>([\s\S]*?)<\/div>/gi;
+    while ((m = r2.exec(body)) !== null) {
+      if (!m[0].includes('background: var(--bg-card)')) continue;
+      const qm = m[1].match(/<h[234][^>]*>([^<]+)<\/h[234]>/i);
+      const am = m[1].match(/<p[^>]*>([\s\S]*?)<\/p>/i);
+      if (qm && am) add(qm[1], am[1]);
+    }
+    const r3 = /<h[234]>([^<]+)<\/h[234]>\s*<p>([\s\S]*?)<\/p>/gi;
+    while ((m = r3.exec(body)) !== null) add(m[1], m[2]);
+
+    if (!pairs.length) return;
+
+    const cards = pairs.map(p => `
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem;">
+              <h3 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary); font-size: 1.05rem;">${p.q}</h3>
+              <p style="margin-bottom: 0; color: var(--text-main); font-size: 0.95rem; line-height: 1.7;">${p.a}</p>
+            </div>`).join('');
+
+    const newBody = `
+            <h2>Frequently Asked Questions</h2>
+            <div style="margin-top: 1.25rem;">${cards}
+            </div>
+          `;
+    content = content.replace(full, open + newBody + close);
+    fs.writeFileSync(filePath, content, 'utf8');
+    console.log(`[PERMANENT FAQ LOCK] Enforced clean card format for "${path.basename(filePath)}" (${pairs.length} items)`);
+  } catch (err) {
+    console.warn(`[WARN] verifyAndEnforceArticleFaqFormat error: ${err.message}`);
+  }
+}
+
 async function main() {
   console.log('=== Starting GenAlphaMagazines Automated Content Pipeline ===');
 
@@ -2695,6 +2770,11 @@ async function main() {
     fs.mkdirSync(articlesDir, { recursive: true });
   }
   const existingFiles = fs.readdirSync(articlesDir).filter(f => f.endsWith('.html'));
+
+  // Guarantee FAQ card format across all existing articles at pipeline startup
+  for (const ef of existingFiles) {
+    verifyAndEnforceArticleFaqFormat(path.join(articlesDir, ef));
+  }
 
   // Determine category: if manual CLI argument provided, use it; otherwise rotate categories
   const categoriesList = Object.keys(AUTHORS);
@@ -2853,6 +2933,9 @@ async function main() {
 
   // Permanent Link Guarantee: Audit and auto-heal on disk
   verifyAndEnforceArticleFileLinks(outputPath, generatedArticle.slug, cat);
+
+  // Permanent FAQ Guarantee: Enforce clean card layout on newly written article
+  verifyAndEnforceArticleFaqFormat(outputPath);
 
   // Record into published topics tracking ledger
   try {

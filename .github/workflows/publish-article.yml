@@ -72,6 +72,9 @@ jobs:
             --topic "${{ github.event.inputs.topic || '' }}" \
             --category "${{ github.event.inputs.category || '' }}"
 
+      - name: Enforce FAQ Card Format
+        run: node scripts/enforce_faq_format.js
+
       - name: Commit and Push New Article & Updated Feeds
         run: |
           git add -A
