@@ -33,13 +33,34 @@
     },
     {
       "source": "/articles/cristiano-ronaldo-career-legacy-and-records-in-2026",
-      "destination": "/articles/cristiano-ronaldo-career-legacy-and-records",
+      "destination": "/cristiano-ronaldo-career-legacy-and-records",
       "permanent": true
     },
     {
       "source": "/articles/cristiano-ronaldo-career-legacy-and-records-in-2026.html",
-      "destination": "/articles/cristiano-ronaldo-career-legacy-and-records",
+      "destination": "/cristiano-ronaldo-career-legacy-and-records",
       "permanent": true
+    },
+    {
+      "source": "/cristiano-ronaldo-career-legacy-and-records-in-2026",
+      "destination": "/cristiano-ronaldo-career-legacy-and-records",
+      "permanent": true
+    },
+    {
+      "source": "/articles/:slug",
+      "destination": "/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/articles/:slug.html",
+      "destination": "/:slug",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/:slug",
+      "destination": "/articles/:slug.html"
     }
   ],
   "headers": [

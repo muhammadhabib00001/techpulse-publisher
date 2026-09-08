@@ -220,7 +220,7 @@ function syncDeletedArticles() {
               <div class="card-content">
                 <span class="card-tag">${(candidate.category || 'NEWS').toUpperCase()} &bull; Editorial Lead Feature</span>
                 <h3 class="card-title">
-                  <a href="./articles/${candidate.slug}.html">${candidate.title}</a>
+                  <a href="/${candidate.slug}">${candidate.title}</a>
                 </h3>
                 <p class="card-excerpt">${candidate.excerpt || ''}</p>
                 <div class="card-meta">
@@ -274,7 +274,7 @@ function syncDeletedArticles() {
     let original = fs.readFileSync(artPath, 'utf8');
     let updated = original;
 
-    // Pattern: <li><strong>Category:</strong> <a href="./slug.html">...</a></li>
+    // Pattern: <li><strong>Category:</strong> <a href="(?:./|../articles/|/)?([a-zA-Z0-9_-]+)(?:.html)?">...</a></li>
     const relatedItemRegex = /<li><strong>[^<]+:<\/strong>\s*<a\s+href="(?:\.\/|\.\.\/articles\/)([a-zA-Z0-9_-]+)\.html"[^>]*>[\s\S]*?<\/a><\/li>\s*/gi;
     updated = updated.replace(relatedItemRegex, (fullMatch, slug) => {
       if (!existingSlugs.has(slug)) {

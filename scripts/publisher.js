@@ -965,7 +965,7 @@ function enforceMinimumInternalLinks(sectionsHtml, currentSlug, category = '', m
         if (added) return match;
         added = true;
         currentCount++;
-        const linkAddition = ` Explore further verified coverage in our <a href="${catUrl}" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${catName} Coverage">${catName}</a> reporting, operating under independent <a href="../pages/editorial-policy.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="Editorial Policy">editorial standards</a>.`;
+        const linkAddition = ` Explore further verified coverage in our <a href="${catUrl}" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${catName} Coverage">${catName}</a> reporting, operating under independent <a href="/pages/editorial-policy.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="Editorial Policy">editorial standards</a>.`;
         return `${sOpen}${pOpen}${pText}${linkAddition}${pClose}${sClose}`;
       }
     );
@@ -1820,13 +1820,13 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${cleanTitle} | GenAlphaMagazines</title>
   <meta name="description" content="${cleanMeta}">
-  <link rel="canonical" href="https://www.genalphamagazines.com/articles/${articleData.slug}.html">
+  <link rel="canonical" href="https://www.genalphamagazines.com/${articleData.slug}">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta property="og:type" content="article">
   <meta property="og:title" content="${cleanTitle}">
   <meta property="og:description" content="${cleanMeta}">
   <meta property="og:image" content="https://www.genalphamagazines.com/assets/images/${articleData.slug}.jpg">
-  <meta property="og:url" content="https://www.genalphamagazines.com/articles/${articleData.slug}.html">
+  <meta property="og:url" content="https://www.genalphamagazines.com/${articleData.slug}">
   <meta property="article:published_time" content="${currentDate}T08:00:00+00:00">
   <meta property="article:section" content="${category}">
   <!-- Twitter Card Data -->
@@ -1836,9 +1836,9 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   <meta name="twitter:description" content="${cleanMeta}">
   <meta name="twitter:image" content="https://www.genalphamagazines.com/assets/images/${articleData.slug}.jpg">
   
-  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
-  <link rel="alternate icon" href="../favicon.ico">
-  <link rel="manifest" href="../site.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+  <link rel="alternate icon" href="/favicon.ico">
+  <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#c1121e">
   
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
@@ -1852,8 +1852,8 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   <noscript>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap">
   </noscript>
-  <link rel="stylesheet" href="../assets/css/style.css?v=final_stable_v1">
-  <link rel="preload" as="image" href="../assets/images/${articleData.slug}.jpg" fetchpriority="high">
+  <link rel="stylesheet" href="/assets/css/style.css?v=final_stable_v1">
+  <link rel="preload" as="image" href="/assets/images/${articleData.slug}.jpg" fetchpriority="high">
   
   <script type="application/ld+json">
   {
@@ -1869,13 +1869,13 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
       },
       {
         "@type": "NewsArticle",
-        "@id": "https://www.genalphamagazines.com/articles/${articleData.slug}.html#article",
+        "@id": "https://www.genalphamagazines.com/${articleData.slug}#article",
         "headline": "${articleData.title}",
         "description": "${articleData.metaDescription}",
         "image": "https://www.genalphamagazines.com/assets/images/${articleData.slug}.jpg",
         "datePublished": "${currentDate}T08:00:00+00:00",
         "dateModified": "${currentDate}T08:00:00+00:00",
-        "mainEntityOfPage": "https://www.genalphamagazines.com/articles/${articleData.slug}.html",
+        "mainEntityOfPage": "https://www.genalphamagazines.com/${articleData.slug}",
         "author": {
           "@type": "Person",
           "name": "${author.name}",
@@ -1903,10 +1903,10 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
       </div>
       <nav class="top-nav" aria-label="Utility Navigation">
         <ul>
-          <li><a href="../pages/about.html">About</a></li>
-          <li><a href="../pages/editorial-policy.html">Editorial Standards</a></li>
-          <li><a href="../pages/privacy-policy.html">Privacy</a></li>
-          <li><a href="../pages/contact.html">Contact</a></li>
+          <li><a href="/pages/about.html">About</a></li>
+          <li><a href="/pages/editorial-policy.html">Editorial Standards</a></li>
+          <li><a href="/pages/privacy-policy.html">Privacy</a></li>
+          <li><a href="/pages/contact.html">Contact</a></li>
         </ul>
       </nav>
     </div>
@@ -1915,7 +1915,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   <!-- Main Newspaper Header -->
   <header class="main-header">
     <div class="container header-inner">
-      <a href="../index.html" class="brand-logo" aria-label="GenAlphaMagazines Homepage">
+      <a href="/" class="brand-logo" aria-label="GenAlphaMagazines Homepage">
         <div class="creative-logo-badge">
           ${VECTOR_LOGO_SVG}
         </div>
@@ -1930,7 +1930,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
       </a>
       
       <div class="header-actions">
-        <a href="../pages/contact.html" class="news-tip-btn">
+        <a href="/pages/contact.html" class="news-tip-btn">
           <span>✉️</span> News Tip?
         </a>
         <button id="theme-toggle" class="theme-btn" aria-label="Toggle Dark/Light Mode">
@@ -1946,16 +1946,16 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
       <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
         <nav class="main-nav" aria-label="Main Navigation">
           <ul class="main-nav-links">
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="../category-news.html" class="${category === 'news' ? 'active' : ''}">News</a></li>
-            <li><a href="../category-business.html" class="${category === 'business' ? 'active' : ''}">Business</a></li>
-            <li><a href="../category-celebrity.html" class="${category === 'celebrity' ? 'active' : ''}">Celebrity</a></li>
-            <li><a href="../category-entertainment.html" class="${category === 'entertainment' ? 'active' : ''}">Entertainment</a></li>
-            <li><a href="../category-games.html" class="${category === 'games' ? 'active' : ''}">Games</a></li>
-            <li><a href="../category-health.html" class="${category === 'health' ? 'active' : ''}">Health</a></li>
-            <li><a href="../category-technology.html" class="${category === 'technology' ? 'active' : ''}">Technology</a></li>
-            <li><a href="../category-others.html" class="${category === 'others' ? 'active' : ''}">Others</a></li>
-            <li><a href="../categories.html">All Topics</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/category-news.html" class="${category === 'news' ? 'active' : ''}">News</a></li>
+            <li><a href="/category-business.html" class="${category === 'business' ? 'active' : ''}">Business</a></li>
+            <li><a href="/category-celebrity.html" class="${category === 'celebrity' ? 'active' : ''}">Celebrity</a></li>
+            <li><a href="/category-entertainment.html" class="${category === 'entertainment' ? 'active' : ''}">Entertainment</a></li>
+            <li><a href="/category-games.html" class="${category === 'games' ? 'active' : ''}">Games</a></li>
+            <li><a href="/category-health.html" class="${category === 'health' ? 'active' : ''}">Health</a></li>
+            <li><a href="/category-technology.html" class="${category === 'technology' ? 'active' : ''}">Technology</a></li>
+            <li><a href="/category-others.html" class="${category === 'others' ? 'active' : ''}">Others</a></li>
+            <li><a href="/categories.html">All Topics</a></li>
           </ul>
         </nav>
       </div>
@@ -1972,7 +1972,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
             <div class="author-meta">
               <div class="author-avatar">${author.initials}</div>
               <div>
-                <div><a href="../author/${author.slug}.html" style="font-weight: 700; color: var(--text-main);">${author.name}</a></div>
+                <div><a href="/author/${author.slug}.html" style="font-weight: 700; color: var(--text-main);">${author.name}</a></div>
                 <div style="font-size: 0.8rem; color: var(--text-muted);">${author.role}</div>
               </div>
             </div>
@@ -1998,7 +1998,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
           const related = getDynamicRelatedArticles(articleData.slug);
           if (!related || related.length === 0) return '';
           const itemsHtml = related.map(r => 
-            `<li><strong>${r.category}:</strong> <a href="./${r.slug}.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">${r.title}</a></li>`
+            `<li><strong>${r.category}:</strong> <a href="/${r.slug}" style="color: var(--primary); font-weight: 700; text-decoration: underline;">${r.title}</a></li>`
           ).join('\n            ');
           return `
         <div style="background: var(--bg-subtle); border-left: 4px solid var(--primary); padding: 1.25rem 1.5rem; margin: 2.5rem 0; border-radius: var(--radius-sm);">
@@ -2015,7 +2015,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
         <section class="author-box">
           <div class="author-avatar">${author.initials}</div>
           <div class="author-bio">
-            <h4 style="margin: 0 0 0.4rem 0;"><a href="../author/${author.slug}.html">${author.name}</a></h4>
+            <h4 style="margin: 0 0 0.4rem 0;"><a href="/author/${author.slug}.html">${author.name}</a></h4>
             <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">${author.role} at GenAlphaMagazines. Specializing in regional governance, independent investigations, and verified community journalism.</p>
           </div>
         </section>
@@ -2036,7 +2036,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
           <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.8rem;">
             Every publication in GenAlphaMagazines adheres to strict EEAT guidelines, verified primary sources, and high-standard community journalism.
           </p>
-          <a href="../pages/editorial-policy.html" style="font-weight: 700; color: var(--primary); font-size: 0.88rem;">Read Editorial Guidelines &rarr;</a>
+          <a href="/pages/editorial-policy.html" style="font-weight: 700; color: var(--primary); font-size: 0.88rem;">Read Editorial Guidelines &rarr;</a>
         </div>
 
         <div class="ad-slot-wrap" aria-label="Sponsored Ad Unit">
@@ -2052,7 +2052,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   <footer class="site-footer">
     <div class="container footer-grid">
       <div class="footer-brand">
-        <a href="../index.html" class="footer-logo" aria-label="GenAlphaMagazines Homepage">
+        <a href="/" class="footer-logo" aria-label="GenAlphaMagazines Homepage">
           <div class="creative-logo-badge">
             ${VECTOR_LOGO_SVG}
           </div>
@@ -2072,32 +2072,32 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
       <div class="footer-col">
         <h5>Categories</h5>
         <ul class="footer-links">
-          <li><a href="../category-news.html">News</a></li>
-          <li><a href="../category-business.html">Business</a></li>
-          <li><a href="../category-celebrity.html">Celebrity</a></li>
-          <li><a href="../category-entertainment.html">Entertainment</a></li>
-          <li><a href="../category-games.html">Games</a></li>
-          <li><a href="../category-health.html">Health</a></li>
-          <li><a href="../category-technology.html">Technology</a></li>
-          <li><a href="../category-others.html">Others</a></li>
+          <li><a href="/category-news.html">News</a></li>
+          <li><a href="/category-business.html">Business</a></li>
+          <li><a href="/category-celebrity.html">Celebrity</a></li>
+          <li><a href="/category-entertainment.html">Entertainment</a></li>
+          <li><a href="/category-games.html">Games</a></li>
+          <li><a href="/category-health.html">Health</a></li>
+          <li><a href="/category-technology.html">Technology</a></li>
+          <li><a href="/category-others.html">Others</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h5>Editorial</h5>
         <ul class="footer-links">
-          <li><a href="../pages/about.html">About Us</a></li>
-          <li><a href="../pages/editorial-policy.html">Editorial Standards</a></li>
-          <li><a href="../pages/affiliate-disclosure.html">Affiliate Disclosure</a></li>
-          <li><a href="../pages/contact.html">Contact Us</a></li>
+          <li><a href="/pages/about.html">About Us</a></li>
+          <li><a href="/pages/editorial-policy.html">Editorial Standards</a></li>
+          <li><a href="/pages/affiliate-disclosure.html">Affiliate Disclosure</a></li>
+          <li><a href="/pages/contact.html">Contact Us</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h5>Compliance</h5>
         <ul class="footer-links">
-          <li><a href="../pages/privacy-policy.html">Privacy Policy</a></li>
-          <li><a href="../pages/terms.html">Terms & Conditions</a></li>
-          <li><a href="../pages/cookie-policy.html">Cookie Policy</a></li>
-          <li><a href="../pages/disclaimer.html">Disclaimer</a></li>
+          <li><a href="/pages/privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="/pages/terms.html">Terms & Conditions</a></li>
+          <li><a href="/pages/cookie-policy.html">Cookie Policy</a></li>
+          <li><a href="/pages/disclaimer.html">Disclaimer</a></li>
         </ul>
       </div>
     </div>
@@ -2152,7 +2152,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
       const artFiles = fs.readdirSync(articlesDir).filter(f => f.endsWith('.html'));
       for (const f of artFiles) {
         sitemapUrls.push({
-          loc: `${BASE_URL}/articles/${f}`,
+          loc: `${BASE_URL}/${f.replace(".html", "")}`,
           lastmod: f === `${articleData.slug}.html` ? currentDate : '2026-09-07',
           changefreq: 'monthly',
           priority: '0.8'
@@ -2172,7 +2172,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
   const llmsPath = path.join(ROOT_DIR, 'llms.txt');
   if (fs.existsSync(llmsPath)) {
     let llmsContent = fs.readFileSync(llmsPath, 'utf8');
-    const articleLink = `- [${articleData.title}](https://www.genalphamagazines.com/articles/${articleData.slug}.html): ${articleData.metaDescription}`;
+    const articleLink = `- [${articleData.title}](https://www.genalphamagazines.com/${articleData.slug}): ${articleData.metaDescription}`;
     if (!llmsContent.includes(articleData.slug)) {
       llmsContent = llmsContent.replace('## Compliance & Legal', `${articleLink}\n\n## Compliance & Legal`);
       fs.writeFileSync(llmsPath, llmsContent, 'utf8');
@@ -2193,7 +2193,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
               <div class="mini-side-content">
                 <span class="mini-side-tag">${category.toUpperCase()}</span>
                 <h4 class="mini-side-title">
-                  <a href="./articles/${articleData.slug}.html">${articleData.title}</a>
+                  <a href="/${articleData.slug}">${articleData.title}</a>
                 </h4>
                 <div class="mini-side-meta">${dateFormatted} &bull; ${author.name}</div>
               </div>
@@ -2208,7 +2208,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
               <div class="card-content">
                 <span class="card-tag">${category.toUpperCase()} &bull; Editorial Lead Feature</span>
                 <h3 class="card-title">
-                  <a href="./articles/${articleData.slug}.html">${articleData.title}</a>
+                  <a href="/${articleData.slug}">${articleData.title}</a>
                 </h3>
                 <p class="card-excerpt">${articleData.metaDescription}</p>
                 <div class="card-meta">
@@ -2300,7 +2300,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
             </div>
             <div class="card-content">
               <span class="card-tag">${category.toUpperCase()}</span>
-              <h3 class="card-title"><a href="./articles/${articleData.slug}.html">${articleData.title}</a></h3>
+              <h3 class="card-title"><a href="/${articleData.slug}">${articleData.title}</a></h3>
               <p class="card-excerpt">${articleData.metaDescription}</p>
               <div class="card-meta"><span>By <a href="./author/${author.slug}.html">${author.name}</a></span><span>${dateFormatted}</span></div>
             </div>
@@ -2392,8 +2392,8 @@ function updateSiteIndex(articleData, author, category, heroImage) {
     }
 
     // C. Auto-prepend into Breaking News Marquee Ticker
-    const tickerItem = `<a href="./articles/${articleData.slug}.html" class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> ${articleData.title}</a>\n          `;
-    if (!indexHtml.includes(`href="./articles/${articleData.slug}.html"`)) {
+    const tickerItem = `<a href="/${articleData.slug}" class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> ${articleData.title}</a>\n          `;
+    if (!indexHtml.includes(`href="/${articleData.slug}"`)) {
       indexHtml = indexHtml.replace('<div class="breaking-ticker-track">', '<div class="breaking-ticker-track">\n          ' + tickerItem);
       console.log(`[INFO] Added headline to Breaking News Ticker in index.html`);
     }
@@ -2415,7 +2415,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
             <div class="card-content">
               <span class="card-tag">${category.toUpperCase()} &bull; Feature</span>
               <h3 class="card-title">
-                <a href="./articles/${articleData.slug}.html">${articleData.title}</a>
+                <a href="/${articleData.slug}">${articleData.title}</a>
               </h3>
               <p class="card-excerpt">${articleData.metaDescription}</p>
               <div class="card-meta">
