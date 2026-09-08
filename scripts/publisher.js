@@ -2813,6 +2813,11 @@ async function main() {
   // Permanent FAQ Guarantee: Enforce clean card layout on newly written article
   verifyAndEnforceArticleFaqFormat(outputPath);
 
+  // Mirror to root for instant clean URL serving at /slug
+  const rootOutputPath = path.join(ROOT_DIR, `${generatedArticle.slug}.html`);
+  fs.copyFileSync(outputPath, rootOutputPath);
+  console.log(`[SUCCESS] Article mirrored to root: ${rootOutputPath}`);
+
   // Record into published topics tracking ledger
   try {
     const trackingFile = path.join(ROOT_DIR, 'data', 'published_topics.json');

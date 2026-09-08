@@ -57,12 +57,6 @@
       "permanent": true
     }
   ],
-  "rewrites": [
-    {
-      "source": "/:slug",
-      "destination": "/articles/:slug.html"
-    }
-  ],
   "headers": [
     {
       "source": "/assets/(.*)",

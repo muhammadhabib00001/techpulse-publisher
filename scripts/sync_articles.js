@@ -306,6 +306,41 @@ function syncDeletedArticles() {
     }
   }
 
+  // 10. Synchronize root directory HTML files with articles/
+  const knownStaticPages = new Set([
+    'index.html', '404.html', 'admin.html', 'categories.html',
+    'category-business.html', 'category-celebrity.html', 'category-entertainment.html',
+    'category-games.html', 'category-health.html', 'category-news.html',
+    'category-others.html', 'category-technology.html',
+    'category-arts.html', 'category-community.html', 'category-lifestyle.html', 'category-voices.html'
+  ]);
+
+  // Ensure every active article exists in root
+  for (const artFile of existingArticleFiles) {
+    const rootPath = path.join(ROOT_DIR, artFile);
+    const artPath = path.join(articlesDir, artFile);
+    if (!fs.existsSync(rootPath)) {
+      fs.copyFileSync(artPath, rootPath);
+      console.log(`[sync_articles] Mirrored active article to root: ${artFile}`);
+      modifiedFiles.push(artFile);
+    }
+  }
+
+  // Remove any deleted articles lingering in root
+  const rootFilesAll = fs.readdirSync(ROOT_DIR);
+  for (const rf of rootFilesAll) {
+    if (rf.endsWith('.html') && !knownStaticPages.has(rf)) {
+      const baseSlug = rf.replace('.html', '');
+      if (!existingSlugs.has(baseSlug)) {
+        try {
+          fs.unlinkSync(path.join(ROOT_DIR, rf));
+          console.log(`[sync_articles] Removed deleted article file from root: ${rf}`);
+          modifiedFiles.push(rf);
+        } catch (e) {}
+      }
+    }
+  }
+
   console.log(`[sync_articles] Completed! Modified ${modifiedFiles.length} files.`);
   return { modifiedFiles, activeCount: existingSlugs.size };
 }

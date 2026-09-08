@@ -50,10 +50,15 @@ if (!matchedFile) {
   const fileSlug = matchedFile.replace('.html', '');
   const articleFilePath = path.join(articlesDir, matchedFile);
 
-  // 1. Delete article HTML file
+  // 1. Delete article HTML file from both articles/ and root
   if (fs.existsSync(articleFilePath)) {
     fs.unlinkSync(articleFilePath);
     console.log(`🗑️  Deleted HTML file: articles/${matchedFile}`);
+  }
+  const rootArticleFilePath = path.join(ROOT_DIR, matchedFile);
+  if (fs.existsSync(rootArticleFilePath)) {
+    fs.unlinkSync(rootArticleFilePath);
+    console.log(`🗑️  Deleted root HTML file: ${matchedFile}`);
   }
 
   // 2. Delete corresponding image file if present
