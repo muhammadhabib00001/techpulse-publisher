@@ -16,7 +16,7 @@ const http = require('http');
 const crypto = require('crypto');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
-const { sanitizeAllDashes, removeObsoleteBoxes, ensureRelatedSection, standardizeArticleLinks } = require('./sync_articles');
+const { sanitizeAllDashes, removeObsoleteBoxes, ensureRelatedSection, standardizeArticleLinks, getAllInternalArticleTargets, ARTICLE_INTERNAL_TARGETS } = require('./sync_articles');
 
 // Hard sanitize title: NEVER allow "2026" or calendar years in titles or slugs, zero dashes
 function sanitizeTitle(rawTitle) {
@@ -782,91 +782,50 @@ function buildImageResult(filename, localPath, topic) {
 
 
 // CATEGORY-AWARE INTERNAL LINKING ENGINE
-// Strictly limits internal links to matching editorial domains — zero forced cross-topic contamination
+// Strictly limits internal links to matching real published editorial articles — zero static policy/category links
 function getInternalLinkMap(category = '') {
   const cat = (category || 'others').toLowerCase().trim();
+  const allTargets = getAllInternalArticleTargets();
+  const list = [];
 
-  // Core Authority Hubs (valid and relevant for any article)
-  const coreHubs = [
-    { keyword: 'Editorial Policy', url: '/pages/editorial-policy.html', categories: ['all'] },
-    { keyword: 'Editorial Standards', url: '/pages/editorial-policy.html', categories: ['all'] },
-    { keyword: 'editorial standards', url: '/pages/editorial-policy.html', categories: ['all'] },
-    { keyword: 'editorial policy', url: '/pages/editorial-policy.html', categories: ['all'] },
-    { keyword: 'GenAlphaMagazines', url: '/pages/about.html', categories: ['all'] }
-  ];
+  for (const art of allTargets) {
+    const isMatchingCat = (art.category === cat);
+    for (const kw of art.keywords) {
+      list.push({
+        keyword: kw,
+        url: `/${art.slug}`,
+        title: art.title,
+        categories: [art.category, ...(isMatchingCat ? ['all'] : [])]
+      });
+    }
+  }
 
-  // Category Department Hubs
-  const deptHubs = [
-    { keyword: 'Business & Economy', url: '/category-business.html', categories: ['business', 'news'] },
-    { keyword: 'Arts & Entertainment', url: '/category-arts.html', categories: ['arts', 'entertainment', 'celebrity'] },
-    { keyword: 'Lifestyle & Culture', url: '/category-lifestyle.html', categories: ['lifestyle', 'health', 'celebrity', 'others'] },
-    { keyword: 'News & Announcements', url: '/category-news.html', categories: ['news', 'business', 'community'] },
-    { keyword: 'Community & Events', url: '/category-community.html', categories: ['community', 'news', 'others'] },
-    { keyword: 'Voices & Columnists', url: '/category-voices.html', categories: ['voices', 'celebrity', 'others'] }
-  ];
+  // Filter to matching category first, or all if needed
+  const filtered = list.filter(item => item.categories.includes(cat));
+  const pool = filtered.length >= 4 ? filtered : list;
 
-  // In-Depth Editorial Target Articles with clean root URLs
-  const articleLinks = [
-    // Celebrity & Entertainment
-    { keyword: 'LeBron James', url: '/lebron-james-the-evolution-of-nba-royalty-on-and-off-court', categories: ['celebrity', 'entertainment'] },
-    { keyword: 'Cristiano Ronaldo', url: '/cristiano-ronaldo-career-legacy-and-records', categories: ['celebrity', 'entertainment', 'lifestyle'] },
-    { keyword: 'contemporary cinema', url: '/25-american-movies-defining-visual-storytelling-today', categories: ['celebrity', 'entertainment', 'arts'] },
-    { keyword: 'American cinema', url: '/25-american-movies-defining-visual-storytelling-today', categories: ['celebrity', 'entertainment', 'arts'] },
-    { keyword: 'visual storytelling', url: '/25-american-movies-defining-visual-storytelling-today', categories: ['arts', 'entertainment'] },
-    { keyword: 'female-centered cinema', url: '/cinematic-masterpieces-unforgettable-films-centering-women', categories: ['celebrity', 'entertainment', 'arts'] },
-    { keyword: 'independent theater', url: '/local-playwrights-guide-independent-theater-spotlight', categories: ['arts', 'entertainment'] },
-    { keyword: 'theatrical productions', url: '/local-playwrights-guide-independent-theater-spotlight', categories: ['arts', 'entertainment'] },
-    { keyword: 'indie film distribution', url: '/grassroots-indie-film-distribution-how-regional-festival', categories: ['arts', 'entertainment'] },
-    { keyword: 'German cultural figures', url: '/top-german-celebrities-shaping-global-culture-today', categories: ['celebrity', 'entertainment'] },
-    { keyword: 'American cultural figures', url: '/25-famous-celebrity-in-usa-career-influence-and-cultur', categories: ['celebrity', 'entertainment'] },
-
-    // Business & Economy
-    { keyword: 'business operations', url: '/how-ai-is-reshaping-main-street-business-operations', categories: ['business'] },
-    { keyword: 'operational resilience', url: '/how-ai-is-reshaping-main-street-business-operations', categories: ['business'] },
-    { keyword: 'Main Street businesses', url: '/main-street-business-revitalization-guide-for-2026', categories: ['business', 'community'] },
-    { keyword: 'retail foot traffic', url: '/main-street-business-revitalization-guide-for-2026', categories: ['business', 'community'] },
-    { keyword: 'AI in business operations', url: '/how-ai-is-reshaping-main-street-business-operations', categories: ['business', 'technology'] },
-    { keyword: 'monetary policy', url: '/fomc-meeting-sept-2026-interest-rates-and-market-outlook', categories: ['business', 'news'] },
-    { keyword: 'Federal Reserve', url: '/fomc-meeting-sept-2026-interest-rates-and-market-outlook', categories: ['business', 'news'] },
-    { keyword: 'interest rates', url: '/fomc-meeting-sept-2026-interest-rates-and-market-outlook', categories: ['business', 'news'] },
-    { keyword: 'borrowing strategies', url: '/us-interest-rates-yields-inflation-and-borrowing-strategy', categories: ['business', 'news'] },
-    { keyword: 'crypto regulations', url: '/trump-crypto-policy-guide-2026-regulations-and-impact', categories: ['business', 'news', 'technology'] },
-    { keyword: 'human resources', url: '/the-evolving-hr-manager-strategy-tech-and-culture', categories: ['business'] },
-    { keyword: 'US economy', url: '/how-high-interest-rates-are-reshaping-the-us-economy', categories: ['business', 'news'] },
-    { keyword: 'Elon Musk business empire', url: '/inside-the-business-empire-of-elon-musk-today', categories: ['business', 'technology'] },
-
-    // Technology & Hardware
-    { keyword: 'smart home energy audits', url: '/smart-home-energy-audits-heat-pump-and-solar-storage', categories: ['technology', 'lifestyle'] },
-    { keyword: 'solar battery storage', url: '/solar-battery-storage-guide-costs-types-and-savings', categories: ['technology', 'lifestyle'] },
-    { keyword: 'iOS architecture innovations', url: '/inside-apple-s-ios-27-architecture-and-ai-innovations', categories: ['technology'] },
-    { keyword: 'flagship smartphone hardware', url: '/top-7-phone-features-and-specs', categories: ['technology'] },
-    { keyword: 'military technology modernization', url: '/us-army-modernization-strategy-tech-and-troop-structure', categories: ['technology', 'news'] },
-
-    // Health & Wellness
-    { keyword: 'cardiovascular health', url: '/heart-problems-evidence-based-insights-and-expert-guidance', categories: ['health'] },
-    { keyword: 'heart health', url: '/heart-problems-evidence-based-insights-and-expert-guidance', categories: ['health'] },
-    { keyword: 'women health solutions', url: '/key-health-issues-affecting-women-symptoms-and-solutions', categories: ['health'] },
-
-    // Gaming & Interactive
-    { keyword: 'GTA 6 release insights', url: '/gta-6-release-date-map-and-gameplay-guide', categories: ['games'] },
-    { keyword: 'Vice City map comparison', url: '/gta-6-vice-city-map-comparison-setting-scale-landmarks', categories: ['games'] },
-    { keyword: 'popular games dominating players', url: '/what-are-the-most-popular-games-dominating-players-today', categories: ['games'] },
-
-    // Lifestyle, Culture & Travel
-    { keyword: 'vinyl record care', url: '/the-vinyl-record-resurgence-turntable-setups-pressing', categories: ['lifestyle', 'arts'] },
-    { keyword: 'modern culinary spaces', url: '/the-kitchen-as-canvas-designing-creative-culinary-spaces', categories: ['lifestyle'] },
-    { keyword: 'bathroom design upgrades', url: '/modern-bathroom-upgrades-spa-luxury-meets-smart-tech', categories: ['lifestyle'] },
-    { keyword: 'travel disruptions', url: '/how-to-handle-flight-delays-and-travel-disruptions', categories: ['lifestyle', 'news'] },
-    { keyword: 'travel planning solutions', url: '/common-travel-problems-and-solutions-a-complete-guide', categories: ['lifestyle', 'news'] },
-    { keyword: 'waterfront heritage artisan lineup', url: '/waterfront-heritage-festival-2026-record-artisan-lineup', categories: ['lifestyle', 'community', 'arts'] }
-  ];
-
-  const candidatePool = [...coreHubs, ...deptHubs, ...articleLinks];
-  const filtered = candidatePool.filter(item => item.categories.includes('all') || item.categories.includes(cat));
-  
   // Sort descending by keyword length
-  filtered.sort((a, b) => (b.keyword || '').length - (a.keyword || '').length);
-  return filtered;
+  pool.sort((a, b) => (b.keyword || '').length - (a.keyword || '').length);
+  return pool;
+}
+
+function getRelevantInternalArticleTargets(topic, category = '', excludeSlug = '') {
+  const all = getAllInternalArticleTargets();
+  const filtered = all.filter(a => a.slug !== excludeSlug);
+  
+  // Sort same category first
+  filtered.sort((a, b) => {
+    if (a.category === category && b.category !== category) return -1;
+    if (b.category === category && a.category !== category) return 1;
+    return 0;
+  });
+
+  const selected = filtered.slice(0, 2);
+  return selected.map(a => ({
+    slug: a.slug,
+    title: a.title,
+    keyword: a.keywords && a.keywords[0] ? a.keywords[0] : a.title
+  }));
 }
 
 function injectInternalLinks(htmlContent, currentSlug, category = '') {
@@ -1380,7 +1339,7 @@ function generateDeepFallbackArticle(topic, category, author) {
 
 
 
-async function generateArticle(topicData) {
+async function generateArticle(topicData, internalLinks = [], externalLink = null) {
   let { topic, category, author } = topicData;
 
   // Clean brand names in topic
@@ -1396,7 +1355,19 @@ async function generateArticle(topicData) {
 
   console.log(`[INFO] Generating article on: "${topic}" (Category: ${category})`);
 
+  let linkDirective = '';
+  if (internalLinks && internalLinks.length >= 2 && externalLink && externalLink.url) {
+    linkDirective = `
+TARGETED KEYWORD LINKING (MANDATORY - EXACTLY 2 INTERNAL LINKS AND 1 EXTERNAL LINK):
+You MUST integrate these EXACT 3 HTML hyperlinks naturally inside the body <p> paragraphs:
+- First Internal Link (relevant related article): <a href="/${internalLinks[0].slug}">${internalLinks[0].keyword}</a>
+- Second Internal Link (relevant related article): <a href="/${internalLinks[1].slug}">${internalLinks[1].keyword}</a>
+- External Link (authoritative reference): <a href="${externalLink.url}" target="_blank" rel="noopener noreferrer">${externalLink.anchorKeyword}</a>
+Place each link on its exact targeted keyword within natural sentences inside paragraph prose. NEVER place links in headings (H1, H2, H3). NEVER link to generic phrases or full article titles.`;
+  }
+
   const systemInstruction = `Act as an SEO content strategist and copywriter. Create a detailed article for a blog post targeting the keyword with informational intent. Use LSI Keywords. The audience is World Wide. Include: a click-worthy headline, an opening hook, H2 and H3 subheadings, key points to cover under each section, a featured snippet, and 1000-1500 word count. The tone should be professional. remove dash in article, two internal link and one external link on the targeted keyword only, one image on one article and related to keyword and do not repeat same image in all articles and image base on keyword only, headline not repeat only one time do not add 2026 in heading. Donot repeat article 2 time only one article one time.
+${linkDirective}
 
 CORE EDITORIAL & SEO REQUIREMENTS:
 1. ROLE & PERSPECTIVE: Act as an authoritative SEO content strategist and copywriter. Write for a Worldwide audience with informational intent using LSI keywords.
@@ -1442,6 +1413,7 @@ CORE EDITORIAL & SEO REQUIREMENTS:
   const userPrompt = `Act as an SEO content strategist and copywriter. Create a detailed article for a blog post targeting the keyword "${topic}" with informational intent. Use LSI Keywords. The audience is World Wide. Include: a click-worthy headline, an opening hook, H2 and H3 subheadings, key points to cover under each section, a featured snippet, and 1000-1500 word count. The tone should be professional. remove dash in article, two internal link and one external link on the targeted keyword only, one image on one article and related to keyword and do not repeat same image in all articles and image base on keyword only, headline not repeat only one time do not add 2026 in heading. Donot repeat article 2 time only one article one time.
 Category: ${category}
 Author: ${author.name} (${author.role})
+${linkDirective}
 
 MANDATORY EDITORIAL & SEO REQUIREMENTS:
 - HEADLINE: Click-worthy headline (50-60 characters). Headline must not repeat (only one time across all publications). Absolutely DO NOT add 2026 in heading.
@@ -1527,7 +1499,14 @@ async function fetchExternalLink(topic, category, usedUrls) {
 
       if (result && result.url && result.url.startsWith('http') && result.label && result.domain) {
         if (!usedUrls.includes(result.url)) {
-          console.log('[INFO] External link: ' + result.url + ' (' + result.domain + ')');
+          // Sanitize anchorKeyword to ensure it is a concise 2-4 word keyword (max 35 characters)
+          let cleanKw = (result.anchorKeyword || result.label || '').trim();
+          if (cleanKw.length > 35 || cleanKw.split(/\s+/).length > 4) {
+            const words = cleanKw.split(/\s+/).slice(0, 3).join(' ');
+            cleanKw = words.length > 35 ? words.slice(0, 35).trim() : words;
+          }
+          result.anchorKeyword = cleanKw;
+          console.log('[INFO] External link: ' + result.url + ' (' + result.domain + ') on keyword: "' + result.anchorKeyword + '"');
           return result;
         }
         console.warn('[WARN] External link was a duplicate, skipping.');
@@ -2582,11 +2561,11 @@ function updateSiteIndex(articleData, author, category, heroImage) {
  * 3. NO "Department Insights" box
  * If deficient, auto-heals and overwrites the file on disk immediately.
  */
-function verifyAndEnforceArticleFileLinks(filePath, slug, category) {
+function verifyAndEnforceArticleFileLinks(filePath, slug, category, customExternalLink = null) {
   try {
     if (!fs.existsSync(filePath)) return;
     let content = fs.readFileSync(filePath, 'utf8');
-    const updated = standardizeArticleLinks(content, slug, category);
+    const updated = standardizeArticleLinks(content, slug, category, customExternalLink);
     if (updated !== content) {
       fs.writeFileSync(filePath, updated, 'utf8');
       const rootTarget = path.join(ROOT_DIR, path.basename(filePath));
@@ -2860,10 +2839,11 @@ async function main() {
     author: AUTHORS[cat] || author
   };
 
-  const generatedArticle = await generateArticle(topicData);
-  const heroImage = await fetchOrGenerateTopicImage(topic, cat, generatedArticle.slug);
+  // 1. Determine the best relevant peer internal article targets from published articles
+  const internalTargets = getRelevantInternalArticleTargets(topic, cat);
+  console.log(`[INFO] Selected internal article targets for "${topic}":`, internalTargets.map(t => `${t.anchorKeyword} -> /${t.slug}`));
 
-  // Load list of already-used external URLs to prevent duplicates
+  // 2. Load list of already-used external URLs to prevent duplicates and fetch authoritative external link
   let usedExternalUrls = [];
   try {
     const _trackFile = path.join(ROOT_DIR, 'data', 'published_topics.json');
@@ -2874,7 +2854,11 @@ async function main() {
   } catch (e) {}
   const externalLink = await fetchExternalLink(topic, cat, usedExternalUrls);
   const finalExternalLink = (externalLink && externalLink.url) ? externalLink : (CATEGORY_EXTERNAL_FALLBACKS[cat] || CATEGORY_EXTERNAL_FALLBACKS.others);
-  console.log('[INFO] External link result:', finalExternalLink ? finalExternalLink.url : 'none');
+  console.log('[INFO] External link result:', finalExternalLink ? `${finalExternalLink.url} ("${finalExternalLink.anchorKeyword || finalExternalLink.label}")` : 'none');
+
+  // 3. Generate article with explicit in-prompt linking instructions for Gemini
+  const generatedArticle = await generateArticle(topicData, internalTargets, finalExternalLink);
+  const heroImage = await fetchOrGenerateTopicImage(topic, cat, generatedArticle.slug);
 
   const fullHtml = renderArticleHtml(generatedArticle, topicData.author, topicData.category, heroImage, finalExternalLink);
 
@@ -2883,7 +2867,7 @@ async function main() {
   console.log(`[SUCCESS] Article written to: ${outputPath}`);
 
   // Permanent Link Guarantee: Audit and auto-heal on disk
-  verifyAndEnforceArticleFileLinks(outputPath, generatedArticle.slug, cat);
+  verifyAndEnforceArticleFileLinks(outputPath, generatedArticle.slug, cat, finalExternalLink);
 
   // Permanent FAQ Guarantee: Enforce clean card layout on newly written article
   verifyAndEnforceArticleFaqFormat(outputPath);

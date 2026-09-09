@@ -1013,6 +1013,28 @@ img {
   line-height: 1.8;
 }
 
+.article-body a {
+  color: var(--primary) !important;
+  font-weight: 700;
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.article-body a:hover {
+  color: var(--primary-hover) !important;
+  text-decoration-thickness: 2px;
+}
+
+.article-body a.external-link::after {
+  content: " \2197";
+  font-size: 0.82em;
+  font-weight: 600;
+  display: inline-block;
+  vertical-align: baseline;
+}
+
 .article-body p {
   margin-bottom: 1.4rem;
 }

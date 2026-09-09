@@ -132,38 +132,93 @@ const CATEGORY_EXTERNAL_FALLBACKS = {
   }
 };
 
-const INTERNAL_CANDIDATES = [
-  { keyword: 'editorial standards', url: '/pages/editorial-policy.html' },
-  { keyword: 'editorial policy', url: '/pages/editorial-policy.html' },
-  { keyword: 'Business & Economy', url: '/category-business.html' },
-  { keyword: 'Arts & Entertainment', url: '/category-arts.html' },
-  { keyword: 'Lifestyle & Culture', url: '/category-lifestyle.html' },
-  { keyword: 'News & Announcements', url: '/category-news.html' },
-  { keyword: 'Community & Events', url: '/category-community.html' },
-  { keyword: 'Voices & Columnists', url: '/category-voices.html' },
-  { keyword: 'business operations', url: '/how-ai-is-reshaping-main-street-business-operations' },
-  { keyword: 'Main Street businesses', url: '/main-street-business-revitalization-guide-for-2026' },
-  { keyword: 'interest rates', url: '/fomc-meeting-sept-2026-interest-rates-and-market-outlook' },
-  { keyword: 'Federal Reserve', url: '/fomc-meeting-sept-2026-interest-rates-and-market-outlook' },
-  { keyword: 'visual storytelling', url: '/25-american-movies-defining-visual-storytelling-today' },
-  { keyword: 'smart home technology', url: '/smart-home-energy-audits-heat-pump-and-solar-storage' },
-  { keyword: 'energy audits', url: '/smart-home-energy-audits-heat-pump-and-solar-storage' },
-  { keyword: 'energy efficiency', url: '/smart-home-energy-audits-heat-pump-and-solar-storage' },
-  { keyword: 'solar battery storage', url: '/solar-battery-storage-guide-costs-types-and-savings' },
-  { keyword: 'battery storage', url: '/solar-battery-storage-guide-costs-types-and-savings' },
-  { keyword: 'heart health', url: '/heart-problems-evidence-based-insights-and-expert-guidance' },
-  { keyword: 'cardiovascular health', url: '/heart-problems-evidence-based-insights-and-expert-guidance' },
-  { keyword: 'travel disruptions', url: '/how-to-handle-flight-delays-and-travel-disruptions' },
-  { keyword: 'vinyl record care', url: '/the-vinyl-record-resurgence-turntable-setups-pressing' },
-  { keyword: 'gaming hardware', url: '/top-7-phone-features-and-specs' },
-  { keyword: 'bathroom upgrades', url: '/modern-bathroom-upgrades-spa-luxury-meets-smart-tech' },
-  { keyword: 'residential architecture', url: '/modern-bathroom-upgrades-spa-luxury-meets-smart-tech' },
-  { keyword: 'modern bathroom', url: '/modern-bathroom-upgrades-spa-luxury-meets-smart-tech' },
-  { keyword: 'culinary spaces', url: '/the-kitchen-as-canvas-designing-creative-culinary-spaces' },
-  { keyword: 'drainage failures', url: '/preventing-bathroom-drainage-failures-in-modern-homes' },
-  { keyword: 'independent investigations', url: '/pages/about.html' },
-  { keyword: 'community journalism', url: '/pages/about.html' }
+const ARTICLE_INTERNAL_TARGETS = [
+  // Business
+  { slug: 'sba-loan-requirements-timelines-rates-and-down-payments', title: 'SBA Loan Requirements: Timelines, Rates, and Down Payments', category: 'business', keywords: ['SBA loan requirements', 'SBA loans', 'small business loan requirements', 'down payment requirements'] },
+  { slug: 'main-street-business-revitalization-guide-for-2026', title: 'Main Street Business Revitalization: Driving Local Retail Foot Traffic', category: 'business', keywords: ['Main Street business revitalization', 'retail foot traffic', 'commercial revitalization', 'Main Street businesses', 'small business revitalization'] },
+  { slug: 'how-ai-is-reshaping-main-street-business-operations', title: 'How AI Is Reshaping Main Street Business Operations', category: 'business', keywords: ['AI in business operations', 'business operations', 'artificial intelligence in business', 'operational resilience'] },
+  { slug: 'inside-the-business-empire-of-elon-musk-today', title: 'Inside the Business Empire of Elon Musk Today', category: 'business', keywords: ['Elon Musk business empire', 'business empire', 'corporate leadership', 'enterprise strategy'] },
+  { slug: 'fomc-meeting-sept-2026-interest-rates-and-market-outlook', title: 'FOMC Meeting: Interest Rates and Market Outlook', category: 'business', keywords: ['FOMC meeting', 'Federal Reserve interest rates', 'monetary policy', 'interest rate outlook'] },
+  { slug: 'the-evolving-hr-manager-strategy-tech-and-culture', title: 'The Evolving HR Manager: Strategy, Tech, and Culture', category: 'business', keywords: ['evolving HR manager', 'human resources strategy', 'employee retention', 'workplace culture', 'human resources'] },
+  { slug: 'us-interest-rates-yields-inflation-and-borrowing-strategy', title: 'US Interest Rates: Yields, Inflation, and Borrowing Strategy', category: 'business', keywords: ['borrowing strategy', 'US interest rates', 'yield curves', 'inflation strategy'] },
+
+  // Celebrity
+  { slug: 'red-carpet-fashion-trends-inside-haute-couture-aesthetics', title: 'Red Carpet Fashion Trends: Inside Haute Couture Aesthetics', category: 'celebrity', keywords: ['red carpet fashion trends', 'haute couture aesthetics', 'celebrity stylists', 'haute couture', 'red carpet fashion'] },
+  { slug: '25-famous-celebrity-in-usa-career-influence-and-cultur', title: '25 Famous Celebrities in USA: Career, Influence, and Cultural Impact', category: 'celebrity', keywords: ['famous celebrities in USA', 'celebrity culture', 'cultural influence', 'American cultural icons'] },
+  { slug: 'lebron-james-the-evolution-of-nba-royalty-on-and-off-court', title: 'LeBron James: The Evolution of NBA Royalty On and Off Court', category: 'celebrity', keywords: ['LeBron James', 'NBA royalty', 'basketball icons', 'athletic career'] },
+  { slug: 'cristiano-ronaldo-career-legacy-and-records', title: 'Cristiano Ronaldo: Career Legacy, Milestones and Records', category: 'celebrity', keywords: ['Cristiano Ronaldo', 'career legacy', 'football records', 'soccer records'] },
+  { slug: 'top-german-celebrities-shaping-global-culture-today', title: 'Top German Celebrities Shaping Global Culture Today', category: 'celebrity', keywords: ['German celebrities', 'global culture', 'European cultural figures'] },
+
+  // Entertainment
+  { slug: '25-american-movies-defining-visual-storytelling-today', title: '25 American Movies Defining Visual Storytelling Today', category: 'entertainment', keywords: ['visual storytelling', 'contemporary cinema', 'American cinema', 'cinematography', 'visual storytelling today'] },
+  { slug: 'grassroots-indie-film-distribution-how-regional-festival', title: 'Grassroots Indie Film Distribution: How Regional Festivals Launch Emerging Directors', category: 'entertainment', keywords: ['grassroots indie film distribution', 'regional film festivals', 'independent film distribution', 'indie film distribution'] },
+  { slug: 'the-vinyl-record-resurgence-turntable-setups-pressing', title: 'The Vinyl Record Resurgence: Turntable Setups, Pressing', category: 'entertainment', keywords: ['vinyl record resurgence', 'turntable setups', 'vinyl records', 'analog audio'] },
+  { slug: 'local-playwrights-guide-independent-theater-spotlight', title: 'Local Playwrights Guide: Independent Theater Spotlight', category: 'entertainment', keywords: ['independent theater spotlight', 'local playwrights', 'theatrical productions', 'independent theater'] },
+  { slug: 'cinematic-masterpieces-unforgettable-films-centering-women', title: 'Cinematic Masterpieces: Unforgettable Films Centering Women', category: 'entertainment', keywords: ['cinematic masterpieces', 'films centering women', 'female-centered cinema', 'masterpiece films'] },
+  { slug: 'the-kitchen-as-canvas-designing-creative-culinary-spaces', title: 'The Kitchen as Canvas: Designing Creative Culinary Spaces', category: 'entertainment', keywords: ['kitchen as canvas', 'creative culinary spaces', 'culinary spaces', 'kitchen design'] },
+
+  // Technology
+  { slug: 'inside-apple-s-ios-27-architecture-and-ai-innovations', title: 'Inside Apple\'s iOS 27 Architecture and AI Innovations', category: 'technology', keywords: ['iOS architecture', 'Apple AI innovations', 'mobile operating system', 'mobile silicon'] },
+  { slug: 'top-7-phone-features-and-specs', title: 'Top 7 Phone Features and Specs', category: 'technology', keywords: ['flagship phone specs', 'smartphone hardware', 'phone features', 'mobile hardware'] },
+  { slug: 'smart-home-energy-audits-heat-pump-and-solar-storage', title: 'Smart Home Energy Audits: Heat Pump and Solar Storage', category: 'technology', keywords: ['smart home energy audits', 'heat pump systems', 'energy efficiency', 'home energy audits'] },
+  { slug: 'solar-battery-storage-guide-costs-types-and-savings', title: 'Solar Battery Storage Guide: Costs, Types, and Savings', category: 'technology', keywords: ['solar battery storage', 'battery storage systems', 'energy savings', 'solar storage'] },
+  { slug: 'modern-bathroom-upgrades-spa-luxury-meets-smart-tech', title: 'Modern Bathroom Upgrades: Spa Luxury Meets Smart Tech', category: 'technology', keywords: ['modern bathroom upgrades', 'smart bathroom tech', 'bathroom upgrades', 'spa luxury'] },
+
+  // Games
+  { slug: 'gta-6-release-date-map-and-gameplay-guide', title: 'GTA 6 Release Date, Map and Gameplay Guide', category: 'games', keywords: ['GTA 6 release date', 'GTA 6 gameplay', 'open-world gameplay', 'GTA 6 map'] },
+  { slug: 'gta-6-vice-city-map-comparison-setting-scale-landmarks', title: 'GTA 6 Vice City Map Comparison: Setting, Scale, Landmarks', category: 'games', keywords: ['Vice City map comparison', 'Vice City landmarks', 'GTA map scale'] },
+  { slug: 'what-are-the-most-popular-games-dominating-players-today', title: 'What Are the Most Popular Games Dominating Players Today', category: 'games', keywords: ['most popular games', 'popular video games', 'multiplayer games', 'gaming culture'] },
+
+  // Health
+  { slug: 'heart-problems-evidence-based-insights-and-expert-guidance', title: 'Heart Problems: Evidence-Based Insights and Expert Guidance', category: 'health', keywords: ['cardiovascular health', 'heart problems', 'heart disease prevention', 'cardiovascular disease'] },
+  { slug: 'key-health-issues-affecting-women-symptoms-and-solutions', title: 'Key Health Issues Affecting Women: Symptoms and Solutions', category: 'health', keywords: ['health issues affecting women', 'women health solutions', 'preventative care', 'women health'] },
+
+  // News
+  { slug: 'how-high-interest-rates-are-reshaping-the-us-economy', title: 'How High Interest Rates Are Reshaping the US Economy', category: 'news', keywords: ['high interest rates', 'US economy', 'macroeconomic trends', 'economic impact'] },
+  { slug: 'trump-crypto-policy-guide-2026-regulations-and-impact', title: 'Trump Crypto Policy Guide: Regulations and Impact', category: 'news', keywords: ['crypto policy', 'cryptocurrency regulations', 'digital asset framework', 'crypto regulation'] },
+  { slug: 'us-army-modernization-strategy-tech-and-troop-structure', title: 'US Army Modernization Strategy: Tech and Troop Structure', category: 'news', keywords: ['Army modernization strategy', 'defense technology', 'military modernization', 'troop structure'] },
+
+  // Others
+  { slug: 'mastering-bathroom-drainage-systems-for-every-home', title: 'Mastering Bathroom Drainage Systems For Every Home', category: 'others', keywords: ['bathroom drainage systems', 'residential drainage', 'plumbing infrastructure', 'bathroom drainage'] },
+  { slug: 'common-travel-problems-and-solutions-a-complete-guide', title: 'Common Travel Problems and Solutions: A Complete Guide', category: 'others', keywords: ['common travel problems', 'travel solutions', 'travel planning', 'travel disruptions'] },
+  { slug: 'how-to-handle-flight-delays-and-travel-disruptions', title: 'How to Handle Flight Delays and Travel Disruptions', category: 'others', keywords: ['flight delays', 'travel disruptions', 'airline passenger rights', 'flight cancellation'] },
+  { slug: 'waterfront-heritage-festival-2026-record-artisan-lineup', title: 'Waterfront Heritage Festival: Record Artisan Lineup', category: 'others', keywords: ['waterfront heritage festival', 'artisan lineup', 'community cultural festival', 'heritage festival'] }
 ];
+
+function getAllInternalArticleTargets() {
+  const map = [...ARTICLE_INTERNAL_TARGETS];
+  const knownSlugs = new Set(map.map(m => m.slug));
+
+  try {
+    const jsonPath = path.join(ROOT_DIR, 'data', 'articles.json');
+    if (fs.existsSync(jsonPath)) {
+      const articles = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+      for (const art of articles) {
+        const slug = art.slug || (art.file ? art.file.replace('.html', '') : '');
+        if (!slug || knownSlugs.has(slug)) continue;
+        const title = (art.title || '').replace(/\s*\|\s*GenAlphaMagazines.*$/i, '').trim();
+        const cat = (art.category || 'others').toLowerCase();
+        
+        const keywords = new Set();
+        const titleParts = title.split(/[:|–—]/);
+        if (titleParts.length > 0 && titleParts[0].trim().length >= 4) keywords.add(titleParts[0].trim());
+        if (titleParts.length > 1 && titleParts[1].trim().length >= 6) keywords.add(titleParts[1].trim());
+        const words = slug.split('-');
+        if (words.length >= 3) keywords.add(words.slice(0, 3).join(' '));
+
+        map.push({
+          slug,
+          title,
+          category: cat,
+          keywords: Array.from(keywords).filter(k => k && k.length >= 4 && k.length <= 35)
+        });
+        knownSlugs.add(slug);
+      }
+    }
+  } catch (e) {}
+
+  return map;
+}
 
 function getCategoryFromHtml(html) {
   const m1 = html.match(/class="article-category-badge">([A-Z\s]+)/i);
@@ -286,7 +341,7 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
     proseBody = proseBody.replace(/<a\s+[^>]*href=["']https?:\/\/www\.watersanitation\.org[^"']*["'][^>]*>([\s\S]*?)<\/a>/gi, '$1');
   }
 
-  // 5. Handle External Links (exactly 1 on targeted keyword)
+  // 5. Handle External Links (strictly 1 external link on a concise 2-4 word target keyword)
   const extRegex = /<a\s+([^>]*href=["'](https?:\/\/(?!www\.genalphamagazines\.com)[^"']+)["'][^>]*)>([\s\S]*?)<\/a>/gi;
   let extMatches = [];
   let em;
@@ -294,11 +349,24 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
     extMatches.push({ fullTag: em[0], href: em[2], text: em[3] });
   }
 
-  if (extMatches.length > 1) {
+  if (extMatches.length > 0) {
+    let firstExt = extMatches[0];
+    let anchorText = firstExt.text.replace(/<[^>]+>/g, '').trim();
+    let cleanAnchor = anchorText;
+    if (anchorText.length > 35 || anchorText.split(/\s+/).length > 5) {
+      const words = anchorText.split(/[:|–—,\s]+/).filter(w => w.length > 2);
+      cleanAnchor = words.slice(0, 3).join(' ');
+      if (cleanAnchor.length < 4) cleanAnchor = 'authoritative industry reference';
+    }
+    const styledTag = `<a href="${firstExt.href}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cleanAnchor}">${cleanAnchor}</a>`;
+    proseBody = proseBody.replace(firstExt.fullTag, styledTag);
+
+    // Remove any secondary external links from body
     for (let i = 1; i < extMatches.length; i++) {
       proseBody = proseBody.replace(extMatches[i].fullTag, extMatches[i].text);
     }
-  } else if (extMatches.length === 0) {
+  } else {
+    // Inject external link from custom link or curated category fallback
     let targetLink;
     if (slug === 'mastering-bathroom-drainage-systems-for-every-home') {
       targetLink = {
@@ -313,110 +381,97 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
     }
     const targetLabel = targetLink.label || 'Reference Documentation';
     const targetUrl = targetLink.url;
+    const targetAnchor = (targetLink.anchorKeyword && targetLink.anchorKeyword.length <= 35) ? targetLink.anchorKeyword : (targetLink.keywords ? targetLink.keywords[0] : 'authoritative reference');
 
-    // Candidates for keyword match
-    const keywordsToTry = [];
-    if (targetLink.anchorKeyword) keywordsToTry.push(targetLink.anchorKeyword);
-    if (targetLink.keywords && Array.isArray(targetLink.keywords)) {
-      keywordsToTry.push(...targetLink.keywords);
-    }
-
+    const keywordsToTry = [targetAnchor, ...(targetLink.keywords || [])];
     let injected = false;
     for (const kw of keywordsToTry) {
-      if (injected) break;
+      if (!kw || kw.length < 3) continue;
       const esc = kw.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
       const reg = new RegExp('(\\b' + esc + '\\b)(?![^<]*>)', 'i');
       if (reg.test(proseBody)) {
-        proseBody = proseBody.replace(reg, `<a href="${targetUrl}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${targetLabel}">$1</a>`);
+        proseBody = proseBody.replace(reg, `<a href="${targetUrl}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${kw}">$1</a>`);
         injected = true;
+        break;
       }
     }
     if (!injected) {
       const lastPIdx = proseBody.lastIndexOf('</p>');
       if (lastPIdx !== -1) {
-        const extAddition = ` Authoritative reference documentation and contextual source materials are cataloged via <a href="${targetUrl}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${targetLabel}">${targetLabel}</a>.`;
+        const extAddition = ` For authoritative reference and source documentation, consult the <a href="${targetUrl}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${targetAnchor}">${targetLabel}</a>.`;
         proseBody = proseBody.substring(0, lastPIdx) + extAddition + proseBody.substring(lastPIdx);
       }
     }
   }
 
-  // 6. Handle Internal Links (exactly 2 on targeted keywords, pointing to real pages)
-  const existingSlugs = new Set();
-  try {
-    const artDir = path.join(ROOT_DIR, 'articles');
-    if (fs.existsSync(artDir)) {
-      fs.readdirSync(artDir).filter(f => f.endsWith('.html')).forEach(f => {
-        existingSlugs.add(f.replace('.html', '').toLowerCase());
-      });
-    }
-  } catch (e) {}
+  // 6. Handle Internal Links (strictly 2 in-text links to RELEVANT PUBLISHED ARTICLES - zero editorial policy or category links)
+  // A. Purge any static page / category links from the article body prose completely!
+  proseBody = proseBody.replace(/<a\s+[^>]*href=["'][^"']*(?:\/pages\/editorial-policy\.html|\/pages\/about\.html|\/pages\/[a-z0-9-]+\.html|\/category-[a-z0-9-]+\.html)[\s\S]*?<\/a>/gi, (match) => {
+    return match.replace(/<a\s+[^>]*>([\s\S]*?)<\/a>/gi, '$1');
+  });
+  proseBody = proseBody.replace(/\s*Readers can explore extensive departmental reporting in our[\s\S]*?editorial standards\.\s*/gi, ' ');
+  proseBody = proseBody.replace(/\s*Related regional investigations are published under our verified[\s\S]*?editorial standards\.\s*/gi, ' ');
+
+  const allArticleTargets = getAllInternalArticleTargets();
+  const existingSlugs = new Set(allArticleTargets.map(t => t.slug));
 
   const intRegex = /<a\s+([^>]*href=["']((?:\/|\.\.\/|\.\/|https:\/\/www\.genalphamagazines\.com\/)([^"']+))["'][^>]*)>([\s\S]*?)<\/a>/gi;
   let intMatches = [];
   let im;
   while ((im = intRegex.exec(proseBody)) !== null) {
-    intMatches.push({ fullTag: im[0], href: im[2], cleanPath: im[3], text: im[4] });
+    const cleanPath = im[3].replace(/^\/?articles\//, '').replace(/\.html$/, '').replace(/^\//, '').toLowerCase();
+    intMatches.push({ fullTag: im[0], href: im[2], cleanPath, text: im[4] });
   }
 
-  // Unwrap self-links, fake 404 links, and duplicate URLs
   const keptUrls = new Set();
   let keptCount = 0;
   for (const item of intMatches) {
-    let href = item.href;
-    // Fix erroneous /category/technology to /category-technology.html
-    if (href.includes('/category/')) {
-      const fixed = href.replace(/\/category\/([a-zA-Z0-9_-]+)/i, '/category-$1.html');
-      proseBody = proseBody.replace(item.fullTag, item.fullTag.replace(href, fixed));
-      href = fixed;
-    }
-
-    const clean = item.cleanPath.replace(/^\/?articles\//, '').replace(/\.html$/, '').replace(/^\//, '').toLowerCase();
-    const isValidPage = existingSlugs.has(clean) ||
-      href.startsWith('/pages/') ||
-      href.startsWith('/category-') ||
-      href === '/categories.html' ||
-      href === '/' ||
-      href.startsWith('/author/');
-    const isSelfLink = href.includes(slug);
-
-    if (!isValidPage || isSelfLink || keptUrls.has(href) || keptCount >= 2) {
+    const isRealArticle = existingSlugs.has(item.cleanPath) && item.cleanPath !== slug;
+    if (!isRealArticle || keptUrls.has(item.cleanPath) || keptCount >= 2) {
       proseBody = proseBody.replace(item.fullTag, item.text);
     } else {
-      keptUrls.add(href);
+      const styledInt = `<a href="/${item.cleanPath}" class="internal-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${item.text}">${item.text}</a>`;
+      proseBody = proseBody.replace(item.fullTag, styledInt);
+      keptUrls.add(item.cleanPath);
       keptCount++;
     }
   }
 
-  // If keptCount < 2, inject missing internal links on targeted keywords
-  if (keptCount < 2) {
-    for (const cand of INTERNAL_CANDIDATES) {
+  // If keptCount < 2, find candidate peer articles (same category first, then related)
+  const candidateArticles = allArticleTargets.filter(t => t.slug !== slug && !keptUrls.has(t.slug));
+  candidateArticles.sort((a, b) => {
+    if (a.category === category && b.category !== category) return -1;
+    if (b.category === category && a.category !== category) return 1;
+    return 0;
+  });
+
+  // Step 6B: Try natural keyword matching on word boundaries
+  for (const cand of candidateArticles) {
+    if (keptCount >= 2) break;
+    for (const kw of cand.keywords) {
       if (keptCount >= 2) break;
-      if (cand.url.includes(slug) || keptUrls.has(cand.url)) continue;
-      const esc = cand.keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const esc = kw.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
       const reg = new RegExp('(\\b' + esc + '\\b)(?![^<]*>)', 'i');
       if (reg.test(proseBody)) {
-        proseBody = proseBody.replace(reg, `<a href="${cand.url}" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cand.keyword}">$1</a>`);
-        keptUrls.add(cand.url);
+        proseBody = proseBody.replace(reg, `<a href="/${cand.slug}" class="internal-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cand.title}">$1</a>`);
+        keptUrls.add(cand.slug);
         keptCount++;
+        break;
       }
     }
   }
 
-  // If still keptCount < 2, append natural closing sentence
-  if (keptCount < 2) {
-    const catUrl = `/category-${category}.html`;
-    const catName = category.charAt(0).toUpperCase() + category.slice(1);
+  // Step 6C: If still < 2, weave relevant editorial sentences linking to peer articles
+  for (const cand of candidateArticles) {
+    if (keptCount >= 2) break;
+    if (keptUrls.has(cand.slug)) continue;
+
     const lastPIdx = proseBody.lastIndexOf('</p>');
     if (lastPIdx !== -1) {
-      let addition = '';
-      if (keptCount === 0) {
-        addition = ` Readers can explore extensive departmental reporting in our <a href="${catUrl}" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${catName} Coverage">${catName}</a> department, produced in strict accordance with verified <a href="/pages/editorial-policy.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="Editorial Policy">editorial standards</a>.`;
-        keptCount = 2;
-      } else if (keptCount === 1) {
-        addition = ` Related regional investigations are published under our verified <a href="/pages/editorial-policy.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="Editorial Policy">editorial standards</a>.`;
-        keptCount = 2;
-      }
+      const addition = ` For related reporting and practical insights, read our complete coverage on <a href="/${cand.slug}" class="internal-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cand.title}">${cand.title}</a>.`;
       proseBody = proseBody.substring(0, lastPIdx) + addition + proseBody.substring(lastPIdx);
+      keptUrls.add(cand.slug);
+      keptCount++;
     }
   }
 
@@ -1434,6 +1489,8 @@ module.exports = {
   restoreNavigationAndFooter,
   getCategoryFromHtml,
   CATEGORY_EXTERNAL_FALLBACKS,
+  ARTICLE_INTERNAL_TARGETS,
+  getAllInternalArticleTargets,
   buildCategoryPageHtml,
   CATEGORY_META,
   VECTOR_LOGO_SVG
