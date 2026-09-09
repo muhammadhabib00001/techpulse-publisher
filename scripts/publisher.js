@@ -1646,6 +1646,52 @@ const CATEGORY_EXTERNAL_FALLBACKS = {
 };
 
 /**
+ * Selects the top 2 most relevant peer published articles to link internally.
+ * Prioritizes the same category and keyword/word overlap with the topic.
+ */
+function getRelevantInternalArticleTargets(topic, category = '', excludeSlug = '') {
+  const allArticles = getAllInternalArticleTargets();
+  const cat = (category || 'others').toLowerCase().trim();
+  const topicWords = (topic || '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length > 3);
+
+  const candidates = allArticles.filter(a => a.slug !== excludeSlug);
+
+  candidates.sort((a, b) => {
+    // 1. Same category bonus
+    const aSameCat = a.category === cat ? 10 : 0;
+    const bSameCat = b.category === cat ? 10 : 0;
+
+    // 2. Word overlap between candidate title/keywords and topic
+    let aScore = aSameCat;
+    let bScore = bSameCat;
+
+    const aText = `${a.title} ${(a.keywords || []).join(' ')}`.toLowerCase();
+    const bText = `${b.title} ${(b.keywords || []).join(' ')}`.toLowerCase();
+
+    for (const tw of topicWords) {
+      if (aText.includes(tw)) aScore += 3;
+      if (bText.includes(tw)) bScore += 3;
+    }
+
+    return bScore - aScore;
+  });
+
+  const selected = candidates.slice(0, 2);
+  return selected.map(item => {
+    let kw = (item.keywords && item.keywords.length > 0) ? item.keywords[0] : item.title;
+    if (kw.length > 35) {
+      kw = kw.split(/\s+/).slice(0, 3).join(' ');
+    }
+    return {
+      slug: item.slug,
+      title: item.title,
+      keyword: kw,
+      anchorKeyword: kw
+    };
+  });
+}
+
+/**
  * Injects an authoritative external reference link directly onto a natural keyword in the body paragraphs.
  * Guarantees every article has an external link on a real keyword, using curated topic fallbacks if needed.
  */
