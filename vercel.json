@@ -32,6 +32,36 @@
       "permanent": true
     },
     {
+      "source": "/category-ai",
+      "destination": "/category-technology",
+      "permanent": true
+    },
+    {
+      "source": "/category-ai.html",
+      "destination": "/category-technology",
+      "permanent": true
+    },
+    {
+      "source": "/category-cloud",
+      "destination": "/category-technology",
+      "permanent": true
+    },
+    {
+      "source": "/category-cloud.html",
+      "destination": "/category-technology",
+      "permanent": true
+    },
+    {
+      "source": "/category-security",
+      "destination": "/category-technology",
+      "permanent": true
+    },
+    {
+      "source": "/category-security.html",
+      "destination": "/category-technology",
+      "permanent": true
+    },
+    {
       "source": "/articles/cristiano-ronaldo-career-legacy-and-records-in-2026",
       "destination": "/cristiano-ronaldo-career-legacy-and-records",
       "permanent": true

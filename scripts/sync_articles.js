@@ -1580,6 +1580,9 @@ ${sideArticles.map(art => {
       return fullMatch;
     });
 
+    // F. Standardize script tag to main.js
+    updated = updated.replace(/<script\s+src=["'][^"']*theme\.js["'][^>]*><\/script>/gi, '<script src="../assets/js/main.js" defer></script>');
+
     writeIfChanged(artPath, updated, original);
   }
 
@@ -1611,7 +1614,8 @@ ${sideArticles.map(art => {
     'category-business.html', 'category-celebrity.html', 'category-entertainment.html',
     'category-games.html', 'category-health.html', 'category-news.html',
     'category-others.html', 'category-technology.html',
-    'category-arts.html', 'category-community.html', 'category-lifestyle.html', 'category-voices.html'
+    'category-arts.html', 'category-community.html', 'category-lifestyle.html', 'category-voices.html',
+    'category-ai.html', 'category-cloud.html', 'category-security.html'
   ]);
 
   // Ensure every active article exists in root
