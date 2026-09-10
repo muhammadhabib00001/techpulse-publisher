@@ -7,130 +7,124 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.genalphamagazines.com/categories.html</loc>
+    <loc>https://www.genalphamagazines.com/categories</loc>
     <lastmod>2026-09-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.genalphamagazines.com/category-arts.html</loc>
+    <loc>https://www.genalphamagazines.com/category-news</loc>
     <lastmod>2026-09-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://www.genalphamagazines.com/category-business.html</loc>
+    <loc>https://www.genalphamagazines.com/category-business</loc>
     <lastmod>2026-09-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://www.genalphamagazines.com/category-celebrity.html</loc>
+    <loc>https://www.genalphamagazines.com/category-celebrity</loc>
     <lastmod>2026-09-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://www.genalphamagazines.com/category-community.html</loc>
+    <loc>https://www.genalphamagazines.com/category-entertainment</loc>
     <lastmod>2026-09-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://www.genalphamagazines.com/category-entertainment.html</loc>
+    <loc>https://www.genalphamagazines.com/category-games</loc>
     <lastmod>2026-09-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://www.genalphamagazines.com/category-games.html</loc>
+    <loc>https://www.genalphamagazines.com/category-health</loc>
     <lastmod>2026-09-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://www.genalphamagazines.com/category-health.html</loc>
+    <loc>https://www.genalphamagazines.com/category-technology</loc>
     <lastmod>2026-09-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://www.genalphamagazines.com/category-lifestyle.html</loc>
+    <loc>https://www.genalphamagazines.com/category-others</loc>
     <lastmod>2026-09-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://www.genalphamagazines.com/category-news.html</loc>
-    <lastmod>2026-09-10</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://www.genalphamagazines.com/category-others.html</loc>
-    <lastmod>2026-09-10</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://www.genalphamagazines.com/category-technology.html</loc>
-    <lastmod>2026-09-10</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://www.genalphamagazines.com/category-voices.html</loc>
-    <lastmod>2026-09-10</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://www.genalphamagazines.com/pages/about.html</loc>
+    <loc>https://www.genalphamagazines.com/pages/about</loc>
     <lastmod>2026-09-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.genalphamagazines.com/pages/affiliate-disclosure.html</loc>
+    <loc>https://www.genalphamagazines.com/pages/affiliate-disclosure</loc>
     <lastmod>2026-09-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.genalphamagazines.com/pages/contact.html</loc>
+    <loc>https://www.genalphamagazines.com/pages/contact</loc>
     <lastmod>2026-09-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.genalphamagazines.com/pages/cookie-policy.html</loc>
+    <loc>https://www.genalphamagazines.com/pages/cookie-policy</loc>
     <lastmod>2026-09-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.genalphamagazines.com/pages/disclaimer.html</loc>
+    <loc>https://www.genalphamagazines.com/pages/disclaimer</loc>
     <lastmod>2026-09-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.genalphamagazines.com/pages/editorial-policy.html</loc>
+    <loc>https://www.genalphamagazines.com/pages/editorial-policy</loc>
     <lastmod>2026-09-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.genalphamagazines.com/pages/privacy-policy.html</loc>
+    <loc>https://www.genalphamagazines.com/pages/privacy-policy</loc>
     <lastmod>2026-09-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.genalphamagazines.com/pages/terms.html</loc>
+    <loc>https://www.genalphamagazines.com/pages/terms</loc>
     <lastmod>2026-09-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/author/dr-elena-vance</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/author/julia-vance</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/author/marcus-reid</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.genalphamagazines.com/unplugging-daily-finding-peace-in-a-fast-world</loc>

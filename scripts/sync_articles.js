@@ -231,46 +231,46 @@ function getCategoryFromHtml(html) {
 function restoreNavigationAndFooter(html, category) {
   const cat = (category || 'others').toLowerCase().trim();
 
-  // 1. Restore Top Utility Bar links if stripped
+  // 1. Restore Top Utility Bar links if stripped (clean extensionless URLs)
   html = html.replace(/<nav class="top-nav"[^>]*>[\s\S]*?<\/nav>/i, `
       <nav class="top-nav" aria-label="Utility Navigation">
         <ul>
-          <li><a href="/pages/about.html">About</a></li>
-          <li><a href="/pages/editorial-policy.html">Editorial Standards</a></li>
-          <li><a href="/pages/privacy-policy.html">Privacy</a></li>
-          <li><a href="/pages/contact.html">Contact</a></li>
+          <li><a href="/pages/about">About</a></li>
+          <li><a href="/pages/editorial-policy">Editorial Standards</a></li>
+          <li><a href="/pages/privacy-policy">Privacy</a></li>
+          <li><a href="/pages/contact">Contact</a></li>
         </ul>
       </nav>`.trim());
 
-  // 2. Restore Main Nav Links if stripped
+  // 2. Restore Main Nav Links if stripped (clean extensionless URLs)
   const mainNavUl = `
           <ul class="main-nav-links">
             <li><a href="/">Home</a></li>
-            <li><a href="/category-news.html" class="${cat === 'news' ? 'active' : ''}">News</a></li>
-            <li><a href="/category-business.html" class="${cat === 'business' ? 'active' : ''}">Business</a></li>
-            <li><a href="/category-celebrity.html" class="${cat === 'celebrity' ? 'active' : ''}">Celebrity</a></li>
-            <li><a href="/category-entertainment.html" class="${cat === 'entertainment' ? 'active' : ''}">Entertainment</a></li>
-            <li><a href="/category-games.html" class="${cat === 'games' ? 'active' : ''}">Games</a></li>
-            <li><a href="/category-health.html" class="${cat === 'health' ? 'active' : ''}">Health</a></li>
-            <li><a href="/category-technology.html" class="${cat === 'technology' ? 'active' : ''}">Technology</a></li>
-            <li><a href="/category-others.html" class="${cat === 'others' ? 'active' : ''}">Others</a></li>
-            <li><a href="/categories.html">All Topics</a></li>
+            <li><a href="/category-news" class="${cat === 'news' ? 'active' : ''}">News</a></li>
+            <li><a href="/category-business" class="${cat === 'business' ? 'active' : ''}">Business</a></li>
+            <li><a href="/category-celebrity" class="${cat === 'celebrity' ? 'active' : ''}">Celebrity</a></li>
+            <li><a href="/category-entertainment" class="${cat === 'entertainment' ? 'active' : ''}">Entertainment</a></li>
+            <li><a href="/category-games" class="${cat === 'games' ? 'active' : ''}">Games</a></li>
+            <li><a href="/category-health" class="${cat === 'health' ? 'active' : ''}">Health</a></li>
+            <li><a href="/category-technology" class="${cat === 'technology' ? 'active' : ''}">Technology</a></li>
+            <li><a href="/category-others" class="${cat === 'others' ? 'active' : ''}">Others</a></li>
+            <li><a href="/categories">All Topics</a></li>
           </ul>`.trim();
   html = html.replace(/<ul class="main-nav-links">[\s\S]*?<\/ul>/i, mainNavUl);
 
-  // 3. Restore Footer Columns if stripped
+  // 3. Restore Footer Columns if stripped (clean extensionless URLs)
   const footerCategories = `
       <div class="footer-col">
         <h5>Categories</h5>
         <ul class="footer-links">
-          <li><a href="/category-news.html">News</a></li>
-          <li><a href="/category-business.html">Business</a></li>
-          <li><a href="/category-celebrity.html">Celebrity</a></li>
-          <li><a href="/category-entertainment.html">Entertainment</a></li>
-          <li><a href="/category-games.html">Games</a></li>
-          <li><a href="/category-health.html">Health</a></li>
-          <li><a href="/category-technology.html">Technology</a></li>
-          <li><a href="/category-others.html">Others</a></li>
+          <li><a href="/category-news">News</a></li>
+          <li><a href="/category-business">Business</a></li>
+          <li><a href="/category-celebrity">Celebrity</a></li>
+          <li><a href="/category-entertainment">Entertainment</a></li>
+          <li><a href="/category-games">Games</a></li>
+          <li><a href="/category-health">Health</a></li>
+          <li><a href="/category-technology">Technology</a></li>
+          <li><a href="/category-others">Others</a></li>
         </ul>
       </div>`;
 
@@ -278,10 +278,10 @@ function restoreNavigationAndFooter(html, category) {
       <div class="footer-col">
         <h5>Editorial</h5>
         <ul class="footer-links">
-          <li><a href="/pages/about.html">About Us</a></li>
-          <li><a href="/pages/editorial-policy.html">Editorial Standards</a></li>
-          <li><a href="/pages/affiliate-disclosure.html">Affiliate Disclosure</a></li>
-          <li><a href="/pages/contact.html">Contact Us</a></li>
+          <li><a href="/pages/about">About Us</a></li>
+          <li><a href="/pages/editorial-policy">Editorial Standards</a></li>
+          <li><a href="/pages/affiliate-disclosure">Affiliate Disclosure</a></li>
+          <li><a href="/pages/contact">Contact Us</a></li>
         </ul>
       </div>`;
 
@@ -289,10 +289,10 @@ function restoreNavigationAndFooter(html, category) {
       <div class="footer-col">
         <h5>Compliance</h5>
         <ul class="footer-links">
-          <li><a href="/pages/privacy-policy.html">Privacy Policy</a></li>
-          <li><a href="/pages/terms.html">Terms & Conditions</a></li>
-          <li><a href="/pages/cookie-policy.html">Cookie Policy</a></li>
-          <li><a href="/pages/disclaimer.html">Disclaimer</a></li>
+          <li><a href="/pages/privacy-policy">Privacy Policy</a></li>
+          <li><a href="/pages/terms">Terms & Conditions</a></li>
+          <li><a href="/pages/cookie-policy">Cookie Policy</a></li>
+          <li><a href="/pages/disclaimer">Disclaimer</a></li>
         </ul>
       </div>`;
 
@@ -917,13 +917,13 @@ function buildCategoryPageHtml(catName, matchingArticles, validArticlesList) {
   <meta property="og:title" content="${meta.title}">
   <meta property="og:description" content="${meta.description}">
   <meta property="og:image" content="https://www.genalphamagazines.com/assets/images/og-banner.jpg">
-  <meta property="og:url" content="https://www.genalphamagazines.com/category-${catName}.html">
+  <meta property="og:url" content="https://www.genalphamagazines.com/category-${catName}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@GenAlphaMag">
   <meta name="twitter:title" content="${meta.title}">
   <meta name="twitter:description" content="${meta.description}">
   <meta name="twitter:image" content="https://www.genalphamagazines.com/assets/images/og-banner.jpg">
-  <link rel="canonical" href="https://www.genalphamagazines.com/category-${catName}.html">
+  <link rel="canonical" href="https://www.genalphamagazines.com/category-${catName}">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -947,7 +947,7 @@ function buildCategoryPageHtml(catName, matchingArticles, validArticlesList) {
     "@type": "CollectionPage",
     "name": "${meta.displayName} | GenAlphaMagazines",
     "description": "${meta.schemaDesc}",
-    "url": "https://www.genalphamagazines.com/category-${catName}.html",
+    "url": "https://www.genalphamagazines.com/category-${catName}",
     "publisher": {
       "@type": "NewsMediaOrganization",
       "name": "GenAlphaMagazines",
@@ -969,10 +969,10 @@ function buildCategoryPageHtml(catName, matchingArticles, validArticlesList) {
       </div>
       <nav class="top-nav" aria-label="Utility Navigation">
         <ul>
-          <li><a href="./pages/about.html">About</a></li>
-          <li><a href="./pages/editorial-policy.html">Editorial Standards</a></li>
-          <li><a href="./pages/privacy-policy.html">Privacy</a></li>
-          <li><a href="./pages/contact.html">Contact</a></li>
+          <li><a href="/pages/about">About</a></li>
+          <li><a href="/pages/editorial-policy">Editorial Standards</a></li>
+          <li><a href="/pages/privacy-policy">Privacy</a></li>
+          <li><a href="/pages/contact">Contact</a></li>
         </ul>
       </nav>
     </div>
@@ -996,7 +996,7 @@ function buildCategoryPageHtml(catName, matchingArticles, validArticlesList) {
       </a>
       
       <div class="header-actions">
-        <a href="./pages/contact.html" class="news-tip-btn">
+        <a href="/pages/contact" class="news-tip-btn">
           <span>✉️</span> News Tip?
         </a>
         <button id="theme-toggle" class="theme-btn" aria-label="Toggle Dark/Light Mode">
@@ -1019,15 +1019,15 @@ function buildCategoryPageHtml(catName, matchingArticles, validArticlesList) {
       <div id="main-nav" class="main-nav" aria-label="Main Navigation">
         <ul class="main-nav-links">
           <li><a href="/">Home</a></li>
-          <li><a href="./category-news.html" class="${catName === 'news' ? 'active' : ''}">News</a></li>
-          <li><a href="./category-business.html" class="${catName === 'business' ? 'active' : ''}">Business</a></li>
-          <li><a href="./category-celebrity.html" class="${catName === 'celebrity' ? 'active' : ''}">Celebrity</a></li>
-          <li><a href="./category-entertainment.html" class="${catName === 'entertainment' ? 'active' : ''}">Entertainment</a></li>
-          <li><a href="./category-games.html" class="${catName === 'games' ? 'active' : ''}">Games</a></li>
-          <li><a href="./category-health.html" class="${catName === 'health' ? 'active' : ''}">Health</a></li>
-          <li><a href="./category-technology.html" class="${catName === 'technology' ? 'active' : ''}">Technology</a></li>
-          <li><a href="./category-others.html" class="${catName === 'others' ? 'active' : ''}">Others</a></li>
-          <li><a href="./categories.html">All Topics</a></li>
+          <li><a href="/category-news" class="${catName === 'news' ? 'active' : ''}">News</a></li>
+          <li><a href="/category-business" class="${catName === 'business' ? 'active' : ''}">Business</a></li>
+          <li><a href="/category-celebrity" class="${catName === 'celebrity' ? 'active' : ''}">Celebrity</a></li>
+          <li><a href="/category-entertainment" class="${catName === 'entertainment' ? 'active' : ''}">Entertainment</a></li>
+          <li><a href="/category-games" class="${catName === 'games' ? 'active' : ''}">Games</a></li>
+          <li><a href="/category-health" class="${catName === 'health' ? 'active' : ''}">Health</a></li>
+          <li><a href="/category-technology" class="${catName === 'technology' ? 'active' : ''}">Technology</a></li>
+          <li><a href="/category-others" class="${catName === 'others' ? 'active' : ''}">Others</a></li>
+          <li><a href="/categories">All Topics</a></li>
         </ul>
       </div>
     </div>
@@ -1076,7 +1076,7 @@ ${cardsHtml}
           <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.8rem;">
             Every publication in GenAlphaMagazines adheres to strict EEAT guidelines, verified primary sources, and high-standard community journalism.
           </p>
-          <a href="./pages/editorial-policy.html" style="font-weight: 700; color: var(--primary); font-size: 0.88rem;">Read Editorial Guidelines &rarr;</a>
+          <a href="/pages/editorial-policy" style="font-weight: 700; color: var(--primary); font-size: 0.88rem;">Read Editorial Guidelines &rarr;</a>
         </div>
 
         <div class="ad-slot-wrap" aria-label="Sponsored Ad Unit">
@@ -1112,34 +1112,34 @@ ${cardsHtml}
       <div class="footer-col">
         <h5>Categories</h5>
         <ul class="footer-links">
-          <li><a href="./category-news.html">News</a></li>
-          <li><a href="./category-business.html">Business</a></li>
-          <li><a href="./category-celebrity.html">Celebrity</a></li>
-          <li><a href="./category-entertainment.html">Entertainment</a></li>
-          <li><a href="./category-games.html">Games</a></li>
-          <li><a href="./category-health.html">Health</a></li>
-          <li><a href="./category-technology.html">Technology</a></li>
-          <li><a href="./category-others.html">Others</a></li>
+          <li><a href="/category-news">News</a></li>
+          <li><a href="/category-business">Business</a></li>
+          <li><a href="/category-celebrity">Celebrity</a></li>
+          <li><a href="/category-entertainment">Entertainment</a></li>
+          <li><a href="/category-games">Games</a></li>
+          <li><a href="/category-health">Health</a></li>
+          <li><a href="/category-technology">Technology</a></li>
+          <li><a href="/category-others">Others</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
         <h5>Editorial</h5>
         <ul class="footer-links">
-          <li><a href="./pages/about.html">About Us</a></li>
-          <li><a href="./pages/editorial-policy.html">Editorial Standards</a></li>
-          <li><a href="./pages/affiliate-disclosure.html">Affiliate Disclosure</a></li>
-          <li><a href="./pages/contact.html">Contact Us</a></li>
+          <li><a href="/pages/about">About Us</a></li>
+          <li><a href="/pages/editorial-policy">Editorial Standards</a></li>
+          <li><a href="/pages/affiliate-disclosure">Affiliate Disclosure</a></li>
+          <li><a href="/pages/contact">Contact Us</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
         <h5>Compliance</h5>
         <ul class="footer-links">
-          <li><a href="./pages/privacy-policy.html">Privacy Policy</a></li>
-          <li><a href="./pages/terms.html">Terms & Conditions</a></li>
-          <li><a href="./pages/cookie-policy.html">Cookie Policy</a></li>
-          <li><a href="./pages/disclaimer.html">Disclaimer</a></li>
+          <li><a href="/pages/privacy-policy">Privacy Policy</a></li>
+          <li><a href="/pages/terms">Terms & Conditions</a></li>
+          <li><a href="/pages/cookie-policy">Cookie Policy</a></li>
+          <li><a href="/pages/disclaimer">Disclaimer</a></li>
         </ul>
       </div>
     </div>
@@ -1191,6 +1191,21 @@ function syncDeletedArticles() {
       const filtered = list.filter(item => {
         const s = item.slug || (item.file ? item.file.replace('.html', '') : '');
         return existingSlugs.has(s);
+      }).map(item => {
+        // Enforce Author Whitelist (Marcus Reid for News/Business/Technology/Games, Julia Vance for others)
+        let author = item.author || 'Julia Vance';
+        let authorSlug = item.authorSlug || 'julia-vance';
+        const cat = (item.category || '').toLowerCase();
+        if (authorSlug === 'artificial-intelligence' || author.toLowerCase() === 'artificial intelligence' || !['marcus-reid', 'julia-vance'].includes(authorSlug)) {
+          if (['news', 'business', 'technology', 'games'].includes(cat)) {
+            author = 'Marcus Reid';
+            authorSlug = 'marcus-reid';
+          } else {
+            author = 'Julia Vance';
+            authorSlug = 'julia-vance';
+          }
+        }
+        return { ...item, author, authorSlug };
       });
       validArticlesList = filtered;
       const updated = JSON.stringify(filtered, null, 2);
@@ -1217,32 +1232,41 @@ function syncDeletedArticles() {
     }
   }
 
-  // 4. Sync sitemap.xml (Complete dynamic rebuild with daily changefreq on every publish/sync)
+  // 4. Sync sitemap.xml (Complete dynamic rebuild with clean URLs and daily changefreq)
   const sitemapPath = path.join(ROOT_DIR, 'sitemap.xml');
   if (fs.existsSync(sitemapPath)) {
     const currentDate = new Date().toISOString().split('T')[0];
     const sitemapUrls = [];
 
-    // 1. Core Hubs
+    // 1. Core Hubs (clean extensionless URLs)
     sitemapUrls.push({ loc: `${BASE_URL}/`, lastmod: currentDate, changefreq: 'daily', priority: '1.0' });
-    sitemapUrls.push({ loc: `${BASE_URL}/categories.html`, lastmod: currentDate, changefreq: 'daily', priority: '0.9' });
+    sitemapUrls.push({ loc: `${BASE_URL}/categories`, lastmod: currentDate, changefreq: 'daily', priority: '0.9' });
 
-    // 2. Category Hubs
-    const catFiles = fs.readdirSync(ROOT_DIR).filter(f => f.startsWith('category-') && f.endsWith('.html'));
-    for (const cf of catFiles) {
-      sitemapUrls.push({ loc: `${BASE_URL}/${cf}`, lastmod: currentDate, changefreq: 'daily', priority: '0.85' });
+    // 2. Category Hubs (clean extensionless URLs)
+    const activeCategoriesList = ['news', 'business', 'celebrity', 'entertainment', 'games', 'health', 'technology', 'others'];
+    for (const cat of activeCategoriesList) {
+      sitemapUrls.push({ loc: `${BASE_URL}/category-${cat}`, lastmod: currentDate, changefreq: 'daily', priority: '0.85' });
     }
 
-    // 3. Static Pages
+    // 3. Static Pages (clean extensionless URLs)
     const pagesDir = path.join(ROOT_DIR, 'pages');
     if (fs.existsSync(pagesDir)) {
       const pFiles = fs.readdirSync(pagesDir).filter(f => f.endsWith('.html'));
       for (const pf of pFiles) {
-        sitemapUrls.push({ loc: `${BASE_URL}/pages/${pf}`, lastmod: currentDate, changefreq: 'daily', priority: '0.6' });
+        sitemapUrls.push({ loc: `${BASE_URL}/pages/${pf.replace('.html', '')}`, lastmod: currentDate, changefreq: 'daily', priority: '0.6' });
       }
     }
 
-    // 4. All Active Articles
+    // 4. Author Profiles (clean extensionless URLs)
+    const authorDir = path.join(ROOT_DIR, 'author');
+    if (fs.existsSync(authorDir)) {
+      const aFiles = fs.readdirSync(authorDir).filter(f => f.endsWith('.html'));
+      for (const af of aFiles) {
+        sitemapUrls.push({ loc: `${BASE_URL}/author/${af.replace('.html', '')}`, lastmod: currentDate, changefreq: 'daily', priority: '0.7' });
+      }
+    }
+
+    // 5. All Active Articles (clean extensionless URLs)
     for (const art of validArticlesList) {
       sitemapUrls.push({
         loc: `${BASE_URL}/${art.slug}`,
@@ -1258,7 +1282,7 @@ function syncDeletedArticles() {
 
     const fullSitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${xmlEntries}\n</urlset>\n`;
     writeIfChanged(sitemapPath, fullSitemapXml, fs.readFileSync(sitemapPath, 'utf8'));
-    console.log(`[sync_articles] Sitemap synchronized: ${sitemapUrls.length} URLs with daily changefreq`);
+    console.log(`[sync_articles] Sitemap synchronized: ${sitemapUrls.length} clean URLs with daily changefreq`);
   }
 
   // 5. Sync llms.txt and llms-full.txt
@@ -1378,7 +1402,85 @@ ${sideArticles.map(art => {
       }
     }
 
+    // D. Automatically purge dead cards from all section grids in index.html
+    const cardRegex = /<article\s+class="card">[\s\S]*?<\/article>/gi;
+    updated = updated.replace(cardRegex, (cardHtml) => {
+      const linkMatch = cardHtml.match(/<a\s+href="(?:\/|\.\/|\.\/articles\/)?([a-zA-Z0-9_-]+)(?:\.html)?"/i);
+      if (linkMatch) {
+        const slug = linkMatch[1];
+        if (!existingSlugs.has(slug)) {
+          console.log(`[sync_articles] Purged dead card from index.html: ${slug}`);
+          return '';
+        }
+      }
+      return cardHtml;
+    });
+
     writeIfChanged(indexPath, updated, original);
+  }
+
+  // 7b. Sync categories.html (Ticker Track, Clean Canonical, Clean og:url, Clean Internal Links)
+  const categoriesPath = path.join(ROOT_DIR, 'categories.html');
+  if (fs.existsSync(categoriesPath) && validArticlesList.length > 0) {
+    let original = fs.readFileSync(categoriesPath, 'utf8');
+    let updated = original;
+
+    // Clean canonical to extensionless
+    updated = updated.replace(/<link\s+rel=["']canonical["']\s+href=["']https:\/\/www\.genalphamagazines\.com\/categories(?:\.html)?["']/gi, '<link rel="canonical" href="https://www.genalphamagazines.com/categories">');
+    // Clean og:url to extensionless
+    updated = updated.replace(/<meta\s+property=["']og:url["']\s+content=["']https:\/\/www\.genalphamagazines\.com\/categories(?:\.html)?["']/gi, '<meta property="og:url" content="https://www.genalphamagazines.com/categories">');
+    // Clean schema url
+    updated = updated.replace(/"url":\s*"https:\/\/www\.genalphamagazines\.com\/categories\.html"/g, '"url": "https://www.genalphamagazines.com/categories"');
+
+    // Clean nav links
+    updated = restoreNavigationAndFooter(updated, 'all');
+
+    // Update ticker track with top 10 articles
+    const catTickerStart = updated.indexOf('<div class="breaking-ticker-track">');
+    if (catTickerStart !== -1) {
+      const trackContentStart = updated.indexOf('>', catTickerStart) + 1;
+      const trackEnd = updated.indexOf('</div>', trackContentStart);
+      if (trackEnd !== -1) {
+        const tickerItems = validArticlesList.slice(0, 10).map(art => 
+          `          <a href="/${art.slug}" class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> ${escapeHtml(art.title)}</a>`
+        ).join('\n');
+        updated = updated.slice(0, trackContentStart) + '\n' + tickerItems + '\n        ' + updated.slice(trackEnd);
+      }
+    }
+
+    writeIfChanged(categoriesPath, updated, original);
+  }
+
+  // 7c. Ensure static pages in pages/ and author/ have clean extensionless canonical tags
+  const staticSubDirs = ['pages', 'author'];
+  for (const sub of staticSubDirs) {
+    const sDir = path.join(ROOT_DIR, sub);
+    if (fs.existsSync(sDir)) {
+      const files = fs.readdirSync(sDir).filter(f => f.endsWith('.html'));
+      for (const f of files) {
+        const fPath = path.join(sDir, f);
+        const original = fs.readFileSync(fPath, 'utf8');
+        let updated = original;
+        const base = f.replace('.html', '');
+        
+        // Fix canonical tag
+        const canRegex = new RegExp(`<link\\s+rel=["']canonical["']\\s+href=["']https://www\\.genalphamagazines\\.com/${sub}/${base}(?:\\.html)?["']`, 'i');
+        updated = updated.replace(canRegex, `<link rel="canonical" href="https://www.genalphamagazines.com/${sub}/${base}">`);
+
+        // Fix og:url tag
+        const ogUrlRegex = new RegExp(`<meta\\s+property=["']og:url["']\\s+content=["']https://www\\.genalphamagazines\\.com/${sub}/${base}(?:\\.html)?["']`, 'i');
+        updated = updated.replace(ogUrlRegex, `<meta property="og:url" content="https://www.genalphamagazines.com/${sub}/${base}">`);
+
+        // Fix JSON-LD URL
+        const jsonLdUrlRegex = new RegExp(`"url":\\s*"https://www\\.genalphamagazines\\.com/${sub}/${base}\\.html"`, 'g');
+        updated = updated.replace(jsonLdUrlRegex, `"url": "https://www.genalphamagazines.com/${sub}/${base}"`);
+
+        // Restore navigation links
+        updated = restoreNavigationAndFooter(updated, sub === 'author' ? 'all' : 'all');
+
+        writeIfChanged(fPath, updated, original);
+      }
+    }
   }
 
   // 8. Enforce Dash Sanitization, Clean Related Stories, and Remove Obsolete Placeholders inside articles/*.html

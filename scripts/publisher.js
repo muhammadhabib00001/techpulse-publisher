@@ -2002,8 +2002,8 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
         "@type": "BreadcrumbList",
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.genalphamagazines.com/" },
-          { "@type": "ListItem", "position": 2, "name": "Categories", "item": "https://www.genalphamagazines.com/categories.html" },
-          { "@type": "ListItem", "position": 3, "name": "${articleData.title}", "item": "https://www.genalphamagazines.com/articles/${articleData.slug}.html" }
+          { "@type": "ListItem", "position": 2, "name": "Categories", "item": "https://www.genalphamagazines.com/categories" },
+          { "@type": "ListItem", "position": 3, "name": "${articleData.title}", "item": "https://www.genalphamagazines.com/${articleData.slug}" }
         ]
       },
       {
@@ -2018,7 +2018,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
         "author": {
           "@type": "Person",
           "name": "${author.name}",
-          "url": "https://www.genalphamagazines.com/author/${author.slug}.html",
+          "url": "https://www.genalphamagazines.com/author/${author.slug}",
           "jobTitle": "${author.role}"
         },
         "publisher": {
@@ -2042,10 +2042,10 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
       </div>
       <nav class="top-nav" aria-label="Utility Navigation">
         <ul>
-          <li><a href="/pages/about.html">About</a></li>
-          <li><a href="/pages/editorial-policy.html">Editorial Standards</a></li>
-          <li><a href="/pages/privacy-policy.html">Privacy</a></li>
-          <li><a href="/pages/contact.html">Contact</a></li>
+          <li><a href="/pages/about">About</a></li>
+          <li><a href="/pages/editorial-policy">Editorial Standards</a></li>
+          <li><a href="/pages/privacy-policy">Privacy</a></li>
+          <li><a href="/pages/contact">Contact</a></li>
         </ul>
       </nav>
     </div>
@@ -2069,7 +2069,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
       </a>
       
       <div class="header-actions">
-        <a href="/pages/contact.html" class="news-tip-btn">
+        <a href="/pages/contact" class="news-tip-btn">
           <span>✉️</span> News Tip?
         </a>
         <button id="theme-toggle" class="theme-btn" aria-label="Toggle Dark/Light Mode">
@@ -2086,15 +2086,15 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
         <nav class="main-nav" aria-label="Main Navigation">
           <ul class="main-nav-links">
             <li><a href="/">Home</a></li>
-            <li><a href="/category-news.html" class="${category === 'news' ? 'active' : ''}">News</a></li>
-            <li><a href="/category-business.html" class="${category === 'business' ? 'active' : ''}">Business</a></li>
-            <li><a href="/category-celebrity.html" class="${category === 'celebrity' ? 'active' : ''}">Celebrity</a></li>
-            <li><a href="/category-entertainment.html" class="${category === 'entertainment' ? 'active' : ''}">Entertainment</a></li>
-            <li><a href="/category-games.html" class="${category === 'games' ? 'active' : ''}">Games</a></li>
-            <li><a href="/category-health.html" class="${category === 'health' ? 'active' : ''}">Health</a></li>
-            <li><a href="/category-technology.html" class="${category === 'technology' ? 'active' : ''}">Technology</a></li>
-            <li><a href="/category-others.html" class="${category === 'others' ? 'active' : ''}">Others</a></li>
-            <li><a href="/categories.html">All Topics</a></li>
+            <li><a href="/category-news" class="${category === 'news' ? 'active' : ''}">News</a></li>
+            <li><a href="/category-business" class="${category === 'business' ? 'active' : ''}">Business</a></li>
+            <li><a href="/category-celebrity" class="${category === 'celebrity' ? 'active' : ''}">Celebrity</a></li>
+            <li><a href="/category-entertainment" class="${category === 'entertainment' ? 'active' : ''}">Entertainment</a></li>
+            <li><a href="/category-games" class="${category === 'games' ? 'active' : ''}">Games</a></li>
+            <li><a href="/category-health" class="${category === 'health' ? 'active' : ''}">Health</a></li>
+            <li><a href="/category-technology" class="${category === 'technology' ? 'active' : ''}">Technology</a></li>
+            <li><a href="/category-others" class="${category === 'others' ? 'active' : ''}">Others</a></li>
+            <li><a href="/categories">All Topics</a></li>
           </ul>
         </nav>
       </div>
@@ -2111,7 +2111,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
             <div class="author-meta">
               <div class="author-avatar">${author.initials}</div>
               <div>
-                <div><a href="/author/${author.slug}.html" style="font-weight: 700; color: var(--text-main);">${author.name}</a></div>
+                <div><a href="/author/${author.slug}" style="font-weight: 700; color: var(--text-main);">${author.name}</a></div>
                 <div style="font-size: 0.8rem; color: var(--text-muted);">${author.role}</div>
               </div>
             </div>
@@ -2153,7 +2153,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
         <section class="author-box">
           <div class="author-avatar">${author.initials}</div>
           <div class="author-bio">
-            <h4 style="margin: 0 0 0.4rem 0;"><a href="/author/${author.slug}.html">${author.name}</a></h4>
+            <h4 style="margin: 0 0 0.4rem 0;"><a href="/author/${author.slug}">${author.name}</a></h4>
             <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">${author.role} at GenAlphaMagazines. Specializing in regional governance, independent investigations, and verified community journalism.</p>
           </div>
         </section>
@@ -2174,7 +2174,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
           <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.8rem;">
             Every publication in GenAlphaMagazines adheres to strict EEAT guidelines, verified primary sources, and high-standard community journalism.
           </p>
-          <a href="/pages/editorial-policy.html" style="font-weight: 700; color: var(--primary); font-size: 0.88rem;">Read Editorial Guidelines &rarr;</a>
+          <a href="/pages/editorial-policy" style="font-weight: 700; color: var(--primary); font-size: 0.88rem;">Read Editorial Guidelines &rarr;</a>
         </div>
 
         <div class="ad-slot-wrap" aria-label="Sponsored Ad Unit">
@@ -2210,32 +2210,32 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
       <div class="footer-col">
         <h5>Categories</h5>
         <ul class="footer-links">
-          <li><a href="/category-news.html">News</a></li>
-          <li><a href="/category-business.html">Business</a></li>
-          <li><a href="/category-celebrity.html">Celebrity</a></li>
-          <li><a href="/category-entertainment.html">Entertainment</a></li>
-          <li><a href="/category-games.html">Games</a></li>
-          <li><a href="/category-health.html">Health</a></li>
-          <li><a href="/category-technology.html">Technology</a></li>
-          <li><a href="/category-others.html">Others</a></li>
+          <li><a href="/category-news">News</a></li>
+          <li><a href="/category-business">Business</a></li>
+          <li><a href="/category-celebrity">Celebrity</a></li>
+          <li><a href="/category-entertainment">Entertainment</a></li>
+          <li><a href="/category-games">Games</a></li>
+          <li><a href="/category-health">Health</a></li>
+          <li><a href="/category-technology">Technology</a></li>
+          <li><a href="/category-others">Others</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h5>Editorial</h5>
         <ul class="footer-links">
-          <li><a href="/pages/about.html">About Us</a></li>
-          <li><a href="/pages/editorial-policy.html">Editorial Standards</a></li>
-          <li><a href="/pages/affiliate-disclosure.html">Affiliate Disclosure</a></li>
-          <li><a href="/pages/contact.html">Contact Us</a></li>
+          <li><a href="/pages/about">About Us</a></li>
+          <li><a href="/pages/editorial-policy">Editorial Standards</a></li>
+          <li><a href="/pages/affiliate-disclosure">Affiliate Disclosure</a></li>
+          <li><a href="/pages/contact">Contact Us</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h5>Compliance</h5>
         <ul class="footer-links">
-          <li><a href="/pages/privacy-policy.html">Privacy Policy</a></li>
-          <li><a href="/pages/terms.html">Terms & Conditions</a></li>
-          <li><a href="/pages/cookie-policy.html">Cookie Policy</a></li>
-          <li><a href="/pages/disclaimer.html">Disclaimer</a></li>
+          <li><a href="/pages/privacy-policy">Privacy Policy</a></li>
+          <li><a href="/pages/terms">Terms & Conditions</a></li>
+          <li><a href="/pages/cookie-policy">Cookie Policy</a></li>
+          <li><a href="/pages/disclaimer">Disclaimer</a></li>
         </ul>
       </div>
     </div>
@@ -2603,17 +2603,17 @@ function updateSiteIndex(articleData, author, category, heroImage) {
             const pageCount = Math.floor(Math.random() * 3) + 3; // Random 3, 4, or 5
             const selectedArts = allArts.sort(() => 0.5 - Math.random()).slice(0, pageCount);
             const pageItemsHtml = selectedArts.map(r => {
-              let catFile = 'category-news.html';
+              let catPath = 'category-news';
               const cLower = r.category.toLowerCase();
-              if (cLower.includes('business')) catFile = 'category-business.html';
-              else if (cLower.includes('celebrity')) catFile = 'category-celebrity.html';
-              else if (cLower.includes('entertainment') || cLower.includes('arts')) catFile = 'category-entertainment.html';
-              else if (cLower.includes('game')) catFile = 'category-games.html';
-              else if (cLower.includes('health')) catFile = 'category-health.html';
-              else if (cLower.includes('tech')) catFile = 'category-technology.html';
-              else if (cLower.includes('news')) catFile = 'category-news.html';
-              else catFile = 'category-others.html';
-              return `<li><a href="/${catFile}" style="color: var(--primary); font-weight: 700; text-decoration: underline;">${r.category}</a>: Read <a href="/${r.slug}" style="color: var(--primary); font-weight: 600; text-decoration: underline;">${r.title}</a></li>`;
+              if (cLower.includes('business')) catPath = 'category-business';
+              else if (cLower.includes('celebrity')) catPath = 'category-celebrity';
+              else if (cLower.includes('entertainment') || cLower.includes('arts')) catPath = 'category-entertainment';
+              else if (cLower.includes('game')) catPath = 'category-games';
+              else if (cLower.includes('health')) catPath = 'category-health';
+              else if (cLower.includes('tech')) catPath = 'category-technology';
+              else if (cLower.includes('news')) catPath = 'category-news';
+              else catPath = 'category-others';
+              return `<li><a href="/${catPath}" style="color: var(--primary); font-weight: 700; text-decoration: underline;">${r.category}</a>: Read <a href="/${r.slug}" style="color: var(--primary); font-weight: 600; text-decoration: underline;">${r.title}</a></li>`;
             }).join('\n              ');
 
             const oldListRegex = /<ul style="margin-left: 1\.5rem; line-height: 1\.8; font-size: 0\.95rem;">[\s\S]*?<\/ul>/;

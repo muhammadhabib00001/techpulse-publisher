@@ -8,7 +8,7 @@
     },
     {
       "source": "/category-community.html",
-      "destination": "/category-others.html",
+      "destination": "/category-others",
       "permanent": true
     },
     {
@@ -18,7 +18,7 @@
     },
     {
       "source": "/category-arts.html",
-      "destination": "/category-entertainment.html",
+      "destination": "/category-entertainment",
       "permanent": true
     },
     {
@@ -28,7 +28,7 @@
     },
     {
       "source": "/category-lifestyle.html",
-      "destination": "/category-others.html",
+      "destination": "/category-others",
       "permanent": true
     },
     {
@@ -44,6 +44,56 @@
     {
       "source": "/cristiano-ronaldo-career-legacy-and-records-in-2026",
       "destination": "/cristiano-ronaldo-career-legacy-and-records",
+      "permanent": true
+    },
+    {
+      "source": "/preventing-bathroom-drainage-failures-in-modern-homes",
+      "destination": "/mastering-bathroom-drainage-systems-for-every-home",
+      "permanent": true
+    },
+    {
+      "source": "/preventing-bathroom-drainage-failures-in-modern-homes.html",
+      "destination": "/mastering-bathroom-drainage-systems-for-every-home",
+      "permanent": true
+    },
+    {
+      "source": "/wi-fi-7-mesh-upgrades-real-latency-gains-and-hardware",
+      "destination": "/upgrading-to-wi-fi-7-mesh-network-coverage-real-latency",
+      "permanent": true
+    },
+    {
+      "source": "/wi-fi-7-mesh-upgrades-real-latency-gains-and-hardware.html",
+      "destination": "/upgrading-to-wi-fi-7-mesh-network-coverage-real-latency",
+      "permanent": true
+    },
+    {
+      "source": "/zone-2-cardio-training-mitochondrial-health-endurance",
+      "destination": "/zone-2-cardio-training-for-exceptional-heart-longevity",
+      "permanent": true
+    },
+    {
+      "source": "/zone-2-cardio-training-mitochondrial-health-endurance.html",
+      "destination": "/zone-2-cardio-training-for-exceptional-heart-longevity",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-buy-run-business-market-analysis",
+      "destination": "/category-business",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-buy-run-business-market-analysis.html",
+      "destination": "/category-business",
+      "permanent": true
+    },
+    {
+      "source": "/author/artificial-intelligence",
+      "destination": "/author/marcus-reid",
+      "permanent": true
+    },
+    {
+      "source": "/author/artificial-intelligence.html",
+      "destination": "/author/marcus-reid",
       "permanent": true
     },
     {
