@@ -1050,7 +1050,7 @@ ${tickerItems}
 
   <main class="container" style="margin-top: 2rem; margin-bottom: 4rem;">
     <div class="section-header">
-      <span class="section-box">${meta.displayName}</span>
+      <h1 class="section-box">${meta.displayName}</h1>
     </div>
     <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 2rem;">${meta.subtitle}</p>
 
@@ -1426,11 +1426,15 @@ ${sideArticles.map(art => {
     let updated = original;
 
     // Clean canonical to extensionless
-    updated = updated.replace(/<link\s+rel=["']canonical["']\s+href=["']https:\/\/www\.genalphamagazines\.com\/categories(?:\.html)?["']/gi, '<link rel="canonical" href="https://www.genalphamagazines.com/categories">');
+    updated = updated.replace(/<link\s+rel=["']canonical["']\s+href=["']https:\/\/www\.genalphamagazines\.com\/categories(?:\.html)?["']>+/gi, '<link rel="canonical" href="https://www.genalphamagazines.com/categories">');
     // Clean og:url to extensionless
-    updated = updated.replace(/<meta\s+property=["']og:url["']\s+content=["']https:\/\/www\.genalphamagazines\.com\/categories(?:\.html)?["']/gi, '<meta property="og:url" content="https://www.genalphamagazines.com/categories">');
+    updated = updated.replace(/<meta\s+property=["']og:url["']\s+content=["']https:\/\/www\.genalphamagazines\.com\/categories(?:\.html)?["']>+/gi, '<meta property="og:url" content="https://www.genalphamagazines.com/categories">');
     // Clean schema url
     updated = updated.replace(/"url":\s*"https:\/\/www\.genalphamagazines\.com\/categories\.html"/g, '"url": "https://www.genalphamagazines.com/categories"');
+
+    // Ensure H1 exists on categories.html
+    updated = updated.replace(/<span class="section-box">All Categories &amp; Topic Directory<\/span>/gi, '<h1 class="section-box">All Categories & Topic Directory</h1>');
+    updated = updated.replace(/<span class="section-box">All Categories & Topic Directory<\/span>/gi, '<h1 class="section-box">All Categories & Topic Directory</h1>');
 
     // Clean nav links
     updated = restoreNavigationAndFooter(updated, 'all');
@@ -1463,12 +1467,12 @@ ${sideArticles.map(art => {
         let updated = original;
         const base = f.replace('.html', '');
         
-        // Fix canonical tag
-        const canRegex = new RegExp(`<link\\s+rel=["']canonical["']\\s+href=["']https://www\\.genalphamagazines\\.com/${sub}/${base}(?:\\.html)?["']`, 'i');
+        // Fix canonical tag (match entire tag up to and including >)
+        const canRegex = new RegExp(`<link\\s+rel=["']canonical["']\\s+href=["']https://www\\.genalphamagazines\\.com/${sub}/${base}(?:\\.html)?["']>+`, 'i');
         updated = updated.replace(canRegex, `<link rel="canonical" href="https://www.genalphamagazines.com/${sub}/${base}">`);
 
-        // Fix og:url tag
-        const ogUrlRegex = new RegExp(`<meta\\s+property=["']og:url["']\\s+content=["']https://www\\.genalphamagazines\\.com/${sub}/${base}(?:\\.html)?["']`, 'i');
+        // Fix og:url tag (match entire tag up to and including >)
+        const ogUrlRegex = new RegExp(`<meta\\s+property=["']og:url["']\\s+content=["']https://www\\.genalphamagazines\\.com/${sub}/${base}(?:\\.html)?["']>+`, 'i');
         updated = updated.replace(ogUrlRegex, `<meta property="og:url" content="https://www.genalphamagazines.com/${sub}/${base}">`);
 
         // Fix JSON-LD URL
@@ -1477,6 +1481,11 @@ ${sideArticles.map(art => {
 
         // Restore navigation links
         updated = restoreNavigationAndFooter(updated, sub === 'author' ? 'all' : 'all');
+
+        // Ensure primary H1 exists on page
+        if (!/<h1[^>]*>/i.test(updated)) {
+          updated = updated.replace(/<span class="section-box">([^<]+)<\/span>/i, '<h1 class="section-box">$1</h1>');
+        }
 
         writeIfChanged(fPath, updated, original);
       }
@@ -1520,7 +1529,9 @@ ${sideArticles.map(art => {
   if (fs.existsSync(imagesDir)) {
     const staticBrandAssets = new Set([
       'favicon.svg', 'logo.svg', 'logo-dark.svg', 'og-banner.jpg',
-      'creative-badge.svg', '.gitkeep', 'cristiano-ronaldo-career-legacy-and-records-in-2026.jpg'
+      'creative-badge.svg', '.gitkeep',
+      'cristiano-ronaldo-career-legacy-and-records-in-2026.jpg',
+      'preventing-bathroom-drainage-failures-in-modern-homes.jpg'
     ]);
     const imgFiles = fs.readdirSync(imagesDir);
     for (const img of imgFiles) {
