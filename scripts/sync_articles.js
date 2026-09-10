@@ -220,6 +220,62 @@ function getAllInternalArticleTargets() {
   return map;
 }
 
+function ensureArticleFaqs(html, slug) {
+  if (html.includes('class="faq-card"')) return html;
+
+  // Extract from JSON-LD schema if present
+  let faqs = [];
+  const scriptMatches = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi) || [];
+  for (const sm of scriptMatches) {
+    const jsonStr = sm.replace(/<\/?script[^>]*>/gi, '').trim();
+    try {
+      const data = JSON.parse(jsonStr);
+      const graph = data['@graph'] || [data];
+      const faqEntity = graph.find(item => item && (item['@type'] === 'FAQPage' || item['@type'] === 'FAQ'));
+      if (faqEntity && Array.isArray(faqEntity.mainEntity)) {
+        for (const item of faqEntity.mainEntity) {
+          const q = item.name || (item.question && item.question.text) || '';
+          const a = (item.acceptedAnswer && item.acceptedAnswer.text) || (item.answer && item.answer.text) || '';
+          if (q && a) faqs.push({ question: q.trim(), answer: a.trim() });
+        }
+      }
+    } catch (e) {}
+  }
+
+  if (faqs.length === 0) return html;
+
+  const faqCards = faqs.map(f => `
+            <div class="faq-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem;">
+              <h3 class="faq-question" style="margin-top: 0; margin-bottom: 0.5rem; color: var(--primary); font-size: 1.05rem;">${f.question}</h3>
+              <p class="faq-answer" style="margin-bottom: 0; color: var(--text-main); font-size: 0.95rem; line-height: 1.7;">${f.answer}</p>
+            </div>`).join('\n');
+
+  const faqSectionHtml = `
+          <section id="frequently-asked-questions" class="faq-section" style="margin-top: 2rem;">
+            <h2>Frequently Asked Questions</h2>
+            <div style="margin-top: 1.25rem;">
+${faqCards}
+            </div>
+          </section>`;
+
+  // Check if an empty or malformed FAQ section exists and replace it
+  const emptySectionRegex = /<section[^>]*id=["'](?:frequently-asked-questions|undefined)["'][^>]*>\s*<h2>Frequently Asked Questions<\/h2>\s*<\/section>/i;
+  if (emptySectionRegex.test(html)) {
+    return html.replace(emptySectionRegex, faqSectionHtml.trim());
+  }
+
+  // Otherwise insert before related section or author box
+  if (html.includes('<!-- Related Department Stories -->')) {
+    return html.replace('<!-- Related Department Stories -->', `${faqSectionHtml}\n\n        <!-- Related Department Stories -->`);
+  } else if (html.includes('<section class="author-box">')) {
+    return html.replace('<section class="author-box">', `${faqSectionHtml}\n\n        <section class="author-box">`);
+  } else if (html.includes('</article>')) {
+    return html.replace('</article>', `${faqSectionHtml}\n      </article>`);
+  }
+
+  return html;
+}
+
 function getCategoryFromHtml(html) {
   const m1 = html.match(/class="article-category-badge">([A-Z\s]+)/i);
   if (m1) return m1[1].replace(/•[\s\S]*$/, '').trim().toLowerCase();
@@ -1508,6 +1564,9 @@ ${sideArticles.map(art => {
     // C. Guarantee Related Investigative Reports & Department Features block exists
     updated = ensureRelatedSection(updated, slug, articlesDir);
 
+    // C2. Guarantee visible FAQ cards exist if FAQPage schema is present
+    updated = ensureArticleFaqs(updated, slug);
+
     // D. Enforce Exactly 2 Internal Links and 1 External Link on targeted keywords
     updated = standardizeArticleLinks(updated, slug);
 
@@ -1598,6 +1657,7 @@ module.exports = {
   removeObsoleteBoxes,
   buildRelatedSectionHtml,
   ensureRelatedSection,
+  ensureArticleFaqs,
   standardizeArticleLinks,
   restoreNavigationAndFooter,
   getCategoryFromHtml,

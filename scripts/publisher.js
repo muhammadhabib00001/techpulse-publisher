@@ -2128,7 +2128,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
 
         <div class="article-body">
           ${guaranteedSectionsHtml}
-          ${(guaranteedSectionsHtml.includes('id="frequently-asked-questions"') || guaranteedSectionsHtml.includes('Frequently Asked Questions')) ? '' : visibleFaqHtml}
+          ${guaranteedSectionsHtml.includes('class="faq-card"') ? '' : visibleFaqHtml}
         </div>
 
         <!-- Related Department Stories -->
