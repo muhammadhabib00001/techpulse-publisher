@@ -276,6 +276,35 @@ ${faqCards}
   return html;
 }
 
+function safeKeywordReplace(html, keyword, replaceFn) {
+  if (!keyword || keyword.length < 3) return { html, replaced: false };
+  const esc = keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+  const kwRegex = new RegExp('\\b' + esc + '\\b', 'i');
+
+  const tokens = html.split(/(<[^>]+>)/g);
+  let insideAnchor = 0;
+  let replaced = false;
+
+  for (let i = 0; i < tokens.length; i++) {
+    const t = tokens[i];
+    if (!t) continue;
+    if (t.startsWith('<')) {
+      if (/^<a\b/i.test(t)) {
+        insideAnchor++;
+      } else if (/^<\/a\b/i.test(t)) {
+        insideAnchor = Math.max(0, insideAnchor - 1);
+      }
+    } else if (insideAnchor === 0 && !replaced) {
+      if (kwRegex.test(t)) {
+        tokens[i] = t.replace(kwRegex, replaceFn);
+        replaced = true;
+      }
+    }
+  }
+
+  return { html: tokens.join(''), replaced };
+}
+
 function getCategoryFromHtml(html) {
   const m1 = html.match(/class="article-category-badge">([A-Z\s]+)/i);
   if (m1) return m1[1].replace(/•[\s\S]*$/, '').trim().toLowerCase();
@@ -381,6 +410,9 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
   let proseBody = faqStart !== -1 ? body.substring(0, faqStart) : body;
   const trailingBody = faqStart !== -1 ? body.substring(faqStart) : '';
 
+  // 2.5 Unnest any malformed or recursively nested <a> tags in proseBody
+  proseBody = proseBody.replace(/<a\b[^>]*>(?:(?!<\/a>)[\s\S])*<a\b[^>]*>([\s\S]*?)<\/a>[\s\S]*?<\/a>/gi, '$1');
+
   // 3. Strip any secondary images inside proseBody (strictly enforce 1 hero image per article)
   proseBody = proseBody.replace(/<img\s+[^>]*>/gi, '');
 
@@ -407,14 +439,15 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
 
   if (extMatches.length > 0) {
     let firstExt = extMatches[0];
-    let anchorText = firstExt.text.replace(/<[^>]+>/g, '').trim();
+    let anchorText = firstExt.text.replace(/<[^>]+>/g, '').replace(/"/g, '&quot;').trim();
     let cleanAnchor = anchorText;
     if (anchorText.length > 35 || anchorText.split(/\s+/).length > 5) {
       const words = anchorText.split(/[:|–—,\s]+/).filter(w => w.length > 2);
       cleanAnchor = words.slice(0, 3).join(' ');
       if (cleanAnchor.length < 4) cleanAnchor = 'authoritative industry reference';
     }
-    const styledTag = `<a href="${firstExt.href}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cleanAnchor}">${cleanAnchor}</a>`;
+    const safeHref = firstExt.href.replace(/"/g, '&quot;');
+    const styledTag = `<a href="${safeHref}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cleanAnchor}">${cleanAnchor}</a>`;
     proseBody = proseBody.replace(firstExt.fullTag, styledTag);
 
     // Remove any secondary external links from body
@@ -435,18 +468,21 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
       const catFallback = CATEGORY_EXTERNAL_FALLBACKS[category] || CATEGORY_EXTERNAL_FALLBACKS.others;
       targetLink = (customExternalLink && customExternalLink.url) ? customExternalLink : catFallback;
     }
-    const targetLabel = targetLink.label || 'Reference Documentation';
-    const targetUrl = targetLink.url;
-    const targetAnchor = (targetLink.anchorKeyword && targetLink.anchorKeyword.length <= 35) ? targetLink.anchorKeyword : (targetLink.keywords ? targetLink.keywords[0] : 'authoritative reference');
+    const targetLabel = (targetLink.label || 'Reference Documentation').replace(/"/g, '&quot;');
+    const targetUrl = String(targetLink.url).replace(/"/g, '&quot;');
+    const rawTargetAnchor = (targetLink.anchorKeyword && targetLink.anchorKeyword.length <= 35) ? targetLink.anchorKeyword : (targetLink.keywords ? targetLink.keywords[0] : 'authoritative reference');
+    const targetAnchor = rawTargetAnchor.replace(/"/g, '&quot;');
 
-    const keywordsToTry = [targetAnchor, ...(targetLink.keywords || [])];
+    const keywordsToTry = [rawTargetAnchor, ...(targetLink.keywords || [])];
     let injected = false;
     for (const kw of keywordsToTry) {
       if (!kw || kw.length < 3) continue;
-      const esc = kw.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
-      const reg = new RegExp('(\\b' + esc + '\\b)(?![^<]*>)', 'i');
-      if (reg.test(proseBody)) {
-        proseBody = proseBody.replace(reg, `<a href="${targetUrl}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${kw}">$1</a>`);
+      const cleanKwTitle = kw.replace(/"/g, '&quot;');
+      const repResult = safeKeywordReplace(proseBody, kw, (matched) => {
+        return `<a href="${targetUrl}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cleanKwTitle}">${matched}</a>`;
+      });
+      if (repResult.replaced) {
+        proseBody = repResult.html;
         injected = true;
         break;
       }
@@ -486,7 +522,8 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
     if (!isRealArticle || keptUrls.has(item.cleanPath) || keptCount >= 2) {
       proseBody = proseBody.replace(item.fullTag, item.text);
     } else {
-      const styledInt = `<a href="/${item.cleanPath}" class="internal-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${item.text}">${item.text}</a>`;
+      const cleanIntTitle = item.text.replace(/<[^>]+>/g, '').replace(/"/g, '&quot;').trim();
+      const styledInt = `<a href="/${item.cleanPath}" class="internal-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cleanIntTitle}">${item.text}</a>`;
       proseBody = proseBody.replace(item.fullTag, styledInt);
       keptUrls.add(item.cleanPath);
       keptCount++;
@@ -501,15 +538,17 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
     return 0;
   });
 
-  // Step 6B: Try natural keyword matching on word boundaries
+  // Step 6B: Try natural keyword matching on word boundaries safely outside tags
   for (const cand of candidateArticles) {
     if (keptCount >= 2) break;
     for (const kw of cand.keywords) {
       if (keptCount >= 2) break;
-      const esc = kw.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
-      const reg = new RegExp('(\\b' + esc + '\\b)(?![^<]*>)', 'i');
-      if (reg.test(proseBody)) {
-        proseBody = proseBody.replace(reg, `<a href="/${cand.slug}" class="internal-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cand.title}">$1</a>`);
+      const cleanCandTitle = cand.title.replace(/"/g, '&quot;');
+      const repResult = safeKeywordReplace(proseBody, kw, (matched) => {
+        return `<a href="/${cand.slug}" class="internal-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cleanCandTitle}">${matched}</a>`;
+      });
+      if (repResult.replaced) {
+        proseBody = repResult.html;
         keptUrls.add(cand.slug);
         keptCount++;
         break;

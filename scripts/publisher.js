@@ -828,42 +828,56 @@ function getRelevantInternalArticleTargets(topic, category = '', excludeSlug = '
   }));
 }
 
+function safeKeywordReplace(html, keyword, replaceFn) {
+  if (!keyword || keyword.length < 3) return { html, replaced: false };
+  const esc = keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+  const kwRegex = new RegExp('\\b' + esc + '\\b', 'i');
+
+  const tokens = html.split(/(<[^>]+>)/g);
+  let insideAnchor = 0;
+  let replaced = false;
+
+  for (let i = 0; i < tokens.length; i++) {
+    const t = tokens[i];
+    if (!t) continue;
+    if (t.startsWith('<')) {
+      if (/^<a\b/i.test(t)) {
+        insideAnchor++;
+      } else if (/^<\/a\b/i.test(t)) {
+        insideAnchor = Math.max(0, insideAnchor - 1);
+      }
+    } else if (insideAnchor === 0 && !replaced) {
+      if (kwRegex.test(t)) {
+        tokens[i] = t.replace(kwRegex, replaceFn);
+        replaced = true;
+      }
+    }
+  }
+
+  return { html: tokens.join(''), replaced };
+}
+
 function injectInternalLinks(htmlContent, currentSlug, category = '') {
   const linkMap = getInternalLinkMap(category);
   const linkedKeywords = new Set();
-
-  // Protect headings and existing links
-  const protectedBlocks = [];
-  let protectedHtml = htmlContent.replace(/<(h[1-6]|a|script|style)[^>]*>[\s\S]*?<\/\1>/gi, (match) => {
-    const placeholder = `__PROTECTED_BLOCK_${protectedBlocks.length}__`;
-    protectedBlocks.push(match);
-    return placeholder;
-  });
+  let resultHtml = htmlContent;
 
   linkMap.forEach(({ keyword, url }) => {
     if (!keyword || keyword.length < 4) return;
     if (url.includes(currentSlug)) return;
     if (linkedKeywords.has(keyword.toLowerCase())) return;
 
-    const escaped = keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
-    const regex = new RegExp('(\\b' + escaped + '\\b)(?![^<]*>)', 'i');
-
-    if (regex.test(protectedHtml)) {
-      protectedHtml = protectedHtml.replace(regex, (match) => {
-        linkedKeywords.add(keyword.toLowerCase());
-        const linkTag = `<a href="${url}" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${keyword}">${match}</a>`;
-        const placeholder = `__PROTECTED_BLOCK_${protectedBlocks.length}__`;
-        protectedBlocks.push(linkTag);
-        return placeholder;
-      });
+    const cleanTitle = keyword.replace(/"/g, '&quot;');
+    const repResult = safeKeywordReplace(resultHtml, keyword, (match) => {
+      linkedKeywords.add(keyword.toLowerCase());
+      return `<a href="${url}" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cleanTitle}">${match}</a>`;
+    });
+    if (repResult.replaced) {
+      resultHtml = repResult.html;
     }
   });
 
-  for (let i = 0; i < protectedBlocks.length; i++) {
-    protectedHtml = protectedHtml.replace(`__PROTECTED_BLOCK_${i}__`, protectedBlocks[i]);
-  }
-
-  return protectedHtml;
+  return resultHtml;
 }
 
 /**
@@ -887,34 +901,19 @@ function enforceMinimumInternalLinks(sectionsHtml, currentSlug, category = '', m
   const linkMap = getInternalLinkMap(category).filter(item => !item.url.includes(currentSlug));
   let modifiedHtml = sectionsHtml;
 
-  const protectedBlocks = [];
-  let protectedHtml = modifiedHtml.replace(/<(h[1-6]|a|script|style)[^>]*>[\s\S]*?<\/\1>/gi, (match) => {
-    const placeholder = `__PROTECTED_BLOCK_INT_${protectedBlocks.length}__`;
-    protectedBlocks.push(match);
-    return placeholder;
-  });
-
   for (const cand of linkMap) {
     if (currentCount >= minRequired) break;
     if (!cand.keyword || cand.keyword.length < 3) continue;
-    if (protectedHtml.includes(cand.url)) continue;
+    if (modifiedHtml.includes(cand.url)) continue;
 
-    const escaped = cand.keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
-    const regex = new RegExp('(\\b' + escaped + '\\b)(?![^<]*>)', 'i');
-
-    if (regex.test(protectedHtml)) {
-      protectedHtml = protectedHtml.replace(regex, (match) => {
-        currentCount++;
-        const linkTag = `<a href="${cand.url}" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cand.keyword}">${match}</a>`;
-        const placeholder = `__PROTECTED_BLOCK_INT_${protectedBlocks.length}__`;
-        protectedBlocks.push(linkTag);
-        return placeholder;
-      });
+    const cleanTitle = cand.keyword.replace(/"/g, '&quot;');
+    const repResult = safeKeywordReplace(modifiedHtml, cand.keyword, (match) => {
+      currentCount++;
+      return `<a href="${cand.url}" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cleanTitle}">${match}</a>`;
+    });
+    if (repResult.replaced) {
+      modifiedHtml = repResult.html;
     }
-  }
-
-  for (let i = 0; i < protectedBlocks.length; i++) {
-    protectedHtml = protectedHtml.replace(`__PROTECTED_BLOCK_INT_${i}__`, protectedBlocks[i]);
   }
 
   // If still below minimum, anchor cleanly to the department category hub or editorial policy on the final paragraph
@@ -1772,19 +1771,17 @@ function injectExternalKeywordLink(sectionsHtml, externalLink, category = 'other
 
   let injected = false;
 
-  // 1. Try matching candidate keyword phrases on word boundaries
+  // 1. Try matching candidate keyword phrases on word boundaries safely outside HTML tags
   for (const phrase of candidates) {
     if (injected) break;
     if (!phrase || phrase.length < 3) continue;
 
-    const escaped = phrase.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
-    const regex = new RegExp('(\\b' + escaped + '\\b)(?![^<]*>)', 'i');
-
-    if (regex.test(protectedHtml)) {
-      protectedHtml = protectedHtml.replace(regex, (match) => {
-        injected = true;
-        return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${titleAttr}">${match}</a>`;
-      });
+    const repResult = safeKeywordReplace(protectedHtml, phrase, (match) => {
+      injected = true;
+      return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${titleAttr}">${match}</a>`;
+    });
+    if (repResult.replaced) {
+      protectedHtml = repResult.html;
     }
   }
 
@@ -1793,13 +1790,12 @@ function injectExternalKeywordLink(sectionsHtml, externalLink, category = 'other
     const emergencyWords = ['industry', 'community', 'development', 'research', 'analysis', 'standards', 'operations', 'production', 'strategy', 'framework'];
     for (const word of emergencyWords) {
       if (injected) break;
-      const escaped = word.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
-      const regex = new RegExp('(\\b' + escaped + '\\b)(?![^<]*>)', 'i');
-      if (regex.test(protectedHtml)) {
-        protectedHtml = protectedHtml.replace(regex, (match) => {
-          injected = true;
-          return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${titleAttr}">${match}</a>`;
-        });
+      const repResult = safeKeywordReplace(protectedHtml, word, (match) => {
+        injected = true;
+        return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${titleAttr}">${match}</a>`;
+      });
+      if (repResult.replaced) {
+        protectedHtml = repResult.html;
       }
     }
   }
