@@ -890,56 +890,56 @@ const VECTOR_LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10
 const CATEGORY_META = {
   business: {
     displayName: 'Business & Economy',
-    title: 'Business & Economy • Latest Stories, Guides & Insights | GenAlphaMagazines',
+    title: 'Business & Economy News | GenAlphaMagazines',
     description: 'Explore GenAlphaMagazines Business department: Enterprise spotlights, commercial revitalization, small business financing, entrepreneurship, and market economic trends.',
     subtitle: 'Enterprise spotlights, commercial revitalization, small business financing, entrepreneurship, and market economic trends.',
     schemaDesc: 'Regional commercial trends, small business strategy, retail insights, and macroeconomic updates.'
   },
   celebrity: {
     displayName: 'Celebrity & Profiles',
-    title: 'Celebrity & Profiles • Cultural Icons & In-Depth Spotlights | GenAlphaMagazines',
+    title: 'Celebrity Profiles & News | GenAlphaMagazines',
     description: 'Comprehensive profiles of global celebrities, cultural icons, entertainment legends, and transformative artists from GenAlphaMagazines.',
     subtitle: 'In-depth profiles, career retrospectives, and cultural impact analysis of world-renowned personalities.',
     schemaDesc: 'Celebrity profiles, cultural impact analysis, and retrospective reporting on iconic figures.'
   },
   entertainment: {
     displayName: 'Arts & Entertainment',
-    title: 'Arts & Entertainment • Cinema, Independent Theater & Culture | GenAlphaMagazines',
+    title: 'Arts & Entertainment | GenAlphaMagazines',
     description: 'Explore GenAlphaMagazines Arts & Entertainment: Film reviews, independent cinema, theatrical productions, and cultural deep dives.',
     subtitle: 'Independent cinema, award-winning films, theater spotlights, and contemporary cultural discourse.',
     schemaDesc: 'In-depth coverage of cinematic masterpieces, independent film distribution, and visual storytelling.'
   },
   games: {
     displayName: 'Games & Esports',
-    title: 'Games & Esports • Next-Gen Reviews, Mechanics & Guides | GenAlphaMagazines',
+    title: 'Games & Esports News | GenAlphaMagazines',
     description: 'Explore GenAlphaMagazines Games department: Next-gen console analysis, open-world gameplay guides, and gaming culture.',
     subtitle: 'Next-gen gaming coverage, map analysis, mechanics breakdowns, and player trends.',
     schemaDesc: 'Comprehensive video game coverage, gameplay breakdowns, and interactive entertainment analysis.'
   },
   health: {
     displayName: 'Health & Wellness',
-    title: 'Health & Wellness • Clinical Insights & Preventive Care | GenAlphaMagazines',
+    title: 'Health & Wellness News | GenAlphaMagazines',
     description: 'Explore GenAlphaMagazines Health department: Evidence-based health guidance, cardiovascular insights, women\'s wellness, and preventive care.',
     subtitle: 'Evidence-based clinical insights, disease prevention strategies, and holistic wellness guidance.',
     schemaDesc: 'Authoritative health reporting, clinical insights, and evidence-based preventive wellness strategies.'
   },
   news: {
     displayName: 'News & Announcements',
-    title: 'News & Announcements • Verified Regional & Global Reporting | GenAlphaMagazines',
+    title: 'Regional & National News | GenAlphaMagazines',
     description: 'Verified investigative reports, monetary policy analysis, macroeconomic developments, and breaking regional news from GenAlphaMagazines.',
     subtitle: 'Verified investigative reports, central bank policies, and in-depth global economic developments.',
     schemaDesc: 'Authoritative reporting on regional affairs, monetary policy, and global economic developments.'
   },
   others: {
     displayName: 'Community & Culture',
-    title: 'Community & Culture • Architecture, Travel & Everyday Living | GenAlphaMagazines',
+    title: 'Community & Culture | GenAlphaMagazines',
     description: 'Explore GenAlphaMagazines Community & Culture: Home architecture, travel strategies, local heritage, and everyday practical guides.',
     subtitle: 'Home architecture, drainage solutions, travel resilience, and enriching cultural features.',
     schemaDesc: 'Practical home guides, travel solutions, and community features from GenAlphaMagazines.'
   },
   technology: {
     displayName: 'Technology & Hardware',
-    title: 'Technology & Hardware • Operating Systems, AI & Clean Energy | GenAlphaMagazines',
+    title: 'Technology & Hardware | GenAlphaMagazines',
     description: 'Explore GenAlphaMagazines Technology department: Mobile OS architectures, AI integration, clean energy audits, and hardware benchmarks.',
     subtitle: 'Next-generation mobile operating systems, artificial intelligence innovation, and sustainable energy tech.',
     schemaDesc: 'Cutting-edge technology analysis, mobile OS innovations, and sustainable clean tech.'
@@ -949,7 +949,7 @@ const CATEGORY_META = {
 function buildCategoryPageHtml(catName, matchingArticles, validArticlesList) {
   const meta = CATEGORY_META[catName] || {
     displayName: catName.charAt(0).toUpperCase() + catName.slice(1),
-    title: `${catName.charAt(0).toUpperCase() + catName.slice(1)} • Latest Stories & Insights | GenAlphaMagazines`,
+    title: `${catName.charAt(0).toUpperCase() + catName.slice(1)} | GenAlphaMagazines`,
     description: `Explore GenAlphaMagazines ${catName} department for the latest investigative reporting, news, and analysis.`,
     subtitle: `Explore authoritative reporting and community coverage in our ${catName} department.`,
     schemaDesc: `Comprehensive coverage of ${catName} from GenAlphaMagazines.`
@@ -983,7 +983,7 @@ function buildCategoryPageHtml(catName, matchingArticles, validArticlesList) {
               </h3>
               <p class="card-excerpt">${escapeHtml(art.excerpt || '')}</p>
               <div class="card-meta">
-                <span>By <a href="/author/${art.authorSlug || 'julia-vance'}.html">${escapeHtml(art.author || 'Julia Vance')}</a></span>
+                <span>By <a href="/author/${art.authorSlug || 'julia-vance'}">${escapeHtml(art.author || 'Julia Vance')}</a></span>
                 <span>${art.date || 'Recent'}</span>
               </div>
             </div>
@@ -1445,7 +1445,7 @@ function syncDeletedArticles() {
                 </h3>
                 <p class="card-excerpt">${escapeHtml(leadArticle.excerpt || '')}</p>
                 <div class="card-meta">
-                  <span>By <a href="./author/${leadArticle.authorSlug || 'julia-vance'}.html">${escapeHtml(leadArticle.author || 'Julia Vance')}</a></span>
+                  <span>By <a href="/author/${leadArticle.authorSlug || 'julia-vance'}">${escapeHtml(leadArticle.author || 'Julia Vance')}</a></span>
                   <span>${leadArticle.date || 'Recent'}</span>
                 </div>
               </div>

@@ -1824,6 +1824,18 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   // If title was stripped of ending colon
   cleanTitle = sanitizeTitle(cleanTitle);
 
+  // Compute SEO title strictly <= 60 chars for Google SERP
+  let pageTitle = `${cleanTitle} | GenAlphaMagazines`;
+  if (pageTitle.length > 60) {
+    if (cleanTitle.length + 15 <= 60) {
+      pageTitle = `${cleanTitle} | GenAlphaMag`;
+    } else if (cleanTitle.length <= 60) {
+      pageTitle = cleanTitle;
+    } else {
+      pageTitle = cleanTitle.slice(0, 57).replace(/\s+[^\s]*$/, '').replace(/[:,\-\s]+$/, '').trim();
+    }
+  }
+
   const cleanMeta = (articleData.metaDescription || '').replace(/[—–]/g, ', ').replace(/\s+/g, ' ').trim();
 
   const sectionsHtml = articleData.sections.map((sec, idx) => {
@@ -1953,7 +1965,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${cleanTitle} | GenAlphaMagazines</title>
+  <title>${pageTitle}</title>
   <meta name="description" content="${cleanMeta}">
   <link rel="canonical" href="https://www.genalphamagazines.com/${articleData.slug}">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
