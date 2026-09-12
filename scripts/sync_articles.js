@@ -447,7 +447,7 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
       if (cleanAnchor.length < 4) cleanAnchor = 'authoritative industry reference';
     }
     const safeHref = firstExt.href.replace(/"/g, '&quot;');
-    const styledTag = `<a href="${safeHref}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cleanAnchor}">${cleanAnchor}</a>`;
+    const styledTag = `<a href="${safeHref}" target="_blank" rel="noopener noreferrer" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cleanAnchor}">${cleanAnchor}</a>`;
     proseBody = proseBody.replace(firstExt.fullTag, styledTag);
 
     // Remove any secondary external links from body
@@ -479,7 +479,7 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
       if (!kw || kw.length < 3) continue;
       const cleanKwTitle = kw.replace(/"/g, '&quot;');
       const repResult = safeKeywordReplace(proseBody, kw, (matched) => {
-        return `<a href="${targetUrl}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cleanKwTitle}">${matched}</a>`;
+        return `<a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${cleanKwTitle}">${matched}</a>`;
       });
       if (repResult.replaced) {
         proseBody = repResult.html;
@@ -490,7 +490,7 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
     if (!injected) {
       const lastPIdx = proseBody.lastIndexOf('</p>');
       if (lastPIdx !== -1) {
-        const extAddition = ` For authoritative reference and source documentation, consult the <a href="${targetUrl}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${targetAnchor}">${targetLabel}</a>.`;
+        const extAddition = ` For authoritative reference and source documentation, consult the <a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${targetAnchor}">${targetLabel}</a>.`;
         proseBody = proseBody.substring(0, lastPIdx) + extAddition + proseBody.substring(lastPIdx);
       }
     }
@@ -1031,7 +1031,7 @@ function buildCategoryPageHtml(catName, matchingArticles, validArticlesList) {
   <noscript>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap">
   </noscript>
-  <link rel="stylesheet" href="./assets/css/style.css?v=final_stable_v1">
+  <link rel="stylesheet" href="./assets/css/style.min.css?v=final_stable_v1">
   <link rel="icon" type="image/svg+xml" href="./assets/images/favicon.svg">
   <link rel="alternate icon" href="./favicon.ico">
   <link rel="manifest" href="./site.webmanifest">
@@ -1243,7 +1243,7 @@ ${cardsHtml}
       <p>&copy; 2026 GenAlphaMagazines. All rights reserved. Operating under independent editorial governance.</p>
     </div>
   </footer>
-  <script src="./assets/js/main.js" defer></script>
+  <script src="./assets/js/main.min.js" defer></script>
 </body>
 </html>`;
 }
@@ -1511,6 +1511,10 @@ ${sideArticles.map(art => {
       return cardHtml;
     });
 
+    // Standardize assets in index.html to minified versions
+    updated = updated.replace(/<script\s+src=["'][^"']*(?:theme|main)\.js["'][^>]*><\/script>/gi, '<script src="./assets/js/main.min.js" defer></script>');
+    updated = updated.replace(/<link\s+rel=["']stylesheet["']\s+href=["'][^"']*style\.css(?:\?[^"']*)?["']>/gi, '<link rel="stylesheet" href="./assets/css/style.min.css?v=final_stable_v1">');
+
     writeIfChanged(indexPath, updated, original);
   }
 
@@ -1519,6 +1523,10 @@ ${sideArticles.map(art => {
   if (fs.existsSync(categoriesPath) && validArticlesList.length > 0) {
     let original = fs.readFileSync(categoriesPath, 'utf8');
     let updated = original;
+
+    // Standardize assets in categories.html to minified versions
+    updated = updated.replace(/<script\s+src=["'][^"']*(?:theme|main)\.js["'][^>]*><\/script>/gi, '<script src="./assets/js/main.min.js" defer></script>');
+    updated = updated.replace(/<link\s+rel=["']stylesheet["']\s+href=["'][^"']*style\.css(?:\?[^"']*)?["']>/gi, '<link rel="stylesheet" href="./assets/css/style.min.css?v=final_stable_v1">');
 
     // Clean canonical to extensionless
     updated = updated.replace(/<link\s+rel=["']canonical["']\s+href=["']https:\/\/www\.genalphamagazines\.com\/categories(?:\.html)?["']>+/gi, '<link rel="canonical" href="https://www.genalphamagazines.com/categories">');
@@ -1582,6 +1590,10 @@ ${sideArticles.map(art => {
           updated = updated.replace(/<span class="section-box">([^<]+)<\/span>/i, '<h1 class="section-box">$1</h1>');
         }
 
+        // Standardize script and css to minified versions
+        updated = updated.replace(/<script\s+src=["'][^"']*(?:theme|main)\.js["'][^>]*><\/script>/gi, '<script src="../assets/js/main.min.js" defer></script>');
+        updated = updated.replace(/<link\s+rel=["']stylesheet["']\s+href=["'][^"']*style\.css(?:\?[^"']*)?["']>/gi, '<link rel="stylesheet" href="../assets/css/style.min.css?v=final_stable_v1">');
+
         writeIfChanged(fPath, updated, original);
       }
     }
@@ -1619,8 +1631,54 @@ ${sideArticles.map(art => {
       return fullMatch;
     });
 
-    // F. Standardize script tag to main.js
-    updated = updated.replace(/<script\s+src=["'][^"']*theme\.js["'][^>]*><\/script>/gi, '<script src="../assets/js/main.js" defer></script>');
+    // F. Standardize script and css tags to minified assets
+    updated = updated.replace(/<script\s+src=["'][^"']*(?:theme|main)\.js["'][^>]*><\/script>/gi, '<script src="../assets/js/main.min.js" defer></script>');
+    updated = updated.replace(/<link\s+rel=["']stylesheet["']\s+href=["'][^"']*style\.css(?:\?[^"']*)?["']>/gi, '<link rel="stylesheet" href="../assets/css/style.min.css?v=final_stable_v1">');
+
+    // G. Guarantee Title Tag is Distinct from H1 and strictly <= 60 characters
+    const h1Match = updated.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+    if (h1Match) {
+      const h1Text = h1Match[1].replace(/<[^>]+>/g, '').trim();
+      let pageTitle;
+      if (h1Text.length + 21 <= 60) {
+        pageTitle = `${h1Text} | GenAlphaMagazines`;
+      } else if (h1Text.length + 15 <= 60) {
+        pageTitle = `${h1Text} | GenAlphaMag`;
+      } else if (h1Text.length + 12 <= 60) {
+        pageTitle = `${h1Text} | GenAlpha`;
+      } else if (h1Text.includes(':')) {
+        const parts = h1Text.split(':');
+        const main = parts[0].trim();
+        if (main.length + 15 <= 60) {
+          pageTitle = `${main} | GenAlphaMag`;
+        } else if (main.length + 12 <= 60) {
+          pageTitle = `${main} | GenAlpha`;
+        } else {
+          const maxBase = 60 - 12;
+          let base = main.slice(0, maxBase).replace(/\s+[^\s]*$/, '').replace(/[:,\-\s]+$/, '').trim();
+          pageTitle = `${base} | GenAlpha`;
+        }
+      } else if (h1Text.includes(',')) {
+        const parts = h1Text.split(',');
+        const main = parts[0].trim();
+        if (main.length + 15 <= 60) {
+          pageTitle = `${main} | GenAlphaMag`;
+        } else {
+          const maxBase = 60 - 12;
+          let base = main.slice(0, maxBase).replace(/\s+[^\s]*$/, '').replace(/[:,\-\s]+$/, '').trim();
+          pageTitle = `${base} | GenAlpha`;
+        }
+      } else {
+        const maxBase = 60 - 12;
+        let base = h1Text.slice(0, maxBase).replace(/\s+[^\s]*$/, '').replace(/[:,\-\s]+$/, '').trim();
+        pageTitle = `${base} | GenAlpha`;
+      }
+
+      const titleTagRegex = /<title>[\s\S]*?<\/title>/i;
+      if (titleTagRegex.test(updated)) {
+        updated = updated.replace(titleTagRegex, `<title>${pageTitle}</title>`);
+      }
+    }
 
     writeIfChanged(artPath, updated, original);
   }

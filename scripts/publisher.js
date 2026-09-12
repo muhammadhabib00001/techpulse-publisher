@@ -1778,7 +1778,7 @@ function injectExternalKeywordLink(sectionsHtml, externalLink, category = 'other
 
     const repResult = safeKeywordReplace(protectedHtml, phrase, (match) => {
       injected = true;
-      return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${titleAttr}">${match}</a>`;
+      return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${titleAttr}">${match}</a>`;
     });
     if (repResult.replaced) {
       protectedHtml = repResult.html;
@@ -1792,7 +1792,7 @@ function injectExternalKeywordLink(sectionsHtml, externalLink, category = 'other
       if (injected) break;
       const repResult = safeKeywordReplace(protectedHtml, word, (match) => {
         injected = true;
-        return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${titleAttr}">${match}</a>`;
+        return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="external-link" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="${titleAttr}">${match}</a>`;
       });
       if (repResult.replaced) {
         protectedHtml = repResult.html;
@@ -1824,16 +1824,40 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   // If title was stripped of ending colon
   cleanTitle = sanitizeTitle(cleanTitle);
 
-  // Compute SEO title strictly <= 60 chars for Google SERP
-  let pageTitle = `${cleanTitle} | GenAlphaMagazines`;
-  if (pageTitle.length > 60) {
-    if (cleanTitle.length + 15 <= 60) {
-      pageTitle = `${cleanTitle} | GenAlphaMag`;
-    } else if (cleanTitle.length <= 60) {
-      pageTitle = cleanTitle;
+  // Compute SEO title strictly <= 60 chars for Google SERP, guaranteed distinct from cleanTitle/H1
+  let pageTitle;
+  if (cleanTitle.length + 21 <= 60) {
+    pageTitle = `${cleanTitle} | GenAlphaMagazines`;
+  } else if (cleanTitle.length + 15 <= 60) {
+    pageTitle = `${cleanTitle} | GenAlphaMag`;
+  } else if (cleanTitle.length + 12 <= 60) {
+    pageTitle = `${cleanTitle} | GenAlpha`;
+  } else if (cleanTitle.includes(':')) {
+    const parts = cleanTitle.split(':');
+    const main = parts[0].trim();
+    if (main.length + 15 <= 60) {
+      pageTitle = `${main} | GenAlphaMag`;
+    } else if (main.length + 12 <= 60) {
+      pageTitle = `${main} | GenAlpha`;
     } else {
-      pageTitle = cleanTitle.slice(0, 57).replace(/\s+[^\s]*$/, '').replace(/[:,\-\s]+$/, '').trim();
+      const maxBase = 60 - 12;
+      let base = main.slice(0, maxBase).replace(/\s+[^\s]*$/, '').replace(/[:,\-\s]+$/, '').trim();
+      pageTitle = `${base} | GenAlpha`;
     }
+  } else if (cleanTitle.includes(',')) {
+    const parts = cleanTitle.split(',');
+    const main = parts[0].trim();
+    if (main.length + 15 <= 60) {
+      pageTitle = `${main} | GenAlphaMag`;
+    } else {
+      const maxBase = 60 - 12;
+      let base = main.slice(0, maxBase).replace(/\s+[^\s]*$/, '').replace(/[:,\-\s]+$/, '').trim();
+      pageTitle = `${base} | GenAlpha`;
+    }
+  } else {
+    const maxBase = 60 - 12;
+    let base = cleanTitle.slice(0, maxBase).replace(/\s+[^\s]*$/, '').replace(/[:,\-\s]+$/, '').trim();
+    pageTitle = `${base} | GenAlpha`;
   }
 
   const cleanMeta = (articleData.metaDescription || '').replace(/[—–]/g, ', ').replace(/\s+/g, ' ').trim();
@@ -1999,7 +2023,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   <noscript>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap">
   </noscript>
-  <link rel="stylesheet" href="/assets/css/style.css?v=final_stable_v1">
+  <link rel="stylesheet" href="/assets/css/style.min.css?v=final_stable_v1">
   <link rel="preload" as="image" href="/assets/images/${articleData.slug}.jpg" fetchpriority="high">
   
   <script type="application/ld+json">
@@ -2251,7 +2275,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
       <p>&copy; 2026 GenAlphaMagazines. All rights reserved. Operating under independent editorial governance.</p>
     </div>
   </footer>
-  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/main.min.js" defer></script>
 </body>
 </html>`;
   return standardizeArticleLinks(fullRawHtml, articleData.slug, category, externalLink);
@@ -2379,8 +2403,8 @@ function updateSiteIndex(articleData, author, category, heroImage) {
     const newPreload = `<link rel="preload" as="image" href="${heroImage.indexUrl}" fetchpriority="high">`;
     if (oldPreload) {
       indexHtml = indexHtml.replace(oldPreload[0], newPreload);
-    } else if (indexHtml.includes('<link rel="stylesheet" href="./assets/css/style.css')) {
-      indexHtml = indexHtml.replace(/(<link rel="stylesheet" href="\.\/assets\/css\/style\.css[^"]*">)/, `$1\n  ${newPreload}`);
+    } else if (indexHtml.includes('<link rel="stylesheet" href="./assets/css/style.min.css')) {
+      indexHtml = indexHtml.replace(/(<link rel="stylesheet" href="\.\/assets\/css\/style\.min\.css[^"]*">)/, `$1\n  ${newPreload}`);
     }
       // Extract current lead article if it exists and convert to mini-side-card
       const currentMainBlock = indexHtml.slice(mainStart, sideStart);

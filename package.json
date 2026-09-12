@@ -6,7 +6,8 @@
   "scripts": {
     "publish-article": "node scripts/publisher.js",
     "publish-manual": "node scripts/publish_manual.js",
-    "sync-articles": "node scripts/sync_articles.js",
+    "minify-assets": "node scripts/minify_assets.js",
+    "sync-articles": "node scripts/minify_assets.js && node scripts/sync_articles.js",
     "delete-article": "node scripts/delete_article.js",
     "enforce-faq": "node scripts/enforce_faq_format.js",
     "setup-hooks": "node scripts/install-hooks.js",
@@ -18,5 +19,9 @@
     "google-auth-library": "^9.14.2",
     "googleapis": "^144.0.0"
   },
-  "type": "commonjs"
+  "type": "commonjs",
+  "devDependencies": {
+    "clean-css": "^5.3.3",
+    "terser": "^5.51.2"
+  }
 }

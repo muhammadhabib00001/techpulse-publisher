@@ -12,8 +12,8 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Editorial Dashboard | GenAlphaMagazines</title>
-  <meta name="robots" content="noindex, nofollow">
+  <title>Editorial Management | GenAlphaMagazines</title>
+  <meta name="robots" content="noindex,">
   <link rel="icon" type="image/svg+xml" href="./assets/images/favicon.svg">
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -26,7 +26,7 @@
   <noscript>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap">
   </noscript>
-  <link rel="stylesheet" href="./assets/css/style.css?v=final_stable_v1">
+  <link rel="stylesheet" href="./assets/css/style.min.css?v=final_stable_v1">
   <style>
     .admin-body {
       background: var(--bg-body);
@@ -1901,7 +1901,7 @@
       if (!url) return;
       const kw = prompt('Enter Exact Keyword / Anchor phrase to link:', 'industry reporting') || 'industry reporting';
       const label = prompt('Enter Publication / Source Name (e.g. Reuters):', 'Authoritative Source') || 'Authoritative Source';
-      const citeHtml = '<a href="' + url.trim() + '" target="_blank" rel="noopener noreferrer nofollow" style="color:#2563eb; font-weight:700; text-decoration:underline;" title="' + escapeHtml(label) + '">' + escapeHtml(kw) + '</a>';
+      const citeHtml = '<a href="' + url.trim() + '" target="_blank" rel="noopener noreferrer" style="color:#2563eb; font-weight:700; text-decoration:underline;" title="' + escapeHtml(label) + '">' + escapeHtml(kw) + '</a>';
       document.execCommand('insertHTML', false, citeHtml);
       syncFromVisual();
     }
@@ -2466,7 +2466,7 @@
         '  <meta property="article:published_time" content="' + isoDate + '">',
         '  <meta property="article:section" content="' + escapeHtml(data.category) + '">',
         '  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">',
-        '  <link rel="stylesheet" href="/assets/css/style.css?v=final_stable_v1">',
+        '  <link rel="stylesheet" href="/assets/css/style.min.css?v=final_stable_v1">',
         '  ' + H + 'script type="application/ld+json"' + C + JSON.stringify({
              "@context": "https://schema.org",
              "@type": "Article",
