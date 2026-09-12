@@ -75,6 +75,38 @@ function removeObsoleteBoxes(html) {
     .replace(/<div[^>]*border-left:\s*4px\s+solid\s+#2563eb;[\s\S]*?External Reference[\s\S]*?<\/div>\s*<\/div>/gi, '');
 }
 
+function sanitizeMarkdownAndSnippets(html) {
+  if (!html) return '';
+  let cleaned = html;
+
+  // 1. Convert any raw markdown headers (e.g. ### Subheading -> <h3>Subheading</h3>)
+  cleaned = cleaned.replace(/(?:<p>|<p\s+[^>]*>)?\s*#{3}\s+([^<\n\r]+)(?:<\/p>)?/gi, (match, headingText) => {
+    return '<h3>' + headingText.trim() + '</h3>';
+  });
+  cleaned = cleaned.replace(/(?:<p>|<p\s+[^>]*>)?\s*#{2}\s+([^<\n\r]+)(?:<\/p>)?/gi, (match, headingText) => {
+    return '<h2>' + headingText.trim() + '</h2>';
+  });
+  cleaned = cleaned.replace(/(?:<p>|<p\s+[^>]*>)?\s*#{4,6}\s+([^<\n\r]+)(?:<\/p>)?/gi, (match, headingText) => {
+    return '<h4>' + headingText.trim() + '</h4>';
+  });
+  // Strip any leftover isolated hash marks or markdown heading fragments
+  cleaned = cleaned.replace(/(?:<p>|<p\s+[^>]*>)?\s*#{1,6}\s*(?:<\/p>)?/gi, '');
+  cleaned = cleaned.replace(/#{1,6}\s*/g, '');
+
+  // 2. Remove 'Featured Snippet' boxes or headings
+  // Remove container blocks that explicitly mention Featured Snippet
+  cleaned = cleaned.replace(/<div[^>]*class=["'][^"']*(?:bg-gray|border|snippet|takeaways|key-takeaways|p-)[^"']*["'][^>]*>[\s\S]*?Featured Snippet[\s\S]*?<\/div>\s*<\/div>/gi, '');
+  cleaned = cleaned.replace(/<div[^>]*>[\s\S]{0,300}?Featured Snippet[\s\S]{0,1200}?<\/ul>\s*<\/div>/gi, '');
+  cleaned = cleaned.replace(/<div[^>]*>[\s\S]{0,150}?Featured Snippet[\s\S]{0,400}?<\/div>/gi, '');
+  // Remove standalone headings or tags mentioning Featured Snippet
+  cleaned = cleaned.replace(/<h[1-6][^>]*>[\s\S]*?Featured Snippet[\s\S]*?<\/h[1-6]>/gi, '');
+  cleaned = cleaned.replace(/<p[^>]*>[\s\S]*?Featured Snippet[\s\S]*?<\/p>/gi, '');
+  cleaned = cleaned.replace(/<strong[^>]*>[\s\S]*?Featured Snippet[\s\S]*?<\/strong>/gi, '');
+  cleaned = cleaned.replace(/Featured Snippet:?\s*/gi, '');
+
+  return cleaned;
+}
+
 const CATEGORY_EXTERNAL_FALLBACKS = {
   entertainment: {
     url: 'https://en.wikipedia.org/wiki/Independent_film',
@@ -1609,6 +1641,9 @@ ${sideArticles.map(art => {
     // A. Strip all em-dashes and en-dashes across the article
     updated = sanitizeAllDashes(updated);
 
+    // A2. Strip raw markdown hashes and Featured Snippet text/boxes
+    updated = sanitizeMarkdownAndSnippets(updated);
+
     // B. Strip obsolete empty external reference box if present
     updated = removeObsoleteBoxes(updated);
 
@@ -1755,6 +1790,7 @@ module.exports = {
   syncDeletedArticles,
   syncLlmsFiles,
   sanitizeAllDashes,
+  sanitizeMarkdownAndSnippets,
   removeObsoleteBoxes,
   buildRelatedSectionHtml,
   ensureRelatedSection,

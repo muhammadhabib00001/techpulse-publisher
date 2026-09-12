@@ -16,7 +16,7 @@ const http = require('http');
 const crypto = require('crypto');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
-const { sanitizeAllDashes, removeObsoleteBoxes, ensureRelatedSection, standardizeArticleLinks, getAllInternalArticleTargets, ARTICLE_INTERNAL_TARGETS } = require('./sync_articles');
+const { sanitizeAllDashes, sanitizeMarkdownAndSnippets, removeObsoleteBoxes, ensureRelatedSection, standardizeArticleLinks, getAllInternalArticleTargets, ARTICLE_INTERNAL_TARGETS } = require('./sync_articles');
 
 // Hard sanitize title: NEVER allow "2026" or calendar years in titles or slugs, zero dashes
 function sanitizeTitle(rawTitle) {
@@ -1528,7 +1528,7 @@ You MUST integrate these EXACT 3 HTML hyperlinks naturally inside the body <p> p
 Place each link on its exact targeted keyword within natural sentences inside paragraph prose. NEVER place links in headings (H1, H2, H3). NEVER link to generic phrases or full article titles.`;
   }
 
-  const systemInstruction = `Act as an SEO content strategist and copywriter. Create a detailed article for a blog post targeting the keyword with informational intent. Use LSI Keywords. The audience is World Wide. Include: a click-worthy headline, an opening hook, H2 and H3 subheadings, key points to cover under each section, a featured snippet, and 1000-1500 word count. The tone should be professional. remove dash in article, two internal link and one external link on the targeted keyword only, one image on one article and related to keyword and do not repeat same image in all articles and image base on keyword only, headline not repeat only one time do not add 2026 in heading. Donot repeat article 2 time only one article one time.
+  const systemInstruction = `Act as an SEO content strategist and copywriter. Create a detailed article for a blog post targeting the keyword with informational intent. Use LSI Keywords. The audience is World Wide. Include: a click-worthy headline, an opening hook, H2 and H3 subheadings, key points to cover under each section, and 1000-1500 word count. The tone should be professional. remove dash in article, two internal link and one external link on the targeted keyword only, one image on one article and related to keyword and do not repeat same image in all articles and image base on keyword only, headline not repeat only one time do not add 2026 in heading. Donot repeat article 2 time only one article one time.
 ${linkDirective}
 
 CORE EDITORIAL & SEO REQUIREMENTS:
@@ -1543,14 +1543,16 @@ CORE EDITORIAL & SEO REQUIREMENTS:
 4. OPENING HOOK (Section 1):
    - Do NOT use an H2 heading for section 1 (heading MUST be "").
    - Start immediately with a compelling opening hook that captivates the worldwide reader in the very first sentence.
-   - Answer the primary search intent early to capture Google Featured Snippets.
+   - Answer the primary search intent early and directly in clear, authoritative prose.
    - NEVER use boilerplate like "If you've been looking into", "cut through the noise", or "this guide is here".
 5. STRUCTURE & SUBHEADINGS:
    - Section 1: Compelling opening hook and overview (heading = "").
    - Sections 2-4: Deep practical and technical analysis with descriptive H2 headings and H3 subheadings with concrete key points covered under each section.
    - Section 5: "Final Thoughts" (id: "final-thoughts", heading: "Final Thoughts"). Key takeaways, strategic recommendations.
    - Section 6: "Frequently Asked Questions" (id: "frequently-asked-questions", heading: "Frequently Asked Questions").
-6. FEATURED SNIPPET TARGET: Provide concise, clear factual definitions or bulleted takeaways that Google can extract directly into position zero.
+6. FORMATTING RULES (STRICT):
+   - Output HTML tags (<p>, <h3>, <ul>, <li>) inside contentHtml. DO NOT USE MARKDOWN HASHES (never use #, ##, or ### in contentHtml).
+   - DO NOT write the label "Featured Snippet" anywhere in headings or text. Provide high-value information naturally.
 7. WORD COUNT: Strictly between 1,000 and 1,500 words across all body sections.
 8. REMOVE DASH IN ARTICLE: Do NOT use em-dashes (—), en-dashes (–), or spaced hyphens ( - ) in article prose or headings. Use commas, colons, or natural phrasing.
 9. TARGETED KEYWORD LINKING:
@@ -1563,6 +1565,8 @@ CORE EDITORIAL & SEO REQUIREMENTS:
    - Do not repeat article 2 times, only one article one time.
    - Headline must not repeat, only one time, do not add 2026 in heading.
 12. ABSOLUTELY BANNED:
+   - Markdown hashes: "#", "##", "###" (use clean HTML <h3> and <h4> tags instead)
+   - The phrase or label "Featured Snippet"
    - "If you've been looking into"
    - "municipal governance"
    - "civic engagement"
@@ -1572,7 +1576,7 @@ CORE EDITORIAL & SEO REQUIREMENTS:
    - Calendar year "2026" in headings or titles
 13. Output valid JSON only with keys: "title", "slug", "metaDescription", "sections", "faqs". Section 6 contentHtml must be "" (empty string).`;
 
-  const userPrompt = `Act as an SEO content strategist and copywriter. Create a detailed article for a blog post targeting the keyword "${topic}" with informational intent. Use LSI Keywords. The audience is World Wide. Include: a click-worthy headline, an opening hook, H2 and H3 subheadings, key points to cover under each section, a featured snippet, and 1000-1500 word count. The tone should be professional. remove dash in article, two internal link and one external link on the targeted keyword only, one image on one article and related to keyword and do not repeat same image in all articles and image base on keyword only, headline not repeat only one time do not add 2026 in heading. Donot repeat article 2 time only one article one time.
+  const userPrompt = `Act as an SEO content strategist and copywriter. Create a detailed article for a blog post targeting the keyword "${topic}" with informational intent. Use LSI Keywords. The audience is World Wide. Include: a click-worthy headline, an opening hook, H2 and H3 subheadings, key points to cover under each section, and 1000-1500 word count. The tone should be professional. remove dash in article, two internal link and one external link on the targeted keyword only, one image on one article and related to keyword and do not repeat same image in all articles and image base on keyword only, headline not repeat only one time do not add 2026 in heading. Donot repeat article 2 time only one article one time.
 Category: ${category}
 Author: ${author.name} (${author.role})
 ${linkDirective}
@@ -1580,8 +1584,8 @@ ${linkDirective}
 MANDATORY EDITORIAL & SEO REQUIREMENTS:
 - HEADLINE: Click-worthy headline (50-60 characters). Headline must not repeat (only one time across all publications). Absolutely DO NOT add 2026 in heading.
 - OPENING HOOK: Section 1 heading MUST be "" (empty string). Start immediately with a compelling opening hook.
-- SUBHEADINGS & KEY POINTS: H2 and H3 subheadings with detailed, concrete key points covered under each section.
-- FEATURED SNIPPET: Concise, high-value factual definition or bulleted takeaways targeting position zero.
+- SUBHEADINGS & KEY POINTS: H2 and H3 subheadings with detailed, concrete key points covered under each section. DO NOT use markdown hashes (# or ###). Use HTML <h3> tags.
+- NO "FEATURED SNIPPET" LABELS: DO NOT include the text "Featured Snippet" anywhere.
 - WORD COUNT: Strictly between 1,000 and 1,500 words total across all body sections.
 - REMOVE DASH: Do NOT use em-dashes (—), en-dashes (–), or spaced hyphens ( - ) in prose or headings.
 - TARGETED KEYWORD LINKING: Weave natural target keywords inside body <p> paragraphs for exactly two internal links and one external link on targeted keywords only.
@@ -2004,6 +2008,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
 
   const sectionsHtml = articleData.sections.map((sec, idx) => {
     let rawContent = (sec.contentHtml || '').replace(/[—–]/g, ', ');
+    rawContent = sanitizeMarkdownAndSnippets(rawContent);
     let enrichedContent = injectInternalLinks(rawContent, articleData.slug, category);
 
     // Safeguard: Ensure no headings inside enrichedContent contain <a> links
@@ -2906,6 +2911,9 @@ function verifyAndEnforceArticleDashesAndRelated(filePath, slug) {
 
     // 1. Sanitize all em-dashes and en-dashes
     content = sanitizeAllDashes(content);
+
+    // 1b. Sanitize raw markdown hashes and Featured Snippet elements
+    content = sanitizeMarkdownAndSnippets(content);
 
     // 2. Remove obsolete empty external resources box if present
     content = removeObsoleteBoxes(content);
