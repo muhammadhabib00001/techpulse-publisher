@@ -1545,14 +1545,21 @@ CORE EDITORIAL & SEO REQUIREMENTS:
    - Start immediately with a compelling opening hook that captivates the worldwide reader in the very first sentence.
    - Answer the primary search intent early and directly in clear, authoritative prose.
    - NEVER use boilerplate like "If you've been looking into", "cut through the noise", or "this guide is here".
-5. STRUCTURE & SUBHEADINGS:
+5. STRUCTURE & HIERARCHICAL HEADINGS (H2 to H5):
+   - Title / H1: Article Title (managed at top level).
    - Section 1: Compelling opening hook and overview (heading = "").
-   - Sections 2-4: Deep practical and technical analysis with descriptive H2 headings and H3 subheadings with concrete key points covered under each section.
-   - Section 5: "Final Thoughts" (id: "final-thoughts", heading: "Final Thoughts"). Key takeaways, strategic recommendations.
+   - Sections 2-4: Comprehensive coverage structured with clear heading hierarchy from H2 down to H5:
+     * H2 headings for primary major thematic sections (e.g. section headings).
+     * H3 subheadings for significant subsection topics inside contentHtml.
+     * H4 subheadings for specific breakdowns, technical aspects, or key considerations under H3.
+     * H5 subheadings for granular sub-points, quick checklists, or detailed technical specifications under H4.
+   - Section 5: "Final Thoughts" (id: "final-thoughts", heading: "Final Thoughts"). Include key takeaways and strategic outlook with appropriate H3/H4 subheadings.
    - Section 6: "Frequently Asked Questions" (id: "frequently-asked-questions", heading: "Frequently Asked Questions").
 6. FORMATTING RULES (STRICT):
-   - Output HTML tags (<p>, <h3>, <ul>, <li>) inside contentHtml. DO NOT USE MARKDOWN HASHES (never use #, ##, or ### in contentHtml).
-   - DO NOT write the label "Featured Snippet" anywhere in headings or text. Provide high-value information naturally.
+   - Use clean HTML tags: <h2>, <h3>, <h4>, <h5>, <p>, <ul>, <ol>, <li> inside contentHtml.
+   - Strictly organize subsections using H2 to H5 hierarchy to ensure deep structural readability.
+   - DO NOT USE MARKDOWN HASHES (never use #, ##, ###, ####, or #####). Use native HTML tags.
+   - DO NOT write the label "Featured Snippet" anywhere.
 7. WORD COUNT: Strictly between 1,000 and 1,500 words across all body sections.
 8. REMOVE DASH IN ARTICLE: Do NOT use em-dashes (—), en-dashes (–), or spaced hyphens ( - ) in article prose or headings. Use commas, colons, or natural phrasing.
 9. TARGETED KEYWORD LINKING:
@@ -1565,7 +1572,7 @@ CORE EDITORIAL & SEO REQUIREMENTS:
    - Do not repeat article 2 times, only one article one time.
    - Headline must not repeat, only one time, do not add 2026 in heading.
 12. ABSOLUTELY BANNED:
-   - Markdown hashes: "#", "##", "###" (use clean HTML <h3> and <h4> tags instead)
+   - Markdown hashes: "#", "##", "###", "####" (always use clean HTML <h2> to <h5> tags instead)
    - The phrase or label "Featured Snippet"
    - "If you've been looking into"
    - "municipal governance"
@@ -1576,7 +1583,7 @@ CORE EDITORIAL & SEO REQUIREMENTS:
    - Calendar year "2026" in headings or titles
 13. Output valid JSON only with keys: "title", "slug", "metaDescription", "sections", "faqs". Section 6 contentHtml must be "" (empty string).`;
 
-  const userPrompt = `Act as an SEO content strategist and copywriter. Create a detailed article for a blog post targeting the keyword "${topic}" with informational intent. Use LSI Keywords. The audience is World Wide. Include: a click-worthy headline, an opening hook, H2 and H3 subheadings, key points to cover under each section, and 1000-1500 word count. The tone should be professional. remove dash in article, two internal link and one external link on the targeted keyword only, one image on one article and related to keyword and do not repeat same image in all articles and image base on keyword only, headline not repeat only one time do not add 2026 in heading. Donot repeat article 2 time only one article one time.
+  const userPrompt = `Act as an SEO content strategist and copywriter. Create a detailed article for a blog post targeting the keyword "${topic}" with informational intent. Use LSI Keywords. The audience is World Wide. Include: a click-worthy headline, an opening hook, complete H2 to H5 hierarchical subheadings, key points to cover under each section, and 1000-1500 word count. The tone should be professional. remove dash in article, two internal link and one external link on the targeted keyword only, one image on one article and related to keyword and do not repeat same image in all articles and image base on keyword only, headline not repeat only one time do not add 2026 in heading. Donot repeat article 2 time only one article one time.
 Category: ${category}
 Author: ${author.name} (${author.role})
 ${linkDirective}
@@ -1584,7 +1591,12 @@ ${linkDirective}
 MANDATORY EDITORIAL & SEO REQUIREMENTS:
 - HEADLINE: Click-worthy headline (50-60 characters). Headline must not repeat (only one time across all publications). Absolutely DO NOT add 2026 in heading.
 - OPENING HOOK: Section 1 heading MUST be "" (empty string). Start immediately with a compelling opening hook.
-- SUBHEADINGS & KEY POINTS: H2 and H3 subheadings with detailed, concrete key points covered under each section. DO NOT use markdown hashes (# or ###). Use HTML <h3> tags.
+- HEADING HIERARCHY (H2 to H5): Implement clear semantic heading hierarchy across body sections:
+  * H2 for major section topics.
+  * H3 for key themes and subsections.
+  * H4 for granular subject breakdowns and comparative factors.
+  * H5 for actionable takeaways, technical specs, or detailed checkpoints.
+  * Use HTML tags (<h3>, <h4>, <h5>) inside contentHtml. DO NOT use markdown hashes.
 - NO "FEATURED SNIPPET" LABELS: DO NOT include the text "Featured Snippet" anywhere.
 - WORD COUNT: Strictly between 1,000 and 1,500 words total across all body sections.
 - REMOVE DASH: Do NOT use em-dashes (—), en-dashes (–), or spaced hyphens ( - ) in prose or headings.
