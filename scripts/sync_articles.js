@@ -93,15 +93,11 @@ function sanitizeMarkdownAndSnippets(html) {
   cleaned = cleaned.replace(/(?:<p>|<p\s+[^>]*>)?\s*#{1,6}\s*(?:<\/p>)?/gi, '');
   cleaned = cleaned.replace(/#{1,6}\s*/g, '');
 
-  // 2. Remove 'Featured Snippet' boxes or headings
-  // Remove container blocks that explicitly mention Featured Snippet
-  cleaned = cleaned.replace(/<div[^>]*class=["'][^"']*(?:bg-gray|border|snippet|takeaways|key-takeaways|p-)[^"']*["'][^>]*>[\s\S]*?Featured Snippet[\s\S]*?<\/div>\s*<\/div>/gi, '');
-  cleaned = cleaned.replace(/<div[^>]*>[\s\S]{0,300}?Featured Snippet[\s\S]{0,1200}?<\/ul>\s*<\/div>/gi, '');
-  cleaned = cleaned.replace(/<div[^>]*>[\s\S]{0,150}?Featured Snippet[\s\S]{0,400}?<\/div>/gi, '');
-  // Remove standalone headings or tags mentioning Featured Snippet
-  cleaned = cleaned.replace(/<h[1-6][^>]*>[\s\S]*?Featured Snippet[\s\S]*?<\/h[1-6]>/gi, '');
-  cleaned = cleaned.replace(/<p[^>]*>[\s\S]*?Featured Snippet[\s\S]*?<\/p>/gi, '');
-  cleaned = cleaned.replace(/<strong[^>]*>[\s\S]*?Featured Snippet[\s\S]*?<\/strong>/gi, '');
+  // 2. Safely remove Featured Snippet container and tags without touching surrounding HTML layout
+  cleaned = cleaned.replace(/<div\s+class=["'][^"']*(?:bg-gray|snippet|takeaways)[^"']*["'][^>]*>(?:(?!<div)[\s\S])*?Featured Snippet[\s\S]*?<\/div>/gi, '');
+  cleaned = cleaned.replace(/<h[1-6][^>]*>[^<]*Featured Snippet[^<]*<\/h[1-6]>/gi, '');
+  cleaned = cleaned.replace(/<p[^>]*>[^<]*Featured Snippet[^<]*<\/p>/gi, '');
+  cleaned = cleaned.replace(/<strong[^>]*>[^<]*Featured Snippet[^<]*<\/strong>/gi, '');
   cleaned = cleaned.replace(/Featured Snippet:?\s*/gi, '');
 
   return cleaned;
