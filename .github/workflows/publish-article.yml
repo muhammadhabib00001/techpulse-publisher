@@ -2,7 +2,7 @@ name: Automated Article Publishing Pipeline (Gemini AI + Google Drive)
 
 on:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 2,6,10,14,18,22 * * *'  # 6 articles/day, every 4 hours
   workflow_dispatch:
     inputs:
       topic:
@@ -67,6 +67,8 @@ jobs:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           GCP_REGION: ${{ secrets.GCP_REGION || 'us-central1' }}
           GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
+          GOOGLE_SHEET_ID: '1Xmp_RAZxjsDdEda8R6GlY53A8EyUk9TV'
+          GOOGLE_SHEET_GID: '734834774'
         run: |
           node scripts/sync_articles.js
           node scripts/publisher.js \

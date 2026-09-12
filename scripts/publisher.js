@@ -164,6 +164,146 @@ const CUSTOM_TOPIC        = (CLI_ARGS.topic && typeof CLI_ARGS.topic === 'string
 const TARGET_CATEGORY     = (CLI_ARGS.category && typeof CLI_ARGS.category === 'string') ? CLI_ARGS.category.toLowerCase().trim() : (process.env.TARGET_CATEGORY || '').toLowerCase().trim();
 const GOOGLE_DRIVE_FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID || '';
 const GCP_CREDENTIALS_JSON   = process.env.GCP_CREDENTIALS_JSON || '';
+// Google Sheet keyword source (public sheet, no auth required)
+const GOOGLE_SHEET_ID  = process.env.GOOGLE_SHEET_ID  || '1Xmp_RAZxjsDdEda8R6GlY53A8EyUk9TV';
+const GOOGLE_SHEET_GID = process.env.GOOGLE_SHEET_GID || '734834774';
+
+/**
+ * Fetch all keywords from the public Google Sheet (CSV export).
+ * Returns an array of clean keyword strings.
+ */
+async function fetchGoogleSheetKeywords() {
+  return new Promise((resolve) => {
+    const csvUrl = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/export?format=csv&gid=${GOOGLE_SHEET_GID}`;
+    const doRequest = (url, redirects = 0) => {
+      if (redirects > 5) { resolve([]); return; }
+      const mod = url.startsWith('https') ? https : http;
+      mod.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' } }, (res) => {
+        if (res.statusCode === 301 || res.statusCode === 302 || res.statusCode === 307 || res.statusCode === 308) {
+          doRequest(res.headers.location, redirects + 1);
+          return;
+        }
+        if (res.statusCode !== 200) { resolve([]); return; }
+        let data = '';
+        res.on('data', chunk => data += chunk);
+        res.on('end', () => {
+          try {
+            const lines = data.split(/\r?\n/);
+            const keywords = [];
+            // First row is header — skip it
+            for (let i = 1; i < lines.length; i++) {
+              const cell = lines[i].split(',')[0].replace(/^"|"$/g, '').trim();
+              if (cell && cell.length > 2) keywords.push(cell);
+            }
+            console.log(`[SHEET] Loaded ${keywords.length} keywords from Google Sheet.`);
+            resolve(keywords);
+          } catch (e) {
+            console.warn('[SHEET] CSV parse error:', e.message);
+            resolve([]);
+          }
+        });
+        res.on('error', () => resolve([]));
+      }).on('error', (e) => {
+        console.warn('[SHEET] Fetch error:', e.message);
+        resolve([]);
+      });
+    };
+    doRequest(csvUrl);
+  });
+}
+
+/**
+ * Pick a random unwritten keyword from the Google Sheet.
+ * Returns { keyword, topic, category } or null if exhausted.
+ */
+async function pickSheetKeyword(publishedLedger, allPublishedSlugs) {
+  const keywords = await fetchGoogleSheetKeywords();
+  if (!keywords || keywords.length === 0) return null;
+
+  // Build set of already-used keywords (stored in ledger)
+  const usedKeywords = new Set(
+    publishedLedger.map(e => (e.keyword || '').trim().toLowerCase()).filter(Boolean)
+  );
+
+  // Also build set of keywords whose roots appear in published slugs
+  const isKeywordPublished = (kw) => {
+    if (usedKeywords.has(kw.toLowerCase().trim())) return true;
+    const kwWords = kw.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length > 3);
+    for (const slug of allPublishedSlugs) {
+      const matchCount = kwWords.filter(w => slug.includes(w)).length;
+      if (matchCount >= 2 || (kwWords.length <= 2 && matchCount >= 1)) return true;
+    }
+    return false;
+  };
+
+  const available = keywords.filter(kw => !isKeywordPublished(kw));
+  if (available.length === 0) {
+    console.warn('[SHEET] All Google Sheet keywords already published. Falling back to pool.');
+    return null;
+  }
+
+  // Pick RANDOM (not sequential)
+  const kw = available[Math.floor(Math.random() * available.length)];
+  console.log(`[SHEET] Randomly selected keyword (${available.length} available): "${kw}"`);
+
+  // Use Gemini to turn keyword → click-worthy editorial headline + category
+  const categoryList = ['news','business','celebrity','entertainment','games','health','technology','others'];
+  const prompt = `You are an expert SEO editor. Given the keyword: "${kw}"
+
+Return ONLY valid JSON (no markdown, no code block) in this exact format:
+{"title":"<50-60 char headline, no year numbers, no dashes, no Guide>","category":"<one of: news,business,celebrity,entertainment,games,health,technology,others>"}
+
+Rules:
+- Title must be a compelling editorial headline
+- Title must NOT contain any year, must NOT use dash separators
+- Category must be the single most relevant from the list
+- Respond ONLY with the JSON object`;
+
+  const sheetModels = ['gemini-3.5-flash','gemini-3.8-flash','gemini-3.5-flash-lite','gemini-flash-lite-latest'];
+  for (const model of sheetModels) {
+    try {
+      const result = await new Promise((resolve, reject) => {
+        const payload = JSON.stringify({
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.4 }
+        });
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
+        const req = https.request(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }
+        }, (res) => {
+          let data = '';
+          res.on('data', chunk => data += chunk);
+          res.on('end', () => {
+            try {
+              const parsed = JSON.parse(data);
+              if (parsed.error) return reject(new Error(parsed.error.message));
+              const text = parsed.candidates[0].content.parts[0].text.trim();
+              resolve(text);
+            } catch (err) { reject(err); }
+          });
+        });
+        req.on('error', reject);
+        req.write(payload);
+        req.end();
+      });
+      const jsonMatch = result.match(/\{[\s\S]*?\}/);
+      if (!jsonMatch) throw new Error('No JSON in response');
+      const parsed = JSON.parse(jsonMatch[0]);
+      let title = (parsed.title || kw).trim();
+      title = title.replace(/\b202[0-9]\b/g, '').replace(/\s{2,}/g, ' ').trim();
+      const cat = categoryList.includes((parsed.category || '').toLowerCase()) ? parsed.category.toLowerCase() : 'others';
+      console.log(`[SHEET] Generated topic: "${title}" | Category: ${cat}`);
+      return { keyword: kw, topic: title, category: cat };
+    } catch (e) {
+      console.warn(`[SHEET] Model ${model} topic gen error: ${e.message}`);
+    }
+  }
+  // Fallback: title-case the keyword itself
+  console.warn('[SHEET] All models failed for topic gen — using raw keyword as topic');
+  const fallbackTitle = kw.replace(/\b\w/g, c => c.toUpperCase());
+  return { keyword: kw, topic: fallbackTitle, category: 'others' };
+}
 
 /**
  * Checks Google Drive folder for any topic brief / document / text file
@@ -2853,7 +2993,26 @@ async function main() {
     console.log(`[TOPIC-LOCK] Manual topic "${topic}" validated: No duplicate exists in published ledger.`);
   }
 
-  // 2. Google Drive Folder check (if configured)
+  // 2. Google Sheet random keyword picker (primary automated source - 1,452 keywords)
+  let sheetKeyword = null; // keep raw keyword for ledger recording
+  if (!topic) {
+    try {
+      const sheetResult = await pickSheetKeyword(publishedLedger, allPublishedSlugs);
+      if (sheetResult && sheetResult.topic) {
+        topic = sheetResult.topic;
+        sheetKeyword = sheetResult.keyword;
+        // Override category with Gemini-determined one
+        if (sheetResult.category && sheetResult.category in AUTHORS) {
+          cat = sheetResult.category;
+        }
+        console.log(`[SHEET-AUTO] Using Google Sheet keyword: "${sheetKeyword}" → "${topic}" [${cat}]`);
+      }
+    } catch (sheetErr) {
+      console.warn(`[SHEET] Picker error: ${sheetErr.message}`);
+    }
+  }
+
+  // 3. Google Drive Folder check (if configured)
   if (!topic) {
     const driveBrief = await fetchGoogleDriveBrief();
     if (driveBrief && driveBrief.topic) {
@@ -2862,7 +3021,8 @@ async function main() {
     }
   }
 
-  // 3. Dynamic rotating topic pool fallback
+  // 4. Dynamic rotating topic pool fallback
+
   if (!topic) {
     const pool = DEFAULT_TOPIC_POOL[cat] || DEFAULT_TOPIC_POOL.news;
 
@@ -3002,6 +3162,7 @@ async function main() {
       title: generatedArticle.title,
       category: cat,
       topic: topic,
+      keyword: sheetKeyword || null,
       externalUrl: finalExternalLink ? finalExternalLink.url : null,
       externalDomain: finalExternalLink ? finalExternalLink.domain : null,
       publishedAt: new Date().toISOString()
