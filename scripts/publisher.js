@@ -2146,6 +2146,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="msvalidate.01" content="25038A8801D42437BBC34723A41AC6C4" />
   <title>${pageTitle}</title>
   <meta name="description" content="${cleanMeta}">
   <link rel="canonical" href="https://www.genalphamagazines.com/${articleData.slug}">

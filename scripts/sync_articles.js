@@ -1034,6 +1034,7 @@ function buildCategoryPageHtml(catName, matchingArticles, validArticlesList) {
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="msvalidate.01" content="25038A8801D42437BBC34723A41AC6C4" />
   <title>${meta.title}</title>
   <meta name="description" content="${meta.description}">
   <meta property="og:type" content="website">
