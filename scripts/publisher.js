@@ -61,6 +61,45 @@ function getExistingImageHashes(excludeFilename = '') {
   return hashes;
 }
 
+// Get set of all image URLs and photo IDs already referenced in articles or data/articles.json
+function getExistingImageIdentifiers() {
+  const ids = new Set();
+  try {
+    const articlesDir = path.join(ROOT_DIR, 'articles');
+    if (fs.existsSync(articlesDir)) {
+      const files = fs.readdirSync(articlesDir).filter(f => f.endsWith('.html'));
+      for (const f of files) {
+        const html = fs.readFileSync(path.join(articlesDir, f), 'utf8');
+        const imgMatches = html.match(/<img[^>]+src=['"]([^'"]+)['"]/gi) || [];
+        for (const img of imgMatches) {
+          const m = img.match(/src=['"]([^'"]+)['"]/i);
+          if (m && m[1]) {
+            ids.add(m[1].toLowerCase());
+            const photoIdMatch = m[1].match(/photo-([a-zA-Z0-9_-]+)/);
+            if (photoIdMatch) ids.add(photoIdMatch[1].toLowerCase());
+          }
+        }
+      }
+    }
+  } catch (e) {}
+
+  try {
+    const trackingFile = path.join(ROOT_DIR, 'data', 'articles.json');
+    if (fs.existsSync(trackingFile)) {
+      const list = JSON.parse(fs.readFileSync(trackingFile, 'utf8'));
+      for (const item of list) {
+        if (item.image) {
+          ids.add(item.image.toLowerCase());
+          const photoIdMatch = item.image.match(/photo-([a-zA-Z0-9_-]+)/);
+          if (photoIdMatch) ids.add(photoIdMatch[1].toLowerCase());
+        }
+      }
+    }
+  } catch (e) {}
+
+  return ids;
+}
+
 // Get list of existing titles and slugs to strictly prevent duplicate titles
 function getExistingTitlesAndSlugs() {
   const titles = [];
@@ -87,6 +126,89 @@ function getExistingTitlesAndSlugs() {
   } catch (e) {}
 
   return { titles, slugs };
+}
+
+// Get set of all existing headings (H1, H2, H3) across all published articles
+function getAllExistingHeadings() {
+  const headings = new Set();
+  try {
+    const articlesDir = path.join(ROOT_DIR, 'articles');
+    if (fs.existsSync(articlesDir)) {
+      const files = fs.readdirSync(articlesDir).filter(f => f.endsWith('.html'));
+      for (const f of files) {
+        const html = fs.readFileSync(path.join(articlesDir, f), 'utf8');
+        const matches = html.match(/<h[1-5][^>]*>([\s\S]*?)<\/h[1-5]>/gi) || [];
+        for (const m of matches) {
+          const text = m.replace(/<[^>]+>/g, '').trim().toLowerCase();
+          if (text && text.length > 3 && !['table of contents', 'frequently asked questions', 'final thoughts', 'related coverage', 'related stories', 'related investigative reports & department features'].includes(text)) {
+            headings.add(text);
+          }
+        }
+      }
+    }
+  } catch (e) {}
+  return headings;
+}
+
+// Strictly ensure that none of an article's section headings repeat any already-published headings
+function ensureUniqueSectionHeadings(sections, topic, category) {
+  if (!Array.isArray(sections)) return sections;
+  const existingHeadings = getAllExistingHeadings();
+  const currentArticleHeadings = new Set();
+
+  return sections.map((sec, idx) => {
+    if (!sec.heading || !sec.heading.trim() || idx === 0) return sec;
+    
+    // Standard structural headings like Final Thoughts or FAQs are exempt
+    const lowerHeading = sec.heading.trim().toLowerCase();
+    if (['final thoughts', 'frequently asked questions', 'faqs', 'table of contents'].includes(lowerHeading)) {
+      return sec;
+    }
+
+    let h = sec.heading.trim();
+    let lower = h.toLowerCase();
+
+    // If duplicate to any existing published heading or already used in this article
+    if (existingHeadings.has(lower) || currentArticleHeadings.has(lower)) {
+      console.log(`[DEDUP-HEADING] Heading "${h}" already exists on site. Customizing with unique topic qualifier...`);
+      const topicKeywords = topic.split(/\s+/).slice(0, 3).join(' ');
+      h = `${h}: ${topicKeywords}`;
+      if (h.length > 65) {
+        h = `${topicKeywords}: Deep Breakdown`;
+      }
+      lower = h.toLowerCase();
+    }
+
+    currentArticleHeadings.add(lower);
+    existingHeadings.add(lower);
+
+    // Also deduplicate any inline <h3> or <h4> within contentHtml
+    let updatedContent = sec.contentHtml || '';
+    updatedContent = updatedContent.replace(/<h([2-5])([^>]*)>([\s\S]*?)<\/h\1>/gi, (match, tag, attrs, text) => {
+      const cleanText = text.replace(/<[^>]+>/g, '').trim();
+      const lowerClean = cleanText.toLowerCase();
+      if (cleanCleanHeadingExempt(lowerClean)) return match;
+      if (existingHeadings.has(lowerClean) || currentArticleHeadings.has(lowerClean)) {
+        const uniqueSubText = `${cleanText}: Contextual Focus`;
+        existingHeadings.add(uniqueSubText.toLowerCase());
+        currentArticleHeadings.add(uniqueSubText.toLowerCase());
+        return `<h${tag}${attrs}>${uniqueSubText}</h${tag}>`;
+      }
+      existingHeadings.add(lowerClean);
+      currentArticleHeadings.add(lowerClean);
+      return match;
+    });
+
+    return {
+      ...sec,
+      heading: h,
+      contentHtml: updatedContent
+    };
+  });
+}
+
+function cleanCleanHeadingExempt(lower) {
+  return ['why it matters', 'key takeaways', 'what to expect', 'summary', 'frequently asked questions'].includes(lower);
 }
 
 // Check title uniqueness against existing titles
@@ -166,7 +288,7 @@ const GOOGLE_DRIVE_FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID || '';
 const GCP_CREDENTIALS_JSON   = process.env.GCP_CREDENTIALS_JSON || '';
 // Google Sheet keyword source (public sheet, no auth required)
 const GOOGLE_SHEET_ID  = process.env.GOOGLE_SHEET_ID  || '1Xmp_RAZxjsDdEda8R6GlY53A8EyUk9TV';
-const GOOGLE_SHEET_GID = process.env.GOOGLE_SHEET_GID || '734834774';
+const GOOGLE_SHEET_GID = process.env.GOOGLE_SHEET_GID || '279315221';
 
 /**
  * Fetch all keywords from the public Google Sheet (CSV export).
@@ -225,12 +347,20 @@ async function pickSheetKeyword(publishedLedger, allPublishedSlugs) {
     publishedLedger.map(e => (e.keyword || '').trim().toLowerCase()).filter(Boolean)
   );
 
-  // Also build set of keywords whose roots appear in published slugs
+  // Also build set of keywords whose roots appear in published slugs or titles
+  const { titles } = getExistingTitlesAndSlugs();
   const isKeywordPublished = (kw) => {
-    if (usedKeywords.has(kw.toLowerCase().trim())) return true;
-    const kwWords = kw.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length > 3);
+    const kwLower = kw.toLowerCase().trim();
+    if (usedKeywords.has(kwLower)) return true;
+    const kwWords = kwLower.replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length > 3);
+    if (kwWords.length === 0) return false;
+
     for (const slug of allPublishedSlugs) {
       const matchCount = kwWords.filter(w => slug.includes(w)).length;
+      if (matchCount >= 2 || (kwWords.length <= 2 && matchCount >= 1)) return true;
+    }
+    for (const t of titles) {
+      const matchCount = kwWords.filter(w => t.includes(w)).length;
       if (matchCount >= 2 || (kwWords.length <= 2 && matchCount >= 1)) return true;
     }
     return false;
@@ -248,13 +378,18 @@ async function pickSheetKeyword(publishedLedger, allPublishedSlugs) {
 
   // Use Gemini to turn keyword → click-worthy editorial headline + category
   const categoryList = ['news','business','celebrity','entertainment','games','health','technology','others'];
-  const prompt = `You are an expert SEO editor. Given the keyword: "${kw}"
+  const recentTitlesList = titles.slice(-15).join(' | ');
+  const prompt = `You are an expert SEO editor. Given the target keyword: "${kw}"
+
+Context: The site already published these recent articles (DO NOT duplicate any of their themes, phrasing, or core concepts):
+${recentTitlesList}
 
 Return ONLY valid JSON (no markdown, no code block) in this exact format:
 {"title":"<50-60 char headline, no year numbers, no dashes, no Guide>","category":"<one of: news,business,celebrity,entertainment,games,health,technology,others>"}
 
 Rules:
-- Title must be a compelling editorial headline
+- Title must be a compelling, 100% unique editorial headline
+- Title must NOT repeat any existing title or concept
 - Title must NOT contain any year, must NOT use dash separators
 - Category must be the single most relevant from the list
 - Respond ONLY with the JSON object`;
@@ -638,8 +773,9 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
   // Unique numeric hash per slug
   const sig = Math.abs(slug.split('').reduce((h, c) => ((h << 5) - h) + c.charCodeAt(0), 0) & 0x7fffffff);
 
-  // Cache existing image hashes to strictly guarantee uniqueness across all articles
+  // Cache existing image hashes and identifiers to strictly guarantee 100% uniqueness across all articles
   const existingHashes = getExistingImageHashes(localImgFilename);
+  const existingImageIds = getExistingImageIdentifiers();
 
   // ─────────────────────────────────────────────────────────────
   // LAYER 1: Gemini Imagen — AI-generated topic-specific image
@@ -757,9 +893,14 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
         });
 
         if (photoData.results && photoData.results.length > 0) {
-          // Iterate through results to find an image that is NOT duplicate to existing downloaded files
+          // Iterate through results to find an image that is NOT duplicate to existing downloaded files or URLs
           for (let pIdx = 0; pIdx < photoData.results.length; pIdx++) {
             const photoItem = photoData.results[(sig + pIdx) % photoData.results.length];
+            const photoId = photoItem && photoItem.id ? String(photoItem.id).toLowerCase() : '';
+            if (photoId && existingImageIds.has(photoId)) {
+              console.log(`[WARN] Layer 2: Unsplash photo ID ${photoId} already used in existing article. Trying next photo...`);
+              continue;
+            }
             const photoUrl = photoItem && photoItem.urls && (photoItem.urls.regular || photoItem.urls.full);
             if (photoUrl) {
               const tempDest = `${localImgPath}.tmp`;
@@ -876,9 +1017,13 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
 
   const pool = FALLBACK_POOLS[category] || FALLBACK_POOLS.business;
   
-  // Try each ID in pool to find one whose downloaded image hash is unique
+  // Try each ID in pool to find one whose photo ID and downloaded image hash are unique
   for (let offset = 0; offset < pool.length; offset++) {
     const picId = pool[(sig + offset) % pool.length];
+    if (existingImageIds.has(picId.toLowerCase())) {
+      console.log(`[WARN] Layer 3: Curated photo-${picId} already used by another article. Trying next fallback...`);
+      continue;
+    }
     const fallbackUrl = `https://images.unsplash.com/photo-${picId}?auto=format&fit=crop&w=1200&h=600&q=80`;
     const tempDest = `${localImgPath}.tmp`;
     try {
@@ -900,7 +1045,9 @@ async function fetchOrGenerateTopicImage(topic, category, slug) {
   }
 
   // If all local downloads collided, use fallback with random signature
-  const finalPicId = pool[sig % pool.length];
+  const unusedFromPool = pool.filter(id => !existingImageIds.has(id.toLowerCase()));
+  const finalPool = unusedFromPool.length > 0 ? unusedFromPool : pool;
+  const finalPicId = finalPool[sig % finalPool.length];
   const finalFallbackUrl = `https://images.unsplash.com/photo-${finalPicId}?auto=format&fit=crop&w=1200&h=600&q=80`;
   return {
     relativeUrl: finalFallbackUrl, indexUrl: finalFallbackUrl,
@@ -1080,6 +1227,10 @@ function enforceMinimumInternalLinks(sectionsHtml, currentSlug, category = '', m
 
 async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '', category = '') {
   const modelsToTry = [
+    'gemini-3.5-flash',
+    'gemini-3.8-flash',
+    'gemini-3.5-flash-lite',
+    'gemini-flash-lite-latest',
     'gemini-2.5-flash',
     'gemini-2.0-flash',
     'gemini-2.5-flash-lite',
@@ -1087,11 +1238,7 @@ async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '',
     'gemini-1.5-flash',
     'gemini-1.5-flash-8b',
     'gemini-3.6-flash',
-    'gemini-flash-latest',
-    'gemini-3.5-flash',
-    'gemini-3.8-flash',
-    'gemini-3.5-flash-lite',
-    'gemini-flash-lite-latest'
+    'gemini-flash-latest'
   ];
   let lastError = null;
 
@@ -1604,18 +1751,26 @@ MANDATORY EDITORIAL & SEO REQUIREMENTS:
 - FAQS: Exactly 5 unique Q&A pairs in the "faqs" array. Section contentHtml for FAQ MUST be "".
 - Output valid JSON only: { "title": "...", "slug": "...", "metaDescription": "...", "sections": [...], "faqs": [...] }`;
 
+  let generated = null;
   if (GEMINI_API_KEY) {
     try {
-      return await callGoogleAIStudio(GEMINI_API_KEY, userPrompt, systemInstruction, topic, category);
+      generated = await callGoogleAIStudio(GEMINI_API_KEY, userPrompt, systemInstruction, topic, category);
     } catch (err) {
       console.warn('[WARN] Gemini API failed across all models:', err.message);
       console.log(`[FALLBACK] Using high-quality contextual fallback engine for "${topic}"...`);
-      return generateDeepFallbackArticle(topic, category, author);
+      generated = generateDeepFallbackArticle(topic, category, author);
     }
+  } else {
+    console.log(`[FALLBACK] GEMINI_API_KEY not configured, using contextual fallback engine for "${topic}"...`);
+    generated = generateDeepFallbackArticle(topic, category, author);
   }
 
-  console.log(`[FALLBACK] GEMINI_API_KEY not configured, using contextual fallback engine for "${topic}"...`);
-  return generateDeepFallbackArticle(topic, category, author);
+  // Guarantee 100% heading uniqueness across all existing site articles
+  if (generated && Array.isArray(generated.sections)) {
+    generated.sections = ensureUniqueSectionHeadings(generated.sections, topic, category);
+  }
+
+  return generated;
 }
 
 
@@ -1639,6 +1794,10 @@ async function fetchExternalLink(topic, category, usedUrls) {
     '{"url":"https://...","anchorKeyword":"the exact 2-4 word keyword from the topic or article to link (e.g. smartphone hardware, Apple Inc, electric vehicles)","label":"Short descriptive title","domain":"domain.com"}';
 
   const models = [
+    'gemini-3.5-flash',
+    'gemini-3.8-flash',
+    'gemini-3.5-flash-lite',
+    'gemini-flash-lite-latest',
     'gemini-2.5-flash',
     'gemini-2.0-flash',
     'gemini-2.5-flash-lite',
@@ -1646,11 +1805,7 @@ async function fetchExternalLink(topic, category, usedUrls) {
     'gemini-1.5-flash',
     'gemini-1.5-flash-8b',
     'gemini-3.6-flash',
-    'gemini-flash-latest',
-    'gemini-3.5-flash',
-    'gemini-3.8-flash',
-    'gemini-3.5-flash-lite',
-    'gemini-flash-lite-latest'
+    'gemini-flash-latest'
   ];
   const httpsLib = require('https');
 

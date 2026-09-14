@@ -636,5 +636,16 @@
     "externalUrl": "https://en.wikipedia.org/wiki/Lionel_Messi",
     "externalDomain": "en.wikipedia.org",
     "publishedAt": "2026-09-13T10:11:36.562Z"
+  },
+  {
+    "file": "how-to-force-kill-stubborn-linux-processes-with-pkill-9.html",
+    "slug": "how-to-force-kill-stubborn-linux-processes-with-pkill-9",
+    "title": "How to Force Kill Stubborn Linux Processes with pkill -9",
+    "category": "technology",
+    "topic": "How to force kill stubborn linux processes with pkill -9",
+    "keyword": "pkill -9",
+    "externalUrl": "https://en.wikipedia.org/wiki/Pkill",
+    "externalDomain": "en.wikipedia.org",
+    "publishedAt": "2026-09-14T05:35:26.669Z"
   }
 ]

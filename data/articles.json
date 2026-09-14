@@ -1,5 +1,17 @@
 [
   {
+    "slug": "how-to-force-kill-stubborn-linux-processes-with-pkill-9",
+    "file": "how-to-force-kill-stubborn-linux-processes-with-pkill-9.html",
+    "title": "How to Force Kill Stubborn Linux Processes with pkill -9",
+    "category": "technology",
+    "excerpt": "Learn how to force kill stubborn Linux processes using the pkill -9 command. Discover safe termination practices, process management tips, and syntax...",
+    "image": "./assets/images/how-to-force-kill-stubborn-linux-processes-with-pkill-9.jpg",
+    "date": "2026-09-14",
+    "publishedAt": "2026-09-14T05:35:26.670Z",
+    "author": "Julia Vance",
+    "authorSlug": "julia-vance"
+  },
+  {
     "slug": "who-is-the-most-famous-person-in-the-world-right-now",
     "file": "who-is-the-most-famous-person-in-the-world-right-now.html",
     "title": "Who Is the Most Famous Person in the World Right Now?",
