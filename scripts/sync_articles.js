@@ -1061,9 +1061,13 @@ function buildCategoryPageHtml(catName, matchingArticles, validArticlesList) {
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap">
   </noscript>
   <link rel="stylesheet" href="./assets/css/style.min.css?v=final_stable_v1">
-  <link rel="icon" type="image/svg+xml" href="./assets/images/favicon.svg">
-  <link rel="alternate icon" href="./favicon.ico">
-  <link rel="manifest" href="./site.webmanifest">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/images/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+  <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#c1121e">
   <script type="application/ld+json">
   {
@@ -1712,6 +1716,27 @@ ${sideArticles.map(art => {
       }
     }
 
+    // H. Guarantee Modern Multi-Size Favicon Links for Google Search & Web Browsers
+    const faviconBlock = `<link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/images/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">`;
+
+    if (updated.includes('<link rel="icon"')) {
+      // Replace entire existing favicon cluster
+      updated = updated.replace(/(?:<link\s+rel=["'](?:icon|alternate icon|apple-touch-icon)["'][^>]*>\s*)+/gi, `${faviconBlock}\n  `);
+    }
+
+    // I. Guarantee Clean Specific Category in BreadcrumbList (replace generic Categories)
+    const artCategory = getCategoryFromHtml(updated);
+    const catNameFormatted = artCategory.charAt(0).toUpperCase() + artCategory.slice(1);
+    updated = updated.replace(
+      /\{\s*"@type":\s*"ListItem",\s*"position":\s*2,\s*"name":\s*"Categories",\s*"item":\s*"https:\/\/www\.genalphamagazines\.com\/categories(?:\.html)?"\s*\}/gi,
+      `{"@type": "ListItem", "position": 2, "name": "${catNameFormatted}", "item": "https://www.genalphamagazines.com/category-${artCategory}"}`
+    );
+
     writeIfChanged(artPath, updated, original);
   }
 
@@ -1719,7 +1744,11 @@ ${sideArticles.map(art => {
   const imagesDir = path.join(ROOT_DIR, 'assets', 'images');
   if (fs.existsSync(imagesDir)) {
     const staticBrandAssets = new Set([
-      'favicon.svg', 'logo.svg', 'logo-dark.svg', 'og-banner.jpg',
+      'favicon.svg', 'favicon.ico', 'apple-touch-icon.png',
+      'favicon-16x16.png', 'favicon-32x32.png', 'favicon-48x48.png',
+      'favicon-96x96.png', 'favicon-144x144.png', 'favicon-180x180.png',
+      'favicon-192x192.png', 'favicon-512x512.png',
+      'logo.svg', 'logo-dark.svg', 'og-banner.jpg',
       'creative-badge.svg', '.gitkeep',
       'cristiano-ronaldo-career-legacy-and-records-in-2026.jpg',
       'preventing-bathroom-drainage-failures-in-modern-homes.jpg'

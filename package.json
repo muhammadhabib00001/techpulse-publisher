@@ -22,6 +22,7 @@
   "type": "commonjs",
   "devDependencies": {
     "clean-css": "^5.3.3",
+    "sharp": "^0.35.4",
     "terser": "^5.51.2"
   }
 }
