@@ -182,17 +182,26 @@ function ensureUniqueSectionHeadings(sections, topic, category) {
     currentArticleHeadings.add(lower);
     existingHeadings.add(lower);
 
-    // Also deduplicate any inline <h3> or <h4> within contentHtml
+    // Strip any leading <h2> from contentHtml that exactly matches sec.heading (prevents duplicate heading rendering)
     let updatedContent = sec.contentHtml || '';
+    const secHeadingNorm = h.replace(/[—–]/g, ': ').toLowerCase().trim();
+    updatedContent = updatedContent.replace(/^\s*<h2[^>]*>([\s\S]*?)<\/h2>/i, (match, innerText) => {
+      const innerNorm = innerText.replace(/<[^>]+>/g, '').replace(/[—–]/g, ': ').toLowerCase().trim();
+      // Remove if it's identical or a near-duplicate of sec.heading
+      if (innerNorm === secHeadingNorm || innerNorm.startsWith(secHeadingNorm)) {
+        return '';
+      }
+      return match;
+    });
+
+    // Also deduplicate any inline <h3>-<h5> within contentHtml — remove exact duplicates, don't rename
     updatedContent = updatedContent.replace(/<h([2-5])([^>]*)>([\s\S]*?)<\/h\1>/gi, (match, tag, attrs, text) => {
       const cleanText = text.replace(/<[^>]+>/g, '').trim();
       const lowerClean = cleanText.toLowerCase();
       if (cleanCleanHeadingExempt(lowerClean)) return match;
       if (existingHeadings.has(lowerClean) || currentArticleHeadings.has(lowerClean)) {
-        const uniqueSubText = `${cleanText}: Contextual Focus`;
-        existingHeadings.add(uniqueSubText.toLowerCase());
-        currentArticleHeadings.add(uniqueSubText.toLowerCase());
-        return `<h${tag}${attrs}>${uniqueSubText}</h${tag}>`;
+        // Remove exact duplicate inline headings entirely instead of renaming them
+        return '';
       }
       existingHeadings.add(lowerClean);
       currentArticleHeadings.add(lowerClean);
@@ -2197,6 +2206,19 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
     const headingHtml = (sec.heading && sec.heading.trim() && idx !== 0) 
       ? `<h2>${sec.heading.replace(/[—–]/g, ': ').trim()}</h2>` 
       : '';
+
+    // RENDER-TIME SAFEGUARD: If headingHtml is set, strip any leading <h2> from enrichedContent
+    // that matches or duplicates sec.heading, preventing consecutive identical headings.
+    if (headingHtml) {
+      const secNorm = sec.heading.replace(/[—–]/g, ': ').toLowerCase().trim();
+      enrichedContent = enrichedContent.replace(/^\s*<h2[^>]*>([\s\S]*?)<\/h2>/i, (match, innerText) => {
+        const innerNorm = innerText.replace(/<[^>]+>/g, '').replace(/[—–]/g, ': ').toLowerCase().trim();
+        if (innerNorm === secNorm || innerNorm.startsWith(secNorm) || secNorm.startsWith(innerNorm)) {
+          return '';
+        }
+        return match;
+      });
+    }
 
     // NUCLEAR DEFENSE: If this is the FAQ section, completely discard any AI-generated
     // contentHtml. FAQs are rendered exclusively from articleData.faqs array.

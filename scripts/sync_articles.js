@@ -425,6 +425,20 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
   // 2. Remove obsolete callout boxes
   content = removeObsoleteBoxes(content);
 
+  // 2.5 Remove consecutive duplicate <h2> headings (same text or "X: Contextual Focus" pattern)
+  content = content.replace(
+    /(<h([2-5])[^>]*>([\s\S]*?)<\/h\2>)\s*(<h([2-5])[^>]*>([\s\S]*?)<\/h\5>)/gi,
+    (match, first, tag1, text1, second, tag2, text2) => {
+      const clean1 = text1.replace(/<[^>]+>/g, '').replace(/[—–]/g, ': ').toLowerCase().trim();
+      const clean2 = text2.replace(/<[^>]+>/g, '').replace(/[—–]/g, ': ').toLowerCase().trim();
+      if (clean1 === clean2) return first;
+      if (tag1 === tag2 && (clean2.startsWith(clean1 + ':') || clean2.startsWith(clean1 + ' '))) return first;
+      if (tag1 === tag2 && (clean1.includes(clean2) || clean2.includes(clean1))) return first;
+      return match;
+    }
+  );
+
+
   const startIdx = content.indexOf('<div class="article-body">');
   const endIdx = content.indexOf('</article>');
   if (startIdx === -1 || endIdx === -1) {
