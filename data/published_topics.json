@@ -669,5 +669,16 @@
     "externalUrl": "https://www.mayoclinic.org/diseases-conditions/high-blood-pressure/in-depth/high-blood-pressure/art-20046974",
     "externalDomain": "mayoclinic.org",
     "publishedAt": "2026-09-14T10:04:07.065Z"
+  },
+  {
+    "file": "mastering-salesforce-sfcompile-errors-for-clean-code.html",
+    "slug": "mastering-salesforce-sfcompile-errors-for-clean-code",
+    "title": "Mastering Salesforce SFCompile Errors For Clean Code",
+    "category": "technology",
+    "topic": "Mastering Salesforce SFCompile Errors For Clean Code",
+    "keyword": "sfcompile",
+    "externalUrl": "https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_intro_what_is.htm",
+    "externalDomain": "developer.salesforce.com",
+    "publishedAt": "2026-09-14T14:03:15.300Z"
   }
 ]
