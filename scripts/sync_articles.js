@@ -1544,7 +1544,7 @@ ${sideArticles.map(art => {
       }
     }
 
-    // D. Enforce max 6 latest articles per category section in index.html
+    // D. Enforce max 8 latest articles per category section in index.html (2 full 4-column rows)
     const categoriesList = ['News', 'Business', 'Entertainment', 'Technology', 'Games', 'Health', 'Others'];
     categoriesList.forEach(cat => {
       const catLower = cat.toLowerCase();
@@ -1554,7 +1554,7 @@ ${sideArticles.map(art => {
         if (catLower === 'entertainment' && ['entertainment', 'celebrity', 'arts', 'culture'].includes(c)) return true;
         if (catLower === 'health' && ['health', 'wellness', 'lifestyle'].includes(c)) return true;
         return false;
-      }).slice(0, 6);
+      }).slice(0, 8);
 
       const secRegex = new RegExp(`(<section[^>]*aria-label=["']${cat}["'][^>]*>[\\s\\S]*?<div class=["']pattern-b-grid["']>)([\\s\\S]*?)(</div>[\\s\\S]*?</section>)`, 'i');
       if (secRegex.test(updated)) {
