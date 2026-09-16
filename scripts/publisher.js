@@ -1872,47 +1872,92 @@ async function fetchExternalLink(topic, category, usedUrls) {
 
 const VECTOR_LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
   <defs>
-    <radialGradient id="badgeRadialArt" cx="50%" cy="38%" r="62%">
+    <radialGradient id="hdrBadgeRadial" cx="50%" cy="38%" r="62%">
       <stop offset="0%" stop-color="#ef233c" />
       <stop offset="60%" stop-color="#c1121e" />
       <stop offset="100%" stop-color="#780000" />
     </radialGradient>
-    <linearGradient id="goldPageGradArt" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="hdrGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#fef08a" />
       <stop offset="50%" stop-color="#f59e0b" />
       <stop offset="100%" stop-color="#b45309" />
     </linearGradient>
-    <linearGradient id="wingLeftArt" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="hdrWingLeft" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#ffffff" />
       <stop offset="35%" stop-color="#ffccd5" />
       <stop offset="100%" stop-color="#c1121e" />
     </linearGradient>
-    <linearGradient id="wingRightArt" x1="100%" y1="0%" x2="0%" y2="100%">
+    <linearGradient id="hdrWingRight" x1="100%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="#ffccd5" />
       <stop offset="50%" stop-color="#e63946" />
       <stop offset="100%" stop-color="#590d22" />
     </linearGradient>
   </defs>
-  <circle cx="50" cy="50" r="48" fill="url(#goldPageGradArt)" />
+  <circle cx="50" cy="50" r="48" fill="url(#hdrGoldGrad)" />
   <circle cx="50" cy="50" r="45" fill="#111827" />
-  <circle cx="50" cy="50" r="43" fill="url(#badgeRadialArt)" />
+  <circle cx="50" cy="50" r="43" fill="url(#hdrBadgeRadial)" />
   <circle cx="50" cy="42" r="28" fill="#ffffff" opacity="0.12" />
   <g>
-    <path d="M 50 78 L 22 68 L 22 55 L 50 64 Z" fill="url(#goldPageGradArt)" />
+    <path d="M 50 78 L 22 68 L 22 55 L 50 64 Z" fill="url(#hdrGoldGrad)" />
     <path d="M 50 78 L 24 70 L 24 58 L 50 66 Z" fill="#ffffff" opacity="0.85" />
-    <path d="M 50 78 L 78 68 L 78 55 L 50 64 Z" fill="url(#goldPageGradArt)" />
+    <path d="M 50 78 L 78 68 L 78 55 L 50 64 Z" fill="url(#hdrGoldGrad)" />
     <path d="M 50 78 L 76 70 L 76 58 L 50 66 Z" fill="#ffffff" opacity="0.95" />
   </g>
   <g>
-    <polygon points="50,44 24,24 38,40 50,47" fill="url(#wingLeftArt)" />
+    <polygon points="50,44 24,24 38,40 50,47" fill="url(#hdrWingLeft)" />
     <polygon points="24,24 16,34 32,44 38,40" fill="#e63946" />
-    <polygon points="50,44 76,20 62,38 50,47" fill="url(#wingRightArt)" />
+    <polygon points="50,44 76,20 62,38 50,47" fill="url(#hdrWingRight)" />
     <polygon points="76,20 84,30 68,42 62,38" fill="#d90429" />
     <polygon points="50,48 44,60 50,65 56,60" fill="#590d22" />
     <polygon points="50,30 46,38 50,48 54,38" fill="#ffffff" />
     <polygon points="50,24 53,28 50,32 47,28" fill="#fef08a" />
   </g>
 </svg>`;
+
+const VECTOR_LOGO_SVG_FOOTER = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <radialGradient id="ftrBadgeRadial" cx="50%" cy="38%" r="62%">
+      <stop offset="0%" stop-color="#ef233c" />
+      <stop offset="60%" stop-color="#c1121e" />
+      <stop offset="100%" stop-color="#780000" />
+    </radialGradient>
+    <linearGradient id="ftrGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+    <linearGradient id="ftrWingLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="35%" stop-color="#ffccd5" />
+      <stop offset="100%" stop-color="#c1121e" />
+    </linearGradient>
+    <linearGradient id="ftrWingRight" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffccd5" />
+      <stop offset="50%" stop-color="#e63946" />
+      <stop offset="100%" stop-color="#590d22" />
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="48" fill="url(#ftrGoldGrad)" />
+  <circle cx="50" cy="50" r="45" fill="#111827" />
+  <circle cx="50" cy="50" r="43" fill="url(#ftrBadgeRadial)" />
+  <circle cx="50" cy="42" r="28" fill="#ffffff" opacity="0.12" />
+  <g>
+    <path d="M 50 78 L 22 68 L 22 55 L 50 64 Z" fill="url(#ftrGoldGrad)" />
+    <path d="M 50 78 L 24 70 L 24 58 L 50 66 Z" fill="#ffffff" opacity="0.85" />
+    <path d="M 50 78 L 78 68 L 78 55 L 50 64 Z" fill="url(#ftrGoldGrad)" />
+    <path d="M 50 78 L 76 70 L 76 58 L 50 66 Z" fill="#ffffff" opacity="0.95" />
+  </g>
+  <g>
+    <polygon points="50,44 24,24 38,40 50,47" fill="url(#ftrWingLeft)" />
+    <polygon points="24,24 16,34 32,44 38,40" fill="#e63946" />
+    <polygon points="50,44 76,20 62,38 50,47" fill="url(#ftrWingRight)" />
+    <polygon points="76,20 84,30 68,42 62,38" fill="#d90429" />
+    <polygon points="50,48 44,60 50,65 56,60" fill="#590d22" />
+    <polygon points="50,30 46,38 50,48 54,38" fill="#ffffff" />
+    <polygon points="50,24 53,28 50,32 47,28" fill="#fef08a" />
+  </g>
+</svg>`;
+
 
 function getDynamicRelatedArticles(currentSlug) {
   const articlesDir = path.join(ROOT_DIR, 'articles');
@@ -2563,7 +2608,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
       <div class="footer-brand">
         <a href="/" class="footer-logo" aria-label="GenAlphaMagazines Homepage">
           <div class="creative-logo-badge">
-            ${VECTOR_LOGO_SVG}
+            ${VECTOR_LOGO_SVG_FOOTER}
           </div>
           <div class="brand-text-block">
             <div class="brand-main-title">
