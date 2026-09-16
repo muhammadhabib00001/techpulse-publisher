@@ -1556,19 +1556,43 @@ ${sideArticles.map(art => {
         return false;
       }).slice(0, 8);
 
-      const secRegex = new RegExp(`(<section[^>]*aria-label=["']${cat}["'][^>]*>[\\s\\S]*?<div class=["']pattern-b-grid["']>)([\\s\\S]*?)(</div>[\\s\\S]*?</section>)`, 'i');
-      if (secRegex.test(updated)) {
-        const cardsHtml = matching.map(art => {
-          const img = art.image || (`./assets/images/${art.slug}.jpg`);
-          const defaultAuthor = ['news', 'business', 'technology', 'games'].includes(catLower) ? 'Marcus Reid' : 'Julia Vance';
-          const defaultAuthorSlug = ['news', 'business', 'technology', 'games'].includes(catLower) ? 'marcus-reid' : 'julia-vance';
-          const author = art.author || defaultAuthor;
-          const authorSlug = art.authorSlug || defaultAuthorSlug;
+      const startRegex = new RegExp(`<section[^>]*aria-label=["']${cat}["'][^>]*>`, 'i');
+      const startMatch = updated.match(startRegex);
+      if (startMatch) {
+        const startIdx = startMatch.index;
+        const endIdx = updated.indexOf('</section>', startIdx);
+        if (endIdx !== -1) {
+          const cardsHtml = matching.map(art => {
+            const img = art.image || (`./assets/images/${art.slug}.jpg`);
+            const defaultAuthor = ['news', 'business', 'technology', 'games'].includes(catLower) ? 'Marcus Reid' : 'Julia Vance';
+            const defaultAuthorSlug = ['news', 'business', 'technology', 'games'].includes(catLower) ? 'marcus-reid' : 'julia-vance';
+            const author = art.author || defaultAuthor;
+            const authorSlug = art.authorSlug || defaultAuthorSlug;
 
-          return `\n          <article class="card">\n            <div class="card-img-wrap">\n              <img src="${img}" alt="${escapeHtml(art.title)}" width="400" height="225" loading="lazy" decoding="async">\n            </div>\n            <div class="card-content">\n              <span class="card-tag">${cat.toUpperCase()}</span>\n              <h3 class="card-title"><a href="/${art.slug}">${escapeHtml(art.title)}</a></h3>\n              <p class="card-excerpt">${escapeHtml(art.excerpt || '')}</p>\n              <div class="card-meta"><span>By <a href="/author/${authorSlug}">${escapeHtml(author)}</a></span><span>${art.date || 'Recent'}</span></div>\n            </div>\n          </article>`;
-        }).join('');
+            return `\n          <article class="card">
+            <div class="card-img-wrap">
+              <img src="${img}" alt="${escapeHtml(art.title)}" width="400" height="225" loading="lazy" decoding="async">
+            </div>
+            <div class="card-content">
+              <span class="card-tag">${cat.toUpperCase()}</span>
+              <h3 class="card-title"><a href="/${art.slug}">${escapeHtml(art.title)}</a></h3>
+              <p class="card-excerpt">${escapeHtml(art.excerpt || '')}</p>
+              <div class="card-meta"><span>By <a href="/author/${authorSlug}">${escapeHtml(author)}</a></span><span>${art.date || 'Recent'}</span></div>
+            </div>
+          </article>`;
+          }).join('');
 
-        updated = updated.replace(secRegex, `$1${cardsHtml}\n        $3`);
+          const cleanSecHtml = `<section aria-label="${cat}">
+        <div class="section-header">
+          <span class="section-box">${cat}</span>
+        </div>
+
+        <div class="pattern-b-grid">${cardsHtml}
+        </div>
+      </section>`;
+
+          updated = updated.substring(0, startIdx) + cleanSecHtml + updated.substring(endIdx + 10);
+        }
       }
     });
 
