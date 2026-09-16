@@ -139,7 +139,8 @@ img { max-width: 100%; height: auto; display: block; }
   padding: 1rem 0;
 }
 .brand-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
-.creative-logo-badge { width: 50px; height: 50px; border-radius: 10px; flex-shrink: 0; }
+.creative-logo-badge { width: 50px; height: 50px; border-radius: 10px; flex-shrink: 0; overflow: hidden; display: block; }
+.creative-logo-badge svg { width: 100% !important; height: 100% !important; max-width: 50px !important; max-height: 50px !important; display: block !important; }
 .brand-text-block { display: flex; flex-direction: column; }
 .brand-main-title {
   font-family: var(--font-heading);
@@ -212,6 +213,7 @@ img { max-width: 100%; height: auto; display: block; }
   .header-inner { padding: 0.55rem 0 !important; display: flex !important; justify-content: space-between !important; align-items: center !important; }
   .brand-logo { gap: 0.55rem !important; }
   .creative-logo-badge { width: 36px !important; height: 36px !important; border-radius: 7px !important; }
+  .creative-logo-badge svg { max-width: 36px !important; max-height: 36px !important; }
   .brand-main-title { font-size: 1.1rem !important; line-height: 1 !important; }
   .brand-sub-tagline { font-size: 0.48rem !important; }
   .header-actions { gap: 0.35rem !important; }
