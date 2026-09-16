@@ -90,56 +90,48 @@
         <div class="creative-logo-badge">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
   <defs>
-    <radialGradient id="badgeRadial" cx="50%" cy="38%" r="62%">
-      <stop offset="0%" stop-color="#ef233c" />
-      <stop offset="60%" stop-color="#c1121e" />
-      <stop offset="100%" stop-color="#780000" />
+    <radialGradient id="hdrLogo_bg" cx="50%" cy="32%" r="68%">
+      <stop offset="0%" stop-color="#ef4444" />
+      <stop offset="55%" stop-color="#dc2626" />
+      <stop offset="100%" stop-color="#7f1d1d" />
     </radialGradient>
-    <linearGradient id="goldPageGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="hdrLogo_gold" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#fef08a" />
       <stop offset="50%" stop-color="#f59e0b" />
       <stop offset="100%" stop-color="#b45309" />
     </linearGradient>
-    <linearGradient id="wingLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="hdrLogo_silver" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#ffffff" />
-      <stop offset="35%" stop-color="#ffccd5" />
-      <stop offset="100%" stop-color="#c1121e" />
+      <stop offset="60%" stop-color="#f1f5f9" />
+      <stop offset="100%" stop-color="#cbd5e1" />
     </linearGradient>
-    <linearGradient id="wingRight" x1="100%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ffccd5" />
-      <stop offset="50%" stop-color="#e63946" />
-      <stop offset="100%" stop-color="#590d22" />
-    </linearGradient>
-    <filter id="crispShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="3" stdDeviation="3.5" flood-color="#780000" flood-opacity="0.45"/>
+    <filter id="hdrLogo_glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
     </filter>
   </defs>
-  <circle cx="50" cy="50" r="48" fill="url(#goldPageGrad)" />
-  <circle cx="50" cy="50" r="45" fill="#111827" />
-  <circle cx="50" cy="50" r="43" fill="url(#badgeRadial)" filter="url(#crispShadow)" />
-  <circle cx="50" cy="42" r="28" fill="#ffffff" opacity="0.12" />
-  <g id="magazine-pages">
-    <path d="M 50 78 L 22 68 L 22 55 L 50 64 Z" fill="url(#goldPageGrad)" stroke="#78350f" stroke-width="0.8" />
-    <path d="M 50 78 L 24 70 L 24 58 L 50 66 Z" fill="#ffffff" opacity="0.85" />
-    <path d="M 50 78 L 78 68 L 78 55 L 50 64 Z" fill="url(#goldPageGrad)" stroke="#78350f" stroke-width="0.8" />
-    <path d="M 50 78 L 76 70 L 76 58 L 50 66 Z" fill="#ffffff" opacity="0.95" />
-    <polygon points="48,64 52,64 51,80 49,80" fill="#fef08a" />
+
+  <!-- Outer Shield / Hex Ring -->
+  <rect x="6" y="6" width="88" height="88" rx="22" fill="url(#hdrLogo_gold)" />
+  <rect x="9" y="9" width="82" height="82" rx="19" fill="#0f172a" />
+  <rect x="11" y="11" width="78" height="78" rx="17" fill="url(#hdrLogo_bg)" />
+  
+  <!-- Subtle High-tech Grid / Glass Highlight -->
+  <path d="M 11 28 Q 50 12 89 28 L 89 11 L 11 11 Z" fill="#ffffff" opacity="0.12" />
+
+  <!-- Stylized Alpha Emblem 'α' + Crest -->
+  <g transform="translate(0, 1)">
+    <!-- Back Wing / G Loop -->
+    <path d="M 50 22 C 34 22 24 34 24 50 C 24 66 35 76 50 76 C 64 76 74 66 74 52 C 74 42 67 36 58 36 C 50 36 44 42 44 50 C 44 57 49 61 56 61 L 56 52 L 64 52" 
+          fill="none" stroke="url(#hdrLogo_gold)" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- Core Dynamic Alpha Swash -->
+    <path d="M 32 68 Q 50 24 68 68" 
+          fill="none" stroke="url(#hdrLogo_silver)" stroke-width="7" stroke-linecap="round" filter="url(#hdrLogo_glow)" />
+
+    <!-- Center Crest Star Emblem -->
+    <polygon points="50,27 53,35 61,35 55,40 57,48 50,43 43,48 45,40 39,35 47,35" fill="url(#hdrLogo_gold)" />
   </g>
-  <g id="soaring-falcon">
-    <polygon points="50,44 24,24 38,40 50,47" fill="url(#wingLeft)" stroke="#590d22" stroke-width="0.75" />
-    <polygon points="24,24 16,34 32,44 38,40" fill="#e63946" stroke="#590d22" stroke-width="0.6" />
-    <polygon points="16,34 12,42 26,46 32,44" fill="#a4161a" stroke="#590d22" stroke-width="0.6" />
-    <polygon points="50,44 76,20 62,38 50,47" fill="url(#wingRight)" stroke="#590d22" stroke-width="0.75" />
-    <polygon points="76,20 84,30 68,42 62,38" fill="#d90429" stroke="#590d22" stroke-width="0.6" />
-    <polygon points="84,30 88,38 74,44 68,42" fill="#800f2f" stroke="#590d22" stroke-width="0.6" />
-    <polygon points="50,48 44,60 50,65 56,60" fill="#590d22" stroke="#ffccd5" stroke-width="0.5" />
-    <polygon points="50,30 46,38 50,48 54,38" fill="#ffffff" stroke="#590d22" stroke-width="0.8" />
-    <polygon points="50,24 53,28 50,32 47,28" fill="#fef08a" stroke="#78350f" stroke-width="0.6" />
-    <polygon points="53,28 57,30 52,31" fill="#f59e0b" />
-  </g>
-  <circle cx="50" cy="18" r="1.8" fill="#fef08a" />
-  <circle cx="28" cy="22" r="1.2" fill="#ffffff" opacity="0.9" />
-  <circle cx="72" cy="18" r="1.2" fill="#ffffff" opacity="0.9" />
 </svg>
         </div>
         <div class="brand-text-block">
@@ -602,56 +594,48 @@
           <div class="creative-logo-badge">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
   <defs>
-    <radialGradient id="badgeRadial" cx="50%" cy="38%" r="62%">
-      <stop offset="0%" stop-color="#ef233c" />
-      <stop offset="60%" stop-color="#c1121e" />
-      <stop offset="100%" stop-color="#780000" />
+    <radialGradient id="ftrLogo_bg" cx="50%" cy="32%" r="68%">
+      <stop offset="0%" stop-color="#ef4444" />
+      <stop offset="55%" stop-color="#dc2626" />
+      <stop offset="100%" stop-color="#7f1d1d" />
     </radialGradient>
-    <linearGradient id="goldPageGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="ftrLogo_gold" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#fef08a" />
       <stop offset="50%" stop-color="#f59e0b" />
       <stop offset="100%" stop-color="#b45309" />
     </linearGradient>
-    <linearGradient id="wingLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="ftrLogo_silver" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#ffffff" />
-      <stop offset="35%" stop-color="#ffccd5" />
-      <stop offset="100%" stop-color="#c1121e" />
+      <stop offset="60%" stop-color="#f1f5f9" />
+      <stop offset="100%" stop-color="#cbd5e1" />
     </linearGradient>
-    <linearGradient id="wingRight" x1="100%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ffccd5" />
-      <stop offset="50%" stop-color="#e63946" />
-      <stop offset="100%" stop-color="#590d22" />
-    </linearGradient>
-    <filter id="crispShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="3" stdDeviation="3.5" flood-color="#780000" flood-opacity="0.45"/>
+    <filter id="ftrLogo_glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
     </filter>
   </defs>
-  <circle cx="50" cy="50" r="48" fill="url(#goldPageGrad)" />
-  <circle cx="50" cy="50" r="45" fill="#111827" />
-  <circle cx="50" cy="50" r="43" fill="url(#badgeRadial)" filter="url(#crispShadow)" />
-  <circle cx="50" cy="42" r="28" fill="#ffffff" opacity="0.12" />
-  <g id="magazine-pages">
-    <path d="M 50 78 L 22 68 L 22 55 L 50 64 Z" fill="url(#goldPageGrad)" stroke="#78350f" stroke-width="0.8" />
-    <path d="M 50 78 L 24 70 L 24 58 L 50 66 Z" fill="#ffffff" opacity="0.85" />
-    <path d="M 50 78 L 78 68 L 78 55 L 50 64 Z" fill="url(#goldPageGrad)" stroke="#78350f" stroke-width="0.8" />
-    <path d="M 50 78 L 76 70 L 76 58 L 50 66 Z" fill="#ffffff" opacity="0.95" />
-    <polygon points="48,64 52,64 51,80 49,80" fill="#fef08a" />
+
+  <!-- Outer Shield / Hex Ring -->
+  <rect x="6" y="6" width="88" height="88" rx="22" fill="url(#ftrLogo_gold)" />
+  <rect x="9" y="9" width="82" height="82" rx="19" fill="#0f172a" />
+  <rect x="11" y="11" width="78" height="78" rx="17" fill="url(#ftrLogo_bg)" />
+  
+  <!-- Subtle High-tech Grid / Glass Highlight -->
+  <path d="M 11 28 Q 50 12 89 28 L 89 11 L 11 11 Z" fill="#ffffff" opacity="0.12" />
+
+  <!-- Stylized Alpha Emblem 'α' + Crest -->
+  <g transform="translate(0, 1)">
+    <!-- Back Wing / G Loop -->
+    <path d="M 50 22 C 34 22 24 34 24 50 C 24 66 35 76 50 76 C 64 76 74 66 74 52 C 74 42 67 36 58 36 C 50 36 44 42 44 50 C 44 57 49 61 56 61 L 56 52 L 64 52" 
+          fill="none" stroke="url(#ftrLogo_gold)" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- Core Dynamic Alpha Swash -->
+    <path d="M 32 68 Q 50 24 68 68" 
+          fill="none" stroke="url(#ftrLogo_silver)" stroke-width="7" stroke-linecap="round" filter="url(#ftrLogo_glow)" />
+
+    <!-- Center Crest Star Emblem -->
+    <polygon points="50,27 53,35 61,35 55,40 57,48 50,43 43,48 45,40 39,35 47,35" fill="url(#ftrLogo_gold)" />
   </g>
-  <g id="soaring-falcon">
-    <polygon points="50,44 24,24 38,40 50,47" fill="url(#wingLeft)" stroke="#590d22" stroke-width="0.75" />
-    <polygon points="24,24 16,34 32,44 38,40" fill="#e63946" stroke="#590d22" stroke-width="0.6" />
-    <polygon points="16,34 12,42 26,46 32,44" fill="#a4161a" stroke="#590d22" stroke-width="0.6" />
-    <polygon points="50,44 76,20 62,38 50,47" fill="url(#wingRight)" stroke="#590d22" stroke-width="0.75" />
-    <polygon points="76,20 84,30 68,42 62,38" fill="#d90429" stroke="#590d22" stroke-width="0.6" />
-    <polygon points="84,30 88,38 74,44 68,42" fill="#800f2f" stroke="#590d22" stroke-width="0.6" />
-    <polygon points="50,48 44,60 50,65 56,60" fill="#590d22" stroke="#ffccd5" stroke-width="0.5" />
-    <polygon points="50,30 46,38 50,48 54,38" fill="#ffffff" stroke="#590d22" stroke-width="0.8" />
-    <polygon points="50,24 53,28 50,32 47,28" fill="#fef08a" stroke="#78350f" stroke-width="0.6" />
-    <polygon points="53,28 57,30 52,31" fill="#f59e0b" />
-  </g>
-  <circle cx="50" cy="18" r="1.8" fill="#fef08a" />
-  <circle cx="28" cy="22" r="1.2" fill="#ffffff" opacity="0.9" />
-  <circle cx="72" cy="18" r="1.2" fill="#ffffff" opacity="0.9" />
 </svg>
           </div>
           <div class="brand-text-block">

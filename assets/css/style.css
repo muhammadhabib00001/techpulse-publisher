@@ -257,7 +257,7 @@ img { max-width: 100%; height: auto; display: block; }
   z-index: 998; opacity: 0; visibility: hidden; transition: all 0.3s ease;
 }
 .menu-backdrop.active { opacity: 1; visibility: visible; }
-.main-nav { display: flex; align-items: center; width: 100%; }
+.main-nav { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 1rem; }
 .main-nav-links { display: flex; list-style: none; gap: 0; margin: 0; padding: 0; align-items: center; }
 .main-nav-links a {
   font-weight: 900;
@@ -275,6 +275,34 @@ img { max-width: 100%; height: auto; display: block; }
 .main-nav-links a.active {
   background: var(--primary);
   color: #ffffff;
+}
+
+/* Nav Social Links & Compact Search Box */
+.nav-social-search { display: flex; align-items: center; gap: 0.75rem; margin-left: auto; flex-shrink: 0; }
+.nav-social-links { display: flex; align-items: center; gap: 0.45rem; }
+.nav-social-links a {
+  color: #94a3b8; display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,0.08);
+  transition: all 0.2s ease; text-decoration: none !important;
+}
+.nav-social-links a:hover { background: var(--primary); color: #ffffff !important; transform: translateY(-1px); }
+
+.nav-search-form { display: flex; align-items: center; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 2px; overflow: hidden; padding: 2px; }
+.nav-search-form input {
+  background: transparent; border: none; outline: none; color: #ffffff;
+  font-size: 0.72rem; padding: 0.25rem 0.5rem; width: 120px; transition: width 0.25s ease;
+}
+.nav-search-form input::placeholder { color: #94a3b8; }
+.nav-search-form input:focus { width: 155px; background: rgba(0,0,0,0.2); }
+.nav-search-form button {
+  background: transparent; border: none; color: #94a3b8; font-size: 0.75rem;
+  padding: 0.2rem 0.4rem; cursor: pointer; display: flex; align-items: center;
+}
+.nav-search-form button:hover { color: #ffffff; }
+
+@media (max-width: 960px) {
+  .nav-social-search { margin-top: 0.85rem; padding-top: 0.85rem; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; justify-content: space-between; }
+  .nav-search-form input { width: 100%; }
 }
 
 @media (max-width: 960px) {
