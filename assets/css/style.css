@@ -546,6 +546,33 @@ img { max-width: 100%; height: auto; display: block; }
 .faq-section { margin-top: 2rem; }
 
 /* ==========================================================================
+   Desktop Optimizations — Large Screens (1280px+) & Ultra-Wide (1536px+)
+   ========================================================================== */
+@media (min-width: 1280px) {
+  :root {
+    --max-width: 1320px;
+  }
+  .pattern-a-grid { grid-template-columns: 1.5fr 1fr; gap: 1.75rem; }
+  .pattern-b-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5rem; }
+  .card-content { padding: 1.15rem 1.25rem 1.4rem; }
+  .card-title { font-size: 1.05rem; line-height: 1.35; }
+  .card-excerpt { font-size: 0.9rem; line-height: 1.58; }
+  .main-layout { grid-template-columns: 2.3fr 1fr; gap: 2.5rem; }
+  .sidebar { top: 75px; gap: 1.75rem; }
+  .article-title { font-size: 2.4rem; line-height: 1.16; letter-spacing: -1.2px; }
+  .article-body { font-size: 1.08rem; line-height: 1.88; }
+}
+
+@media (min-width: 1536px) {
+  :root {
+    --max-width: 1440px;
+  }
+  .pattern-b-grid { gap: 1.75rem; }
+  .card-title { font-size: 1.08rem; }
+  .card-excerpt { font-size: 0.92rem; }
+}
+
+/* ==========================================================================
    Responsive Optimizations — Tablet (768px-1024px) & Mobile (<768px)
    ========================================================================== */
 @media (min-width: 641px) and (max-width: 1024px) {
