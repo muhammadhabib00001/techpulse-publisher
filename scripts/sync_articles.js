@@ -89,9 +89,9 @@ function sanitizeMarkdownAndSnippets(html) {
   cleaned = cleaned.replace(/(?:<p>|<p\s+[^>]*>)?\s*#{4,6}\s+([^<\n\r]+)(?:<\/p>)?/gi, (match, headingText) => {
     return '<h4>' + headingText.trim() + '</h4>';
   });
-  // Strip any leftover isolated hash marks or markdown heading fragments
-  cleaned = cleaned.replace(/(?:<p>|<p\s+[^>]*>)?\s*#{1,6}\s*(?:<\/p>)?/gi, '');
-  cleaned = cleaned.replace(/#{1,6}\s*/g, '');
+  // Strip any leftover isolated markdown heading hash fragments at line starts only (without touching hex colors or SVG url(#id))
+  cleaned = cleaned.replace(/(^|[\r\n])\s*#{1,6}\s+/g, '$1');
+
 
   // 2. Safely remove Featured Snippet container and tags without touching surrounding HTML layout
   cleaned = cleaned.replace(/<div\s+class=["'][^"']*(?:bg-gray|snippet|takeaways)[^"']*["'][^>]*>(?:(?!<div)[\s\S])*?Featured Snippet[\s\S]*?<\/div>/gi, '');
