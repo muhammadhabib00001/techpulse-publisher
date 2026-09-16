@@ -142,8 +142,11 @@ img { max-width: 100%; height: auto; display: block; }
   text-transform: uppercase;
   color: var(--text-main);
 }
-/* Plain <span>GEN</span> — no class — must always be dark and visible */
+/* Plain <span>GEN</span> — no class — must be dark in header, bright white in dark footer */
 .brand-main-title > span:not([class]) { color: var(--text-main); font-weight: 900; }
+.site-footer .brand-main-title > span:not([class]),
+.site-footer .brand-main-title { color: #ffffff !important; }
+
 
 .brand-main-title .alpha-word { color: var(--primary); }
 .brand-main-title .mag-word {
