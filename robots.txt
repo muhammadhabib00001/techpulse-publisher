@@ -7,3 +7,5 @@ Disallow: /cdn-cgi/
 # LLMs-Full: https://www.genalphamagazines.com/llms-full.txt
 
 Sitemap: https://www.genalphamagazines.com/sitemap.xml
+Sitemap: https://www.genalphamagazines.com/news-sitemap.xml
+Sitemap: https://www.genalphamagazines.com/rss.xml
