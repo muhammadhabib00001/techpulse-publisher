@@ -1735,8 +1735,8 @@ ${sideArticles.map(art => {
     });
 
     // F. Standardize script and css tags to minified assets
-    updated = updated.replace(/<script\s+src=["'][^"']*(?:theme|main)\.js["'][^>]*><\/script>/gi, '<script src="../assets/js/main.min.js" defer></script>');
-    updated = updated.replace(/<link\s+rel=["']stylesheet["']\s+href=["'][^"']*style\.css(?:\?[^"']*)?["']>/gi, '<link rel="stylesheet" href="../assets/css/style.min.css?v=final_stable_v1">');
+    updated = updated.replace(/<script\s+src=["'][^"']*(?:theme|main)\.js["'][^>]*><\/script>/gi, '<script src="./assets/js/main.min.js" defer></script>');
+    updated = updated.replace(/<link\s+rel=["']stylesheet["']\s+href=["'][^"']*style(?:\.min)?\.css(?:\?[^"']*)?["']>/gi, '<link rel="stylesheet" href="./assets/css/style.min.css?v=final_stable_v1">');
 
     // G. Guarantee Title Tag is Distinct from H1 and strictly <= 60 characters
     const h1Match = updated.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
