@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    GenAlphaMagazines — On Gravity Magazine Inspired Theme
    Deep Navy + Crisp White + Bold Red Accents | Sans-serif Bold Editorial
    ========================================================================== */
@@ -142,6 +142,9 @@ img { max-width: 100%; height: auto; display: block; }
   text-transform: uppercase;
   color: var(--text-main);
 }
+/* Plain <span>GEN</span> — no class — must always be dark and visible */
+.brand-main-title > span:not([class]) { color: var(--text-main); font-weight: 900; }
+
 .brand-main-title .alpha-word { color: var(--primary); }
 .brand-main-title .mag-word {
   display: inline-block;
