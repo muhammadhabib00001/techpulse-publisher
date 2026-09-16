@@ -3228,7 +3228,13 @@ async function main() {
   // Determine topic:
   // 1. Manual CLI argument (--topic)
   let topic = CUSTOM_TOPIC.trim();
+  const BLOCKED_KEYWORDS = ['keywords genalpha', 'keywords-genalpha', 'genalpha'];
   if (topic) {
+    const lowerTopic = topic.toLowerCase();
+    if (BLOCKED_KEYWORDS.some(b => lowerTopic.includes(b))) {
+      console.error(`[ABORT] Topic "${topic}" is blocked by site policy.`);
+      process.exit(1);
+    }
     const candWords = extractWords(topic);
     for (const publishedSlug of allPublishedSlugs) {
       const matchingWords = candWords.filter(w => publishedSlug.includes(w));
