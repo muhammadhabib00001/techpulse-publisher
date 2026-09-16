@@ -550,8 +550,9 @@ img { max-width: 100%; height: auto; display: block; }
    Footer — Deep Navy with red accent
    ========================================================================== */
 .site-footer { background: var(--bg-dark-header); color: #64748b; margin-top: auto; padding: 2.5rem 0 1.25rem 0; border-top: 4px solid var(--primary); content-visibility: auto; contain-intrinsic-size: 1px 420px; }
-.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
-@media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+@media (max-width: 990px) { .footer-grid { grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; } }
+@media (max-width: 640px) { .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
 .footer-col h5 { color: #ffffff; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 0.8px; border-left: 3px solid var(--primary); padding-left: 0.5rem; }
 .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; font-size: 0.84rem; }
 .footer-links a { color: #64748b; }
