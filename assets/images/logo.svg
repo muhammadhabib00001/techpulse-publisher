@@ -1,40 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 120" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
   <defs>
-    <linearGradient id="crestGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#d62828" />
-      <stop offset="100%" stop-color="#9e0e18" />
+    <radialGradient id="hdrLogo_bg" cx="50%" cy="32%" r="68%">
+      <stop offset="0%" stop-color="#ef4444" />
+      <stop offset="55%" stop-color="#dc2626" />
+      <stop offset="100%" stop-color="#7f1d1d" />
+    </radialGradient>
+    <linearGradient id="hdrLogo_gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#b45309" />
     </linearGradient>
-    <filter id="logoShadow" x="-10%" y="-10%" width="120%" height="130%">
-      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#c1121e" flood-opacity="0.3"/>
+    <linearGradient id="hdrLogo_silver" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="60%" stop-color="#f1f5f9" />
+      <stop offset="100%" stop-color="#cbd5e1" />
+    </linearGradient>
+    <filter id="hdrLogo_glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
     </filter>
   </defs>
 
-  <!-- Heraldic Crest Emblem -->
-  <g transform="translate(10, 8)">
-    <!-- Shield / Badge Frame -->
-    <path d="M 15 15 L 85 15 C 85 15, 95 65, 50 100 C 5 65, 15 15, 15 15 Z" fill="url(#crestGrad)" filter="url(#logoShadow)" />
-    <path d="M 22 22 L 78 22 C 78 22, 86 60, 50 88 C 14 60, 22 22, 22 22 Z" fill="#111827" />
-    
-    <!-- Stylized Alpha Monogram & Quill -->
-    <path d="M 33 65 L 50 28 L 67 65 M 39 54 L 61 54" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-    <circle cx="50" cy="38" r="3" fill="#f59e0b" />
-    <!-- Feather Quill Accent -->
-    <path d="M 54 40 Q 72 32 75 24 Q 68 38 60 48 Z" fill="#d62828" />
-  </g>
-
-  <!-- Typography: GENALPHA -->
-  <text x="125" y="68" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="46" font-weight="900" fill="#111827" letter-spacing="-1">
-    GEN<tspan fill="#c1121e">ALPHA</tspan>
-  </text>
+  <!-- Outer Shield / Hex Ring -->
+  <rect x="6" y="6" width="88" height="88" rx="22" fill="url(#hdrLogo_gold)" />
+  <rect x="9" y="9" width="82" height="82" rx="19" fill="#0f172a" />
+  <rect x="11" y="11" width="78" height="78" rx="17" fill="url(#hdrLogo_bg)" />
   
-  <!-- Typography: MAGAZINES -->
-  <text x="375" y="68" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="46" font-weight="300" fill="#475569" letter-spacing="1.5">
-    MAGAZINES
-  </text>
+  <!-- Subtle High-tech Grid / Glass Highlight -->
+  <path d="M 11 28 Q 50 12 89 28 L 89 11 L 11 11 Z" fill="#ffffff" opacity="0.12" />
 
-  <!-- Tagline Rule & Subtitle -->
-  <rect x="127" y="82" width="480" height="3" fill="#c1121e" rx="1.5" />
-  <text x="129" y="101" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14.5" font-weight="700" fill="#64748b" letter-spacing="1.2">
-    POSITIVELY LOCAL &bull; SUPPORTING COMMUNITY
-  </text>
+  <!-- Stylized Alpha Emblem 'α' + Crest -->
+  <g transform="translate(0, 1)">
+    <!-- Back Wing / G Loop -->
+    <path d="M 50 22 C 34 22 24 34 24 50 C 24 66 35 76 50 76 C 64 76 74 66 74 52 C 74 42 67 36 58 36 C 50 36 44 42 44 50 C 44 57 49 61 56 61 L 56 52 L 64 52" 
+          fill="none" stroke="url(#hdrLogo_gold)" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- Core Dynamic Alpha Swash -->
+    <path d="M 32 68 Q 50 24 68 68" 
+          fill="none" stroke="url(#hdrLogo_silver)" stroke-width="7" stroke-linecap="round" filter="url(#hdrLogo_glow)" />
+
+    <!-- Center Crest Star Emblem -->
+    <polygon points="50,27 53,35 61,35 55,40 57,48 50,43 43,48 45,40 39,35 47,35" fill="url(#hdrLogo_gold)" />
+  </g>
 </svg>
