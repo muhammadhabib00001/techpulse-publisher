@@ -127,12 +127,37 @@
       "permanent": true
     },
     {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/pages/:page.html",
+      "destination": "/pages/:page",
+      "permanent": true
+    },
+    {
+      "source": "/category-:cat.html",
+      "destination": "/category-:cat",
+      "permanent": true
+    },
+    {
+      "source": "/categories.html",
+      "destination": "/categories",
+      "permanent": true
+    },
+    {
       "source": "/articles/:slug",
       "destination": "/:slug",
       "permanent": true
     },
     {
       "source": "/articles/:slug.html",
+      "destination": "/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/:slug.html",
       "destination": "/:slug",
       "permanent": true
     }
