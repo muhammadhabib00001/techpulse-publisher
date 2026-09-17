@@ -297,7 +297,6 @@ const GOOGLE_DRIVE_FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID || '';
 const GCP_CREDENTIALS_JSON   = process.env.GCP_CREDENTIALS_JSON || '';
 // Google Sheet keyword source (public sheet, no auth required)
 const GOOGLE_SHEET_ID  = process.env.GOOGLE_SHEET_ID  || '1Xmp_RAZxjsDdEda8R6GlY53A8EyUk9TV';
-const GOOGLE_SHEET_GID = process.env.GOOGLE_SHEET_GID || '279315221';
 
 /**
  * Fetch all keywords from the public Google Sheet (CSV export).
@@ -305,7 +304,7 @@ const GOOGLE_SHEET_GID = process.env.GOOGLE_SHEET_GID || '279315221';
  */
 async function fetchGoogleSheetKeywords() {
   return new Promise((resolve) => {
-    const csvUrl = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/export?format=csv&gid=${GOOGLE_SHEET_GID}`;
+    const csvUrl = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/export?format=csv`;
     const doRequest = (url, redirects = 0) => {
       if (redirects > 5) { resolve([]); return; }
       const mod = url.startsWith('https') ? https : http;
