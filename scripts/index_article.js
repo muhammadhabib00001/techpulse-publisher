@@ -1,6 +1,6 @@
 /**
  * index_article.js
- * Instant Google Search Indexing via Google Indexing API
+ * Instant Google Search Indexing via Google Indexing API v3
  *
  * Supports:
  * - Local service-account.json in project root
@@ -12,7 +12,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { GoogleAuth } = require('google-auth-library');
+const { google } = require('googleapis');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 const SITE_DOMAIN = 'https://www.genalphamagazines.com';
@@ -73,37 +73,33 @@ async function notifyGoogleIndex(targetUrl, action = 'URL_UPDATED') {
   }
 
   try {
-    const auth = new GoogleAuth({
+    const auth = new google.auth.GoogleAuth({
       credentials,
       scopes: ['https://www.googleapis.com/auth/indexing'],
     });
 
-    const client = await auth.getClient();
-    const endpoint = 'https://indexing.googleapis.com/v1/urlNotifications:publish';
+    const indexing = google.indexing({ version: 'v3', auth });
 
-    const res = await client.request({
-      url: endpoint,
-      method: 'POST',
-      data: {
+    const res = await indexing.urlNotifications.publish({
+      requestBody: {
         url,
         type: action,
       },
     });
 
-    if (res.status === 200 || res.status === 201) {
-      console.log(`[INDEXING API] Successfully pushed to Google: ${url} (${action})`);
+    if (res.status === 200 || res.status === 201 || (res.data && res.data.urlNotificationMetadata)) {
+      console.log(`[INDEXING API SUCCESS] Pushed to Google: ${url} (${action})`);
       return true;
     } else {
       console.warn(`[INDEXING API] Unexpected status ${res.status}:`, res.data);
       return false;
     }
   } catch (err) {
-    // Graceful error logging
     if (err.response && err.response.data && err.response.data.error) {
       const gError = err.response.data.error;
       console.error(`[INDEXING API ERROR] Google returned ${gError.code}: ${gError.message}`);
       if (gError.code === 403) {
-        console.error(`[INDEXING API HINT] Make sure the Service Account email is added as an OWNER in Google Search Console!`);
+        console.error(`[INDEXING API HINT] Make sure the Service Account email is added as an OWNER in Google Search Console for ${SITE_DOMAIN}!`);
       }
     } else {
       console.error(`[INDEXING API ERROR] ${err.message}`);
