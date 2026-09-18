@@ -200,6 +200,12 @@ function sd(s) {
     .trim();
 }
 
+
+// Strip anchor tags from heading strings (links must never appear in h2/h3/h4)
+function stripLinksFromHeading(s) {
+  if (typeof s !== 'string') return s;
+  return s.replace(/<a\s[^>]*>/gi, '').replace(/<\/a>/gi, '').trim();
+}
 // ── Build complete article HTML ───────────────────────────────────────────
 function buildHTML(data, slug, imgSrc, publishedDate, category) {
   const a   = AUTHORS[category] || AUTHORS.others;
@@ -214,7 +220,7 @@ function buildHTML(data, slug, imgSrc, publishedDate, category) {
 
   const secs = (data.sections || []).map(s => ({
     ...s,
-    heading: sd(s.heading || ''),
+    heading: stripLinksFromHeading(sd(s.heading || '')),
     contentHtml: sd(s.contentHtml || '')
   }));
   const faqs = (data.faqs || []).map(f => ({

@@ -34,6 +34,16 @@ function sanitizeTitle(rawTitle) {
   return t;
 }
 
+// Sanitize headings: strip any <a> tags from h2/h3/h4 (links must never appear in headings)
+function sanitizeHeadings(html) {
+  if (typeof html !== 'string') return html;
+  return html.replace(/<(h[2-4])([^>]*)>([\s\S]*?)<\/\1>/gi, function(m, tag, attrs, inner) {
+    var cleaned = inner.replace(/<a\s[^>]*>/gi, '').replace(/<\/a>/gi, '');
+    return '<' + tag + attrs + '>' + cleaned + '</' + tag + '>';
+  });
+}
+
+
 
 // Helper to calculate md5 hash of a file or buffer
 function computeHash(bufferOrPath) {
@@ -3008,6 +3018,7 @@ function updateSiteIndex(articleData, author, category, heroImage) {
           } else if (h.includes('</article>')) {
             h = h.replace('</article>', `${relBlock}\n      </article>`);
           }
+          h = sanitizeHeadings(h);
           fs.writeFileSync(artPath, h, 'utf8');
         }
       }
