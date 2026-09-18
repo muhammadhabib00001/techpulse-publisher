@@ -1140,6 +1140,9 @@ function safeKeywordReplace(html, keyword, replaceFn) {
 
   const tokens = html.split(/(<[^>]+>)/g);
   let insideAnchor = 0;
+  let insideHeading = 0;
+  let insideExcluded = 0;
+  let insideP = 0;
   let replaced = false;
 
   for (let i = 0; i < tokens.length; i++) {
@@ -1150,8 +1153,20 @@ function safeKeywordReplace(html, keyword, replaceFn) {
         insideAnchor++;
       } else if (/^<\/a\b/i.test(t)) {
         insideAnchor = Math.max(0, insideAnchor - 1);
+      } else if (/^<h[1-6]\b/i.test(t)) {
+        insideHeading++;
+      } else if (/^<\/h[1-6]\b/i.test(t)) {
+        insideHeading = Math.max(0, insideHeading - 1);
+      } else if (/^<(?:title|script|style|button|figcaption|header|nav|summary)\b/i.test(t)) {
+        insideExcluded++;
+      } else if (/^<\/(?:title|script|style|button|figcaption|header|nav|summary)\b/i.test(t)) {
+        insideExcluded = Math.max(0, insideExcluded - 1);
+      } else if (/^<p\b/i.test(t)) {
+        insideP++;
+      } else if (/^<\/p\b/i.test(t)) {
+        insideP = Math.max(0, insideP - 1);
       }
-    } else if (insideAnchor === 0 && !replaced) {
+    } else if (insideAnchor === 0 && insideHeading === 0 && insideExcluded === 0 && insideP > 0 && !replaced) {
       if (kwRegex.test(t)) {
         tokens[i] = t.replace(kwRegex, replaceFn);
         replaced = true;
@@ -2562,24 +2577,6 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
           ${guaranteedSectionsHtml.includes('class="faq-card"') ? '' : visibleFaqHtml}
         </div>
 
-        <!-- Related Department Stories -->
-        ${(() => {
-          const related = getDynamicRelatedArticles(articleData.slug);
-          if (!related || related.length === 0) return '';
-          const itemsHtml = related.map(r => 
-            `<li><strong>${r.category}:</strong> <a href="/${r.slug}" style="color: var(--primary); font-weight: 700; text-decoration: underline;">${r.title}</a></li>`
-          ).join('\n            ');
-          return `
-        <div style="background: var(--bg-subtle); border-left: 4px solid var(--primary); padding: 1.25rem 1.5rem; margin: 2.5rem 0; border-radius: var(--radius-sm);">
-          <h4 style="color: var(--primary); margin-top: 0; font-size: 1.1rem; text-transform: uppercase;">Related Investigative Reports & Department Features</h4>
-          <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 0.75rem;">
-            Continue reading in-depth community coverage from GenAlphaMagazines:
-          </p>
-          <ul style="margin-left: 1.5rem; line-height: 1.8; font-size: 0.95rem;">
-            ${itemsHtml}
-          </ul>
-        </div>`;
-        })()}
 
         <section class="author-box">
           <div class="author-avatar">${author.initials}</div>
@@ -3145,8 +3142,11 @@ function verifyAndEnforceArticleDashesAndRelated(filePath, slug) {
     // 2. Remove obsolete empty external resources box if present
     content = removeObsoleteBoxes(content);
 
-    // 3. Ensure Related Investigative Reports & Department Features block exists
+    // 3. Purge duplicate Related Investigative Reports block if present
     content = ensureRelatedSection(content, slug, path.dirname(filePath));
+
+    // 4. Strip any links inside h1-h6 headings
+    content = sanitizeHeadings(content);
 
     if (content !== original) {
       fs.writeFileSync(filePath, content, 'utf8');

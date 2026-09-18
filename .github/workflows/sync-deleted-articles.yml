@@ -43,6 +43,21 @@ jobs:
             echo "✅ All articles and feeds are already in sync. No deleted references found."
           else
             git commit -m "🧹 Auto-sync: Purged deleted article references from homepage & categories [skip ci]"
-            git push origin main
-            echo "✅ Successfully synced and updated live website."
+            SUCCESS=0
+            for attempt in 1 2 3 4 5; do
+              echo "Push attempt $attempt of 5..."
+              if git push origin main; then
+                SUCCESS=1
+                echo "✅ Successfully synced and updated live website."
+                break
+              fi
+              echo "Push rejected by concurrent update. Pulling and rebasing..."
+              git fetch origin main
+              git rebase -X ours origin/main || (git rebase --abort && git merge -X ours origin/main -m "Merge remote-tracking branch 'origin/main'")
+              sleep 5
+            done
+            if [ $SUCCESS -ne 1 ]; then
+              echo "❌ Git push failed after 5 attempts."
+              exit 1
+            fi
           fi

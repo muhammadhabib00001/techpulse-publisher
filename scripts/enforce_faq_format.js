@@ -168,10 +168,20 @@ for (const filePath of targetFiles) {
     fileModified = true;
   }
 
-  // 3c. Guarantee Related Investigative Reports & Department Features block exists
+  // 3c. Purge duplicate Related Investigative Reports & Department Features block
   const relatedCleaned = ensureRelatedSection(content, slug, articlesDir);
   if (relatedCleaned !== content) {
     content = relatedCleaned;
+    fileModified = true;
+  }
+
+  // 3d. Strip any links inside h1-h6 headings
+  const headingCleaned = content.replace(/<(h[1-6])([^>]*)>([\s\S]*?)<\/\1>/gi, (match, tag, attrs, inner) => {
+    const cleaned = inner.replace(/<a\s[^>]*>/gi, '').replace(/<\/a>/gi, '');
+    return '<' + tag + attrs + '>' + cleaned + '</' + tag + '>';
+  });
+  if (headingCleaned !== content) {
+    content = headingCleaned;
     fileModified = true;
   }
 

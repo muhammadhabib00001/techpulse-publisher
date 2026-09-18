@@ -304,6 +304,14 @@ ${faqCards}
   return html;
 }
 
+function stripLinksFromHeadings(html) {
+  if (typeof html !== 'string') return html;
+  return html.replace(/<(h[1-6])([^>]*)>([\s\S]*?)<\/\1>/gi, (match, tag, attrs, inner) => {
+    const cleaned = inner.replace(/<a\s[^>]*>/gi, '').replace(/<\/a>/gi, '');
+    return '<' + tag + attrs + '>' + cleaned + '</' + tag + '>';
+  });
+}
+
 function safeKeywordReplace(html, keyword, replaceFn) {
   if (!keyword || keyword.length < 3) return { html, replaced: false };
   const esc = keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -311,6 +319,9 @@ function safeKeywordReplace(html, keyword, replaceFn) {
 
   const tokens = html.split(/(<[^>]+>)/g);
   let insideAnchor = 0;
+  let insideHeading = 0;
+  let insideExcluded = 0;
+  let insideP = 0;
   let replaced = false;
 
   for (let i = 0; i < tokens.length; i++) {
@@ -321,8 +332,20 @@ function safeKeywordReplace(html, keyword, replaceFn) {
         insideAnchor++;
       } else if (/^<\/a\b/i.test(t)) {
         insideAnchor = Math.max(0, insideAnchor - 1);
+      } else if (/^<h[1-6]\b/i.test(t)) {
+        insideHeading++;
+      } else if (/^<\/h[1-6]\b/i.test(t)) {
+        insideHeading = Math.max(0, insideHeading - 1);
+      } else if (/^<(?:title|script|style|button|figcaption|header|nav|summary)\b/i.test(t)) {
+        insideExcluded++;
+      } else if (/^<\/(?:title|script|style|button|figcaption|header|nav|summary)\b/i.test(t)) {
+        insideExcluded = Math.max(0, insideExcluded - 1);
+      } else if (/^<p\b/i.test(t)) {
+        insideP++;
+      } else if (/^<\/p\b/i.test(t)) {
+        insideP = Math.max(0, insideP - 1);
       }
-    } else if (insideAnchor === 0 && !replaced) {
+    } else if (insideAnchor === 0 && insideHeading === 0 && insideExcluded === 0 && insideP > 0 && !replaced) {
       if (kwRegex.test(t)) {
         tokens[i] = t.replace(kwRegex, replaceFn);
         replaced = true;
@@ -617,54 +640,18 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
 
   // Restore navigation and footer links
   content = restoreNavigationAndFooter(content, category);
+  content = stripLinksFromHeadings(content);
 
   return content;
 }
 
 function buildRelatedSectionHtml(currentSlug, articlesDir) {
-  const files = fs.readdirSync(articlesDir).filter(f => f.endsWith('.html') && f !== `${currentSlug}.html`);
-  const list = [];
-  for (const f of files) {
-    try {
-      const html = fs.readFileSync(path.join(articlesDir, f), 'utf8');
-      const titleMatch = html.match(/<title>([^<]+)<\/title>/);
-      let title = titleMatch ? titleMatch[1].replace(/\s*\|\s*GenAlphaMagazines.*$/, '').trim() : f.replace('.html', '');
-      const catMatch = html.match(/<meta property="article:section" content="([^"]+)"/) || html.match(/<span class="card-tag">([A-Z\s]+)(?:&bull;|•|&middot;|\s)+/);
-      let cat = catMatch ? catMatch[1].trim().toUpperCase() : 'FEATURE';
-      list.push({ slug: f.replace('.html', ''), title, category: cat });
-    } catch (e) {}
-  }
-
-  const count = Math.min(list.length, Math.floor(Math.random() * 3) + 3);
-  const selected = list.sort(() => 0.5 - Math.random()).slice(0, count);
-  const itemsHtml = selected.map(r => 
-    `<li><strong>${r.category}:</strong> <a href="/${r.slug}" style="color: var(--primary); font-weight: 700; text-decoration: underline;">${r.title}</a></li>`
-  ).join('\n            ');
-
-  return `
-        <!-- Related Department Stories -->
-        <div style="background: var(--bg-subtle); border-left: 4px solid var(--primary); padding: 1.25rem 1.5rem; margin: 2.5rem 0; border-radius: var(--radius-sm);">
-          <h4 style="color: var(--primary); margin-top: 0; font-size: 1.1rem; text-transform: uppercase;">Related Investigative Reports & Department Features</h4>
-          <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 0.75rem;">
-            Continue reading in-depth community coverage from GenAlphaMagazines:
-          </p>
-          <ul style="margin-left: 1.5rem; line-height: 1.8; font-size: 0.95rem;">
-            ${itemsHtml}
-          </ul>
-        </div>`;
+  return '';
 }
 
 function ensureRelatedSection(html, currentSlug, articlesDir) {
-  if (html.includes('Related Investigative Reports & Department Features')) {
-    return html;
-  }
-  const relBlock = buildRelatedSectionHtml(currentSlug, articlesDir);
-  if (html.includes('<section class="author-box">')) {
-    return html.replace('<section class="author-box">', `${relBlock}\n\n        <section class="author-box">`);
-  } else if (html.includes('</article>')) {
-    return html.replace('</article>', `${relBlock}\n      </article>`);
-  }
-  return html;
+  if (typeof html !== 'string') return html;
+  return html.replace(/(?:<!--\s*Related Department Stories\s*-->\s*)?<div style="background:\s*var\(--bg-subtle\)[^>]*>\s*<h4[^>]*>[^<]*Related Investigative Reports[\s\S]*?<\/ul>\s*<\/div>/gi, '');
 }
 
 function syncLlmsFiles(existingSlugs, writeIfChanged) {
@@ -1804,6 +1791,7 @@ ${sideArticles.map(art => {
       `{"@type": "ListItem", "position": 2, "name": "${catNameFormatted}", "item": "https://www.genalphamagazines.com/category-${artCategory}"}`
     );
 
+    updated = stripLinksFromHeadings(updated);
     writeIfChanged(artPath, updated, original);
   }
 
