@@ -10,6 +10,8 @@
     "sync-articles": "node scripts/minify_assets.js && node scripts/sync_articles.js && node scripts/generate_news_feeds.js",
     "delete-article": "node scripts/delete_article.js",
     "enforce-faq": "node scripts/enforce_faq_format.js",
+    "index-article": "node scripts/index_article.js",
+    "index-all": "node scripts/index_article.js --all",
     "setup-hooks": "node scripts/install-hooks.js",
     "postinstall": "node scripts/install-hooks.js"
   },

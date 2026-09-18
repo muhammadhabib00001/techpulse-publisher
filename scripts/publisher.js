@@ -3446,6 +3446,17 @@ async function main() {
   } catch (syncErr) {
     console.warn('[WARN] sync_articles notice: ' + syncErr.message);
   }
+
+  // Instant Google Indexing API ping
+  try {
+    const { notifyGoogleIndex } = require('./index_article');
+    const articleFullUrl = `https://www.genalphamagazines.com/${generatedArticle.slug}`;
+    console.log(`[INFO] Sending instant Google Indexing API ping for: ${articleFullUrl}`);
+    await notifyGoogleIndex(articleFullUrl, 'URL_UPDATED');
+  } catch (indexErr) {
+    console.warn('[WARN] Indexing API notification notice: ' + indexErr.message);
+  }
+
   console.log('=== Pipeline Execution Complete ===');
 }
 
