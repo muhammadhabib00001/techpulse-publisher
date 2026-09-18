@@ -402,7 +402,7 @@ Rules:
 - Category must be the single most relevant from the list
 - Respond ONLY with the JSON object`;
 
-  const sheetModels = ['gemini-3.5-flash','gemini-3.8-flash','gemini-3.5-flash-lite','gemini-flash-lite-latest'];
+  const sheetModels = ['gemini-3.5-flash','gemini-3.8-flash','gemini-3.1-flash-lite','gemini-flash-latest','gemini-3.5-flash-lite'];
   for (const model of sheetModels) {
     try {
       const result = await new Promise((resolve, reject) => {
@@ -1239,12 +1239,12 @@ async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '',
     'gemini-3.8-flash',
     'gemini-3.5-flash-lite',
     'gemini-flash-lite-latest',
+    'gemini-3.5-flash',
+    'gemini-3.8-flash',
+    'gemini-3.7-flash',
+    'gemini-3.6-flash',
+    'gemini-3.1-flash-lite',
     'gemini-2.5-flash',
-    'gemini-2.0-flash',
-    'gemini-2.5-flash-lite',
-    'gemini-2.0-flash-lite',
-    'gemini-1.5-flash',
-    'gemini-1.5-flash-8b',
     'gemini-3.6-flash',
     'gemini-flash-latest'
   ];
@@ -1683,81 +1683,87 @@ You MUST integrate these EXACT 3 HTML hyperlinks naturally inside the body <p> p
 Place each link on its exact targeted keyword within natural sentences inside paragraph prose. NEVER place links in headings (H1, H2, H3). NEVER link to generic phrases or full article titles.`;
   }
 
-  const systemInstruction = `Act as an SEO content strategist and copywriter. Create a detailed article for a blog post targeting the keyword with informational intent. Use LSI Keywords. The audience is World Wide. Include: a click-worthy headline, an opening hook, H2 and H3 subheadings, key points to cover under each section, and 1000-1500 word count. The tone should be professional. remove dash in article, two internal link and one external link on the targeted keyword only, one image on one article and related to keyword and do not repeat same image in all articles and image base on keyword only, headline not repeat only one time do not add 2026 in heading. Donot repeat article 2 time only one article one time.
+  const systemInstruction = `You are a Senior SEO Content Strategist, SEO Copywriter, Semantic SEO Specialist and Editorial Content Planner with deep expertise in Google Search, E-E-A-T, topical authority, and search intent. Your job is to produce MASTER SEO articles that are real, helpful, and specific.
 ${linkDirective}
 
-CORE EDITORIAL & SEO REQUIREMENTS:
-1. ROLE & PERSPECTIVE: Act as an authoritative SEO content strategist and copywriter. Write for a Worldwide audience with informational intent using LSI keywords.
-2. TONE: Professional, authoritative, highly engaging, and clear. Zero generic filler.
-3. CLICK-WORTHY HEADLINE:
-   - Must be between 50 and 60 characters.
-   - Click-worthy, engaging, and unique without misleading clickbait.
-   - HEADLINE MUST NEVER REPEAT (100% unique, only one time across all publications).
-   - ABSOLUTELY DO NOT ADD "2026" OR CALENDAR YEARS IN HEADING / TITLE / H1.
-   - Never use banned suffixes like ": A Complete Guide" or repetitive "Guide for 2026".
-4. OPENING HOOK (Section 1):
-   - Do NOT use an H2 heading for section 1 (heading MUST be "").
-   - Start immediately with a compelling opening hook that captivates the worldwide reader in the very first sentence.
-   - Answer the primary search intent early and directly in clear, authoritative prose.
-   - NEVER use boilerplate like "If you've been looking into", "cut through the noise", or "this guide is here".
-5. STRUCTURE & HIERARCHICAL HEADINGS (H2 to H5):
-   - Title / H1: Article Title (managed at top level).
-   - Section 1: Compelling opening hook and overview (heading = "").
-   - Sections 2-4: Comprehensive coverage structured with clear heading hierarchy from H2 down to H5:
-     * H2 headings for primary major thematic sections (e.g. section headings).
-     * H3 subheadings for significant subsection topics inside contentHtml.
-     * H4 subheadings for specific breakdowns, technical aspects, or key considerations under H3.
-     * H5 subheadings for granular sub-points, quick checklists, or detailed technical specifications under H4.
-   - Section 5: "Final Thoughts" (id: "final-thoughts", heading: "Final Thoughts"). Include key takeaways and strategic outlook with appropriate H3/H4 subheadings.
-   - Section 6: "Frequently Asked Questions" (id: "frequently-asked-questions", heading: "Frequently Asked Questions").
-6. FORMATTING RULES (STRICT):
-   - Use clean HTML tags: <h2>, <h3>, <h4>, <h5>, <p>, <ul>, <ol>, <li> inside contentHtml.
-   - Strictly organize subsections using H2 to H5 hierarchy to ensure deep structural readability.
-   - DO NOT USE MARKDOWN HASHES (never use #, ##, ###, ####, or #####). Use native HTML tags.
-   - DO NOT write the label "Featured Snippet" anywhere.
-7. WORD COUNT: Strictly between 1,000 and 1,500 words across all body sections.
-8. REMOVE DASH IN ARTICLE: Do NOT use em-dashes (—), en-dashes (–), or spaced hyphens ( - ) in article prose or headings. Use commas, colons, or natural phrasing.
-9. TARGETED KEYWORD LINKING:
-   - Two internal links and one external link on the targeted keyword only.
-   - Weave natural target keywords inside body <p> paragraphs for internal and external links. Never place links in headings.
-10. HERO IMAGE RULE:
-   - Exactly one image per article (hero image), related to the keyword only.
-   - Do not repeat the same image in all articles.
-11. DEDUPLICATION (CRITICAL):
-   - Do not repeat article 2 times, only one article one time.
-   - Headline must not repeat, only one time, do not add 2026 in heading.
-12. ABSOLUTELY BANNED:
-   - Markdown hashes: "#", "##", "###", "####" (always use clean HTML <h2> to <h5> tags instead)
-   - The phrase or label "Featured Snippet"
-   - "If you've been looking into"
-   - "municipal governance"
-   - "civic engagement"
-   - "stakeholder trust"
-   - "across our regional communities"
-   - Em-dash (—) and en-dash (–)
-   - Calendar year "2026" in headings or titles
-13. Output valid JSON only with keys: "title", "slug", "metaDescription", "sections", "faqs". Section 6 contentHtml must be "" (empty string).`;
+MASTER SEO CONTENT CREATION REQUIREMENTS:
 
-  const userPrompt = `Act as an SEO content strategist and copywriter. Create a detailed article for a blog post targeting the keyword "${topic}" with informational intent. Use LSI Keywords. The audience is World Wide. Include: a click-worthy headline, an opening hook, complete H2 to H5 hierarchical subheadings, key points to cover under each section, and 1000-1500 word count. The tone should be professional. remove dash in article, two internal link and one external link on the targeted keyword only, one image on one article and related to keyword and do not repeat same image in all articles and image base on keyword only, headline not repeat only one time do not add 2026 in heading. Donot repeat article 2 time only one article one time.
-Category: ${category}
-Author: ${author.name} (${author.role})
+1. ROLE: Senior SEO Content Strategist. Write authoritative, trustworthy, specific content for a Worldwide audience with informational search intent.
+
+2. HEADLINE: 50-60 characters. Click-worthy, unique, engaging. NEVER add year "2026". NEVER repeat an existing title. NEVER use ": A Complete Guide" or generic suffixes.
+
+3. QUICK ANSWER BOX (MANDATORY - FIRST ELEMENT IN SECTION 1 contentHtml):
+   Every article MUST open with this exact HTML structure filled with REAL topic-specific content:
+   <div style="background:var(--bg-subtle);border-left:4px solid var(--primary);padding:1.25rem 1.5rem;border-radius:var(--radius-sm);margin:0 0 1.5rem 0;"><p style="margin:0;font-size:1rem;line-height:1.75;"><strong>Quick Answer:</strong> [2-3 sentences with real price ranges, real steps, real brand names, actual timelines directly answering the keyword query]</p></div>
+   After the box: 2-3 compelling hook paragraphs. Primary keyword in first 100 words. Section 1 heading MUST be "".
+
+4. ARTICLE STRUCTURE (6 sections required):
+   - Section 1: heading="" - Quick Answer box then hook paragraphs
+   - Sections 2-4: H2 heading + 2-3 H3 subheadings inside contentHtml with REAL specific subtopics
+   - Section 5: id="final-thoughts", heading="Final Thoughts" - key takeaway in <div style="background:var(--bg-subtle);border-left:4px solid var(--primary);padding:1.5rem;border-radius:var(--radius-sm);">...</div>
+   - Section 6: id="frequently-asked-questions", heading="Frequently Asked Questions", contentHtml=""
+
+5. REAL CONTENT - ZERO GENERIC FILLER (STRICTLY ENFORCED):
+   - Every section covers REAL, SPECIFIC subtopics for this exact keyword
+   - Include actual price ranges in USD, real brand names, real statistics, real step-by-step instructions, real timelines
+   - Use 5-8 LSI/semantic keywords naturally throughout
+   - BANNED GENERIC H3s for non-technology articles: "Architecture and Build", "Performance Optimization", "Ecosystem Integration", "User Experience" as standalone sections
+
+6. FORMATTING:
+   - contentHtml uses ONLY: <h2>, <h3>, <p>, <ul>, <ol>, <li>, <strong>
+   - NEVER use markdown hashes (#, ##, ###). NEVER write "Featured Snippet".
+   - List items: use <strong> for first 2-4 words of each key point.
+
+7. WORD COUNT: 1,000-1,500 words total across all body sections.
+
+8. NO DASHES: Never use em-dash, en-dash, or spaced hyphen in prose or headings.
+
+9. LINKS: Place exactly on targeted keywords in <p> paragraphs. Never in headings.
+
+10. FAQ QUALITY (STRICT): Exactly 5 Q&A pairs. Each answer: direct, specific, minimum 35 words, with real data.
+    BANNED patterns: "Follow official updates", "Check the website", "It depends on your needs", "Visit the manufacturer"
+
+11. ABSOLUTELY BANNED: generic filler, "Architecture and Build" for non-tech topics, markdown hashes, "Featured Snippet" label, "If you have been looking into", "municipal governance", "civic engagement", "stakeholder trust", em-dash, year "2026" in headings.
+
+12. OUTPUT: Valid JSON only - keys: "title", "slug", "metaDescription", "sections", "faqs". No markdown wrapping. No extra text.`
+
+  const userPrompt = `Act as a Senior SEO Content Strategist, SEO Copywriter, Semantic SEO Specialist, and Editorial Content Planner with expertise in Google Search, helpful content, search intent, topical authority, E-E-A-T, and modern SEO.
+
+TOPIC / PRIMARY KEYWORD: "${topic}"
+CATEGORY: ${category}
+AUTHOR: ${author.name} (${author.role})
+SEARCH INTENT: Informational
+TARGET AUDIENCE: Worldwide
+ARTICLE LENGTH: 1,000-1,500 words
+TONE: Professional, trustworthy, informative, neutral, natural, easy to understand
 ${linkDirective}
 
-MANDATORY EDITORIAL & SEO REQUIREMENTS:
-- HEADLINE: Click-worthy headline (50-60 characters). Headline must not repeat (only one time across all publications). Absolutely DO NOT add 2026 in heading.
-- OPENING HOOK: Section 1 heading MUST be "" (empty string). Start immediately with a compelling opening hook.
-- HEADING HIERARCHY (H2 to H5): Implement clear semantic heading hierarchy across body sections:
-  * H2 for major section topics.
-  * H3 for key themes and subsections.
-  * H4 for granular subject breakdowns and comparative factors.
-  * H5 for actionable takeaways, technical specs, or detailed checkpoints.
-  * Use HTML tags (<h3>, <h4>, <h5>) inside contentHtml. DO NOT use markdown hashes.
-- NO "FEATURED SNIPPET" LABELS: DO NOT include the text "Featured Snippet" anywhere.
-- WORD COUNT: Strictly between 1,000 and 1,500 words total across all body sections.
-- REMOVE DASH: Do NOT use em-dashes (—), en-dashes (–), or spaced hyphens ( - ) in prose or headings.
-- TARGETED KEYWORD LINKING: Weave natural target keywords inside body <p> paragraphs for exactly two internal links and one external link on targeted keywords only.
-- FAQS: Exactly 5 unique Q&A pairs in the "faqs" array. Section contentHtml for FAQ MUST be "".
-- Output valid JSON only: { "title": "...", "slug": "...", "metaDescription": "...", "sections": [...], "faqs": [...] }`;
+MANDATORY MASTER SEO ARTICLE REQUIREMENTS:
+
+FEATURED QUICK ANSWER BOX (MANDATORY - FIRST ELEMENT IN SECTION 1):
+<div style="background:var(--bg-subtle);border-left:4px solid var(--primary);padding:1.25rem 1.5rem;border-radius:var(--radius-sm);margin:0 0 1.5rem 0;"><p style="margin:0;font-size:1rem;line-height:1.75;"><strong>Quick Answer:</strong> [Write 2-3 sentences with REAL, SPECIFIC facts for "${topic}": real price ranges, real brand names, real steps or real timelines. NO vague answers.]</p></div>
+
+HEADLINE: 50-60 chars, click-worthy, unique. NO "2026". NO generic suffixes. NEVER repeat.
+
+SECTION 1 (heading = "" MANDATORY):
+- Quick Answer box then 2-3 compelling hook paragraphs
+- Keyword "${topic}" within first 100 words
+
+SECTIONS 2-4: H2 + 2-3 H3 subheadings. Cover REAL specific subtopics for "${topic}":
+- Actual USD prices, real brand names, real statistics, actionable steps, real timelines
+- 5-8 LSI/semantic keywords woven naturally throughout
+
+SECTION 5 (id="final-thoughts", heading="Final Thoughts"):
+- Key takeaway in: <div style="background:var(--bg-subtle);border-left:4px solid var(--primary);padding:1.5rem;border-radius:var(--radius-sm);">...</div>
+
+SECTION 6 (id="frequently-asked-questions", heading="Frequently Asked Questions"):
+- contentHtml MUST be "" (FAQs go in faqs array only)
+
+FAQS: Exactly 5. Each answer: direct, specific, minimum 35 words, real facts.
+BANNED: "Follow official updates", "Check the website", "It depends", "Visit the manufacturer"
+
+OUTPUT: Raw valid JSON only:
+{ "title": "...", "slug": "...", "metaDescription": "...", "sections": [...], "faqs": [...] }`
 
   let generated = null;
   if (GEMINI_API_KEY) {
@@ -1806,12 +1812,12 @@ async function fetchExternalLink(topic, category, usedUrls) {
     'gemini-3.8-flash',
     'gemini-3.5-flash-lite',
     'gemini-flash-lite-latest',
+    'gemini-3.5-flash',
+    'gemini-3.8-flash',
+    'gemini-3.7-flash',
+    'gemini-3.6-flash',
+    'gemini-3.1-flash-lite',
     'gemini-2.5-flash',
-    'gemini-2.0-flash',
-    'gemini-2.5-flash-lite',
-    'gemini-2.0-flash-lite',
-    'gemini-1.5-flash',
-    'gemini-1.5-flash-8b',
     'gemini-3.6-flash',
     'gemini-flash-latest'
   ];
