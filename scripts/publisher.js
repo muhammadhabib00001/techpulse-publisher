@@ -2993,37 +2993,9 @@ function updateSiteIndex(articleData, author, category, heroImage) {
         allArts.push({ slug: f.replace('.html', ''), title: t, category: c });
       }
 
-      // Update related block in all articles with random 3 to 5 articles
-      for (const f of artFiles) {
-        const slug = f.replace('.html', '');
-        const artPath = path.join(articlesDir, f);
-        let h = fs.readFileSync(artPath, 'utf8');
-        const count = Math.floor(Math.random() * 3) + 3; // Random 3, 4, or 5
-        const rel = allArts.filter(a => a.slug !== slug).sort(() => 0.5 - Math.random()).slice(0, count);
-        if (rel.length > 0) {
-          const items = rel.map(r => `<li><strong>${r.category}:</strong> <a href="/${r.slug}" style="color: var(--primary); font-weight: 700; text-decoration: underline;">${r.title}</a></li>`).join('\n            ');
-          const relBlock = `<div style="background: var(--bg-subtle); border-left: 4px solid var(--primary); padding: 1.25rem 1.5rem; margin: 2.5rem 0; border-radius: var(--radius-sm);">
-          <h4 style="color: var(--primary); margin-top: 0; font-size: 1.1rem; text-transform: uppercase;">Related Investigative Reports & Department Features</h4>
-          <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 0.75rem;">
-            Continue reading in-depth community coverage from GenAlphaMagazines:
-          </p>
-          <ul style="margin-left: 1.5rem; line-height: 1.8; font-size: 0.95rem;">
-            ${items}
-          </ul>
-        </div>`;
-          if (h.includes('Related Investigative Reports & Department Features')) {
-            h = h.replace(/<div style="background: var\(--bg-subtle\); border-left: 4px solid var\(--primary\);[^>]*>\s*<h4[^>]*>Related Investigative Reports & Department Features[\s\S]*?<\/ul>\s*<\/div>/, relBlock);
-          } else if (h.includes('<section class="author-box">')) {
-            h = h.replace('<section class="author-box">', `${relBlock}\n\n        <section class="author-box">`);
-          } else if (h.includes('</article>')) {
-            h = h.replace('</article>', `${relBlock}\n      </article>`);
-          }
-          h = sanitizeHeadings(h);
-          fs.writeFileSync(artPath, h, 'utf8');
-        }
-      }
+      // Related Investigative Reports block DISABLED (single Related Coverage box per article)
 
-      // Update static pages in pages/ with random 3 to 5 articles limit
+            // Update static pages in pages/ with random 3 to 5 articles limit
       const pagesDir = path.join(ROOT_DIR, 'pages');
       if (fs.existsSync(pagesDir)) {
         const pageFiles = fs.readdirSync(pagesDir).filter(f => f.endsWith('.html'));
