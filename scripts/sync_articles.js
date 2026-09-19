@@ -485,8 +485,13 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
   // 2.5 Unnest any malformed or recursively nested <a> tags in proseBody
   proseBody = proseBody.replace(/<a\b[^>]*>(?:(?!<\/a>)[\s\S])*<a\b[^>]*>([\s\S]*?)<\/a>[\s\S]*?<\/a>/gi, '$1');
 
-  // 3. Strip any secondary images inside proseBody (strictly enforce 1 hero image per article)
-  proseBody = proseBody.replace(/<img\s+[^>]*>/gi, '');
+  // 3. Preserve authorized secondary mid-article image (-2.jpg/png/webp) and strip only rogue/duplicate inline images
+  proseBody = proseBody.replace(/<img\s+([^>]*?)>/gi, (imgTag) => {
+    if (imgTag.includes('-2.jpg') || imgTag.includes('-2.png') || imgTag.includes('-2.webp') || imgTag.includes('-2.jpeg')) {
+      return imgTag;
+    }
+    return '';
+  });
 
   // 4. Strip any links in headings or lists inside proseBody ONLY
   proseBody = proseBody.replace(/(<h[1-6][^>]*>)([\s\S]*?)(<\/h[1-6]>)/gi, (m, open, text, close) => {
