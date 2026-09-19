@@ -249,6 +249,11 @@ function getAllInternalArticleTargets() {
 }
 
 function ensureArticleFaqs(html, slug) {
+  // Strip any empty section with FAQ heading regardless of id
+  html = html.replace(/<section[^>]*>\s*<h[1-6][^>]*>[^<]*(?:Frequently Asked Questions|FAQ)[^<]*<\/h[1-6]>\s*<\/section>/gi, '');
+  // Deduplicate consecutive FAQ headings
+  html = html.replace(/(<h[1-6][^>]*>[^<]*(?:Frequently Asked Questions|FAQ)[^<]*<\/h[1-6]>\s*){2,}/gi, '$1');
+
   if (html.includes('class="faq-card"')) return html;
 
   // Extract from JSON-LD schema if present
@@ -645,13 +650,66 @@ function standardizeArticleLinks(content, slug, customCategory = '', customExter
   return content;
 }
 
-function buildRelatedSectionHtml(currentSlug, articlesDir) {
-  return '';
+function buildRelatedSectionHtml(currentSlug, category) {
+  let articlesData = [];
+  try {
+    const articlesJsonPath = path.join(ROOT_DIR, 'data', 'articles.json');
+    if (fs.existsSync(articlesJsonPath)) {
+      articlesData = JSON.parse(fs.readFileSync(articlesJsonPath, 'utf8'));
+    }
+  } catch (e) {}
+
+  if (!articlesData || articlesData.length === 0) return '';
+
+  const normCat = (category || 'others').toLowerCase().trim();
+  const candidates = articlesData.filter(a => a.slug && a.slug !== currentSlug);
+
+  const sameCat = candidates.filter(a => (a.category || '').toLowerCase().trim() === normCat);
+  const otherCat = candidates.filter(a => (a.category || '').toLowerCase().trim() !== normCat);
+
+  const selected = [];
+  for (const item of sameCat) {
+    if (selected.length >= 3) break;
+    selected.push(item);
+  }
+  for (const item of otherCat) {
+    if (selected.length >= 3) break;
+    selected.push(item);
+  }
+
+  if (selected.length === 0) return '';
+
+  const listItems = selected.map(item => {
+    let cleanT = sanitizeTitleString(item.title) || item.slug.replace(/-/g, ' ');
+    cleanT = cleanT.replace(/\s*\|\s*GenAlpha(?:Magazines|Mag)?.*$/i, '').replace(/\s*-\s*GenAlpha.*$/i, '').trim();
+    return `          <li><a href="/${item.slug}" style="color:var(--primary);font-weight:700;">${cleanT}</a></li>`;
+  }).join('\n');
+
+  return `      <div class="related-coverage-box" style="background:var(--bg-subtle);border-left:4px solid var(--primary);padding:1.25rem 1.5rem;margin:2.5rem 0;border-radius:var(--radius-sm);">\n        <h4 style="color:var(--primary);margin-top:0;text-transform:uppercase;">Related Coverage</h4>\n        <ul style="margin-left:1.5rem;line-height:1.8;font-size:0.95rem;">\n${listItems}\n        </ul>\n      </div>`;
 }
 
 function ensureRelatedSection(html, currentSlug, articlesDir) {
   if (typeof html !== 'string') return html;
-  return html.replace(/(?:<!--\s*Related Department Stories\s*-->\s*)?<div style="background:\s*var\(--bg-subtle\)[^>]*>\s*<h4[^>]*>[^<]*Related Investigative Reports[\s\S]*?<\/ul>\s*<\/div>/gi, '');
+
+  // 1. Strip any and all existing related coverage boxes or legacy comments
+  html = html
+    .replace(/<div[^>]*class=["'][^"']*related-coverage-box[^"']*["'][^>]*>[\s\S]*?<\/div>/gi, '')
+    .replace(/<div[^>]*style="[^"]*background:\s*var\(--bg-subtle\)[^"]*"[^>]*>\s*<h4[^>]*>[^<]*Related[\s\S]*?<\/ul>\s*<\/div>/gi, '')
+    .replace(/<!--\s*Related (?:Department Stories|Coverage)\s*-->\s*/gi, '');
+
+  // 2. Build the category-relevant Related Coverage box
+  const category = getCategoryFromHtml(html);
+  const relatedBoxHtml = buildRelatedSectionHtml(currentSlug, category);
+  if (!relatedBoxHtml) return html;
+
+  // 3. Insert exactly one related coverage box before author-box or end of article
+  if (html.includes('<section class="author-box">')) {
+    return html.replace('<section class="author-box">', `${relatedBoxHtml}\n\n        <section class="author-box">`);
+  } else if (html.includes('</article>')) {
+    return html.replace('</article>', `${relatedBoxHtml}\n      </article>`);
+  }
+
+  return html;
 }
 
 function syncLlmsFiles(existingSlugs, writeIfChanged) {

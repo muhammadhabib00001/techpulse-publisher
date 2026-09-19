@@ -138,6 +138,15 @@ for (const filePath of targetFiles) {
     fileModified = true;
   }
 
+  // 3a. Remove empty FAQ sections and deduplicate FAQ headings
+  const cleanedFaqHeadings = content
+    .replace(/<section[^>]*>\s*<h[1-6][^>]*>[^<]*(?:Frequently Asked Questions|FAQ)[^<]*<\/h[1-6]>\s*<\/section>/gi, '')
+    .replace(/(<h[1-6][^>]*>[^<]*(?:Frequently Asked Questions|FAQ)[^<]*<\/h[1-6]>\s*){2,}/gi, '$1');
+  if (cleanedFaqHeadings !== content) {
+    content = cleanedFaqHeadings;
+    fileModified = true;
+  }
+
   // 3. Enforce FAQ Card Format
   const sm = content.match(/(<section[^>]*id=["']frequently-asked-questions["'][^>]*>)([\s\S]*?)(<\/section>)/i);
   if (sm) {

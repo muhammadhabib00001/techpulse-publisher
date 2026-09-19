@@ -16,7 +16,7 @@ const http = require('http');
 const crypto = require('crypto');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
-const { sanitizeAllDashes, sanitizeMarkdownAndSnippets, removeObsoleteBoxes, ensureRelatedSection, standardizeArticleLinks, getAllInternalArticleTargets, ARTICLE_INTERNAL_TARGETS } = require('./sync_articles');
+const { sanitizeAllDashes, sanitizeMarkdownAndSnippets, removeObsoleteBoxes, buildRelatedSectionHtml, ensureRelatedSection, standardizeArticleLinks, getAllInternalArticleTargets, ARTICLE_INTERNAL_TARGETS } = require('./sync_articles');
 
 // Hard sanitize title: NEVER allow "2026" or calendar years in titles or slugs, zero dashes
 function sanitizeTitle(rawTitle) {
@@ -2484,7 +2484,8 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
     // NUCLEAR DEFENSE: If this is the FAQ section, completely discard any AI-generated
     // contentHtml. FAQs are rendered exclusively from articleData.faqs array.
     // This prevents duplication regardless of what the AI puts in contentHtml.
-    if (sectionId === 'frequently-asked-questions' || sectionId === 'faqs') {
+    const isFaqSection = sectionId === 'frequently-asked-questions' || sectionId === 'faqs' || /frequently\s*asked\s*questions|faqs/i.test(sec.heading || '');
+    if (isFaqSection) {
       enrichedContent = '';
     }
 
@@ -2492,7 +2493,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
     let faqBlock = '';
     let finalThoughtsBlock = '';
 
-    if ((sectionId === 'frequently-asked-questions' || sectionId === 'faqs') && articleData.faqs && articleData.faqs.length > 0) {
+    if (isFaqSection && articleData.faqs && articleData.faqs.length > 0) {
       // Remove repetitive <h3>Frequently Asked Questions</h3>
       enrichedContent = enrichedContent.replace(/<h3>Frequently Asked Questions<\/h3>/gi, '');
       // Remove any raw <div class="faq-item"> or <div class='faq-item'> blocks (double OR single quotes)
@@ -2524,9 +2525,17 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
       faqBlock = `<div style="margin-top: 1.25rem;">${faqCards}</div>`;
     }
 
+    // If this is an FAQ section but no faqBlock was created, do NOT render an empty section with an orphan FAQ heading
+    if (isFaqSection && !faqBlock) {
+      return finalThoughtsBlock || '';
+    }
+
+    const finalSecId = isFaqSection ? 'frequently-asked-questions' : sectionId;
+    const finalHeading = isFaqSection ? '<h2>Frequently Asked Questions</h2>' : headingHtml;
+
     const currentSectionHtml = `
-          <section id="${sectionId}">
-            ${headingHtml}
+          <section id="${finalSecId}">
+            ${finalHeading}
             ${enrichedContent}
             ${faqBlock}
           </section>${adBlock}`;
@@ -2763,6 +2772,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
           ${guaranteedSectionsHtml.includes('class="faq-card"') ? '' : visibleFaqHtml}
         </div>
 
+        ${buildRelatedSectionHtml(articleData.slug, category)}
 
         <section class="author-box">
           <div class="author-avatar">${author.initials}</div>
