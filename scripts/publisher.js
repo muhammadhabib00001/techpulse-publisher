@@ -2744,7 +2744,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
       }`;
   }
 
-  const fullRawHtml = `<!DOCTYPE html>
+  let fullRawHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <!-- Google tag (gtag.js) -->
