@@ -1897,8 +1897,8 @@ MASTER SEO CONTENT CREATION REQUIREMENTS:
    After the box: 2-3 compelling hook paragraphs. Primary keyword in first 100 words. Section 1 heading MUST be "".
 
 4. ARTICLE STRUCTURE (6 sections required):
-   - Section 1: heading="" - Quick Answer box then hook paragraphs
-   - Sections 2-4: H2 heading + 2-3 H3 subheadings inside contentHtml with REAL specific subtopics
+   - Section 1: heading="" - Quick Answer box then 2-3 dense hook paragraphs introducing the topic with primary keyword in first 100 words.
+   - Sections 2-4: H2 heading + 2-3 H3 subheadings inside contentHtml with REAL specific subtopics. CRITICAL: Each of these sections MUST be comprehensive, containing at least 3 to 4 substantial paragraphs with practical examples, real numbers/data, and clear explanations (minimum 350-450 words per section). NEVER return thin, single-sentence sections.
    - Section 5: id="final-thoughts", heading="Final Thoughts" - key takeaway in <div style="background:var(--bg-subtle);border-left:4px solid var(--primary);padding:1.5rem;border-radius:var(--radius-sm);">...</div>
    - Section 6: id="frequently-asked-questions", heading="Frequently Asked Questions", contentHtml=""
 
@@ -1913,7 +1913,7 @@ MASTER SEO CONTENT CREATION REQUIREMENTS:
    - NEVER use markdown hashes (#, ##, ###). NEVER write "Featured Snippet".
    - List items: use <strong> for first 2-4 words of each key point.
 
-7. WORD COUNT: 1,000-1,500 words total across all body sections.
+7. WORD COUNT: 1,500-2,000 words total across all body sections. Every main section must be deeply informative with thorough explanations. Never summarize in one sentence.
 
 8. NO DASHES: Never use em-dash, en-dash, or spaced hyphen in prose or headings.
 
@@ -1933,7 +1933,7 @@ CATEGORY: ${category}
 AUTHOR: ${author.name} (${author.role})
 SEARCH INTENT: Informational
 TARGET AUDIENCE: Worldwide
-ARTICLE LENGTH: 1,000-1,500 words
+ARTICLE LENGTH: 1,500-2,000 words
 TONE: Professional, trustworthy, informative, neutral, natural, easy to understand
 ${linkDirective}
 
@@ -1949,6 +1949,7 @@ SECTION 1 (heading = "" MANDATORY):
 - Keyword "${topic}" within first 100 words
 
 SECTIONS 2-4: H2 + 2-3 H3 subheadings. Cover REAL specific subtopics for "${topic}":
+- CRITICAL REQUIREMENT: Minimum 3-4 dense, detailed paragraphs per section (minimum 350-450 words each). Never provide brief 1-2 sentence summaries.
 - Actual USD prices, real brand names, real statistics, actionable steps, real timelines
 - 5-8 LSI/semantic keywords woven naturally throughout
 
@@ -2440,6 +2441,9 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   const cleanMeta = (articleData.metaDescription || '').replace(/[—–]/g, ', ').replace(/\s+/g, ' ').trim();
 
   const sectionsHtml = articleData.sections.map((sec, idx) => {
+    const sectionId = (sec.id && sec.id !== 'undefined') 
+      ? sec.id 
+      : (sec.heading ? sec.heading.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : (idx === 0 ? 'introduction' : `section-${idx + 1}`));
     let rawContent = (sec.contentHtml || '').replace(/[—–]/g, ', ');
     rawContent = sanitizeMarkdownAndSnippets(rawContent);
     let enrichedContent = injectInternalLinks(rawContent, articleData.slug, category);
@@ -2480,7 +2484,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
     // NUCLEAR DEFENSE: If this is the FAQ section, completely discard any AI-generated
     // contentHtml. FAQs are rendered exclusively from articleData.faqs array.
     // This prevents duplication regardless of what the AI puts in contentHtml.
-    if (sec.id === 'frequently-asked-questions' || sec.id === 'faqs') {
+    if (sectionId === 'frequently-asked-questions' || sectionId === 'faqs') {
       enrichedContent = '';
     }
 
@@ -2488,7 +2492,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
     let faqBlock = '';
     let finalThoughtsBlock = '';
 
-    if ((sec.id === 'frequently-asked-questions' || sec.id === 'faqs') && articleData.faqs && articleData.faqs.length > 0) {
+    if ((sectionId === 'frequently-asked-questions' || sectionId === 'faqs') && articleData.faqs && articleData.faqs.length > 0) {
       // Remove repetitive <h3>Frequently Asked Questions</h3>
       enrichedContent = enrichedContent.replace(/<h3>Frequently Asked Questions<\/h3>/gi, '');
       // Remove any raw <div class="faq-item"> or <div class='faq-item'> blocks (double OR single quotes)
@@ -2521,7 +2525,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
     }
 
     const currentSectionHtml = `
-          <section id="${sec.id}">
+          <section id="${sectionId}">
             ${headingHtml}
             ${enrichedContent}
             ${faqBlock}
