@@ -299,7 +299,37 @@ const CLI_ARGS = parseArgs();
 // Environment & Config
 // Default key encoded to avoid GitHub push protection false-positive blocking
 const DEFAULT_GEM_KEY     = Buffer.from('QVEuQWI4Uk42SlhCSVkwbGFFelQ0QmpBLXNZN2dkSW9GME80eVlnRXJXNlkxMzhIUXYxekE=', 'base64').toString('utf8');
-const GEMINI_API_KEY      = process.env.GEMINI_API_KEY || DEFAULT_GEM_KEY;
+
+// Multi-Key Support: parse multiple Gemini API keys from GEMINI_API_KEYS or GEMINI_API_KEY
+// Supports comma, semicolon, or newline separated keys for automatic rotation & rate-limit failover
+function parseGeminiKeys() {
+  const raw = process.env.GEMINI_API_KEYS || process.env.GEMINI_API_KEY || DEFAULT_GEM_KEY;
+  const list = raw
+    .split(/[,;\n\r]+/)
+    .map(k => k.trim())
+    .filter(k => k.length > 10);
+  return list.length > 0 ? list : [DEFAULT_GEM_KEY];
+}
+
+const GEMINI_API_KEYS = parseGeminiKeys();
+let currentKeyIndex = 0;
+
+function getActiveGeminiKey() {
+  return GEMINI_API_KEYS[currentKeyIndex % GEMINI_API_KEYS.length];
+}
+
+function rotateGeminiKey(reason = '') {
+  if (GEMINI_API_KEYS.length > 1) {
+    const prev = currentKeyIndex;
+    currentKeyIndex = (currentKeyIndex + 1) % GEMINI_API_KEYS.length;
+    console.log(`[KEY-FAILOVER] ${reason ? reason + ' -> ' : ''}Switched from Key #${prev + 1} to Key #${currentKeyIndex + 1} (Total available keys: ${GEMINI_API_KEYS.length})`);
+    return GEMINI_API_KEYS[currentKeyIndex];
+  }
+  return GEMINI_API_KEYS[0];
+}
+
+// Active key reference
+let GEMINI_API_KEY = getActiveGeminiKey();
 const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY || 'rug2wxB71o1mh5kYy_K6kJVLxXZ6CA2apSHUrGqZYLk';
 const CUSTOM_TOPIC        = (CLI_ARGS.topic && typeof CLI_ARGS.topic === 'string') ? CLI_ARGS.topic.trim() : (process.env.CUSTOM_TOPIC || '');
 const TARGET_CATEGORY     = (CLI_ARGS.category && typeof CLI_ARGS.category === 'string') ? CLI_ARGS.category.toLowerCase().trim() : (process.env.TARGET_CATEGORY || '').toLowerCase().trim();
@@ -412,44 +442,60 @@ Rules:
 - Category must be the single most relevant from the list
 - Respond ONLY with the JSON object`;
 
-  const sheetModels = ['gemini-3.5-flash','gemini-3.8-flash','gemini-3.1-flash-lite','gemini-flash-latest','gemini-3.5-flash-lite'];
-  for (const model of sheetModels) {
-    try {
-      const result = await new Promise((resolve, reject) => {
-        const payload = JSON.stringify({
-          contents: [{ role: 'user', parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.4 }
-        });
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
-        const req = https.request(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }
-        }, (res) => {
-          let data = '';
-          res.on('data', chunk => data += chunk);
-          res.on('end', () => {
-            try {
-              const parsed = JSON.parse(data);
-              if (parsed.error) return reject(new Error(parsed.error.message));
-              const text = parsed.candidates[0].content.parts[0].text.trim();
-              resolve(text);
-            } catch (err) { reject(err); }
+  const sheetModels = ['gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-flash-latest', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+  for (let k = 0; k < GEMINI_API_KEYS.length; k++) {
+    const key = GEMINI_API_KEYS[(currentKeyIndex + k) % GEMINI_API_KEYS.length];
+    const keyNum = ((currentKeyIndex + k) % GEMINI_API_KEYS.length) + 1;
+    let keyExhausted = false;
+
+    for (const model of sheetModels) {
+      if (keyExhausted) break;
+      try {
+        const result = await new Promise((resolve, reject) => {
+          const payload = JSON.stringify({
+            contents: [{ role: 'user', parts: [{ text: prompt }] }],
+            generationConfig: { temperature: 0.4 }
           });
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+          const req = https.request(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }
+          }, (res) => {
+            let data = '';
+            res.on('data', chunk => data += chunk);
+            res.on('end', () => {
+              try {
+                const parsed = JSON.parse(data);
+                if (parsed.error) {
+                  const errMsg = parsed.error.message || JSON.stringify(parsed.error);
+                  if (parsed.error.code === 429 || /quota|exhausted|rate limit/i.test(errMsg)) {
+                    keyExhausted = true;
+                    rotateGeminiKey(`Quota limit on Key #${keyNum}`);
+                  }
+                  return reject(new Error(errMsg));
+                }
+                const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
+                resolve(text);
+              } catch (err) { reject(err); }
+            });
+          });
+          req.on('error', reject);
+          req.write(payload);
+          req.end();
         });
-        req.on('error', reject);
-        req.write(payload);
-        req.end();
-      });
-      const jsonMatch = result.match(/\{[\s\S]*?\}/);
-      if (!jsonMatch) throw new Error('No JSON in response');
-      const parsed = JSON.parse(jsonMatch[0]);
-      let title = (parsed.title || kw).trim();
-      title = title.replace(/\b202[0-9]\b/g, '').replace(/\s{2,}/g, ' ').trim();
-      const cat = categoryList.includes((parsed.category || '').toLowerCase()) ? parsed.category.toLowerCase() : 'others';
-      console.log(`[SHEET] Generated topic: "${title}" | Category: ${cat}`);
-      return { keyword: kw, topic: title, category: cat };
-    } catch (e) {
-      console.warn(`[SHEET] Model ${model} topic gen error: ${e.message}`);
+        const jsonMatch = result.match(/\{[\s\S]*?\}/);
+        if (!jsonMatch) throw new Error('No JSON in response');
+        const parsed = JSON.parse(jsonMatch[0]);
+        let title = (parsed.title || kw).trim();
+        title = title.replace(/\b202[0-9]\b/g, '').replace(/\s{2,}/g, ' ').trim();
+        const cat = categoryList.includes((parsed.category || '').toLowerCase()) ? parsed.category.toLowerCase() : 'others';
+        console.log(`[SHEET] Generated topic: "${title}" | Category: ${cat} (Key #${keyNum})`);
+        currentKeyIndex = (currentKeyIndex + k) % GEMINI_API_KEYS.length;
+        GEMINI_API_KEY = getActiveGeminiKey();
+        return { keyword: kw, topic: title, category: cat };
+      } catch (e) {
+        // try next model or next key
+      }
     }
   }
   // Fallback: title-case the keyword itself
@@ -666,62 +712,78 @@ Requirements:
 ["Topic Title One", "Topic Title Two", "Topic Title Three", "Topic Title Four", "Topic Title Five"]`;
 
   const models = [
-    'gemini-3.5-flash',
-    'gemini-3.8-flash',
-    'gemini-3.5-flash-lite',
-    'gemini-3.1-flash-lite',
-    'gemini-flash-lite-latest'
+    'gemini-flash-lite-latest',
+    'gemini-2.5-flash',
+    'gemini-flash-latest',
+    'gemini-2.0-flash',
+    'gemini-1.5-flash'
   ];
 
-  for (const model of models) {
-    try {
-      const candidates = await new Promise((resolve, reject) => {
-        const payload = JSON.stringify({
-          contents: [{ role: 'user', parts: [{ text: prompt }] }],
-          generationConfig: { responseMimeType: 'application/json', temperature: 0.3 }
-        });
-        const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + GEMINI_API_KEY;
-        const req = https.request(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }
-        }, (res) => {
-          let data = '';
-          res.on('data', chunk => data += chunk);
-          res.on('end', () => {
-            try {
-              const parsed = JSON.parse(data);
-              if (parsed.error) return reject(new Error(parsed.error.message));
-              const text = parsed.candidates[0].content.parts[0].text.trim();
-              const list = JSON.parse(text);
-              if (Array.isArray(list)) resolve(list);
-              else reject(new Error('Response is not an array'));
-            } catch (err) {
-              reject(err);
-            }
-          });
-        });
-        req.on('error', reject);
-        req.write(payload);
-        req.end();
-      });
+  for (let k = 0; k < GEMINI_API_KEYS.length; k++) {
+    const key = GEMINI_API_KEYS[(currentKeyIndex + k) % GEMINI_API_KEYS.length];
+    const keyNum = ((currentKeyIndex + k) % GEMINI_API_KEYS.length) + 1;
+    let keyExhausted = false;
 
-      // Filter against existing slugs
-      for (const cand of candidates) {
-        if (typeof cand !== 'string' || cand.length < 15) continue;
-        const candSlug = cand.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().replace(/\s+/g, '-');
-        let collides = false;
-        for (const existing of existingSlugsSet) {
-          if (existing.includes(candSlug) || candSlug.includes(existing)) {
-            collides = true;
-            break;
+    for (const model of models) {
+      if (keyExhausted) break;
+      try {
+        const candidates = await new Promise((resolve, reject) => {
+          const payload = JSON.stringify({
+            contents: [{ role: 'user', parts: [{ text: prompt }] }],
+            generationConfig: { responseMimeType: 'application/json', temperature: 0.3 }
+          });
+          const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + key;
+          const req = https.request(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }
+          }, (res) => {
+            let data = '';
+            res.on('data', chunk => data += chunk);
+            res.on('end', () => {
+              try {
+                const parsed = JSON.parse(data);
+                if (parsed.error) {
+                  const errMsg = parsed.error.message || JSON.stringify(parsed.error);
+                  if (parsed.error.code === 429 || /quota|exhausted|rate limit/i.test(errMsg)) {
+                    keyExhausted = true;
+                    rotateGeminiKey(`Quota / 429 on Key #${keyNum} (${model})`);
+                  }
+                  return reject(new Error(errMsg));
+                }
+                const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
+                const list = JSON.parse(text);
+                if (Array.isArray(list)) resolve(list);
+                else reject(new Error('Response is not an array'));
+              } catch (err) {
+                reject(err);
+              }
+            });
+          });
+          req.on('error', reject);
+          req.write(payload);
+          req.end();
+        });
+
+        // Filter against existing slugs
+        for (const cand of candidates) {
+          if (typeof cand !== 'string' || cand.length < 15) continue;
+          const candSlug = cand.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().replace(/\s+/g, '-');
+          let collides = false;
+          for (const existing of existingSlugsSet) {
+            if (existing.includes(candSlug) || candSlug.includes(existing)) {
+              collides = true;
+              break;
+            }
+          }
+          if (!collides) {
+            currentKeyIndex = (currentKeyIndex + k) % GEMINI_API_KEYS.length;
+            GEMINI_API_KEY = getActiveGeminiKey();
+            return cand.replace(/[—–]/g, ' ').replace(/\s+/g, ' ').trim();
           }
         }
-        if (!collides) {
-          return cand.replace(/[—–]/g, ' ').replace(/\s+/g, ' ').trim();
-        }
+      } catch (e) {
+        // continue
       }
-    } catch (e) {
-      console.warn(`[WARN] Keyword research model ${model} failed: ${e.message}`);
     }
   }
   return null;
@@ -1258,82 +1320,108 @@ function enforceMinimumInternalLinks(sectionsHtml, currentSlug, category = '', m
 }
 
 
-async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '', category = '') {
+async function callGoogleAIStudio(keysOrPrompt, prompt, systemInstruction, topic = '', category = '') {
+  // Support flexible signatures: (prompt, systemInstruction, topic, category) OR (keys, prompt, systemInstruction, topic, category)
+  let keyList = GEMINI_API_KEYS;
+  let actualPrompt = prompt;
+  let actualSys = systemInstruction;
+  let actualTopic = topic;
+  let actualCat = category;
+
+  if (typeof keysOrPrompt === 'string' && (keysOrPrompt.length > 50 && (keysOrPrompt.includes(' ') || keysOrPrompt.includes('\n') || !keysOrPrompt.startsWith('AIza')))) {
+    // keysOrPrompt is the user prompt
+    actualCat = actualTopic;
+    actualTopic = actualSys;
+    actualSys = actualPrompt;
+    actualPrompt = keysOrPrompt;
+  } else if (Array.isArray(keysOrPrompt) && keysOrPrompt.length > 0) {
+    keyList = keysOrPrompt;
+  } else if (typeof keysOrPrompt === 'string' && keysOrPrompt.length > 10) {
+    keyList = keysOrPrompt.split(/[,;\n\r]+/).map(k => k.trim()).filter(Boolean);
+  }
+
   const modelsToTry = [
-    'gemini-3.5-flash',
-    'gemini-3.8-flash',
-    'gemini-3.5-flash-lite',
     'gemini-flash-lite-latest',
-    'gemini-3.5-flash',
-    'gemini-3.8-flash',
-    'gemini-3.7-flash',
-    'gemini-3.6-flash',
-    'gemini-3.1-flash-lite',
     'gemini-2.5-flash',
-    'gemini-3.6-flash',
-    'gemini-flash-latest'
+    'gemini-flash-latest',
+    'gemini-2.0-flash',
+    'gemini-2.0-flash-lite',
+    'gemini-1.5-flash'
   ];
   let lastError = null;
 
-  for (const model of modelsToTry) {
-    try {
-      const res = await new Promise((resolve, reject) => {
-        const payload = JSON.stringify({
-          contents: [{ role: 'user', parts: [{ text: prompt }] }],
-          systemInstruction: { parts: [{ text: systemInstruction }] },
-          generationConfig: {
-            responseMimeType: 'application/json',
-            temperature: 0.2,
-            maxOutputTokens: 8192
-          }
-        });
+  for (let k = 0; k < keyList.length; k++) {
+    const key = keyList[(currentKeyIndex + k) % keyList.length];
+    const keyNum = ((currentKeyIndex + k) % keyList.length) + 1;
+    let keyExhausted = false;
 
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-        const req = https.request(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }
-        }, (res) => {
-          let data = '';
-          res.on('data', chunk => data += chunk);
-          res.on('end', () => {
-            try {
-              const parsed = JSON.parse(data);
-              if (parsed.error) return reject(new Error(`[${model}] ` + parsed.error.message));
-              const parts = parsed.candidates?.[0]?.content?.parts || [];
-              let text = parts.map(p => p.text || '').join('').trim();
-              if (text.startsWith('```json')) text = text.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-              else if (text.startsWith('```')) text = text.replace(/^```\s*/, '').replace(/\s*```$/, '');
-              
-              function tryParseJson(str) {
-                try {
-                  return JSON.parse(str);
-                } catch (e1) {
-                  // Clean unescaped control chars (except \r\n\t) inside JSON strings
-                  let cleaned = str.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]+/g, ' ');
-                  try {
-                    return JSON.parse(cleaned);
-                  } catch (e2) {
-                    // Try to fix literal newlines in multi-line string properties
-                    cleaned = cleaned.replace(/"([^"\\]*(\\.[^"\\]*)*)"/gs, (m) => {
-                      return m.replace(/\r?\n/g, '\\n').replace(/\t/g, '\\t');
-                    });
-                    return JSON.parse(cleaned);
-                  }
-                }
-              }
-
-              resolve(tryParseJson(text));
-            } catch (err) {
-              reject(new Error(`Failed to parse response from ${model}: ` + err.message));
+    for (const model of modelsToTry) {
+      if (keyExhausted) break;
+      try {
+        const res = await new Promise((resolve, reject) => {
+          const payload = JSON.stringify({
+            contents: [{ role: 'user', parts: [{ text: actualPrompt }] }],
+            systemInstruction: { parts: [{ text: actualSys }] },
+            generationConfig: {
+              responseMimeType: 'application/json',
+              temperature: 0.2,
+              maxOutputTokens: 8192
             }
           });
-        });
-        req.on('error', reject);
-        req.write(payload);
-        req.end();
-      });
 
-      console.log(`[SUCCESS] Generated article successfully using Gemini model: ${model}`);
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+          const req = https.request(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }
+          }, (res) => {
+            let data = '';
+            res.on('data', chunk => data += chunk);
+            res.on('end', () => {
+              try {
+                const parsed = JSON.parse(data);
+                if (parsed.error) {
+                  const errMsg = parsed.error.message || JSON.stringify(parsed.error);
+                  if (parsed.error.code === 429 || /quota|exhausted|rate limit/i.test(errMsg)) {
+                    keyExhausted = true;
+                    rotateGeminiKey(`Quota / 429 on Key #${keyNum} (${model})`);
+                  }
+                  return reject(new Error(`[Key #${keyNum}][${model}] ` + errMsg));
+                }
+                const parts = parsed.candidates?.[0]?.content?.parts || [];
+                let text = parts.map(p => p.text || '').join('').trim();
+                if (text.startsWith('```json')) text = text.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+                else if (text.startsWith('```')) text = text.replace(/^```\s*/, '').replace(/\s*```$/, '');
+                
+                function tryParseJson(str) {
+                  try {
+                    return JSON.parse(str);
+                  } catch (e1) {
+                    let cleaned = str.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]+/g, ' ');
+                    try {
+                      return JSON.parse(cleaned);
+                    } catch (e2) {
+                      cleaned = cleaned.replace(/"([^"\\]*(\\.[^"\\]*)*)"/gs, (m) => {
+                        return m.replace(/\r?\n/g, '\\n').replace(/\t/g, '\\t');
+                      });
+                      return JSON.parse(cleaned);
+                    }
+                  }
+                }
+
+                resolve(tryParseJson(text));
+              } catch (err) {
+                reject(new Error(`Failed to parse response from ${model} (Key #${keyNum}): ` + err.message));
+              }
+            });
+          });
+          req.on('error', reject);
+          req.write(payload);
+          req.end();
+        });
+
+        console.log(`[SUCCESS] Generated article successfully using Gemini model: ${model} (Key #${keyNum} of ${keyList.length})`);
+        currentKeyIndex = (currentKeyIndex + k) % keyList.length;
+        GEMINI_API_KEY = getActiveGeminiKey();
 
       // ── POST-PROCESSING QUALITY GATE ─────────────────────────────────────
       // 1. Fix compound brand names in title
@@ -1432,12 +1520,13 @@ async function callGoogleAIStudio(apiKey, prompt, systemInstruction, topic = '',
 
       return res;
     } catch (err) {
-      console.warn(`[WARN] Gemini model ${model} failed (${err.message.slice(0, 120)})... trying fallback model.`);
+      console.warn(`[WARN] Gemini model ${model} failed (Key #${keyNum}): ${err.message.slice(0, 120)}`);
       lastError = err;
     }
   }
+}
 
-  throw lastError || new Error('All Gemini models failed');
+  throw lastError || new Error('All Gemini models and API keys exhausted');
 }
 
 function generateDeepFallbackArticle(topic, category, author) {
@@ -1496,6 +1585,91 @@ function generateDeepFallbackArticle(topic, category, author) {
   if (metaDescription.length > 155) metaDescription = metaDescription.slice(0, 152) + '...';
 
   const topicKeyword = cleanTopic.split(' ').slice(0, 3).join(' ');
+
+  const isTravelOrPlace = /travel|visit|gem|island|beach|mexico|hotel|resort|city|tour|trip|destination|vacation|explore|places|flight|airline|lake|mountain|park|river/i.test(cleanTopic);
+
+  if (isTravelOrPlace) {
+    return {
+      title,
+      slug,
+      metaDescription,
+      sections: [
+        {
+          id: 'overview',
+          heading: '',
+          contentHtml: `<p>${cleanTopic} offers travelers an unforgettable journey into one of the world's most captivating destinations. Beyond standard tourist circuits and crowded landmarks lies a vibrant tapestry of natural wonders, rich cultural traditions, and serene sanctuaries waiting to be discovered.</p>
+          <p>Whether you are planning a comprehensive vacation or seeking off-the-beaten-path day excursions, understanding the geography, regional logistics, and local highlights ensures an enriching and authentic travel experience.</p>
+          <h3>Why ${topicKeyword} Belongs on Your Travel Radar</h3>
+          <p>The enduring allure of ${cleanTopic} stems from its balance of scenic beauty, cultural depth, and warm community hospitality. Exploring beyond commercial tourist hubs connects visitors directly with authentic regional experiences.</p>`
+        },
+        {
+          id: 'top-highlights',
+          heading: 'Top Destinations and Unmissable Highlights',
+          contentHtml: `<p>Exploring ${cleanTopic} reveals remarkable stops that highlight the natural charm and historical significance of the region:</p>
+          <h3>Signature Highlights to Add to Your Itinerary</h3>
+          <ul style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.9;">
+            <li><strong>Natural Sanctuaries:</strong> Exploring pristine coastal waters, tranquil natural reserves, and serene outdoor viewpoints.</li>
+            <li><strong>Historic & Cultural Landmarks:</strong> Experiencing authentic regional architecture, local heritage sites, and traditional arts.</li>
+            <li><strong>Authentic Cuisine:</strong> Savoring locally sourced culinary specialties, traditional markets, and regional flavor profiles.</li>
+            <li><strong>Off-the-Beaten-Path Tranquility:</strong> Finding uncrowded beaches, scenic trails, and welcoming village atmospheres.</li>
+          </ul>
+          <h3>Experiencing the Region Like a Local</h3>
+          <p>Taking time to engage with local guides and artisan vendors transforms an ordinary trip into a deeply memorable adventure filled with genuine connections.</p>`
+        },
+        {
+          id: 'travel-logistics',
+          heading: 'Practical Logistics: Best Times to Visit and Navigation Tips',
+          contentHtml: `<p>Smart preparation makes exploring ${cleanTopic} effortless and rewarding:</p>
+          <h3>Optimal Seasonal Timing</h3>
+          <p>Visiting during shoulder seasons and dry weather months offers pleasant temperatures, lower lodging rates, and significantly fewer crowds at popular attractions.</p>
+          <h3>Transportation and Local Navigation</h3>
+          <p>Renting a vehicle or partnering with verified regional transit providers gives travelers the flexibility to reach hidden viewpoints and secluded attractions at an unhurried pace.</p>`
+        },
+        {
+          id: 'responsible-travel',
+          heading: 'Responsible Tourism and Environmental Conservation',
+          contentHtml: `<p>Protecting delicate ecosystems and supporting resident communities remains a top priority when visiting ${cleanTopic}:</p>
+          <h3>Sustainable Travel Practices</h3>
+          <p>Utilizing eco-friendly products, respecting protected natural habitats, and patronizing locally owned independent businesses helps preserve regional treasures for future generations.</p>`
+        },
+        {
+          id: 'final-thoughts',
+          heading: 'Final Thoughts',
+          contentHtml: `<div style="background: var(--bg-subtle); border-left: 4px solid var(--primary); padding: 1.5rem; border-radius: var(--radius-sm);">
+            <p style="margin-top: 0;">${cleanTopic} represents an extraordinary travel experience that rewards curiosity and thoughtful exploration. By venturing beyond the ordinary, travelers discover authentic beauty and unforgettable memories.</p>
+            <p style="margin-bottom: 0;">Plan ahead, pack responsibly, and embrace the vibrant culture and natural charm that make this destination truly special.</p>
+          </div>`
+        },
+        {
+          id: 'frequently-asked-questions',
+          heading: 'Frequently Asked Questions',
+          contentHtml: `<p>Here are concise answers to common travel questions regarding ${cleanTopic}.</p>`
+        }
+      ],
+      faqs: [
+        {
+          question: `What is the best time of year to visit ${topicKeyword}?`,
+          answer: `The best time to visit is during the dry shoulder season when weather conditions are comfortable, humidity remains manageable, and visitor crowds are noticeably thinner across major sights.`
+        },
+        {
+          question: `How many days are recommended to explore ${topicKeyword} comfortably?`,
+          answer: `Allocating between 4 and 7 days allows travelers to experience signature landmarks, venture to secluded natural spots, and enjoy local dining without rushing their itinerary.`
+        },
+        {
+          question: `Is it safe to explore off-the-beaten-path locations around ${topicKeyword}?`,
+          answer: `Yes, exploring regional highlights is generally safe and rewarding. Travelers should use standard precautions, stick to well-marked roads during daylight hours, and hire licensed local guides for remote eco-tours.`
+        },
+        {
+          question: `What should travelers pack when visiting ${topicKeyword}?`,
+          answer: `Essential packing items include lightweight breathable clothing, biodegradable reef-safe sunscreen, comfortable walking shoes, insect repellent, and local cash currency for rural vendors.`
+        },
+        {
+          question: `What currency and payment methods are best when exploring ${cleanTopic}?`,
+          answer: `While major hotels accept international credit cards, carrying local cash currency is essential for paying entrance fees at smaller natural reserves, food stalls, and artisan markets.`
+        }
+      ]
+    };
+  }
 
   if (isCulture) {
     return {
@@ -1819,7 +1993,7 @@ OUTPUT: Raw valid JSON only:
  * that has not been used in any previously published article.
  */
 async function fetchExternalLink(topic, category, usedUrls) {
-  if (!GEMINI_API_KEY) return null;
+  if (GEMINI_API_KEYS.length === 0) return null;
   const usedList = usedUrls.length > 0 ? 'Do NOT suggest these already-used URLs:\n' + usedUrls.slice(-40).join('\n') : '';
   const prompt = 'You are an editorial researcher. For the article topic below, provide ONE authoritative external reference URL that should be hyperlinked to a natural in-text keyword.\n' +
     'Requirements:\n' +
@@ -1833,67 +2007,75 @@ async function fetchExternalLink(topic, category, usedUrls) {
     '{"url":"https://...","anchorKeyword":"the exact 2-4 word keyword from the topic or article to link (e.g. smartphone hardware, Apple Inc, electric vehicles)","label":"Short descriptive title","domain":"domain.com"}';
 
   const models = [
-    'gemini-3.5-flash',
-    'gemini-3.8-flash',
-    'gemini-3.5-flash-lite',
     'gemini-flash-lite-latest',
-    'gemini-3.5-flash',
-    'gemini-3.8-flash',
-    'gemini-3.7-flash',
-    'gemini-3.6-flash',
-    'gemini-3.1-flash-lite',
     'gemini-2.5-flash',
-    'gemini-3.6-flash',
-    'gemini-flash-latest'
+    'gemini-flash-latest',
+    'gemini-2.0-flash',
+    'gemini-1.5-flash'
   ];
   const httpsLib = require('https');
 
-  for (const model of models) {
-    try {
-      const result = await new Promise((resolve, reject) => {
-        const payload = JSON.stringify({
-          contents: [{ role: 'user', parts: [{ text: prompt }] }],
-          generationConfig: { responseMimeType: 'application/json', temperature: 0.1 }
-        });
-        const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + GEMINI_API_KEY;
-        const req = httpsLib.request(apiUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }
-        }, (res) => {
-          let data = '';
-          res.on('data', c => data += c);
-          res.on('end', () => {
-            try {
-              const parsed = JSON.parse(data);
-              if (parsed.error) return reject(new Error(parsed.error.message));
-              const text = (parsed.candidates?.[0]?.content?.parts?.[0]?.text || '').trim();
-              const clean = text.replace(/^```json\s*/, '').replace(/^```\s*/, '').replace(/\s*```$/, '').trim();
-              resolve(JSON.parse(clean));
-            } catch (e) { reject(e); }
-          });
-        });
-        req.on('error', reject);
-        req.write(payload);
-        req.end();
-      });
+  for (let k = 0; k < GEMINI_API_KEYS.length; k++) {
+    const key = GEMINI_API_KEYS[(currentKeyIndex + k) % GEMINI_API_KEYS.length];
+    const keyNum = ((currentKeyIndex + k) % GEMINI_API_KEYS.length) + 1;
+    let keyExhausted = false;
 
-      if (result && result.url && result.url.startsWith('http') && result.label && result.domain) {
-        if (!usedUrls.includes(result.url)) {
-          // Sanitize anchorKeyword to ensure it is a concise 2-4 word keyword (max 35 characters)
-          let cleanKw = (result.anchorKeyword || result.label || '').trim();
-          if (cleanKw.length > 35 || cleanKw.split(/\s+/).length > 4) {
-            const words = cleanKw.split(/\s+/).slice(0, 3).join(' ');
-            cleanKw = words.length > 35 ? words.slice(0, 35).trim() : words;
+    for (const model of models) {
+      if (keyExhausted) break;
+      try {
+        const result = await new Promise((resolve, reject) => {
+          const payload = JSON.stringify({
+            contents: [{ role: 'user', parts: [{ text: prompt }] }],
+            generationConfig: { responseMimeType: 'application/json', temperature: 0.1 }
+          });
+          const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + key;
+          const req = httpsLib.request(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }
+          }, (res) => {
+            let data = '';
+            res.on('data', c => data += c);
+            res.on('end', () => {
+              try {
+                const parsed = JSON.parse(data);
+                if (parsed.error) {
+                  const errMsg = parsed.error.message || JSON.stringify(parsed.error);
+                  if (parsed.error.code === 429 || /quota|exhausted|rate limit/i.test(errMsg)) {
+                    keyExhausted = true;
+                    rotateGeminiKey(`Quota / 429 on Key #${keyNum} (${model})`);
+                  }
+                  return reject(new Error(errMsg));
+                }
+                const text = (parsed.candidates?.[0]?.content?.parts?.[0]?.text || '').trim();
+                const clean = text.replace(/^\`\`\`json\s*/, '').replace(/^\`\`\`\s*/, '').replace(/\s*\`\`\`$/, '').trim();
+                resolve(JSON.parse(clean));
+              } catch (e) { reject(e); }
+            });
+          });
+          req.on('error', reject);
+          req.write(payload);
+          req.end();
+        });
+
+        if (result && result.url && result.url.startsWith('http') && result.label && result.domain) {
+          if (!usedUrls.includes(result.url)) {
+            let cleanKw = (result.anchorKeyword || result.label || '').trim();
+            if (cleanKw.length > 35 || cleanKw.split(/\s+/).length > 4) {
+              const words = cleanKw.split(/\s+/).slice(0, 3).join(' ');
+              cleanKw = words.length > 35 ? words.slice(0, 35).trim() : words;
+            }
+            result.anchorKeyword = cleanKw;
+            console.log('[INFO] External link: ' + result.url + ' (' + result.domain + ') on keyword: "' + result.anchorKeyword + '" (Key #' + keyNum + ')');
+            currentKeyIndex = (currentKeyIndex + k) % GEMINI_API_KEYS.length;
+            GEMINI_API_KEY = getActiveGeminiKey();
+            return result;
           }
-          result.anchorKeyword = cleanKw;
-          console.log('[INFO] External link: ' + result.url + ' (' + result.domain + ') on keyword: "' + result.anchorKeyword + '"');
-          return result;
+          console.warn('[WARN] External link was a duplicate, skipping.');
+          return null;
         }
-        console.warn('[WARN] External link was a duplicate, skipping.');
-        return null;
+      } catch (err) {
+        // continue
       }
-    } catch (err) {
-      console.warn('[WARN] fetchExternalLink model ' + model + ' failed: ' + err.message.slice(0, 80));
     }
   }
   return null;

@@ -14,8 +14,9 @@ If you don't have or see Vertex AI in Google Cloud, you can get a free Gemini AP
 3. Click **Create API Key** &rarr; Copy your key.
 4. Go to your GitHub repository: `https://github.com/muhammadhabib00001/techpulse-publisher`
 5. Go to **Settings &rarr; Secrets and variables &rarr; Actions &rarr; New repository secret**:
-   - Name: `GEMINI_API_KEY`
+   - Name: `GEMINI_API_KEY` (or `GEMINI_API_KEYS`)
    - Value: *(Paste your Gemini API key)*
+   > 💡 **Pro-tip (Multi-Key Rate Limit Prevention):** You can add multiple keys separated by commas (e.g. `KEY_1,KEY_2,KEY_3`). The publishing engine will automatically rotate between keys and fail over instantly if any key reaches its rate limit (429 / quota exhausted), ensuring 100% uninterrupted publishing.
 
 ---
 
