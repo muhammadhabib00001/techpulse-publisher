@@ -1147,6 +1147,136 @@ function buildImageResult(filename, localPath, topic) {
   };
 }
 
+/**
+ * SECONDARY IN-ARTICLE VISUAL ENGINE
+ * Fetches a 100% unique, topic-relevant secondary image for mid-article placement.
+ * Guaranteed zero repeat images: validates against existingHashes and heroImage.
+ */
+async function fetchOrGenerateSecondaryTopicImage(topic, category, slug, heroImage, articleData) {
+  const localImgFilename = `${slug}-2.jpg`;
+  const imgDir = path.join(ROOT_DIR, 'assets', 'images');
+  if (!fs.existsSync(imgDir)) {
+    fs.mkdirSync(imgDir, { recursive: true });
+  }
+  const localImgPath = path.join(imgDir, localImgFilename);
+
+  // Extract target subtopic heading from article sections if available
+  let targetSubtopic = '';
+  if (articleData && Array.isArray(articleData.sections) && articleData.sections.length >= 3) {
+    const sec = articleData.sections[2] || articleData.sections[1];
+    if (sec && sec.heading) targetSubtopic = sec.heading.replace(/[—–:].*$/, '').trim();
+  }
+  const cleanTopicTitle = (articleData && articleData.title) ? articleData.title.replace(/\s*\|\s*GenAlpha.*$/, '').trim() : topic;
+  const altText = targetSubtopic 
+    ? `Detailed visual breakdown of ${targetSubtopic} - ${cleanTopicTitle}`
+    : `Detailed practical analysis and strategic guide for ${cleanTopicTitle}`;
+  const captionText = targetSubtopic
+    ? `${targetSubtopic}: Key insights and practical application.`
+    : `${cleanTopicTitle}: In-depth breakdown and analysis.`;
+
+  // Reuse existing valid image if already present
+  if (fs.existsSync(localImgPath) && fs.statSync(localImgPath).size > 10000) {
+    return {
+      relativeUrl: `../assets/images/${localImgFilename}`,
+      indexUrl: `./assets/images/${localImgFilename}`,
+      alt: altText,
+      caption: captionText
+    };
+  }
+
+  const existingHashes = getExistingImageHashes(localImgFilename);
+  const existingImageIds = getExistingImageIdentifiers();
+  const tempDest = `${localImgPath}.tmp`;
+
+  // Search queries for secondary visual: use target subtopic if available, or topic secondary words
+  const searchQueries = [
+    targetSubtopic ? `${targetSubtopic} ${category}` : '',
+    `${topic.split(/\s+/).slice(1, 4).join(' ')} ${category}`,
+    `${category} detail practical guide`
+  ].filter(q => q && q.trim().length >= 3);
+
+  if (UNSPLASH_ACCESS_KEY) {
+    for (const query of searchQueries) {
+      try {
+        const unsplashApiUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&orientation=landscape&per_page=15&client_id=${UNSPLASH_ACCESS_KEY}`;
+        const photoData = await new Promise((resolve) => {
+          https.get(unsplashApiUrl, { headers: { 'Accept-Version': 'v1', 'User-Agent': 'TechPulse/1.0' } }, (res) => {
+            let body = '';
+            res.on('data', chunk => body += chunk);
+            res.on('end', () => {
+              if (res.statusCode !== 200) return resolve(null);
+              try { resolve(JSON.parse(body)); } catch(e) { resolve(null); }
+            });
+          }).on('error', () => resolve(null));
+        });
+
+        if (photoData && photoData.results && photoData.results.length > 0) {
+          for (const item of photoData.results) {
+            if (!item || !item.id || existingImageIds.has(item.id.toLowerCase())) continue;
+            const photoUrl = item.urls && (item.urls.regular || item.urls.small || item.urls.raw);
+            if (!photoUrl) continue;
+            const downloadUrl = `${photoUrl.split('?')[0]}?auto=format&fit=crop&w=1200&h=675&q=80`;
+            try {
+              await downloadImageLocally(downloadUrl, tempDest);
+              if (fs.existsSync(tempDest) && fs.statSync(tempDest).size > 10000) {
+                const h = computeHash(tempDest);
+                if (h && !existingHashes.has(h)) {
+                  fs.renameSync(tempDest, localImgPath);
+                  console.log(`[SUCCESS] Secondary image saved: assets/images/${localImgFilename}`);
+                  return {
+                    relativeUrl: `../assets/images/${localImgFilename}`,
+                    indexUrl: `./assets/images/${localImgFilename}`,
+                    alt: altText,
+                    caption: captionText
+                  };
+                } else {
+                  try { fs.unlinkSync(tempDest); } catch(e) {}
+                }
+              }
+            } catch(e) {
+              try { if (fs.existsSync(tempDest)) fs.unlinkSync(tempDest); } catch(e) {}
+            }
+          }
+        }
+      } catch(err) {}
+    }
+  }
+
+  // Curated Fallback Pools
+  const pool = FALLBACK_POOLS[category] || FALLBACK_POOLS.business;
+  for (const picId of pool) {
+    if (existingImageIds.has(picId.toLowerCase())) continue;
+    const fallbackUrl = `https://images.unsplash.com/photo-${picId}?auto=format&fit=crop&w=1200&h=675&q=80`;
+    try {
+      await downloadImageLocally(fallbackUrl, tempDest);
+      if (fs.existsSync(tempDest) && fs.statSync(tempDest).size > 8000) {
+        const h = computeHash(tempDest);
+        if (h && !existingHashes.has(h)) {
+          fs.renameSync(tempDest, localImgPath);
+          console.log(`[SUCCESS] Secondary fallback image saved: assets/images/${localImgFilename}`);
+          return {
+            relativeUrl: `../assets/images/${localImgFilename}`,
+            indexUrl: `./assets/images/${localImgFilename}`,
+            alt: altText,
+            caption: captionText
+          };
+        } else {
+          try { fs.unlinkSync(tempDest); } catch(e) {}
+        }
+      }
+    } catch(e) {
+      try { if (fs.existsSync(tempDest)) fs.unlinkSync(tempDest); } catch(e) {}
+    }
+  }
+
+  return {
+    relativeUrl: `../assets/images/${localImgFilename}`,
+    indexUrl: `./assets/images/${localImgFilename}`,
+    alt: altText,
+    caption: captionText
+  };
+}
+
 
 
 // CATEGORY-AWARE INTERNAL LINKING ENGINE
@@ -2387,7 +2517,7 @@ function injectExternalKeywordLink(sectionsHtml, externalLink, category = 'other
   return protectedHtml;
 }
 
-function renderArticleHtml(articleData, author, category, heroImage, externalLink) {
+function renderArticleHtml(articleData, author, category, heroImage, externalLink = null, midImage = null) {
   const currentDate = new Date().toISOString().split('T')[0];
   const dateFormatted = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
@@ -2534,8 +2664,19 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
     const finalSecId = isFaqSection ? 'frequently-asked-questions' : sectionId;
     const finalHeading = isFaqSection ? '<h2>Frequently Asked Questions</h2>' : headingHtml;
 
+    let midMediaBlock = '';
+    if (idx === 2 && midImage && midImage.relativeUrl) {
+      midMediaBlock = `
+        <figure class="article-mid-media" style="margin: 2.5rem 0; position: relative;">
+          <div style="aspect-ratio: 16/9; overflow: hidden; border-radius: var(--radius-md);">
+            <img src="${midImage.relativeUrl}" alt="${midImage.alt}" width="1200" height="675" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <figcaption style="font-size: 0.85rem; color: var(--text-muted); padding: 0.6rem 0.25rem 0.5rem; border-bottom: 1px solid var(--border-color);">${midImage.caption}</figcaption>
+        </figure>\n`;
+    }
+
     const currentSectionHtml = `
-          <section id="${finalSecId}">
+          ${midMediaBlock}<section id="${finalSecId}">
             ${finalHeading}
             ${enrichedContent}
             ${faqBlock}
@@ -2653,7 +2794,10 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
         "@id": "https://www.genalphamagazines.com/${articleData.slug}#article",
         "headline": "${articleData.title}",
         "description": "${articleData.metaDescription}",
-        "image": "https://www.genalphamagazines.com/assets/images/${articleData.slug}.jpg",
+        "image": [
+          "https://www.genalphamagazines.com/assets/images/${articleData.slug}.jpg",
+          "https://www.genalphamagazines.com/assets/images/${articleData.slug}-2.jpg"
+        ],
         "datePublished": "${currentDate}T08:00:00+00:00",
         "dateModified": "${currentDate}T08:00:00+00:00",
         "mainEntityOfPage": "https://www.genalphamagazines.com/${articleData.slug}",
@@ -3604,8 +3748,9 @@ async function main() {
   // 3. Generate article with explicit in-prompt linking instructions for Gemini
   const generatedArticle = await generateArticle(topicData, internalTargets, finalExternalLink);
   const heroImage = await fetchOrGenerateTopicImage(topic, cat, generatedArticle.slug);
+  const midImage = await fetchOrGenerateSecondaryTopicImage(topic, cat, generatedArticle.slug, heroImage, generatedArticle);
 
-  const fullHtml = renderArticleHtml(generatedArticle, topicData.author, topicData.category, heroImage, finalExternalLink);
+  const fullHtml = renderArticleHtml(generatedArticle, topicData.author, topicData.category, heroImage, finalExternalLink, midImage);
 
   const outputPath = path.join(articlesDir, `${generatedArticle.slug}.html`);
   fs.writeFileSync(outputPath, fullHtml, 'utf8');
@@ -3622,7 +3767,8 @@ async function main() {
 
   // Mirror to root for instant clean URL serving at /slug
   const rootOutputPath = path.join(ROOT_DIR, `${generatedArticle.slug}.html`);
-  fs.copyFileSync(outputPath, rootOutputPath);
+  let rootHtml = fullHtml.replace(new RegExp(`\\.\\./assets/images/${generatedArticle.slug}-2\\.jpg`, 'g'), `./assets/images/${generatedArticle.slug}-2.jpg`);
+  fs.writeFileSync(rootOutputPath, rootHtml, 'utf8');
   console.log(`[SUCCESS] Article mirrored to root: ${rootOutputPath}`);
 
   // Record into published topics tracking ledger

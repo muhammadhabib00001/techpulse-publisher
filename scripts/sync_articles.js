@@ -1865,14 +1865,13 @@ ${sideArticles.map(art => {
       'favicon-96x96.png', 'favicon-144x144.png', 'favicon-180x180.png',
       'favicon-192x192.png', 'favicon-512x512.png',
       'logo.svg', 'logo-dark.svg', 'og-banner.jpg',
-      'creative-badge.svg', '.gitkeep',
-      'cristiano-ronaldo-career-legacy-and-records-in-2026.jpg',
-      'preventing-bathroom-drainage-failures-in-modern-homes.jpg'
+      'creative-badge.svg', '.gitkeep'
     ]);
     const imgFiles = fs.readdirSync(imagesDir);
     for (const img of imgFiles) {
       if (staticBrandAssets.has(img)) continue;
-      const baseSlug = img.replace(/\.(jpg|jpeg|png|webp|svg)$/i, '');
+      // Strip -2 suffix to correctly associate secondary images with their parent article slug
+      const baseSlug = img.replace(/-2\.(jpg|jpeg|png|webp|svg)$/i, '').replace(/\.(jpg|jpeg|png|webp|svg)$/i, '');
       if (!existingSlugs.has(baseSlug)) {
         try {
           fs.unlinkSync(path.join(imagesDir, img));
