@@ -16,7 +16,8 @@ const http = require('http');
 const crypto = require('crypto');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
-const { sanitizeAllDashes, sanitizeMarkdownAndSnippets, removeObsoleteBoxes, buildRelatedSectionHtml, ensureRelatedSection, standardizeArticleLinks, getAllInternalArticleTargets, ARTICLE_INTERNAL_TARGETS } = require('./sync_articles');
+const articlesDir = path.join(ROOT_DIR, 'articles');
+const { sanitizeAllDashes, sanitizeMarkdownAndSnippets, removeObsoleteBoxes, buildRelatedSectionHtml, ensureRelatedSection, ensureArticleFaqs, standardizeArticleLinks, getAllInternalArticleTargets, ARTICLE_INTERNAL_TARGETS } = require('./sync_articles');
 
 // Hard sanitize title: NEVER allow "2026" or calendar years in titles or slugs, zero dashes
 function sanitizeTitle(rawTitle) {
@@ -2870,6 +2871,13 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   <script src="../assets/js/main.min.js" defer></script>
 </body>
 </html>`;
+
+  // Final assembly safeguard: Guarantee 0 empty FAQ sections, 0 duplicate FAQ headings, and exactly 1 Related Coverage box
+  fullRawHtml = fullRawHtml
+    .replace(/<section[^>]*>\s*<h[1-6][^>]*>[^<]*(?:Frequently Asked Questions|FAQ)[^<]*<\/h[1-6]>\s*<\/section>/gi, '')
+    .replace(/(<h[1-6][^>]*>[^<]*(?:Frequently Asked Questions|FAQ)[^<]*<\/h[1-6]>\s*){2,}/gi, '$1');
+  fullRawHtml = ensureRelatedSection(fullRawHtml, articleData.slug, articlesDir);
+
   return standardizeArticleLinks(fullRawHtml, articleData.slug, category, externalLink);
 }
 
@@ -3254,11 +3262,33 @@ function verifyAndEnforceArticleFileLinks(filePath, slug, category, customExtern
   }
 }
 
-function verifyAndEnforceArticleFaqFormat(filePath) {
+function verifyAndEnforceArticleFaqFormat(filePath, slug) {
   try {
+    if (!fs.existsSync(filePath)) return;
     let content = fs.readFileSync(filePath, 'utf8');
+    let original = content;
+
+    // 1. Remove empty FAQ sections and deduplicate consecutive FAQ headings
+    content = content
+      .replace(/<section[^>]*>\s*<h[1-6][^>]*>[^<]*(?:Frequently Asked Questions|FAQ)[^<]*<\/h[1-6]>\s*<\/section>/gi, '')
+      .replace(/(<h[1-6][^>]*>[^<]*(?:Frequently Asked Questions|FAQ)[^<]*<\/h[1-6]>\s*){2,}/gi, '$1');
+
+    // 2. Guarantee visible FAQ cards exist if schema exists
+    if (slug) {
+      content = ensureArticleFaqs(content, slug);
+    }
+
     const sm = content.match(/(<section[^>]*id=["']frequently-asked-questions["'][^>]*>)([\s\S]*?)(<\/section>)/i);
-    if (!sm) return;
+    if (!sm) {
+      if (content !== original) {
+        fs.writeFileSync(filePath, content, 'utf8');
+        const rootTarget = path.join(ROOT_DIR, path.basename(filePath));
+        if (filePath.startsWith(articlesDir)) {
+          fs.writeFileSync(rootTarget, content, 'utf8');
+        }
+      }
+      return;
+    }
     const [full, open, body, close] = sm;
     
     // Check if already in perfect card format
@@ -3266,7 +3296,16 @@ function verifyAndEnforceArticleFaqFormat(filePath) {
       const qs = []; let m;
       const qRe = /<h3 style=[^>]*>([^<]+)<\/h3>/gi;
       while ((m = qRe.exec(body)) !== null) qs.push(m[1].trim().toLowerCase());
-      if (qs.length === new Set(qs).size) return; // Clean
+      if (qs.length === new Set(qs).size) {
+        if (content !== original) {
+          fs.writeFileSync(filePath, content, 'utf8');
+          const rootTarget = path.join(ROOT_DIR, path.basename(filePath));
+          if (filePath.startsWith(articlesDir)) {
+            fs.writeFileSync(rootTarget, content, 'utf8');
+          }
+        }
+        return; // Clean
+      }
     }
 
     const pairs = [];
@@ -3338,8 +3377,8 @@ function verifyAndEnforceArticleDashesAndRelated(filePath, slug) {
     // 2. Remove obsolete empty external resources box if present
     content = removeObsoleteBoxes(content);
 
-    // 3. Purge duplicate Related Investigative Reports block if present
-    content = ensureRelatedSection(content, slug, path.dirname(filePath));
+    // 3. Guarantee exactly ONE category-relevant Related Coverage box with clean titles
+    content = ensureRelatedSection(content, slug, articlesDir);
 
     // 4. Strip any links inside h1-h6 headings
     content = sanitizeHeadings(content);
@@ -3370,7 +3409,7 @@ async function main() {
   for (const ef of existingFiles) {
     const efPath = path.join(articlesDir, ef);
     const efSlug = ef.replace('.html', '');
-    verifyAndEnforceArticleFaqFormat(efPath);
+    verifyAndEnforceArticleFaqFormat(efPath, efSlug);
     verifyAndEnforceArticleDashesAndRelated(efPath, efSlug);
   }
 
@@ -3576,7 +3615,7 @@ async function main() {
   verifyAndEnforceArticleFileLinks(outputPath, generatedArticle.slug, cat, finalExternalLink);
 
   // Permanent FAQ Guarantee: Enforce clean card layout on newly written article
-  verifyAndEnforceArticleFaqFormat(outputPath);
+  verifyAndEnforceArticleFaqFormat(outputPath, generatedArticle.slug);
 
   // Permanent Dash & Related Stories Guarantee: Strip all dashes & enforce Related block
   verifyAndEnforceArticleDashesAndRelated(outputPath, generatedArticle.slug);

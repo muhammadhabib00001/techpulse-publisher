@@ -298,7 +298,9 @@ ${faqCards}
   }
 
   // Otherwise insert before related section or author box
-  if (html.includes('<!-- Related Department Stories -->')) {
+  if (html.includes('<div class="related-coverage-box"')) {
+    return html.replace('<div class="related-coverage-box"', `${faqSectionHtml}\n\n        <div class="related-coverage-box"`);
+  } else if (html.includes('<!-- Related Department Stories -->')) {
     return html.replace('<!-- Related Department Stories -->', `${faqSectionHtml}\n\n        <!-- Related Department Stories -->`);
   } else if (html.includes('<section class="author-box">')) {
     return html.replace('<section class="author-box">', `${faqSectionHtml}\n\n        <section class="author-box">`);
@@ -693,9 +695,10 @@ function ensureRelatedSection(html, currentSlug, articlesDir) {
 
   // 1. Strip any and all existing related coverage boxes or legacy comments
   html = html
-    .replace(/<div[^>]*class=["'][^"']*related-coverage-box[^"']*["'][^>]*>[\s\S]*?<\/div>/gi, '')
+    .replace(/<div[^>]*class=["'][^"']*(?:related-coverage-box|related-stories|related-articles)[^"']*["'][^>]*>[\s\S]*?<\/div>/gi, '')
+    .replace(/<section[^>]*id=["']related-(?:coverage|stories|articles)["'][^>]*>[\s\S]*?<\/section>/gi, '')
     .replace(/<div[^>]*style="[^"]*background:\s*var\(--bg-subtle\)[^"]*"[^>]*>\s*<h4[^>]*>[^<]*Related[\s\S]*?<\/ul>\s*<\/div>/gi, '')
-    .replace(/<!--\s*Related (?:Department Stories|Coverage)\s*-->\s*/gi, '');
+    .replace(/<!--\s*Related (?:Department Stories|Coverage|Articles|Features)[\s\S]*?-->\s*/gi, '');
 
   // 2. Build the category-relevant Related Coverage box
   const category = getCategoryFromHtml(html);

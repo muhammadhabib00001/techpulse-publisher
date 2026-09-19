@@ -161,7 +161,12 @@ function processArticleFile(filePath) {
     modifications.push('Updated email to intouchmagazines26@gmail.com');
   }
 
-  // 8. Standardize FAQ Section to .faq-card
+  // 8. Remove empty FAQ sections and deduplicate consecutive FAQ headings
+  content = content
+    .replace(/<section[^>]*>\s*<h[1-6][^>]*>[^<]*(?:Frequently Asked Questions|FAQ)[^<]*<\/h[1-6]>\s*<\/section>/gi, '')
+    .replace(/(<h[1-6][^>]*>[^<]*(?:Frequently Asked Questions|FAQ)[^<]*<\/h[1-6]>\s*){2,}/gi, '$1');
+
+  // 8a. Standardize FAQ Section to .faq-card
   const faqSecMatch = content.match(/(<section[^>]*id=["']frequently-asked-questions["'][^>]*>)([\s\S]*?)(<\/section>)/i);
   let faqPairs = [];
   if (faqSecMatch) {
