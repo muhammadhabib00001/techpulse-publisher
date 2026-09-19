@@ -720,6 +720,69 @@ function ensureRelatedSection(html, currentSlug, articlesDir) {
   return html;
 }
 
+function ensureSecondaryArticleImage(html, slug) {
+  if (typeof html !== 'string' || !slug) return html;
+
+  const midFilename = `${slug}-2.jpg`;
+  const imgDir = path.join(ROOT_DIR, 'assets', 'images');
+  const midPath = path.join(imgDir, midFilename);
+  if (!fs.existsSync(midPath)) return html; // Secondary image not yet generated
+
+  const midFigRegex = /<figure class="article-mid-media"[\s\S]*?<\/figure>/i;
+  const midFigMatch = html.match(midFigRegex);
+
+  if (midFigMatch && midFigMatch[0].includes('<img')) {
+    return html; // Already healthy and has <img>
+  }
+
+  // Extract title and section heading for SEO alt text
+  const titleMatch = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+  const rawTitle = titleMatch ? titleMatch[1].replace(/<[^>]+>/g, '').trim() : slug.replace(/-/g, ' ');
+
+  let cleanH2 = rawTitle;
+  if (midFigMatch) {
+    const capMatch = midFigMatch[0].match(/<figcaption[^>]*>([\s\S]*?)<\/figcaption>/i);
+    if (capMatch) {
+      cleanH2 = capMatch[1].replace(/<[^>]+>/g, '').replace(/:\s*Key insights and practical application\.?$/i, '').trim() || rawTitle;
+    }
+  } else {
+    const h2Matches = Array.from(html.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/gi))
+      .map(m => m[1].replace(/<[^>]+>/g, '').trim())
+      .filter(h => !/Frequently Asked Questions|FAQ|Final Thoughts/i.test(h));
+    cleanH2 = h2Matches.length >= 2 ? h2Matches[1].replace(/[:—–].*$/, '').trim() : (h2Matches[0] || rawTitle);
+  }
+
+  const altText = `Detailed visual breakdown of ${cleanH2} - ${rawTitle}`;
+  const captionText = `${cleanH2}: Key insights and practical application.`;
+
+  const midFigureHtml = `
+        <figure class="article-mid-media" style="margin: 2.5rem 0; position: relative;">
+          <div style="aspect-ratio: 16/9; overflow: hidden; border-radius: var(--radius-md);">
+            <img src="../assets/images/${midFilename}" alt="${altText}" width="1200" height="675" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <figcaption style="font-size: 0.85rem; color: var(--text-muted); padding: 0.6rem 0.25rem 0.5rem; border-bottom: 1px solid var(--border-color);">${captionText}</figcaption>
+        </figure>\n`;
+
+  if (midFigMatch) {
+    return html.replace(midFigMatch[0], midFigureHtml.trim());
+  } else {
+    const allH2Tags = Array.from(html.matchAll(/<h2[^>]*>[\s\S]*?<\/h2>/gi));
+    let targetH2Tag = null;
+    if (allH2Tags.length >= 3) {
+      targetH2Tag = allH2Tags[1][0];
+    } else if (allH2Tags.length >= 2) {
+      targetH2Tag = allH2Tags[0][0];
+    }
+    if (targetH2Tag && html.includes(targetH2Tag)) {
+      return html.replace(targetH2Tag, `${midFigureHtml}\n        ${targetH2Tag}`);
+    } else if (html.includes('<section class="author-box">')) {
+      return html.replace('<section class="author-box">', `${midFigureHtml}\n        <section class="author-box">`);
+    }
+  }
+
+  return html;
+}
+
 function syncLlmsFiles(existingSlugs, writeIfChanged) {
   const articlesDir = path.join(ROOT_DIR, 'articles');
   if (!fs.existsSync(articlesDir)) return;
@@ -1774,6 +1837,9 @@ ${sideArticles.map(art => {
     // C2. Guarantee visible FAQ cards exist if FAQPage schema is present
     updated = ensureArticleFaqs(updated, slug);
 
+    // C3. Guarantee Secondary Mid-Article Image exists and has valid <img> tag with SEO Alt text
+    updated = ensureSecondaryArticleImage(updated, slug);
+
     // D. Enforce Exactly 2 Internal Links and 1 External Link on targeted keywords
     updated = standardizeArticleLinks(updated, slug);
 
@@ -1941,6 +2007,7 @@ module.exports = {
   buildRelatedSectionHtml,
   ensureRelatedSection,
   ensureArticleFaqs,
+  ensureSecondaryArticleImage,
   standardizeArticleLinks,
   restoreNavigationAndFooter,
   getCategoryFromHtml,
