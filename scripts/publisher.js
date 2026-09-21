@@ -304,12 +304,13 @@ const DEFAULT_GEM_KEY     = Buffer.from('QVEuQWI4Uk42SlhCSVkwbGFFelQ0QmpBLXNZN2d
 // Multi-Key Support: parse multiple Gemini API keys from GEMINI_API_KEYS or GEMINI_API_KEY
 // Supports comma, semicolon, or newline separated keys for automatic rotation & rate-limit failover
 function parseGeminiKeys() {
-  const raw = process.env.GEMINI_API_KEYS || process.env.GEMINI_API_KEY || DEFAULT_GEM_KEY;
-  const list = raw
+  const raw = process.env.GEMINI_API_KEYS || process.env.GEMINI_API_KEY || '';
+  const parsed = raw
     .split(/[,;\n\r]+/)
     .map(k => k.trim())
     .filter(k => k.length > 10);
-  return list.length > 0 ? list : [DEFAULT_GEM_KEY];
+  const combined = Array.from(new Set([...parsed, DEFAULT_GEM_KEY])).filter(k => k && k.length > 10);
+  return combined.length > 0 ? combined : [DEFAULT_GEM_KEY];
 }
 
 const GEMINI_API_KEYS = parseGeminiKeys();
@@ -3968,7 +3969,17 @@ async function main() {
   console.log('=== Pipeline Execution Complete ===');
 }
 
-main().catch(err => {
-  console.error('[FATAL] Pipeline failure:', err);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(err => {
+    console.error('[FATAL] Pipeline failure:', err);
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  renderArticleHtml,
+  generateArticle,
+  fetchOrGenerateTopicImage,
+  verifyAndEnforceDualImages,
+  main
+};
