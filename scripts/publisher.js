@@ -2594,6 +2594,20 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
 
   const cleanMeta = (articleData.metaDescription || '').replace(/[—–]/g, ', ').replace(/\s+/g, ' ').trim();
 
+  // Safeguard: Ensure valid author object with fallback to category default
+  const safeAuthor = (author && author.name && author.slug) ? { ...author } : { ...(AUTHORS[category] || AUTHORS.others || {
+    name: 'Marcus Reid',
+    slug: 'marcus-reid',
+    role: 'Editor-in-Chief & Civic Affairs Correspondent',
+    initials: 'MR'
+  }) };
+  if (!safeAuthor.initials && safeAuthor.name) {
+    safeAuthor.initials = safeAuthor.name.split(/\s+/).map(n => n[0]).join('').slice(0, 2).toUpperCase();
+  }
+
+  // Safeguard: Ensure valid heroImage relative URL with fallback to local slug image
+  const safeHeroUrl = (heroImage && (heroImage.relativeUrl || heroImage.url || (typeof heroImage === 'string' ? heroImage : ''))) || `../assets/images/${articleData.slug}.jpg`;
+
   const sectionsHtml = articleData.sections.map((sec, idx) => {
     const sectionId = (sec.id && sec.id !== 'undefined') 
       ? sec.id 
@@ -2827,9 +2841,9 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
         "mainEntityOfPage": "https://www.genalphamagazines.com/${articleData.slug}",
         "author": {
           "@type": "Person",
-          "name": "${author.name}",
-          "url": "https://www.genalphamagazines.com/author/${author.slug}",
-          "jobTitle": "${author.role}"
+          "name": "${safeAuthor.name}",
+          "url": "https://www.genalphamagazines.com/author/${safeAuthor.slug}",
+          "jobTitle": "${safeAuthor.role}"
         },
         "publisher": {
           "@type": "Organization",
@@ -2919,10 +2933,10 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
           
           <div class="article-meta-bar">
             <div class="author-meta">
-              <div class="author-avatar">${author.initials}</div>
+              <div class="author-avatar">${safeAuthor.initials}</div>
               <div>
-                <div><a href="/author/${author.slug}" style="font-weight: 700; color: var(--text-main);">${author.name}</a></div>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">${author.role}</div>
+                <div><a href="/author/${safeAuthor.slug}" style="font-weight: 700; color: var(--text-main);">${safeAuthor.name}</a></div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">${safeAuthor.role}</div>
               </div>
             </div>
             <span>Published: ${dateFormatted}</span>
@@ -2931,7 +2945,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
 
         <figure class="featured-media" style="margin: 0; position: relative;">
           <div style="aspect-ratio: 16/9; overflow: hidden; border-radius: var(--radius-md);">
-            <img src="${heroImage.relativeUrl}" alt="${articleData.title}" width="1200" height="675" fetchpriority="high" decoding="async" loading="eager" style="width: 100%; height: 100%; object-fit: cover;">
+            <img src="${safeHeroUrl}" alt="${articleData.title}" width="1200" height="675" fetchpriority="high" decoding="async" loading="eager" style="width: 100%; height: 100%; object-fit: cover;">
           </div>
           <figcaption style="font-size: 0.85rem; color: var(--text-muted); padding: 0.6rem 0.25rem 0.5rem; border-bottom: 1px solid var(--border-color);">${articleData.title}</figcaption>
         </figure>
@@ -2944,10 +2958,10 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
         ${buildRelatedSectionHtml(articleData.slug, category)}
 
         <section class="author-box">
-          <div class="author-avatar">${author.initials}</div>
+          <div class="author-avatar">${safeAuthor.initials}</div>
           <div class="author-bio">
-            <h4 style="margin: 0 0 0.4rem 0;"><a href="/author/${author.slug}">${author.name}</a></h4>
-            <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">${author.role} at GenAlphaMagazines. Specializing in regional governance, independent investigations, and verified community journalism.</p>
+            <h4 style="margin: 0 0 0.4rem 0;"><a href="/author/${safeAuthor.slug}">${safeAuthor.name}</a></h4>
+            <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">${safeAuthor.role} at GenAlphaMagazines. Specializing in regional governance, independent investigations, and verified community journalism.</p>
           </div>
         </section>
       </article>
