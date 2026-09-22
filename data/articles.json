@@ -9,7 +9,8 @@
     "date": "2026-09-22",
     "publishedAt": "2026-09-22T14:10:06.864Z",
     "author": "Julia Vance",
-    "authorSlug": "julia-vance"
+    "authorSlug": "julia-vance",
+    "noindex": true
   },
   {
     "slug": "navigating-alternative-financing-options-with-green-arrow",
@@ -21,7 +22,8 @@
     "date": "2026-09-22",
     "publishedAt": "2026-09-22T02:03:46.908Z",
     "author": "Julia Vance",
-    "authorSlug": "julia-vance"
+    "authorSlug": "julia-vance",
+    "noindex": true
   },
   {
     "slug": "kia-carnival-hybrid-reinvents-the-modern-family-minivan",
@@ -33,7 +35,8 @@
     "date": "2026-09-21",
     "publishedAt": "2026-09-21T14:08:23.887Z",
     "author": "Julia Vance",
-    "authorSlug": "julia-vance"
+    "authorSlug": "julia-vance",
+    "noindex": false
   },
   {
     "slug": "mastering-meta-champions-for-higher-elo-rank-ups",
@@ -45,7 +48,8 @@
     "date": "2026-09-21",
     "publishedAt": "2026-09-21T07:08:25.254Z",
     "author": "Julia Vance",
-    "authorSlug": "julia-vance"
+    "authorSlug": "julia-vance",
+    "noindex": false
   },
   {
     "slug": "current-age-of-the-pontiff-revealed-career-and-impact",
