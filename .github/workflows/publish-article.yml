@@ -2,7 +2,7 @@ name: Automated Article Publishing Pipeline (Gemini AI + Google Drive)
 
 on:
   schedule:
-    - cron: '0 2,14 * * *'  # 2 articles/day, every 12 hours (24 divided by 2)
+    - cron: '0 14 * * *'  # 1 article/day at 14:00 UTC (safe sustainable velocity)
   workflow_dispatch:
     inputs:
       topic:
@@ -17,11 +17,9 @@ on:
         options:
           - ''
           - news
-          - business
           - celebrity
           - entertainment
           - games
-          - health
           - technology
           - others
 

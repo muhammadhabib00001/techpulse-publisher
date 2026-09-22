@@ -3,6 +3,7 @@ const path = require('path');
 
 const BASE_URL = 'https://www.genalphamagazines.com';
 const articles = JSON.parse(fs.readFileSync('data/articles.json', 'utf8'));
+const indexableArticles = articles.filter(art => !art.noindex);
 
 // 1. Generate Google News Sitemap (news-sitemap.xml)
 let newsXml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -10,7 +11,7 @@ let newsXml = `<?xml version="1.0" encoding="UTF-8"?>
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
 `;
 
-articles.forEach(art => {
+indexableArticles.forEach(art => {
   const pubDate = art.publishedAt || (art.date ? `${art.date}T08:00:00Z` : new Date().toISOString());
   const titleEsc = (art.title || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
 
@@ -31,7 +32,7 @@ articles.forEach(art => {
 newsXml += `</urlset>\n`;
 
 fs.writeFileSync('news-sitemap.xml', newsXml, 'utf8');
-console.log(`Generated news-sitemap.xml with ${articles.length} news entries.`);
+console.log(`Generated news-sitemap.xml with ${indexableArticles.length} clean news entries.`);
 
 // 2. Generate RSS 2.0 Feed (rss.xml / feed.xml)
 let rssXml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -45,7 +46,7 @@ let rssXml = `<?xml version="1.0" encoding="UTF-8"?>
     <atom:link href="${BASE_URL}/rss.xml" rel="self" type="application/rss+xml" />
 `;
 
-articles.slice(0, 30).forEach(art => {
+indexableArticles.slice(0, 30).forEach(art => {
   const titleEsc = (art.title || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const descEsc = (art.excerpt || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const pubDate = art.publishedAt ? new Date(art.publishedAt).toUTCString() : (art.date ? new Date(art.date).toUTCString() : new Date().toUTCString());

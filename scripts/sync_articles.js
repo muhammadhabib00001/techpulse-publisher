@@ -1450,6 +1450,7 @@ function syncDeletedArticles() {
         const s = item.slug || (item.file ? item.file.replace('.html', '') : '');
         return existingSlugs.has(s);
       }).map(item => {
+        const s = item.slug || (item.file ? item.file.replace('.html', '') : '');
         // Enforce Author Whitelist (Marcus Reid for News/Business/Technology/Games, Julia Vance for others)
         let author = item.author || 'Julia Vance';
         let authorSlug = item.authorSlug || 'julia-vance';
@@ -1463,7 +1464,13 @@ function syncDeletedArticles() {
             authorSlug = 'julia-vance';
           }
         }
-        return { ...item, author, authorSlug };
+        const artFilePath = path.join(ROOT_DIR, 'articles', `${s}.html`);
+        let isNoindex = false;
+        if (fs.existsSync(artFilePath)) {
+          const fileContent = fs.readFileSync(artFilePath, 'utf8');
+          isNoindex = /<meta\s+name=["']robots["']\s+content=["'][^"']*noindex/i.test(fileContent);
+        }
+        return { ...item, author, authorSlug, noindex: isNoindex };
       });
       validArticlesList = filtered;
       const updated = JSON.stringify(filtered, null, 2);
@@ -1524,8 +1531,9 @@ function syncDeletedArticles() {
       }
     }
 
-    // 5. All Active Articles (clean extensionless URLs)
+    // 5. All Active Indexable Articles (clean extensionless URLs, strictly excluding any noindexed articles)
     for (const art of validArticlesList) {
+      if (art.noindex) continue;
       sitemapUrls.push({
         loc: `${BASE_URL}/${art.slug}`,
         lastmod: (art.publishedAt ? art.publishedAt.split('T')[0] : currentDate),

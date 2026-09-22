@@ -416,18 +416,20 @@ async function pickSheetKeyword(publishedLedger, allPublishedSlugs) {
     return false;
   };
 
-  const available = keywords.filter(kw => !isKeywordPublished(kw));
+  const YMYL_BLOCKED_REGEX = /\b(blood\s*pressure|hypertension|cardio|heart|stroke|artery|vascular|rsv|infection|disease|syndrome|symptom|symptoms|diagnosis|medical|clinical|medicine|doctor|patient|dosage|pill|prescription|drug|supplement|treatment|cure|therapy|pediatric|infant|newborn|ear\s*bleed|pain|cancer|tumor|diabetes|cholesterol|surgery|hospital|mortgage|loan|loans|debt|borrower|interest\s*rate|credit\s*score|bank\s*loan|vehicle\s*payment|real\s*estate\s*purchase)\b/i;
+
+  const available = keywords.filter(kw => !isKeywordPublished(kw) && !YMYL_BLOCKED_REGEX.test(kw));
   if (available.length === 0) {
-    console.warn('[SHEET] All Google Sheet keywords already published. Falling back to pool.');
+    console.warn('[SHEET] All safe Google Sheet keywords already published. Falling back to pool.');
     return null;
   }
 
   // Pick RANDOM (not sequential)
   const kw = available[Math.floor(Math.random() * available.length)];
-  console.log(`[SHEET] Randomly selected keyword (${available.length} available): "${kw}"`);
+  console.log(`[SHEET] Randomly selected keyword (${available.length} safe available): "${kw}"`);
 
   // Use Gemini to turn keyword → click-worthy editorial headline + category
-  const categoryList = ['news','business','celebrity','entertainment','games','health','technology','others'];
+  const categoryList = ['news','celebrity','entertainment','games','technology','others'];
   const recentTitlesList = titles.slice(-15).join(' | ');
   const prompt = `You are an expert SEO editor. Given the target keyword: "${kw}"
 
@@ -435,13 +437,14 @@ Context: The site already published these recent articles (DO NOT duplicate any 
 ${recentTitlesList}
 
 Return ONLY valid JSON (no markdown, no code block) in this exact format:
-{"title":"<50-60 char headline, no year numbers, no dashes, no Guide>","category":"<one of: news,business,celebrity,entertainment,games,health,technology,others>"}
+{"title":"<50-60 char headline, no year numbers, no dashes, no Guide>","category":"<one of: news,celebrity,entertainment,games,technology,others>"}
 
 Rules:
 - Title must be a compelling, 100% unique editorial headline
 - Title must NOT repeat any existing title or concept
 - Title must NOT contain any year, must NOT use dash separators
-- Category must be the single most relevant from the list
+- Category must be the single most relevant from the list (news, celebrity, entertainment, games, technology, others)
+- STRICT COMPLIANCE: Absolutely NO medical diagnosis, diseases, health cures, loan rates, or financial advice (zero YMYL)
 - Respond ONLY with the JSON object`;
 
   const sheetModels = ['gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-flash-latest', 'gemini-2.0-flash', 'gemini-1.5-flash'];
@@ -581,13 +584,13 @@ async function fetchGoogleDriveBrief() {
 }
 
 
+const YMYL_BLOCKED_REGEX = /\b(blood\s*pressure|hypertension|cardio|heart|stroke|artery|vascular|rsv|infection|disease|syndrome|symptom|symptoms|diagnosis|medical|clinical|medicine|doctor|patient|dosage|pill|prescription|drug|supplement|treatment|cure|therapy|pediatric|infant|newborn|ear\s*bleed|pain|cancer|tumor|diabetes|cholesterol|surgery|hospital|mortgage|loan|loans|debt|borrower|interest\s*rate|credit\s*score|bank\s*loan|vehicle\s*payment|real\s*estate\s*purchase)\b/i;
+
 const AUTHORS = {
   news: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Editor-in-Chief & Civic Affairs Correspondent', initials: 'MR' },
-  business: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Senior Business & Financial Editor', initials: 'MR' },
   celebrity: { name: 'Julia Vance', slug: 'julia-vance', role: 'Culture & Entertainment Columnist', initials: 'JV' },
   entertainment: { name: 'Julia Vance', slug: 'julia-vance', role: 'Managing Editor & Arts Lead', initials: 'JV' },
   games: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Senior Tech & Gaming Correspondent', initials: 'MR' },
-  health: { name: 'Julia Vance', slug: 'julia-vance', role: 'Health & Wellness Contributor', initials: 'JV' },
   technology: { name: 'Marcus Reid', slug: 'marcus-reid', role: 'Technology & Innovation Editor', initials: 'MR' },
   others: { name: 'Julia Vance', slug: 'julia-vance', role: 'Managing Editor & Community Lead', initials: 'JV' }
 };
@@ -596,101 +599,43 @@ const AUTHORS = {
 // Categories strictly locked to Spot Magazine categories: Business, Celebrity, Entertainment, Games, Health, News, Technology, Others
 const DEFAULT_TOPIC_POOL = {
   news: [
-    // Keyword: 'student loan forgiveness' (Vol: 450K+, KD: 26)
-    'Student Loan Forgiveness Updates: Application Timelines and Income-Driven Relief Plans',
-    // Keyword: 'social security cost of living increase' (Vol: 300K+, KD: 22)
-    'Social Security COLA Adjustment: Benefit Increases and Payout Schedules',
-    // Keyword: 'federal reserve meeting' (Vol: 90K+, KD: 24)
-    'Federal Reserve Rate Decisions: What Shifting Benchmark Yields Mean for Borrowers',
-    // Keyword: 'electric vehicle incentives' (Vol: 65K+, KD: 25)
     'Electric Vehicle Tax Credits: Income Limits and Qualified Models Breakdown',
-    // Keyword: 'va disability pay chart' (Vol: 250K+, KD: 21)
     'VA Disability Pay Rates: Benefit Tiers and Cost of Living Adjustments',
-    // Keyword: 'usps passport appointment' (Vol: 180K+, KD: 23)
     'Passport Appointment Scheduling: Required Documents and Expedited Processing Windows'
   ],
-  business: [
-    // Keyword: 'small business administration loans' (Vol: 90K+, KD: 25)
-    'SBA Loan Requirements: Application Timelines, Down Payments, and Approval Rates',
-    // Keyword: 'how to start an llc' (Vol: 350K+, KD: 28)
-    'Forming an LLC: Step-by-Step State Registration, Operating Agreements, and Tax Classification',
-    // Keyword: 'commercial property loans' (Vol: 60K+, KD: 24)
-    'Securing Commercial Property Mortgages: Debt Service Ratios and Lender Terms',
-    // Keyword: 'high yield savings accounts business' (Vol: 75K+, KD: 22)
-    'Business Cash Management: Maximizing Treasury Yields with Protected Accounts',
-    // Keyword: 'freelance invoice templates' (Vol: 65K+, KD: 18)
-    'Streamlining Freelance Invoicing: Net Terms, Payment Gateways, and Retainer Contracts'
-  ],
   celebrity: [
-    // Keyword: 'red carpet fashion trends' (Vol: 75K+, KD: 21)
     'Red Carpet Fashion Trends: Haute Couture Highlights and Behind-the-Scenes Stylists',
-    // Keyword: 'celebrity memoirs release dates' (Vol: 55K+, KD: 19)
     'Anticipated Celebrity Memoirs: Candid Life Stories, Hollywood Reflections, and Literary Debuts',
-    // Keyword: 'method acting documentary' (Vol: 60K+, KD: 23)
     'Transformative Roles: How Leading Film Actors Prepare for Deep Character Portrayals',
-    // Keyword: 'film festival award winners' (Vol: 85K+, KD: 24)
     'Film Festival Standouts: Breakout Directors, Star Tributes, and Independent Cinema Honors',
-    // Keyword: 'celebrity philanthropic foundations' (Vol: 50K+, KD: 17)
     'Cultural Icons in Philanthropy: High-Impact Charitable Foundations Led by Celebrities'
   ],
   entertainment: [
-    // Keyword: 'independent film festivals' (Vol: 70K+, KD: 22)
     'Grassroots Indie Film Distribution: How Regional Festivals Launch Emerging Directors',
-    // Keyword: 'vinyl record collecting guide' (Vol: 90K+, KD: 23)
     'The Vinyl Record Resurgence: Turntable Setups, Pressing Quality, and Collector Care',
-    // Keyword: 'independent theater production' (Vol: 50K+, KD: 19)
     'Staging Independent Theater: Budgeting Black Box Productions and Engaging New Patrons',
-    // Keyword: 'best streaming sci fi series' (Vol: 110K+, KD: 25)
     'The Evolution of Sci-Fi Television: Worldbuilding, Practical VFX, and Modern Story Arcs',
-    // Keyword: 'film score composers' (Vol: 55K+, KD: 20)
     'The Soundtracks of Modern Cinema: How Film Composers Craft Emotion and Atmosphere'
   ],
   games: [
-    // Keyword: 'gta 6 map leaks and facts' (Vol: 240K+, KD: 27)
     'GTA 6 Vice City Map Comparison: Setting Scale, Landmarks, and Playable Interactivity',
-    // Keyword: 'steam deck best settings' (Vol: 80K+, KD: 21)
     'Optimizing Handheld PC Gaming: Best Settings, Frame Limits, and Battery Tips',
-    // Keyword: 'esports tournament schedule' (Vol: 95K+, KD: 24)
     'Competitive Esports Season Outlook: Major Championship Rosters and Meta Shifts',
-    // Keyword: 'unreal engine 5 games' (Vol: 65K+, KD: 23)
     'Next-Gen Visual Engines: How Nanite and Lumen Are Transforming Game Environments',
-    // Keyword: 'indie game of the year contenders' (Vol: 55K+, KD: 19)
     'Breakthrough Indie Games: Innovative Mechanics and Compelling Narrative Adventures'
   ],
-  health: [
-    // Keyword: 'zone 2 cardio benefits' (Vol: 90K+, KD: 22)
-    'Zone 2 Cardio Training: Mitochondrial Health, Endurance Pacing, and Heart Longevity',
-    // Keyword: 'intermittent fasting 16 8 schedule' (Vol: 160K+, KD: 26)
-    'Intermittent Fasting Schedules: Metabolic Flexibility, Meal Planning, and Clinical Evidence',
-    // Keyword: 'sleep hygiene checklist' (Vol: 75K+, KD: 19)
-    'Science-Backed Sleep Hygiene: Circadian Rhythm Tuning, Room Lighting, and Deep Rest',
-    // Keyword: 'anti inflammatory foods list' (Vol: 200K+, KD: 25)
-    'Anti-Inflammatory Nutrition: Essential Whole Foods for Joint Health and Daily Vitality',
-    // Keyword: 'strength training for longevity' (Vol: 65K+, KD: 21)
-    'Functional Strength Training for Longevity: Joint Mobility, Compound Lifts, and Vitality'
-  ],
   technology: [
-    // Keyword: 'home energy audit diy' (Vol: 50K+, KD: 19)
     'DIY Home Energy Audit: Pinpointing Air Leaks, Insulation Gaps, and Power Drain',
-    // Keyword: 'solar battery storage systems' (Vol: 90K+, KD: 24)
     'Solar Battery Storage Systems: Payback Periods, Cell Chemistries, and Off-Grid Resilience',
-    // Keyword: 'wifi 7 router setup' (Vol: 60K+, KD: 26)
     'Upgrading to Wi-Fi 7: Mesh Network Coverage, Real Latency Gains, and Device Support',
-    // Keyword: 'smart thermostat rebate programs' (Vol: 65K+, KD: 20)
     'Smart Thermostat Optimization: Scheduling Automation, Utility Rebates, and Grid Savings',
-    // Keyword: 'heat pump water heater efficiency' (Vol: 55K+, KD: 22)
     'Heat Pump Water Heaters: Operating Costs, Installation Prerequisites, and Energy Tax Credits'
   ],
   others: [
-    // Keyword: 'slow living lifestyle' (Vol: 110K+, KD: 20)
     'The Slow Living Movement: Practical Steps to Disconnect from Digital Overwhelm',
-    // Keyword: 'local journalism importance' (Vol: 50K+, KD: 17)
     'Why Community News Matters: Accountability, Civic Trust, and Local Democracy',
-    // Keyword: 'digital minimalism tips' (Vol: 80K+, KD: 22)
     'Digital Minimalism in Practice: Reclaiming Time, Attention, and Real-World Focus',
-    // Keyword: 'intergenerational mentorship' (Vol: 50K+, KD: 16)
     'Skills Across Generations: How Senior Craftsmen and Young Apprentices Rebuild Traditions',
-    // Keyword: 'small town economic revitalization' (Vol: 55K+, KD: 21)
     'Balancing Preservation and Growth: What Small Towns Teach Us About Sustainable Living'
   ]
 };
@@ -710,7 +655,8 @@ Requirements:
 2. Informational search intent for a worldwide readership.
 3. Formulate each as a compelling, click-worthy editorial article topic headline (50-60 chars).
 4. Strictly avoid any overlap with previously covered themes.
-5. Return ONLY a JSON array of strings containing the 5 candidate topic titles. Example:
+5. STRICT ANTI-YMYL POLICY: Absolutely NO medical conditions, health diagnoses, medications, blood pressure, pediatric care, loans, or mortgages (zero YMYL).
+6. Return ONLY a JSON array of strings containing the 5 candidate topic titles. Example:
 ["Topic Title One", "Topic Title Two", "Topic Title Three", "Topic Title Four", "Topic Title Five"]`;
 
   const models = [
@@ -766,9 +712,10 @@ Requirements:
           req.end();
         });
 
-        // Filter against existing slugs
+        // Filter against existing slugs and YMYL blacklist
         for (const cand of candidates) {
           if (typeof cand !== 'string' || cand.length < 15) continue;
+          if (YMYL_BLOCKED_REGEX.test(cand)) continue;
           const candSlug = cand.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().replace(/\s+/g, '-');
           let collides = false;
           for (const existing of existingSlugsSet) {
@@ -3739,6 +3686,10 @@ async function main() {
     const lowerTopic = topic.toLowerCase();
     if (BLOCKED_KEYWORDS.some(b => lowerTopic.includes(b))) {
       console.error(`[ABORT] Topic "${topic}" is blocked by site policy.`);
+      process.exit(1);
+    }
+    if (YMYL_BLOCKED_REGEX.test(topic)) {
+      console.error(`[ABORT] Topic "${topic}" is blocked by anti-YMYL policy to protect Google Search quality score.`);
       process.exit(1);
     }
     const candWords = extractWords(topic);
