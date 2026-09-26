@@ -162,7 +162,7 @@ const CATEGORY_EXTERNAL_FALLBACKS = {
 
 const ARTICLE_INTERNAL_TARGETS = [
   // Business
-  { slug: 'sba-loan-requirements-timelines-rates-and-down-payments', title: 'SBA Loan Requirements: Timelines, Rates, and Down Payments', category: 'business', keywords: ['SBA loan requirements', 'SBA loans', 'small business loan requirements', 'down payment requirements'] },
+  { slug: 'mastering-llc-formation-state-steps-rules-tax-setup', title: 'Mastering LLC Formation: State Steps, Rules, and Tax Setup', category: 'business', keywords: ['LLC formation', 'forming an LLC', 'business registration', 'operating agreement'] },
   { slug: 'main-street-business-revitalization-guide-for-2026', title: 'Main Street Business Revitalization: Driving Local Retail Foot Traffic', category: 'business', keywords: ['Main Street business revitalization', 'retail foot traffic', 'commercial revitalization', 'Main Street businesses', 'small business revitalization'] },
   { slug: 'how-ai-is-reshaping-main-street-business-operations', title: 'How AI Is Reshaping Main Street Business Operations', category: 'business', keywords: ['AI in business operations', 'business operations', 'artificial intelligence in business', 'operational resilience'] },
   { slug: 'inside-the-business-empire-of-elon-musk-today', title: 'Inside the Business Empire of Elon Musk Today', category: 'business', keywords: ['Elon Musk business empire', 'business empire', 'corporate leadership', 'enterprise strategy'] },
@@ -171,6 +171,8 @@ const ARTICLE_INTERNAL_TARGETS = [
   { slug: 'us-interest-rates-yields-inflation-and-borrowing-strategy', title: 'US Interest Rates: Yields, Inflation, and Borrowing Strategy', category: 'business', keywords: ['borrowing strategy', 'US interest rates', 'yield curves', 'inflation strategy'] },
 
   // Celebrity
+  { slug: 'piper-rockelle-digital-presence-and-content-evolution', title: 'Piper Rockelle Digital Presence and Content Evolution', category: 'celebrity', keywords: ['Piper Rockelle', 'digital presence', 'content evolution', 'digital creator'] },
+  { slug: 'tracking-the-birth-date-and-timeline-of-youngboy-never', title: 'Tracking the Birth Date and Timeline of YoungBoy Never', category: 'celebrity', keywords: ['YoungBoy Never Broke Again', 'YoungBoy timeline', 'hip hop artist', 'music career'] },
   { slug: 'red-carpet-fashion-trends-inside-haute-couture-aesthetics', title: 'Red Carpet Fashion Trends: Inside Haute Couture Aesthetics', category: 'celebrity', keywords: ['red carpet fashion trends', 'haute couture aesthetics', 'celebrity stylists', 'haute couture', 'red carpet fashion'] },
   { slug: '25-famous-celebrity-in-usa-career-influence-and-cultur', title: '25 Famous Celebrities in USA: Career, Influence, and Cultural Impact', category: 'celebrity', keywords: ['famous celebrities in USA', 'celebrity culture', 'cultural influence', 'American cultural icons'] },
   { slug: 'lebron-james-the-evolution-of-nba-royalty-on-and-off-court', title: 'LeBron James: The Evolution of NBA Royalty On and Off Court', category: 'celebrity', keywords: ['LeBron James', 'NBA royalty', 'basketball icons', 'athletic career'] },
@@ -178,6 +180,7 @@ const ARTICLE_INTERNAL_TARGETS = [
   { slug: 'top-german-celebrities-shaping-global-culture-today', title: 'Top German Celebrities Shaping Global Culture Today', category: 'celebrity', keywords: ['German celebrities', 'global culture', 'European cultural figures'] },
 
   // Entertainment
+  { slug: 'espn-plus-cost-insights-and-overview', title: 'ESPN Plus Cost: Insights and Overview', category: 'entertainment', keywords: ['ESPN Plus', 'streaming cost', 'sports streaming', 'subscription cost'] },
   { slug: '25-american-movies-defining-visual-storytelling-today', title: '25 American Movies Defining Visual Storytelling Today', category: 'entertainment', keywords: ['visual storytelling', 'contemporary cinema', 'American cinema', 'cinematography', 'visual storytelling today'] },
   { slug: 'grassroots-indie-film-distribution-how-regional-festival', title: 'Grassroots Indie Film Distribution: How Regional Festivals Launch Emerging Directors', category: 'entertainment', keywords: ['grassroots indie film distribution', 'regional film festivals', 'independent film distribution', 'indie film distribution'] },
   { slug: 'the-vinyl-record-resurgence-turntable-setups-pressing', title: 'The Vinyl Record Resurgence: Turntable Setups, Pressing', category: 'entertainment', keywords: ['vinyl record resurgence', 'turntable setups', 'vinyl records', 'analog audio'] },
@@ -186,6 +189,7 @@ const ARTICLE_INTERNAL_TARGETS = [
   { slug: 'the-kitchen-as-canvas-designing-creative-culinary-spaces', title: 'The Kitchen as Canvas: Designing Creative Culinary Spaces', category: 'entertainment', keywords: ['kitchen as canvas', 'creative culinary spaces', 'culinary spaces', 'kitchen design'] },
 
   // Technology
+  { slug: 'upgrading-to-wi-fi-7-mesh-network-coverage-real-latency', title: 'Upgrading to Wi-Fi 7: Mesh Network Coverage and Real Latency', category: 'technology', keywords: ['Wi-Fi 7', 'mesh network', 'wireless router', 'network latency'] },
   { slug: 'inside-apple-s-ios-27-architecture-and-ai-innovations', title: 'Inside Apple\'s iOS 27 Architecture and AI Innovations', category: 'technology', keywords: ['iOS architecture', 'Apple AI innovations', 'mobile operating system', 'mobile silicon'] },
   { slug: 'top-7-phone-features-and-specs', title: 'Top 7 Phone Features and Specs', category: 'technology', keywords: ['flagship phone specs', 'smartphone hardware', 'phone features', 'mobile hardware'] },
   { slug: 'smart-home-energy-audits-heat-pump-and-solar-storage', title: 'Smart Home Energy Audits: Heat Pump and Solar Storage', category: 'technology', keywords: ['smart home energy audits', 'heat pump systems', 'energy efficiency', 'home energy audits'] },
@@ -196,10 +200,6 @@ const ARTICLE_INTERNAL_TARGETS = [
   { slug: 'gta-6-release-date-map-and-gameplay-guide', title: 'GTA 6 Release Date, Map and Gameplay Guide', category: 'games', keywords: ['GTA 6 release date', 'GTA 6 gameplay', 'open-world gameplay', 'GTA 6 map'] },
   { slug: 'gta-6-vice-city-map-comparison-setting-scale-landmarks', title: 'GTA 6 Vice City Map Comparison: Setting, Scale, Landmarks', category: 'games', keywords: ['Vice City map comparison', 'Vice City landmarks', 'GTA map scale'] },
   { slug: 'what-are-the-most-popular-games-dominating-players-today', title: 'What Are the Most Popular Games Dominating Players Today', category: 'games', keywords: ['most popular games', 'popular video games', 'multiplayer games', 'gaming culture'] },
-
-  // Health
-  { slug: 'heart-problems-evidence-based-insights-and-expert-guidance', title: 'Heart Problems: Evidence-Based Insights and Expert Guidance', category: 'health', keywords: ['cardiovascular health', 'heart problems', 'heart disease prevention', 'cardiovascular disease'] },
-  { slug: 'key-health-issues-affecting-women-symptoms-and-solutions', title: 'Key Health Issues Affecting Women: Symptoms and Solutions', category: 'health', keywords: ['health issues affecting women', 'women health solutions', 'preventative care', 'women health'] },
 
   // News
   { slug: 'how-high-interest-rates-are-reshaping-the-us-economy', title: 'How High Interest Rates Are Reshaping the US Economy', category: 'news', keywords: ['high interest rates', 'US economy', 'macroeconomic trends', 'economic impact'] },
@@ -222,6 +222,7 @@ function getAllInternalArticleTargets() {
     if (fs.existsSync(jsonPath)) {
       const articles = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
       for (const art of articles) {
+        if (art.noindex) continue;
         const slug = art.slug || (art.file ? art.file.replace('.html', '') : '');
         if (!slug || knownSlugs.has(slug)) continue;
         const title = (art.title || '').replace(/\s*\|\s*GenAlphaMagazines.*$/i, '').trim();
@@ -394,7 +395,6 @@ function restoreNavigationAndFooter(html, category) {
             <li><a href="/category-celebrity" class="${cat === 'celebrity' ? 'active' : ''}">Celebrity</a></li>
             <li><a href="/category-entertainment" class="${cat === 'entertainment' ? 'active' : ''}">Entertainment</a></li>
             <li><a href="/category-games" class="${cat === 'games' ? 'active' : ''}">Games</a></li>
-            <li><a href="/category-health" class="${cat === 'health' ? 'active' : ''}">Health</a></li>
             <li><a href="/category-technology" class="${cat === 'technology' ? 'active' : ''}">Technology</a></li>
             <li><a href="/category-others" class="${cat === 'others' ? 'active' : ''}">Others</a></li>
             <li><a href="/categories">All Topics</a></li>
@@ -411,7 +411,6 @@ function restoreNavigationAndFooter(html, category) {
           <li><a href="/category-celebrity">Celebrity</a></li>
           <li><a href="/category-entertainment">Entertainment</a></li>
           <li><a href="/category-games">Games</a></li>
-          <li><a href="/category-health">Health</a></li>
           <li><a href="/category-technology">Technology</a></li>
           <li><a href="/category-others">Others</a></li>
         </ul>
@@ -669,7 +668,7 @@ function buildRelatedSectionHtml(currentSlug, category) {
   if (!articlesData || articlesData.length === 0) return '';
 
   const normCat = (category || 'others').toLowerCase().trim();
-  const candidates = articlesData.filter(a => a.slug && a.slug !== currentSlug);
+  const candidates = articlesData.filter(a => a.slug && a.slug !== currentSlug && !a.noindex);
 
   const sameCat = candidates.filter(a => (a.category || '').toLowerCase().trim() === normCat);
   const otherCat = candidates.filter(a => (a.category || '').toLowerCase().trim() !== normCat);
@@ -1121,13 +1120,14 @@ function buildCategoryPageHtml(catName, matchingArticles, validArticlesList) {
     day: 'numeric'
   });
 
-  const tickerItems = (validArticlesList || []).slice(0, 10).map(art => 
+  const tickerItems = (validArticlesList || []).filter(art => !art.noindex).slice(0, 10).map(art => 
     `          <a href="/${art.slug}" class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> ${escapeHtml(art.title)}</a>`
   ).join('\n');
 
   let cardsHtml = '';
-  if (matchingArticles && matchingArticles.length > 0) {
-    cardsHtml = matchingArticles.map(art => {
+  const indexableMatching = (matchingArticles || []).filter(art => !art.noindex);
+  if (indexableMatching.length > 0) {
+    cardsHtml = indexableMatching.map(art => {
       const imgSrc = art.image || ('./assets/images/' + art.slug + '.jpg');
       return `          <!-- Article: ${art.slug}.html -->
           <article class="card">
@@ -1452,17 +1452,15 @@ function syncDeletedArticles() {
       }).map(item => {
         const s = item.slug || (item.file ? item.file.replace('.html', '') : '');
         // Enforce Author Whitelist (Marcus Reid for News/Business/Technology/Games, Julia Vance for others)
-        let author = item.author || 'Julia Vance';
-        let authorSlug = item.authorSlug || 'julia-vance';
+        let author = 'Julia Vance';
+        let authorSlug = 'julia-vance';
         const cat = (item.category || '').toLowerCase();
-        if (authorSlug === 'artificial-intelligence' || author.toLowerCase() === 'artificial intelligence' || !['marcus-reid', 'julia-vance'].includes(authorSlug)) {
-          if (['news', 'business', 'technology', 'games'].includes(cat)) {
-            author = 'Marcus Reid';
-            authorSlug = 'marcus-reid';
-          } else {
-            author = 'Julia Vance';
-            authorSlug = 'julia-vance';
-          }
+        if (['news', 'business', 'technology', 'games'].includes(cat)) {
+          author = 'Marcus Reid';
+          authorSlug = 'marcus-reid';
+        } else {
+          author = 'Julia Vance';
+          authorSlug = 'julia-vance';
         }
         const artFilePath = path.join(ROOT_DIR, 'articles', `${s}.html`);
         let isNoindex = false;
@@ -1508,7 +1506,7 @@ function syncDeletedArticles() {
     sitemapUrls.push({ loc: `${BASE_URL}/categories`, lastmod: currentDate, changefreq: 'daily', priority: '0.9' });
 
     // 2. Category Hubs (clean extensionless URLs)
-    const activeCategoriesList = ['news', 'business', 'celebrity', 'entertainment', 'games', 'health', 'technology', 'others'];
+    const activeCategoriesList = ['news', 'business', 'celebrity', 'entertainment', 'games', 'technology', 'others'];
     for (const cat of activeCategoriesList) {
       sitemapUrls.push({ loc: `${BASE_URL}/category-${cat}`, lastmod: currentDate, changefreq: 'daily', priority: '0.85' });
     }
@@ -1560,7 +1558,6 @@ function syncDeletedArticles() {
     'celebrity',
     'entertainment',
     'games',
-    'health',
     'news',
     'others',
     'technology'
@@ -1661,7 +1658,7 @@ ${sideArticles.map(art => {
       const trackContentStart = updated.indexOf('>', tickerTrackStart) + 1;
       const trackEnd = updated.indexOf('</div>', trackContentStart);
       if (trackEnd !== -1) {
-        const tickerItems = validArticlesList.slice(0, 10).map(art => 
+        const tickerItems = validArticlesList.filter(art => !art.noindex).slice(0, 10).map(art => 
           `          <a href="/${art.slug}" class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> ${escapeHtml(art.title)}</a>`
         ).join('\n');
         updated = updated.slice(0, trackContentStart) + '\n' + tickerItems + '\n        ' + updated.slice(trackEnd);
@@ -1669,14 +1666,14 @@ ${sideArticles.map(art => {
     }
 
     // D. Enforce max 8 latest articles per category section in index.html (2 full 4-column rows)
-    const categoriesList = ['News', 'Business', 'Entertainment', 'Technology', 'Games', 'Health', 'Others'];
+    const categoriesList = ['News', 'Business', 'Celebrity', 'Entertainment', 'Technology', 'Games', 'Others'];
     categoriesList.forEach(cat => {
       const catLower = cat.toLowerCase();
       const matching = validArticlesList.filter(a => {
+        if (a.noindex) return false;
         const c = (a.category || 'news').toLowerCase();
         if (c === catLower) return true;
         if (catLower === 'entertainment' && ['entertainment', 'celebrity', 'arts', 'culture'].includes(c)) return true;
-        if (catLower === 'health' && ['health', 'wellness', 'lifestyle'].includes(c)) return true;
         return false;
       }).slice(0, 8);
 
@@ -1772,7 +1769,7 @@ ${sideArticles.map(art => {
       const trackContentStart = updated.indexOf('>', catTickerStart) + 1;
       const trackEnd = updated.indexOf('</div>', trackContentStart);
       if (trackEnd !== -1) {
-        const tickerItems = validArticlesList.slice(0, 10).map(art => 
+        const tickerItems = validArticlesList.filter(art => !art.noindex).slice(0, 10).map(art => 
           `          <a href="/${art.slug}" class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> ${escapeHtml(art.title)}</a>`
         ).join('\n');
         updated = updated.slice(0, trackContentStart) + '\n' + tickerItems + '\n        ' + updated.slice(trackEnd);
@@ -1860,6 +1857,25 @@ ${sideArticles.map(art => {
       }
       return fullMatch;
     });
+
+    // E2. Enforce Author Consistency across HTML and JSON-LD
+    const artCat = getCategoryFromHtml(updated);
+    const isTechOrNews = ['technology', 'games', 'news', 'business'].includes(artCat);
+    const authorName = isTechOrNews ? 'Marcus Reid' : 'Julia Vance';
+    const authorSlug = isTechOrNews ? 'marcus-reid' : 'julia-vance';
+    const authorRole = isTechOrNews ? 'Senior Technology & Business Editor' : 'Culture & Entertainment Columnist';
+    const authorInitials = isTechOrNews ? 'MR' : 'JV';
+    const authorBio = isTechOrNews 
+      ? 'Senior Technology & Business Editor at GenAlphaMagazines. Specializing in enterprise software, digital infrastructure, financial policy, and hardware engineering.'
+      : 'Culture & Entertainment Columnist at GenAlphaMagazines. Specializing in regional arts, contemporary media trends, and verified cultural reporting.';
+
+    const newAuthorMeta = `<div class="author-meta"> <div class="author-avatar">${authorInitials}</div> <div> <div><a href="/author/${authorSlug}" style="font-weight: 700; color: var(--text-main);">${authorName}</a></div> <div style="font-size: 0.8rem; color: var(--text-muted);">${authorRole}</div> </div> </div>`;
+    updated = updated.replace(/<div class="author-meta">[\s\S]*?<\/div>\s*<\/div>\s*<\/div>/i, newAuthorMeta);
+
+    const newAuthorBox = `<section class="author-box"> <div class="author-avatar">${authorInitials}</div> <div class="author-bio"> <h4 style="margin: 0 0 0.4rem 0;"><a href="/author/${authorSlug}" style="color: inherit; text-decoration: none;">${authorName}</a></h4> <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">${authorBio}</p> </div> </section>`;
+    updated = updated.replace(/<section class="author-box">[\s\S]*?<\/section>/i, newAuthorBox);
+
+    updated = updated.replace(/"author":\s*\{\s*"@type":\s*"Person"[\s\S]*?\}/i, `"author": { "@type": "Person", "name": "${authorName}", "url": "https://www.genalphamagazines.com/author/${authorSlug}", "jobTitle": "${authorRole}" }`);
 
     // F. Standardize script and css tags to minified assets
     updated = updated.replace(/<script\s+src=["'][^"']*(?:theme|main)\.js["'][^>]*><\/script>/gi, '<script src="./assets/js/main.min.js" defer></script>');
