@@ -1,5 +1,18 @@
 [
   {
+    "slug": "understanding-vector-versus-raster-image-formats-explained",
+    "file": "understanding-vector-versus-raster-image-formats-explained.html",
+    "title": "Understanding Vector Versus Raster Image Formats Explained",
+    "category": "technology",
+    "excerpt": "Discover the core differences between vector and raster image formats, file types, scaling capabilities, and when to use SVG, PNG, or JPEG.",
+    "image": "./assets/images/understanding-vector-versus-raster-image-formats-explained.jpg",
+    "date": "2026-09-27",
+    "publishedAt": "2026-09-27T14:12:20.711Z",
+    "author": "Marcus Reid",
+    "authorSlug": "marcus-reid",
+    "noindex": false
+  },
+  {
     "slug": "footwear-adjustments-for-ankle-stability-and-arch-support",
     "file": "footwear-adjustments-for-ankle-stability-and-arch-support.html",
     "title": "Footwear Adjustments for Ankle Stability and Arch Support",
