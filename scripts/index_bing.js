@@ -21,7 +21,7 @@ const path = require('path');
 const ROOT_DIR = path.resolve(__dirname, '..');
 const SITE_DOMAIN = 'https://www.genalphamagazines.com';
 const SITE_HOST = 'www.genalphamagazines.com';
-const INDEXNOW_KEY = process.env.INDEXNOW_KEY || '6ebc73efebfc8d150da0af52251ace42';
+const INDEXNOW_KEY = process.env.INDEXNOW_KEY || 'f7874f359b9943a1a14d06e302853b9d';
 const KEY_LOCATION = `${SITE_DOMAIN}/${INDEXNOW_KEY}.txt`;
 
 // Official IndexNow endpoints
