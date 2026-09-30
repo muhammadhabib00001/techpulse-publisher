@@ -12,6 +12,8 @@
     "enforce-faq": "node scripts/enforce_faq_format.js",
     "index-article": "node scripts/index_article.js",
     "index-all": "node scripts/index_article.js --all",
+    "index-bing": "node scripts/index_bing.js",
+    "index-bing-all": "node scripts/index_bing.js --all",
     "setup-hooks": "node scripts/install-hooks.js",
     "postinstall": "node scripts/install-hooks.js"
   },

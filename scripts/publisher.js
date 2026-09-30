@@ -3931,6 +3931,16 @@ async function main() {
     console.warn('[WARN] Indexing API notification notice: ' + indexErr.message);
   }
 
+  // Instant Bing & IndexNow ping
+  try {
+    const { notifyBingIndex } = require('./index_bing');
+    const articleFullUrl = `https://www.genalphamagazines.com/${generatedArticle.slug}`;
+    console.log(`[INFO] Sending instant Bing IndexNow ping for: ${articleFullUrl}`);
+    await notifyBingIndex(articleFullUrl);
+  } catch (bingErr) {
+    console.warn('[WARN] Bing IndexNow notice: ' + bingErr.message);
+  }
+
   console.log('=== Pipeline Execution Complete ===');
 }
 
