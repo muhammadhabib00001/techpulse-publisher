@@ -1,2578 +1,657 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-052TFQ4D4Q"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-052TFQ4D4Q');
-  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="msvalidate.01" content="25038A8801D42437BBC34723A41AC6C4" />
-  <title>Editorial Management | GenAlphaMagazines</title>
-  <meta name="robots" content="noindex,">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link rel="icon" type="image/png" sizes="48x48" href="/assets/images/favicon-48x48.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
-  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
-  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
-  <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap">
-  </noscript>
-  <link rel="stylesheet" href="./assets/css/style.min.css?v=final_stable_v1">
+  <title>Newsroom Editorial CMS · GenAlpha Magazines</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="/assets/css/newsroom.css">
   <style>
-    .admin-body {
-      background: var(--bg-body);
-      color: var(--text-main);
-      font-family: var(--font-sans);
+    :root {
+      --admin-sidebar-bg: #0e1e2e;
+      --admin-sidebar-text: #e2e8f0;
+      --admin-content-bg: #f8fafc;
+      --admin-card-bg: #ffffff;
+      --admin-border: #e2e8f0;
+    }
+    body {
+      background: var(--admin-content-bg);
+      font-family: var(--font-body);
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
     }
-    .admin-nav {
-      background: var(--bg-card);
-      border-bottom: 1px solid var(--border-color);
-      padding: 0.85rem 1.5rem;
+    .admin-sidebar {
+      width: 260px;
+      background: var(--admin-sidebar-bg);
+      color: var(--admin-sidebar-text);
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      flex-direction: column;
+      flex-shrink: 0;
+      min-height: 100vh;
+      padding: 1.5rem 0;
     }
-    .admin-logo {
+    .admin-brand {
+      padding: 0 1.5rem 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      font-family: var(--font-headline);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .admin-menu {
+      list-style: none;
+      padding: 1rem 0;
+      flex: 1;
+    }
+    .admin-menu li a {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      font-weight: 800;
-      font-size: 1.25rem;
-      color: var(--text-main);
+      padding: 0.75rem 1.5rem;
+      color: #94a3b8;
       text-decoration: none;
+      font-weight: 600;
+      font-size: 0.875rem;
+      transition: all 0.2s;
     }
-    .admin-logo span.badge {
-      background: var(--primary);
+    .admin-menu li a:hover, .admin-menu li a.active {
       color: #fff;
-      font-size: 0.75rem;
-      padding: 0.2rem 0.6rem;
-      border-radius: var(--radius-pill);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      background: rgba(255,255,255,0.08);
+      border-left: 4px solid var(--brand-red);
     }
-    .admin-container {
-      max-width: 1240px;
-      width: 100%;
-      margin: 2rem auto;
-      padding: 0 1.5rem;
+    .admin-main {
       flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
     }
-    .admin-header-actions {
+    .admin-header {
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
       justify-content: space-between;
-      gap: 1rem;
+      align-items: center;
       margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--admin-border);
     }
     .admin-title {
+      font-family: var(--font-headline);
       font-size: 1.75rem;
       font-weight: 800;
-      letter-spacing: -0.5px;
     }
-    .admin-subtitle {
+    .admin-card {
+      background: var(--admin-card-bg);
+      border: 1px solid var(--admin-border);
+      border-radius: 6px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .admin-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: #fff;
+      padding: 1.25rem;
+      border-radius: 6px;
+      border: 1px solid var(--admin-border);
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
       color: var(--text-muted);
-      font-size: 0.95rem;
-      margin-top: 0.25rem;
+      letter-spacing: 0.05em;
     }
-    .btn {
+    .stat-value {
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-top: 0.25rem;
+      color: var(--brand-navy);
+    }
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      color: var(--text-primary);
+    }
+    .form-control {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid var(--admin-border);
+      border-radius: 4px;
+      font-size: 0.875rem;
+      font-family: inherit;
+    }
+    .btn-admin {
+      background: var(--brand-navy);
+      color: #fff;
+      border: none;
+      padding: 0.65rem 1.25rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.65rem 1.25rem;
-      font-size: 0.9rem;
-      font-weight: 600;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: var(--transition);
-      text-decoration: none;
     }
-    .btn-primary {
-      background: var(--primary);
-      color: #fff;
-    }
-    .btn-primary:hover {
-      background: var(--primary-hover);
-    }
-    .btn-secondary {
-      background: var(--bg-card);
-      border-color: var(--border-color);
-      color: var(--text-main);
-    }
-    .btn-secondary:hover {
-      background: var(--bg-subtle);
+    .btn-admin:hover {
+      background: #18334f;
     }
     .btn-danger {
       background: #dc2626;
-      color: #fff;
     }
     .btn-danger:hover {
       background: #b91c1c;
     }
-    .btn-sm {
-      padding: 0.35rem 0.75rem;
-      font-size: 0.82rem;
+    .btn-success {
+      background: #16a34a;
     }
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-bottom: 2rem;
+    .btn-success:hover {
+      background: #15803d;
     }
-    .stat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-    }
-    .stat-label {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .stat-val {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: var(--text-main);
-    }
-    .search-filter-bar {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
+    .quality-audit-box {
+      border: 1px solid #fed7aa;
+      background: #fffbeb;
+      border-radius: 4px;
       padding: 1rem;
-      margin-bottom: 1.5rem;
+      margin-top: 1rem;
+    }
+    .quality-audit-box.clean {
+      border-color: #bbf7d0;
+      background: #f0fdf4;
+    }
+    .tab-nav {
       display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      align-items: center;
-      justify-content: space-between;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--admin-border);
+      margin-bottom: 1.5rem;
     }
-    .search-input-wrap {
-      flex: 1;
-      min-width: 260px;
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 0.6rem 1rem;
+      font-weight: 700;
+      font-size: 0.875rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
     }
-    .search-input-wrap input {
-      width: 100%;
-      padding: 0.65rem 1rem;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      background: var(--bg-body);
-      color: var(--text-main);
-      font-size: 0.95rem;
-      outline: none;
+    .tab-btn.active {
+      color: var(--brand-red);
+      border-bottom-color: var(--brand-red);
     }
-    .search-input-wrap input:focus {
-      border-color: var(--primary);
+    .lang-tab-pill {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
+      padding: 0.35rem 0.75rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8125rem;
+      font-weight: 700;
     }
-    .filter-select {
-      padding: 0.65rem 1rem;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      background: var(--bg-body);
-      color: var(--text-main);
-      font-size: 0.95rem;
-      outline: none;
+    .lang-tab-pill.active {
+      background: var(--brand-navy);
+      color: #fff;
+      border-color: var(--brand-navy);
     }
-    .table-container {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      overflow-x: auto;
-      box-shadow: var(--shadow-sm);
-    }
-    table {
+    table.admin-table {
       width: 100%;
       border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    table.admin-table th, table.admin-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--admin-border);
       text-align: left;
-      font-size: 0.92rem;
     }
-    th {
-      background: var(--bg-subtle);
-      color: var(--text-muted);
-      font-weight: 600;
-      padding: 0.85rem 1rem;
-      border-bottom: 1px solid var(--border-color);
+    table.admin-table th {
+      background: var(--bg-secondary);
+      font-weight: 700;
+      color: var(--text-secondary);
       text-transform: uppercase;
       font-size: 0.75rem;
-      letter-spacing: 0.5px;
     }
-    td {
-      padding: 1rem;
-      border-bottom: 1px solid var(--border-color);
-      vertical-align: middle;
-    }
-    tr:last-child td {
-      border-bottom: none;
-    }
-    tr:hover td {
-      background: rgba(0,0,0,0.015);
-    }
-    .art-thumb {
-      width: 64px;
-      height: 48px;
-      object-fit: cover;
-      border-radius: var(--radius-sm);
-      background: var(--bg-subtle);
-    }
-    .art-title-cell {
-      max-width: 380px;
-    }
-    .art-title-link {
-      font-weight: 700;
-      color: var(--text-main);
-      text-decoration: none;
-      display: block;
-      margin-bottom: 0.25rem;
-      line-height: 1.35;
-    }
-    .art-title-link:hover {
-      color: var(--primary);
-      text-decoration: underline;
-    }
-    .art-slug {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      font-family: monospace;
-    }
-    .category-badge {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 0.2rem 0.5rem;
-      border-radius: var(--radius-sm);
-      text-transform: uppercase;
-      background: var(--primary-light);
-      color: var(--primary);
-    }
-    .action-group {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-
-    /* Modal Styling */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.65);
-      backdrop-filter: blur(4px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      padding: 1rem;
-    }
-    .modal-overlay.active {
-      display: flex;
-    }
-    .modal-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      width: 100%;
-      max-width: 780px;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      box-shadow: var(--shadow-lg);
-    }
-    .modal-header {
-      padding: 1.25rem 1.5rem;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .modal-header h3 {
-      font-size: 1.25rem;
-      font-weight: 700;
-    }
-    .modal-close {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--text-muted);
-    }
-    .modal-body {
-      padding: 1.5rem;
-      overflow-y: auto;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
-    }
-    .modal-footer {
-      padding: 1rem 1.5rem;
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      justify-content: flex-end;
-      gap: 0.75rem;
-      background: var(--bg-subtle);
-    }
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-    .form-group label {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-main);
-    }
-    .form-group input, .form-group select, .form-group textarea {
-      padding: 0.65rem 0.85rem;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      background: var(--bg-body);
-      color: var(--text-main);
-      font-size: 0.95rem;
-      font-family: inherit;
-      outline: none;
-    }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-      border-color: var(--primary);
-    }
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-    @media (max-width: 640px) {
-      .form-row {
-        grid-template-columns: 1fr;
-      }
-    }
-    .toast {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      background: #111827;
-      color: #fff;
-      padding: 0.85rem 1.5rem;
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-lg);
-      font-size: 0.9rem;
-      font-weight: 500;
-      display: none;
-      z-index: 2000;
-      border-left: 4px solid var(--primary);
-    }
-    .toast.show {
-      display: block;
-      animation: fadeIn 0.3s;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    /* Auth lock */
-    .lock-screen {
-      position: fixed;
-      inset: 0;
-      background: var(--bg-body);
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-    }
-    .lock-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 2.5rem;
-      max-width: 420px;
-      width: 100%;
-      text-align: center;
-      box-shadow: var(--shadow-md);
-    }
-    .lock-icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
-    .gh-config-banner {
-      background: var(--bg-subtle);
-      border: 1px dashed var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 1rem;
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      font-size: 0.88rem;
-    }
-  
-    /* ==========================================================================
-       WordPress-Style Post Publishing Suite Styles
-       ========================================================================== */
-    .modal-box-wp {
-      max-width: 1400px;
-      width: 96vw;
-      height: 94vh;
-      max-height: 94vh;
-      background: #ffffff;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    }
-    .wp-header {
-      background: #1e293b;
-      color: #ffffff;
-      padding: 0.65rem 1.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #334155;
-      gap: 1rem;
-      flex-shrink: 0;
-    }
-    .wp-header-left {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-    }
-    .wp-logo-badge {
-      background: #2563eb;
-      color: #fff;
-      font-weight: 800;
-      font-size: 0.82rem;
-      padding: 0.25rem 0.6rem;
-      border-radius: 4px;
-      letter-spacing: 0.5px;
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-    .wp-header-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #f8fafc;
-    }
-    .wp-status-pill {
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 0.2rem 0.55rem;
-      border-radius: 9999px;
-      background: #334155;
-      color: #94a3b8;
-      text-transform: uppercase;
-    }
-    .wp-status-pill.live {
-      background: #065f46;
-      color: #6ee7b7;
-    }
-    .wp-header-stats {
-      font-size: 0.82rem;
-      color: #94a3b8;
-      display: flex;
-      gap: 0.75rem;
-    }
-    .wp-header-right {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-    .btn-wp-publish {
-      background: #2563eb;
-      color: #fff;
-      font-weight: 700;
-      border: none;
-      padding: 0.5rem 1.25rem;
-      border-radius: 4px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.92rem;
-      transition: background 0.15s;
-    }
-    .btn-wp-publish:hover {
-      background: #1d4ed8;
-    }
-    .wp-layout {
-      display: flex;
-      flex: 1;
-      min-height: 0;
-      overflow: hidden;
-      background: #f8fafc;
-    }
-    .wp-main-canvas {
-      flex: 1;
-      min-width: 0;
-      background: #ffffff;
-      padding: 1.75rem 2rem;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
-    .wp-sidebar {
-      width: 360px;
-      min-width: 320px;
-      background: #f8fafc;
-      border-left: 1px solid var(--border-color);
-      overflow-y: auto;
-      padding: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
-      flex-shrink: 0;
-    }
-    .wp-title-input {
-      font-size: 1.85rem;
-      font-weight: 800;
-      color: #0f172a;
-      border: none;
-      border-bottom: 2px solid #e2e8f0;
-      padding: 0.4rem 0;
-      width: 100%;
-      outline: none;
-      font-family: inherit;
-      background: transparent;
-    }
-    .wp-title-input:focus {
-      border-bottom-color: #2563eb;
-    }
-    .wp-permalink-box {
-      font-size: 0.85rem;
-      color: #64748b;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.45rem 0.75rem;
-      background: #f1f5f9;
-      border-radius: 4px;
-      flex-wrap: wrap;
-    }
-    .wp-permalink-input {
-      border: 1px solid #cbd5e1;
-      border-radius: 4px;
-      padding: 0.25rem 0.5rem;
-      font-size: 0.85rem;
-      font-family: monospace;
-      color: #0f172a;
-      flex: 1;
-      min-width: 160px;
-    }
-    .wp-toolbar {
-      background: #f8fafc;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px 6px 0 0;
-      padding: 0.45rem 0.65rem;
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      flex-wrap: wrap;
-      border-bottom: none;
-    }
-    .wp-tool-btn {
-      background: #ffffff;
-      border: 1px solid #cbd5e1;
-      border-radius: 4px;
-      padding: 0.35rem 0.6rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #334155;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      line-height: 1;
-      transition: background 0.1s, border-color 0.1s;
-    }
-    .wp-tool-btn:hover {
-      background: #eff6ff;
-      border-color: #93c5fd;
-      color: #1d4ed8;
-    }
-    .wp-tool-sep {
-      width: 1px;
-      height: 20px;
-      background: #cbd5e1;
-      margin: 0 0.2rem;
-    }
-    .wp-tab-switch {
-      margin-left: auto;
-      display: flex;
-      border: 1px solid #cbd5e1;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .wp-tab-btn {
-      background: #f1f5f9;
-      border: none;
-      padding: 0.35rem 0.75rem;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #64748b;
-      cursor: pointer;
-    }
-    .wp-tab-btn.active {
-      background: #2563eb;
-      color: #fff;
-    }
-    .wp-editor-wrap {
-      border: 1px solid #cbd5e1;
-      border-radius: 0 0 6px 6px;
-      background: #ffffff;
-      min-height: 380px;
-      display: flex;
-      flex-direction: column;
-    }
-    .wp-visual-editor {
-      min-height: 380px;
-      padding: 1.25rem;
-      outline: none;
-      font-size: 1.05rem;
-      line-height: 1.8;
-      color: #1e293b;
-      overflow-y: auto;
-      font-family: inherit;
-    }
-    .wp-visual-editor:empty:before {
-      content: attr(placeholder);
-      color: #94a3b8;
-    }
-    .wp-visual-editor h2 { font-size: 1.5rem; font-weight: 800; margin: 1.2rem 0 0.6rem; color: #0f172a; }
-    .wp-visual-editor h3 { font-size: 1.25rem; font-weight: 700; margin: 1rem 0 0.5rem; color: #1e293b; }
-    .wp-visual-editor p { margin-bottom: 1rem; }
-    .wp-visual-editor blockquote {
-      border-left: 4px solid #2563eb;
-      padding: 0.5rem 1rem;
-      margin: 1rem 0;
-      background: #f8fafc;
-      font-style: italic;
-      color: #475569;
-    }
-    .wp-visual-editor ul, .wp-visual-editor ol { padding-left: 1.5rem; margin-bottom: 1rem; }
-    .wp-visual-editor a { color: #2563eb; text-decoration: underline; font-weight: 600; }
-    .wp-html-editor {
-      min-height: 380px;
-      padding: 1rem;
-      border: none;
-      outline: none;
-      font-family: 'Consolas', 'Courier New', monospace;
-      font-size: 0.92rem;
-      line-height: 1.6;
-      color: #0f172a;
-      resize: vertical;
-      display: none;
-      width: 100%;
-      box-sizing: border-box;
-      background: #ffffff;
-    }
-    .wp-panel-card {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
-      padding: 1.1rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    }
-    .wp-panel-header {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #0f172a;
-      margin-bottom: 0.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .wp-serp-preview {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
-      padding: 0.85rem;
-      font-family: Arial, sans-serif;
-      margin-top: 0.75rem;
-    }
-    .wp-serp-site {
-      font-size: 0.8rem;
-      color: #202124;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      margin-bottom: 0.25rem;
-    }
-    .wp-serp-url {
-      color: #4d5156;
-      font-size: 0.75rem;
-      word-break: break-all;
-    }
-    .wp-serp-title {
-      color: #1a0dab;
-      font-size: 1.1rem;
-      font-weight: 400;
-      margin: 0.2rem 0;
-      line-height: 1.3;
-      cursor: pointer;
-    }
-    .wp-serp-desc {
-      color: #4d5156;
-      font-size: 0.85rem;
-      line-height: 1.4;
-    }
-    .wp-char-meter {
-      height: 4px;
-      background: #e2e8f0;
-      border-radius: 2px;
-      margin-top: 0.35rem;
-      overflow: hidden;
-    }
-    .wp-char-bar {
-      height: 100%;
-      width: 0%;
-      background: #f59e0b;
-      transition: width 0.2s, background 0.2s;
-    }
-    .wp-char-bar.good { background: #10b981; }
-    .wp-char-bar.too-long { background: #ef4444; }
-    .wp-faq-item {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
-      padding: 0.85rem;
-      margin-bottom: 0.75rem;
-      position: relative;
-    }
-    .wp-faq-remove {
-      position: absolute;
-      right: 8px;
-      top: 8px;
-      background: none;
-      border: none;
-      color: #ef4444;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: bold;
-    }
-    .wp-tag-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      background: #eff6ff;
-      color: #2563eb;
-      font-size: 0.78rem;
-      font-weight: 600;
-      padding: 0.25rem 0.55rem;
-      border-radius: 4px;
-    }
-    .wp-img-preview-box {
-      width: 100%;
-      aspect-ratio: 16/9;
-      background: #e2e8f0;
-      border-radius: 4px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      margin-bottom: 0.65rem;
-      border: 1px solid #cbd5e1;
-    }
-    .wp-img-preview-box img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .wp-stock-btns {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.35rem;
-      margin-top: 0.5rem;
-    }
-    .wp-stock-btn {
-      background: #f1f5f9;
-      border: 1px solid #cbd5e1;
-      border-radius: 4px;
-      padding: 0.3rem 0.4rem;
-      font-size: 0.75rem;
-      cursor: pointer;
-      text-align: center;
-      color: #334155;
-    }
-    .wp-stock-btn:hover {
-      background: #e2e8f0;
-    }
-    .wp-cat-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.4rem;
-    }
-    .wp-cat-label {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.85rem;
-      cursor: pointer;
-      padding: 0.35rem 0.5rem;
-      border-radius: 4px;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-    }
-    .wp-cat-label:hover {
-      background: #eff6ff;
-      border-color: #bfdbfe;
-    }
-    .wp-cat-label input:checked + span {
-      font-weight: 700;
-      color: #2563eb;
-    }
-    .wp-author-card {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-top: 0.5rem;
-      padding: 0.6rem;
-      background: #f8fafc;
-      border-radius: 4px;
-      border: 1px solid #e2e8f0;
-    }
-    .wp-author-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: #2563eb;
-      color: #fff;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.85rem;
-    }
-    /* Full Preview Modal */
-    .wp-preview-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.7);
-      backdrop-filter: blur(4px);
-      z-index: 10050;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-    }
-    .wp-preview-overlay.active {
-      display: flex;
-    }
-    .wp-preview-box {
-      width: 100%;
-      max-width: 1000px;
-      height: 90vh;
-      background: #ffffff;
-      border-radius: var(--radius-md);
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
-    }
-
   </style>
 </head>
-<body class="admin-body">
-
-  <!-- Password Authentication Gate -->
-  <div id="authGate" class="lock-screen">
-    <div class="lock-box">
-      <div class="lock-icon">🔒</div>
-      <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">Editorial Admin Login</h2>
-      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Enter your passcode to manage, edit, or publish articles on GenAlphaMagazines.</p>
-      <form onsubmit="event.preventDefault(); executeLogin(); return false;">
-        <div class="form-group" style="margin-bottom: 1.25rem; position: relative;">
-          <input type="password" id="adminPassword" placeholder="Enter password" autocomplete="current-password" autofocus style="text-align: center; font-size: 1.1rem; letter-spacing: 2px; padding-right: 2.5rem;">
-          <button type="button" onclick="togglePassVisibility()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem;" title="Show/Hide password">👁️</button>
-        </div>
-        <button type="submit" id="loginBtn" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 1rem; padding: 0.75rem;">Access Dashboard</button>
-        <p id="authError" style="color: #dc2626; font-size: 0.85rem; margin-top: 0.75rem; display: none;">Invalid password. Please enter the correct admin passcode.</p>
-        <div style="margin-top: 1rem;">
-          <button type="button" onclick="resetToDefaultPass()" style="background: none; border: none; color: var(--text-muted); font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Reset passcode to default (admin123)</button>
-        </div>
-      </form>
+<body>
+  <aside class="admin-sidebar">
+    <div class="admin-brand">
+      📰 GenAlpha CMS
+      <div style="font-size:0.75rem;color:#94a3b8;font-weight:400;margin-top:0.25rem;">International Newsroom</div>
     </div>
-  </div>
+    <ul class="admin-menu">
+      <li><a href="#articles" class="active" onclick="switchSection('articles')">📝 Articles &amp; Reports</a></li>
+      <li><a href="#new-article" onclick="switchSection('new-article')">➕ File New Dispatch</a></li>
+      <li><a href="#breaking" onclick="switchSection('breaking')">🚨 Breaking News Bar</a></li>
+      <li><a href="#categories" onclick="switchSection('categories')">📁 Categories &amp; Bureaus</a></li>
+      <li><a href="#authors" onclick="switchSection('authors')">✍️ Journalists &amp; Byline</a></li>
+      <li><a href="#seo-audit" onclick="switchSection('seo-audit')">🛡️ Content &amp; AI Scanner</a></li>
+      <li><a href="#database" onclick="switchSection('database')">💾 Database &amp; Sync</a></li>
+      <li><a href="/" target="_blank">🌐 View Live Website</a></li>
+    </ul>
+  </aside>
 
-  <!-- Admin Navigation -->
-  <nav class="admin-nav">
-    <a href="/" class="admin-logo">
-      <span>GenAlphaMagazines</span>
-      <span class="badge">Admin Desk</span>
-    </a>
-    <div style="display: flex; align-items: center; gap: 1rem;">
-      <a href="/" target="_blank" class="btn btn-secondary btn-sm">🌐 View Live Website</a>
-      <button onclick="openGhSettingsModal()" class="btn btn-secondary btn-sm" title="Configure GitHub Sync for automatic updates">⚙️ GitHub Sync</button>
-      <button onclick="logoutAdmin()" class="btn btn-secondary btn-sm" style="color: #dc2626;">Log Out</button>
-    </div>
-  </nav>
-
-  <!-- Admin Container -->
-  <main class="admin-container">
-    
-    <!-- Top Header -->
-    <div class="admin-header-actions">
+  <main class="admin-main">
+    <div class="admin-header">
       <div>
-        <h1 class="admin-title">Editorial Management</h1>
-        <p class="admin-subtitle">Create, edit, delete, or review all articles published across your publication.</p>
+        <h1 class="admin-title" id="pageTitle">Editorial Management</h1>
+        <p style="font-size:0.875rem;color:var(--text-muted);">Manage articles, 8-language translations, breaking alerts, and verification audits.</p>
       </div>
-      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-        <button onclick="openCreateModal()" class="btn btn-primary">
-          <span>➕</span> New Manual Article
-        </button>
-        <button onclick="triggerAutomatedPublication()" class="btn btn-secondary" id="autoPublishBtn">
-          <span>⚡</span> Run Gemini AI Publisher
-        </button>
-      </div>
-    </div>
-
-    <!-- GitHub Connection Status Banner -->
-    <div class="gh-config-banner" id="ghBanner">
       <div>
-        <strong>🔗 Direct GitHub Sync Status:</strong>
-        <span id="ghStatusText" style="color: var(--text-muted); margin-left: 0.5rem;">Checking...</span>
-      </div>
-      <button onclick="openGhSettingsModal()" class="btn btn-secondary btn-sm">Connect / Edit Token</button>
-    </div>
-
-    <!-- Stats Bar -->
-    <div class="stats-row">
-      <div class="stat-card">
-        <span class="stat-label">Total Published Stories</span>
-        <span class="stat-val" id="statTotal">0</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-label">Primary Categories</span>
-        <span class="stat-val">8</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-label">Editorial Authors</span>
-        <span class="stat-val">2</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-label">Active Status</span>
-        <span class="stat-val" style="color: #10b981;">Online</span>
+        <button type="button" class="btn-admin btn-success" onclick="exportDatabase()">💾 Export Database JSON</button>
       </div>
     </div>
 
-    <!-- Filter & Search Bar -->
-    <div class="search-filter-bar">
-      <div class="search-input-wrap">
-        <input type="text" id="searchInput" placeholder="Search by article title or slug..." oninput="filterArticles()">
+    <!-- Stats Grid -->
+    <div class="admin-stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Published Articles</div>
+        <div class="stat-value" id="statArticles">0</div>
       </div>
-      <div style="display: flex; gap: 0.75rem;">
-        <select id="categoryFilter" class="filter-select" onchange="filterArticles()">
-          <option value="">All Categories</option>
-          <option value="news">News</option>
-          <option value="business">Business</option>
-          <option value="celebrity">Celebrity</option>
-          <option value="entertainment">Entertainment</option>
-          <option value="games">Games</option>
-          <option value="health">Health</option>
-          <option value="technology">Technology</option>
-          <option value="others">Others</option>
-        </select>
-        <button onclick="loadArticles()" class="btn btn-secondary btn-sm" title="Refresh list">🔄 Refresh</button>
+      <div class="stat-card">
+        <div class="stat-label">Active Languages</div>
+        <div class="stat-value">8</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Editorial Categories</div>
+        <div class="stat-value" id="statCategories">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Staff Correspondents</div>
+        <div class="stat-value" id="statAuthors">0</div>
       </div>
     </div>
 
-    <!-- Articles Table -->
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th style="width: 80px;">Cover</th>
-            <th>Title & Slug</th>
-            <th>Category</th>
-            <th>Published Date</th>
-            <th style="text-align: right;">Actions</th>
-          </tr>
-        </thead>
-        <tbody id="articlesTableBody">
-          <tr>
-            <td colspan="5" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
-              Loading publication records...
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- Section 1: Articles List -->
+    <div id="sectionArticles" class="admin-section">
+      <div class="admin-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+          <h2 style="font-size:1.15rem;font-weight:800;">Newsroom Dispatches</h2>
+          <button type="button" class="btn-admin" onclick="switchSection('new-article')">+ Create New Article</button>
+        </div>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Headline</th>
+              <th>Category</th>
+              <th>Author</th>
+              <th>Status</th>
+              <th>Published</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="articlesTableBody">
+            <tr><td colspan="6" style="text-align:center;padding:2rem;">Loading news dispatches...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 2: Article Editor -->
+    <div id="sectionNewArticle" class="admin-section" style="display:none;">
+      <div class="admin-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+          <h2 style="font-size:1.25rem;font-weight:800;" id="editorTitle">File New Editorial Dispatch</h2>
+          <div style="display:flex;gap:0.5rem;" id="langSelectorTabs">
+            <!-- Render language tabs -->
+          </div>
+        </div>
+
+        <form id="articleForm" onsubmit="saveArticle(event)">
+          <input type="hidden" id="editArticleId" value="">
+          <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;">
+            <div>
+              <div class="form-group">
+                <label for="artTitle">Headline (H1)</label>
+                <input type="text" id="artTitle" required class="form-control" placeholder="Enter verified news headline..." oninput="auditContentRealtime()">
+              </div>
+
+              <div class="form-group">
+                <label for="artDeck">Summary Deck / Subheading</label>
+                <textarea id="artDeck" required class="form-control" rows="2" placeholder="Summary statement for lead paragraph..." oninput="auditContentRealtime()"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="artContent">Article Body (Clean Editorial HTML)</label>
+                <textarea id="artContent" required class="form-control" rows="12" placeholder="<p>Full reporting paragraphs...</p><h2>Subheading</h2><p>...</p>" oninput="auditContentRealtime()"></textarea>
+              </div>
+
+              <!-- Live AI Blacklist & Quality Audit Box -->
+              <div id="qualityAuditBox" class="quality-audit-box clean">
+                <strong>🛡️ Content Quality &amp; AI Blacklist Scanner (Section 64):</strong>
+                <p id="qualityAuditMsg" style="font-size:0.8125rem;margin-top:0.25rem;">Checking content... Clean text detected.</p>
+              </div>
+            </div>
+
+            <div>
+              <div class="form-group">
+                <label for="artSlug">URL Slug</label>
+                <input type="text" id="artSlug" required class="form-control" placeholder="e.g. global-energy-summit-treaty">
+              </div>
+
+              <div class="form-group">
+                <label for="artCategory">Newsroom Bureau / Category</label>
+                <select id="artCategory" required class="form-control">
+                  <!-- Injected from categories -->
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="artAuthor">Byline Journalist</label>
+                <select id="artAuthor" required class="form-control">
+                  <!-- Injected from authors -->
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="artImage">Featured Image URL</label>
+                <input type="url" id="artImage" required class="form-control" placeholder="https://images.unsplash.com/...">
+              </div>
+
+              <div class="form-group">
+                <label for="artImageCaption">Image Caption &amp; Credit</label>
+                <input type="text" id="artImageCaption" class="form-control" placeholder="Description of image and press credit...">
+              </div>
+
+              <div class="form-group">
+                <label for="artStatus">Editorial Status</label>
+                <select id="artStatus" class="form-control">
+                  <option value="published">Published</option>
+                  <option value="in_review">In Review</option>
+                  <option value="draft">Draft</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="display:flex;gap:1.5rem;align-items:center;">
+                <label><input type="checkbox" id="artFeatured"> Featured Lead</label>
+                <label><input type="checkbox" id="artBreaking"> Breaking Alert</label>
+              </div>
+
+              <div style="margin-top:2rem;display:flex;gap:0.75rem;">
+                <button type="submit" class="btn-admin btn-success" style="flex:1;">Publish Dispatch</button>
+                <button type="button" class="btn-admin btn-danger" onclick="switchSection('articles')">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Section 3: Breaking News Bar -->
+    <div id="sectionBreaking" class="admin-section" style="display:none;">
+      <div class="admin-card">
+        <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:1rem;">Breaking News Banner Control</h2>
+        <form id="breakingForm" onsubmit="saveBreakingAlert(event)">
+          <div class="form-group">
+            <label><input type="checkbox" id="breakingEnabled"> Enable Breaking News Banner</label>
+          </div>
+          <div class="form-group">
+            <label for="breakingHeadline">Breaking Alert Headline</label>
+            <input type="text" id="breakingHeadline" class="form-control" placeholder="Headline text...">
+          </div>
+          <div class="form-group">
+            <label for="breakingUrl">Target Article URL</label>
+            <input type="text" id="breakingUrl" class="form-control" placeholder="/articles/slug">
+          </div>
+          <button type="submit" class="btn-admin btn-success">Update Breaking Banner</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Section 4: Categories -->
+    <div id="sectionCategories" class="admin-section" style="display:none;">
+      <div class="admin-card">
+        <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:1rem;">Active News Bureaus &amp; Taxonomies</h2>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Bureau</th>
+              <th>Slug</th>
+              <th>Description</th>
+              <th>Translations</th>
+            </tr>
+          </thead>
+          <tbody id="categoriesTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 5: Journalists -->
+    <div id="sectionAuthors" class="admin-section" style="display:none;">
+      <div class="admin-card">
+        <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:1rem;">Staff Correspondents &amp; Credential Directory</h2>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Journalist</th>
+              <th>Editorial Role</th>
+              <th>Credentials</th>
+              <th>Contact Desk</th>
+            </tr>
+          </thead>
+          <tbody id="authorsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 6: Content & AI Scanner -->
+    <div id="sectionSeoAudit" class="admin-section" style="display:none;">
+      <div class="admin-card">
+        <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:1rem;">Live Newsroom Quality &amp; Blacklist Auditor</h2>
+        <p style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:1.5rem;">
+          Audits text against Section 64 blacklist words (e.g. delve, tapestry, multifaceted, nuanced, landscape, pivotal, crucial, leverage, robust, streamline) and verifies zero forbidden em dashes (—).
+        </p>
+        <textarea id="standaloneAuditInput" class="form-control" rows="6" placeholder="Paste draft paragraphs here to audit..." oninput="runStandaloneAudit()"></textarea>
+        <div id="standaloneAuditResult" class="quality-audit-box clean" style="margin-top:1rem;">
+          Awaiting input to audit.
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 7: Database & Sync -->
+    <div id="sectionDatabase" class="admin-section" style="display:none;">
+      <div class="admin-card">
+        <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:1rem;">Database Backup, Restore &amp; Rebuild</h2>
+        <p style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:1rem;">
+          Download current database state, upload an updated JSON snapshot, or trigger static newsroom re-compilation.
+        </p>
+        <div style="display:flex;gap:1rem;margin-top:1rem;">
+          <button type="button" class="btn-admin" onclick="exportDatabase()">Download Complete Database</button>
+        </div>
+      </div>
     </div>
   </main>
 
-  <!-- WordPress-Style Post Publishing Modal -->
-  <div class="modal-overlay" id="articleModal">
-    <div class="modal-box modal-box-wp">
-      <!-- WP Topbar -->
-      <header class="wp-header">
-        <div class="wp-header-left">
-          <div class="wp-logo-badge"><span>W</span> POST</div>
-          <h3 id="modalTitle" class="wp-header-title">Add New Post</h3>
-          <span id="wpStatusPill" class="wp-status-pill">Draft</span>
-          <div class="wp-header-stats">
-            <span id="wpWordCount">0 words</span>
-            <span>&bull;</span>
-            <span id="wpReadTime">1 min read</span>
-          </div>
-        </div>
-        <div class="wp-header-right">
-          <button type="button" class="btn btn-secondary btn-sm" onclick="toggleWpPreview()">👁️ Preview Post</button>
-          <button type="button" class="btn btn-secondary btn-sm" onclick="saveDraftLocally()">💾 Save Draft</button>
-          <button type="submit" class="btn-wp-publish" id="saveArticleBtn" form="articleForm">🚀 Publish to Site</button>
-          <button type="button" class="modal-close" onclick="closeArticleModal()" style="color: #cbd5e1; font-size: 1.5rem; margin-left: 0.5rem; background:none; border:none; cursor:pointer;">&times;</button>
-        </div>
-      </header>
-
-      <!-- Main Form -->
-      <form id="articleForm" onsubmit="handleSaveArticle(event)" style="display: flex; flex: 1; min-height: 0; overflow: hidden; margin: 0;">
-        <input type="hidden" id="editArticleSlug">
-        
-        <div class="wp-layout" style="width: 100%;">
-          
-          <!-- LEFT MAIN CANVAS (Content & SEO) -->
-          <main class="wp-main-canvas">
-            
-            <!-- Post Title -->
-            <div>
-              <input type="text" id="fTitle" class="wp-title-input" required placeholder="Add article title..." oninput="handleTitleInput(this.value)">
-            </div>
-
-            <!-- Permalink Box -->
-            <div class="wp-permalink-box">
-              <span style="font-weight: 700;">Permalink:</span>
-              <span style="color: #64748b;">https://www.genalphamagazines.com/</span>
-              <input type="text" id="fSlug" class="wp-permalink-input" placeholder="article-slug" oninput="handleSlugManualInput(this.value)">
-              <button type="button" class="btn btn-secondary btn-sm" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;" onclick="autoGenerateSlug()">Auto-Slug</button>
-            </div>
-
-            <!-- Classic WordPress WYSIWYG Formatting Toolbar -->
-            <div>
-              <div class="wp-toolbar">
-                <!-- Headings -->
-                <select id="wpHeadingSelect" onchange="formatHeading(this.value)" class="filter-select" style="padding: 0.25rem 0.5rem; font-size: 0.82rem; height: 28px;">
-                  <option value="p">Paragraph</option>
-                  <option value="h2">Heading 2 (H2)</option>
-                  <option value="h3">Heading 3 (H3)</option>
-                  <option value="h4">Heading 4 (H4)</option>
-                </select>
-
-                <div class="wp-tool-sep"></div>
-
-                <!-- Text styles -->
-                <button type="button" class="wp-tool-btn" onclick="formatDoc('bold')" title="Bold (Ctrl+B)"><strong>B</strong></button>
-                <button type="button" class="wp-tool-btn" onclick="formatDoc('italic')" title="Italic (Ctrl+I)"><em>I</em></button>
-                <button type="button" class="wp-tool-btn" onclick="formatDoc('underline')" title="Underline (Ctrl+U)"><u>U</u></button>
-                <button type="button" class="wp-tool-btn" onclick="formatDoc('strikeThrough')" title="Strikethrough"><s>S</s></button>
-
-                <div class="wp-tool-sep"></div>
-
-                <!-- Lists & Quote -->
-                <button type="button" class="wp-tool-btn" onclick="formatDoc('insertUnorderedList')" title="Bullet List">• List</button>
-                <button type="button" class="wp-tool-btn" onclick="formatDoc('insertOrderedList')" title="Numbered List">1. List</button>
-                <button type="button" class="wp-tool-btn" onclick="formatBlockQuote()" title="Blockquote">❝ Quote</button>
-                <button type="button" class="wp-tool-btn" onclick="formatDoc('insertHorizontalRule')" title="Horizontal Divider">— Line</button>
-
-                <div class="wp-tool-sep"></div>
-
-                <!-- Insert Link / Media / Citation -->
-                <button type="button" class="wp-tool-btn" onclick="promptInsertLink()" title="Insert Hyperlink">🔗 Link</button>
-                <button type="button" class="wp-tool-btn" onclick="promptInsertImage()" title="Insert In-Body Image">🖼️ Add Media</button>
-                <button type="button" class="wp-tool-btn" onclick="promptExternalCitation()" title="Insert Authoritative Citation Link" style="color: #2563eb;">🌐 Citation Link</button>
-                <button type="button" class="wp-tool-btn" onclick="insertTakeawaysCallout()" title="Insert Key Highlights Box">💡 Takeaway Box</button>
-
-                <!-- Visual / Text Switcher -->
-                <div class="wp-tab-switch">
-                  <button type="button" id="tabVisualBtn" class="wp-tab-btn active" onclick="switchWpEditorTab('visual')">Visual</button>
-                  <button type="button" id="tabTextBtn" class="wp-tab-btn" onclick="switchWpEditorTab('text')">Text (HTML)</button>
-                </div>
-              </div>
-
-              <!-- Editor Writing Surface -->
-              <div class="wp-editor-wrap">
-                <div id="fVisualContent" class="wp-visual-editor" contenteditable="true" placeholder="Start writing or paste your post content here..." oninput="syncFromVisual()"></div>
-                <textarea id="fContent" class="wp-html-editor" placeholder="Write or paste standard paragraphs or raw HTML tags here..." oninput="syncFromText()"></textarea>
-              </div>
-            </div>
-
-            <!-- Rank Math / Yoast SEO Box -->
-            <div class="wp-panel-card">
-              <div class="wp-panel-header">
-                <span>🔍 Search Engine Optimization (Rank Math / Yoast SEO)</span>
-                <span id="seoScoreBadge" style="font-size: 0.78rem; font-weight: 700; color: #10b981; background: #ecfdf5; padding: 0.2rem 0.5rem; border-radius: 4px;">● SEO Good</span>
-              </div>
-
-              <!-- Google SERP Snippet Preview -->
-              <div class="wp-serp-preview">
-                <div class="wp-serp-site">
-                  <span style="font-size: 0.9rem;">🌐</span>
-                  <strong>GenAlphaMagazines</strong>
-                  <span class="wp-serp-url">› <span id="serpSlug">your-article-slug</span></span>
-                </div>
-                <div class="wp-serp-title" id="serpTitle">Your Article Title Will Appear Here</div>
-                <div class="wp-serp-desc" id="serpDesc">Compelling meta description summary will show here in Google search engine result snippets.</div>
-              </div>
-
-              <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.85rem;">
-                <div class="form-group">
-                  <label for="fFocusKeyword" style="font-size: 0.85rem; font-weight: 700;">Focus Keyword / Target Keyword</label>
-                  <input type="text" id="fFocusKeyword" placeholder="e.g. artificial intelligence, renewable energy" oninput="updateSerpPreview()">
-                </div>
-
-                <div class="form-group">
-                  <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <label for="fSeoTitle" style="font-size: 0.85rem; font-weight: 700;">SEO Title</label>
-                    <span id="seoTitleCounter" style="font-size: 0.75rem; color: #64748b;">0 / 60 chars</span>
-                  </div>
-                  <input type="text" id="fSeoTitle" placeholder="Custom SEO Title (defaults to post title)" oninput="updateSerpPreview()">
-                  <div class="wp-char-meter"><div id="seoTitleBar" class="wp-char-bar"></div></div>
-                </div>
-
-                <div class="form-group">
-                  <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <label for="fExcerpt" style="font-size: 0.85rem; font-weight: 700;">Meta Description (Short Excerpt) *</label>
-                    <span id="excerptCounter" style="font-size: 0.75rem; color: #64748b;">0 / 155 chars</span>
-                  </div>
-                  <textarea id="fExcerpt" rows="2" required placeholder="A brief, engaging 1-2 sentence summary for search engines and social media cards." oninput="updateSerpPreview()"></textarea>
-                  <div class="wp-char-meter"><div id="excerptBar" class="wp-char-bar"></div></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- FAQ Accordion Builder (Google FAQ Schema) -->
-            <div class="wp-panel-card">
-              <div class="wp-panel-header">
-                <span>❓ Frequently Asked Questions (FAQ Schema Builder)</span>
-                <button type="button" class="btn btn-secondary btn-sm" onclick="addFaqRow()">+ Add Question</button>
-              </div>
-              <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 0.75rem;">
-                Add Q&A pairs. They will be formatted as interactive accordion cards and tagged with Schema.org <code>FAQPage</code> structured data for Google rich snippets.
-              </p>
-              <div id="faqListContainer">
-                <!-- Active FAQ rows populated here -->
-              </div>
-            </div>
-
-            <!-- Key Takeaways / Executive Highlights -->
-            <div class="wp-panel-card">
-              <div class="wp-panel-header">
-                <span>⚡ Key Takeaways / Highlights (Executive Summary)</span>
-              </div>
-              <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 0.75rem;">
-                3 quick summary bullets placed in the highlight box right beneath the hero banner.
-              </p>
-              <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                <input type="text" id="fTakeaway1" placeholder="Highlight bullet 1 (e.g. Core breakthrough or key statistic)">
-                <input type="text" id="fTakeaway2" placeholder="Highlight bullet 2 (e.g. Practical industry implication)">
-                <input type="text" id="fTakeaway3" placeholder="Highlight bullet 3 (e.g. Forward-looking projection)">
-              </div>
-            </div>
-
-          </main>
-
-          <!-- RIGHT DOCUMENT SIDEBAR (Settings & Publishing) -->
-          <aside class="wp-sidebar">
-            
-            <!-- Publish Box -->
-            <div class="wp-panel-card">
-              <div class="wp-panel-header">
-                <span>Publish Settings</span>
-              </div>
-              
-              <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.88rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                  <span style="color: #64748b;">Status:</span>
-                  <select id="fStatus" style="padding: 0.25rem 0.5rem; font-size: 0.82rem; border-radius: 4px; border: 1px solid #cbd5e1;" onchange="updateStatusPill(this.value)">
-                    <option value="published">Published</option>
-                    <option value="draft">Draft</option>
-                  </select>
-                </div>
-
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                  <span style="color: #64748b;">Visibility:</span>
-                  <span style="font-weight: 700; color: #10b981;">Public 🌐</span>
-                </div>
-
-                <div class="form-group" style="margin-top: 0.25rem;">
-                  <label for="fPubDate" style="font-size: 0.8rem; color: #64748b;">Publish Date:</label>
-                  <input type="date" id="fPubDate" style="padding: 0.35rem 0.5rem; font-size: 0.85rem;">
-                </div>
-
-                <!-- Author Selector -->
-                <div class="form-group">
-                  <label for="fAuthor" style="font-size: 0.8rem; color: #64748b;">Author:</label>
-                  <select id="fAuthor" required onchange="updateAuthorCard(this.value)" style="padding: 0.4rem 0.5rem; font-size: 0.85rem;">
-                    <option value="marcus-reid">Marcus Reid (Business / Tech / News)</option>
-                    <option value="julia-vance">Julia Vance (Celebrity / Health / Culture)</option>
-                  </select>
-                  
-                  <div class="wp-author-card" id="authorPreviewCard">
-                    <div class="wp-author-avatar" id="authorAvatar">MR</div>
-                    <div>
-                      <div id="authorNameText" style="font-weight: 700; font-size: 0.88rem; color: #0f172a;">Marcus Reid</div>
-                      <div id="authorRoleText" style="font-size: 0.75rem; color: #64748b;">Senior Business & Financial Editor</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Featured Image (Hero Image) -->
-            <div class="wp-panel-card">
-              <div class="wp-panel-header">
-                <span>Featured Image *</span>
-              </div>
-              
-              <div class="wp-img-preview-box" id="imagePreviewBox">
-                <span id="imagePlaceholder" style="color: #94a3b8; font-size: 0.85rem;">No Image Selected</span>
-                <img id="imagePreviewEl" src="" alt="" style="display: none;">
-              </div>
-
-              <div class="form-group" style="margin-bottom: 0.6rem;">
-                <label for="fImage" style="font-size: 0.8rem; color: #64748b;">Image URL or Path *</label>
-                <input type="text" id="fImage" required placeholder="https://images.unsplash.com/... or ./assets/images/..." oninput="updateImagePreview(this.value)">
-              </div>
-
-              <div class="form-group" style="margin-bottom: 0.6rem;">
-                <label for="fImageAlt" style="font-size: 0.8rem; color: #64748b;">Alt Text (SEO & Accessibility)</label>
-                <input type="text" id="fImageAlt" placeholder="Descriptive image alt text">
-              </div>
-
-              <div style="margin-top: 0.5rem;">
-                <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Stock Photo Presets (Unsplash):</span>
-                <div class="wp-stock-btns">
-                  <button type="button" class="wp-stock-btn" onclick="applyStockPreset('tech')">💻 Tech</button>
-                  <button type="button" class="wp-stock-btn" onclick="applyStockPreset('business')">📈 Business</button>
-                  <button type="button" class="wp-stock-btn" onclick="applyStockPreset('cinema')">🎬 Cinema</button>
-                  <button type="button" class="wp-stock-btn" onclick="applyStockPreset('health')">🌿 Health</button>
-                  <button type="button" class="wp-stock-btn" onclick="applyStockPreset('gaming')">🎮 Gaming</button>
-                  <button type="button" class="wp-stock-btn" onclick="applyStockPreset('news')">📰 News</button>
-                </div>
-              </div>
-
-              <div style="margin-top: 0.75rem; padding-top: 0.6rem; border-top: 1px dashed #cbd5e1;">
-                <label style="font-size: 0.75rem; color: #64748b; display: block; margin-bottom: 0.25rem;">Or Upload Image File:</label>
-                <input type="file" id="fImageFileInput" accept="image/*" onchange="handleLocalImageUpload(event)" style="font-size: 0.75rem;">
-              </div>
-            </div>
-
-            <!-- Category Selector -->
-            <div class="wp-panel-card">
-              <div class="wp-panel-header">
-                <span>Category *</span>
-              </div>
-              <div class="wp-cat-grid" id="categoryRadioGrid">
-                <label class="wp-cat-label"><input type="radio" name="wpCategory" value="news" checked onchange="handleCatChange(this.value)"> <span>News</span></label>
-                <label class="wp-cat-label"><input type="radio" name="wpCategory" value="business" onchange="handleCatChange(this.value)"> <span>Business</span></label>
-                <label class="wp-cat-label"><input type="radio" name="wpCategory" value="technology" onchange="handleCatChange(this.value)"> <span>Technology</span></label>
-                <label class="wp-cat-label"><input type="radio" name="wpCategory" value="celebrity" onchange="handleCatChange(this.value)"> <span>Celebrity</span></label>
-                <label class="wp-cat-label"><input type="radio" name="wpCategory" value="entertainment" onchange="handleCatChange(this.value)"> <span>Entertainment</span></label>
-                <label class="wp-cat-label"><input type="radio" name="wpCategory" value="health" onchange="handleCatChange(this.value)"> <span>Health</span></label>
-                <label class="wp-cat-label"><input type="radio" name="wpCategory" value="games" onchange="handleCatChange(this.value)"> <span>Games</span></label>
-                <label class="wp-cat-label"><input type="radio" name="wpCategory" value="others" onchange="handleCatChange(this.value)"> <span>Others</span></label>
-              </div>
-              <input type="hidden" id="fCategory" value="news">
-            </div>
-
-            <!-- Tags / Keywords -->
-            <div class="wp-panel-card">
-              <div class="wp-panel-header">
-                <span>Tags / Keywords</span>
-              </div>
-              <div class="form-group">
-                <input type="text" id="fTagInput" placeholder="Add tag and press Enter..." onkeydown="handleTagKey(event)">
-                <div id="wpTagChips" style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem;"></div>
-              </div>
-            </div>
-
-          </aside>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- WordPress-Style Full Live Preview Drawer -->
-  <div class="wp-preview-overlay" id="wpPreviewOverlay">
-    <div class="wp-preview-box">
-      <div style="background: #1e293b; color: #fff; padding: 0.75rem 1.25rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #334155; position: sticky; top: 0; z-index: 10;">
-        <span style="font-weight: 700; font-size: 0.95rem;">👁️ Post Live Preview &bull; GenAlphaMagazines</span>
-        <button type="button" class="btn btn-secondary btn-sm" onclick="toggleWpPreview()">Close Preview</button>
-      </div>
-      <div id="wpPreviewContainer" style="padding: 2rem; background: #ffffff;">
-        <!-- Full rendered article appears here -->
-      </div>
-    </div>
-  </div>
-
-  <!-- Delete Confirmation Modal -->
-  <div class="modal-overlay" id="deleteModal">
-    <div class="modal-box" style="max-width: 480px;">
-      <div class="modal-header">
-        <h3>Confirm Article Removal</h3>
-        <button class="modal-close" onclick="closeDeleteModal()">&times;</button>
-      </div>
-      <div class="modal-body" style="text-align: center; padding: 2rem 1.5rem;">
-        <div style="font-size: 2.5rem; margin-bottom: 1rem;">⚠️</div>
-        <p style="font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem;" id="deleteArticleTitle">Are you sure?</p>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">
-          This will permanently delete this article and clean up its references across the website, index page, and sitemap.
-        </p>
-      </div>
-      <div class="modal-footer" style="justify-content: center;">
-        <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
-        <button type="button" class="btn btn-danger" id="confirmDeleteBtn" onclick="executeDelete()">Yes, Delete Article</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- GitHub Settings Modal -->
-  <div class="modal-overlay" id="ghSettingsModal">
-    <div class="modal-box" style="max-width: 540px;">
-      <div class="modal-header">
-        <h3>GitHub Direct Sync Settings</h3>
-        <button class="modal-close" onclick="closeGhSettingsModal()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
-          Connecting your GitHub Personal Access Token (PAT) enables <strong>instant 1-click live updates</strong> from your browser directly to your GitHub repository without opening a terminal.
-        </p>
-        <div class="form-group">
-          <label for="ghRepoInput">Repository (Owner/Repo)</label>
-          <input type="text" id="ghRepoInput" placeholder="muhammadhabib00001/techpulse-publisher" value="muhammadhabib00001/techpulse-publisher">
-        </div>
-        <div class="form-group">
-          <label for="ghTokenInput">GitHub Personal Access Token (PAT)</label>
-          <input type="password" id="ghTokenInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-          <div style="margin-top: 0.5rem;">
-            <a href="https://github.com/settings/tokens/new?description=GenAlphaMagazines+Admin+Sync&scopes=repo" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.75rem; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 4px; font-size: 0.82rem; font-weight: 700; color: #2563eb; text-decoration: none;">
-              🔑 Click Here to Create Your GitHub Token (30 Seconds) &rarr;
-            </a>
-          </div>
-          <span style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem;">
-            Token needs <code>repo</code> or <code>contents:write</code> and <code>actions:write</code> permissions. Stored securely only in your browser's private localStorage.
-          </span>
-        </div>
-        <div class="form-group">
-          <label for="adminPassInput">Change Admin Dashboard Password</label>
-          <input type="text" id="adminPassInput" placeholder="Change login passcode">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" onclick="closeGhSettingsModal()">Cancel</button>
-        <button type="button" class="btn btn-primary" onclick="saveGhSettings()">Save Configuration</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="toast" id="toast">Message notification</div>
-
-  <!-- Scripts -->
   <script>
-    const DEFAULT_PASS = 'admin123';
-    const GITHUB_REPO_DEFAULT = 'muhammadhabib00001/techpulse-publisher';
+    let db = {
+      articles: [],
+      categories: [],
+      authors: [],
+      settings: {}
+    };
 
-    let allArticles = [];
-    let articleToDelete = null;
+    let currentEditingLang = 'en';
 
-    function togglePassVisibility() {
-      const el = document.getElementById('adminPassword');
-      el.type = el.type === 'password' ? 'text' : 'password';
-    }
+    // Blacklist from Section 64
+    const BANNED_WORDS = [
+      'delve', 'tapestry', 'multifaceted', 'nuanced', 'landscape', 'comprehensive',
+      'pivotal', 'crucial', 'leverage', 'robust', 'streamline', 'utilize',
+      'facilitate', 'endeavor', 'paramount', 'foster', 'harness', 'navigate',
+      'embark', 'unveil', 'elevate', 'enhance', 'unlock', 'unleash', 'revolutionize',
+      'resonate', 'tailored', 'cutting-edge', 'game changer', 'innovative', 'dynamic',
+      'vibrant', 'transformative', 'seamless', 'invaluable', 'intricate', 'essential',
+      'vital', 'compelling', 'cornerstone', 'showcase', 'illuminate', 'underscore'
+    ];
 
-    function resetToDefaultPass() {
-      localStorage.removeItem('gam_admin_password');
-      const inputEl = document.getElementById('adminPassword');
-      if (inputEl) {
-        inputEl.value = DEFAULT_PASS;
-      }
-      const errEl = document.getElementById('authError');
-      if (errEl) errEl.style.display = 'none';
-      executeLogin();
-    }
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadDatabase();
+      renderDashboard();
+    });
 
-    // Password & Session management
-    function checkAuth() {
-      const stored = sessionStorage.getItem('gam_admin_logged_in');
-      const gate = document.getElementById('authGate');
-      if (stored === 'true') {
-        if (gate) gate.style.setProperty('display', 'none', 'important');
-        initDashboard();
-      } else {
-        if (gate) gate.style.setProperty('display', 'flex', 'important');
-      }
-    }
-
-    function executeLogin() {
-      const inputEl = document.getElementById('adminPassword');
-      const errEl = document.getElementById('authError');
-      const entered = (inputEl ? inputEl.value : '').trim();
-      const validPass = (localStorage.getItem('gam_admin_password') || DEFAULT_PASS).trim();
-
-      const normEntered = entered.replace(/\s+/g, '').toLowerCase();
-      const normValid = validPass.replace(/\s+/g, '').toLowerCase();
-      const normDefault = DEFAULT_PASS.toLowerCase();
-
-      if (
-        entered === validPass ||
-        entered === DEFAULT_PASS ||
-        normEntered === normValid ||
-        normEntered === normDefault
-      ) {
-        sessionStorage.setItem('gam_admin_logged_in', 'true');
-        const gate = document.getElementById('authGate');
-        if (gate) gate.style.setProperty('display', 'none', 'important');
-        if (errEl) errEl.style.display = 'none';
-        initDashboard();
-      } else {
-        if (errEl) {
-          errEl.style.display = 'block';
-          errEl.textContent = 'Incorrect passcode. Default passcode is: ' + DEFAULT_PASS;
-        }
-      }
-    }
-
-    function logoutAdmin() {
-      sessionStorage.removeItem('gam_admin_logged_in');
-      location.reload();
-    }
-
-    // GitHub Settings
-    function getGhToken() {
-      return localStorage.getItem('gam_gh_token') || '';
-    }
-    function getGhRepo() {
-      return localStorage.getItem('gam_gh_repo') || GITHUB_REPO_DEFAULT;
-    }
-
-    function updateGhBanner() {
-      const token = getGhToken();
-      const statusEl = document.getElementById('ghStatusText');
-      if (token) {
-        statusEl.innerHTML = '<span style="color: #10b981; font-weight: 700;">✅ Connected</span> (' + getGhRepo() + ')';
-      } else {
-        statusEl.innerHTML = '<span style="color: #eab308; font-weight: 600;">⚠️ Not Connected (Read-Only Mode)</span> — <a href="javascript:openGhSettingsModal()" style="text-decoration: underline;">Add your GitHub Token</a> to enable 1-click Delete, Edit, and AI Publishing from this device.';
-      }
-    }
-
-    function openGhSettingsModal() {
-      document.getElementById('ghRepoInput').value = getGhRepo();
-      document.getElementById('ghTokenInput').value = getGhToken();
-      document.getElementById('adminPassInput').value = localStorage.getItem('gam_admin_password') || DEFAULT_PASS;
-      document.getElementById('ghSettingsModal').classList.add('active');
-    }
-
-    function closeGhSettingsModal() {
-      document.getElementById('ghSettingsModal').classList.remove('active');
-    }
-
-    function saveGhSettings() {
-      const repo = document.getElementById('ghRepoInput').value.trim();
-      const token = document.getElementById('ghTokenInput').value.trim();
-      const pass = document.getElementById('adminPassInput').value.trim();
-
-      if (repo) localStorage.setItem('gam_gh_repo', repo);
-      if (token) localStorage.setItem('gam_gh_token', token);
-      if (pass) localStorage.setItem('gam_admin_password', pass);
-
-      closeGhSettingsModal();
-      updateGhBanner();
-      showToast('Settings saved successfully!');
-    }
-
-    // Toast
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 3500);
-    }
-
-    // Fetch Articles
-    async function loadArticles() {
+    async function loadDatabase() {
       try {
-        const res = await fetch('./data/articles.json?t=' + Date.now());
-        if (res.ok) {
-          allArticles = await res.json();
-        } else {
-          // Fallback to published_topics
-          const tRes = await fetch('./data/published_topics.json?t=' + Date.now());
-          if (tRes.ok) {
-            const raw = await tRes.json();
-            allArticles = raw.map(r => ({
-              slug: r.slug,
-              title: r.title,
-              category: r.category || 'news',
-              image: './assets/images/' + r.slug + '.jpg',
-              date: r.publishedAt ? r.publishedAt.split('T')[0] : '2026-09-07'
-            }));
-          }
-        }
-      } catch (err) {
-        console.warn('Error loading articles list:', err);
+        const [artRes, catRes, autRes, setRes] = await Promise.all([
+          fetch('/data/articles.json'),
+          fetch('/data/categories.json'),
+          fetch('/data/authors.json'),
+          fetch('/data/site_settings.json')
+        ]);
+        db.articles = await artRes.json();
+        db.categories = await catRes.json();
+        db.authors = await autRes.json();
+        db.settings = await setRes.json();
+      } catch (e) {
+        console.error('Error loading database:', e);
       }
-
-      document.getElementById('statTotal').textContent = allArticles.length;
-      renderTable(allArticles);
     }
 
-    function renderTable(list) {
-      const tbody = document.getElementById('articlesTableBody');
-      if (!list || list.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">No articles found matching query.</td></tr>';
-        return;
-      }
+    function renderDashboard() {
+      document.getElementById('statArticles').textContent = db.articles.length;
+      document.getElementById('statCategories').textContent = db.categories.length;
+      document.getElementById('statAuthors').textContent = db.authors.length;
 
-      tbody.innerHTML = list.map(art => {
-        const imgSrc = art.image || ('./assets/images/' + art.slug + '.jpg');
+      // Render Articles Table
+      const tbody = document.getElementById('articlesTableBody');
+      tbody.innerHTML = db.articles.map(a => {
+        const trans = a.translations['en'] || Object.values(a.translations)[0];
+        const author = db.authors.find(au => au.id === a.author_id)?.name || 'News Wire';
+        const cat = db.categories.find(c => c.id === a.category_id)?.name || a.category_id;
         return `
           <tr>
+            <td style="font-weight:700;max-width:320px;">${trans.title}</td>
+            <td><span class="category-pill">${cat}</span></td>
+            <td>${author}</td>
+            <td><span style="font-weight:700;color:${a.status === 'published' ? '#16a34a' : '#d97706'}">${a.status}</span></td>
+            <td>${new Date(a.published_at).toLocaleDateString()}</td>
             <td>
-              <img src="${imgSrc}" class="art-thumb" onerror="this.src='./assets/images/default.jpg'" alt="${escapeHtml(art.title)}">
-            </td>
-            <td class="art-title-cell">
-              <a href="/${art.slug}" target="_blank" class="art-title-link">${escapeHtml(art.title)}</a>
-              <div class="art-slug">/${escapeHtml(art.slug)}</div>
-            </td>
-            <td>
-              <span class="category-badge">${escapeHtml((art.category || 'NEWS').toUpperCase())}</span>
-            </td>
-            <td style="color: var(--text-muted); font-size: 0.88rem;">
-              ${art.date || 'Sep 7, 2026'}
-            </td>
-            <td style="text-align: right;">
-              <div class="action-group" style="justify-content: flex-end;">
-                <a href="/${art.slug}" target="_blank" class="btn btn-secondary btn-sm" title="View live article">👁️ View</a>
-                <button onclick="openEditModal('${art.slug}')" class="btn btn-secondary btn-sm" title="Edit this article">✏️ Edit</button>
-                <button onclick="promptDelete('${art.slug}')" class="btn btn-danger btn-sm" title="Delete article">🗑️ Delete</button>
-              </div>
+              <button class="btn-admin" style="padding:0.25rem 0.6rem;font-size:0.75rem;" onclick="editArticle('${a.id}')">Edit</button>
             </td>
           </tr>
         `;
       }).join('');
-    }
 
-    function filterArticles() {
-      const query = document.getElementById('searchInput').value.toLowerCase().trim();
-      const cat = document.getElementById('categoryFilter').value.toLowerCase().trim();
+      // Populate Selects
+      const catSelect = document.getElementById('artCategory');
+      catSelect.innerHTML = db.categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
 
-      const filtered = allArticles.filter(a => {
-        const titleMatch = (a.title || '').toLowerCase().includes(query) || (a.slug || '').toLowerCase().includes(query);
-        const catMatch = !cat || (a.category || '').toLowerCase() === cat;
-        return titleMatch && catMatch;
-      });
+      const autSelect = document.getElementById('artAuthor');
+      autSelect.innerHTML = db.authors.map(au => `<option value="${au.id}">${au.name} (${au.role})</option>`).join('');
 
-      renderTable(filtered);
-    }
+      // Render Categories Table
+      const catTbody = document.getElementById('categoriesTableBody');
+      catTbody.innerHTML = db.categories.map(c => `
+        <tr>
+          <td style="font-weight:700;">${c.name}</td>
+          <td><code>${c.slug}</code></td>
+          <td>${c.description}</td>
+          <td>${Object.keys(c.translations || {}).length} languages</td>
+        </tr>
+      `).join('');
 
-    function escapeHtml(str) {
-      return (str || '').replace(/[&<>"']/g, m => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-      }[m]));
-    }
+      // Render Authors Table
+      const autTbody = document.getElementById('authorsTableBody');
+      autTbody.innerHTML = db.authors.map(au => `
+        <tr>
+          <td style="font-weight:700;">${au.name}</td>
+          <td>${au.role}</td>
+          <td>${(au.credentials || []).join('; ')}</td>
+          <td><a href="mailto:${au.email}">${au.email}</a></td>
+        </tr>
+      `).join('');
 
-    function generateSlug(text) {
-      return (text || '').toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, '')
-        .trim()
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-');
-    }
-
-    async function ghGetFile(repo, token, path) {
-      const res = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
-        headers: {
-          'Authorization': 'Bearer ' + token,
-          'Accept': 'application/vnd.github.v3+json'
-        }
-      });
-      if (res.status === 404) return null;
-      if (!res.ok) throw new Error('GitHub fetch error: ' + res.statusText);
-      return res.json();
-    }
-
-    
-    async function ghDeleteFile(repo, token, path, message) {
-      const existing = await ghGetFile(repo, token, path);
-      if (!existing || !existing.sha) return null;
-      const res = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': 'Bearer ' + token,
-          'Accept': 'application/vnd.github.v3+json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message: message || ('Delete ' + path),
-          sha: existing.sha,
-          branch: 'main'
-        })
-      });
-      if (!res.ok && res.status !== 404) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.message || res.statusText);
-      }
-      return true;
-    }
-
-    function promptDelete(slug) {
-      articleToDelete = slug;
-      const art = allArticles.find(a => a.slug === slug);
-      const title = art ? art.title : slug;
-      const el = document.getElementById('deleteArticleTitle');
-      if (el) el.textContent = 'Are you sure you want to delete "' + title + '"?';
-      const modal = document.getElementById('deleteModal');
-      if (modal) modal.classList.add('active');
-    }
-
-    function closeDeleteModal() {
-      articleToDelete = null;
-      const modal = document.getElementById('deleteModal');
-      if (modal) modal.classList.remove('active');
-    }
-
-    async function executeDelete() {
-      if (!articleToDelete) return;
-      const slug = articleToDelete;
-      const token = (localStorage.getItem('gam_gh_token') || '').trim();
-      const repo = (localStorage.getItem('gam_gh_repo') || GITHUB_REPO_DEFAULT).trim();
-
-      if (!token) {
-        alert('GitHub Token required to delete articles from the repository. Please configure it in ⚙️ GitHub Sync.');
-        openGhSettingsModal();
-        return;
-      }
-
-      const btn = document.getElementById('confirmDeleteBtn');
-      const origText = btn.textContent;
-      btn.disabled = true;
-      btn.textContent = 'Deleting...';
-
-      try {
-        await ghDeleteFile(repo, token, 'articles/' + slug + '.html', 'Delete article: ' + slug);
-        await ghDeleteFile(repo, token, slug + '.html', 'Delete root mirror: ' + slug);
-
-        allArticles = allArticles.filter(a => a.slug !== slug);
-        await ghCommitFile(repo, token, 'data/articles.json', JSON.stringify(allArticles, null, 2), 'Remove ' + slug + ' from articles.json');
-
-        document.getElementById('statTotal').textContent = allArticles.length;
-        renderTable(allArticles);
-        closeDeleteModal();
-        alert('Article deleted successfully!');
-      } catch (err) {
-        alert('Failed to delete article: ' + err.message);
-      } finally {
-        btn.disabled = false;
-        btn.textContent = origText;
+      // Breaking alert fields
+      if (db.settings.breakingAlert) {
+        document.getElementById('breakingEnabled').checked = db.settings.breakingAlert.enabled;
+        document.getElementById('breakingHeadline').value = db.settings.breakingAlert.headline;
+        document.getElementById('breakingUrl').value = db.settings.breakingAlert.url;
       }
     }
 
-    async function ghCommitFile(repo, token, path, content, message) {
-      const existing = await ghGetFile(repo, token, path);
-      const sha = existing ? existing.sha : undefined;
-      const b64 = btoa(unescape(encodeURIComponent(content)));
+    function switchSection(section) {
+      document.querySelectorAll('.admin-section').forEach(s => s.style.display = 'none');
+      document.querySelectorAll('.admin-menu a').forEach(a => a.classList.remove('active'));
 
-      const body = {
-        message: message || ('Update ' + path),
-        content: b64,
-        branch: 'main'
+      const map = {
+        'articles': { el: 'sectionArticles', title: 'Editorial Management' },
+        'new-article': { el: 'sectionNewArticle', title: 'File New Editorial Dispatch' },
+        'breaking': { el: 'sectionBreaking', title: 'Breaking Alert Ticker' },
+        'categories': { el: 'sectionCategories', title: 'Newsroom Bureaus & Categories' },
+        'authors': { el: 'sectionAuthors', title: 'Staff Correspondents' },
+        'seo-audit': { el: 'sectionSeoAudit', title: 'Quality & Blacklist Auditor' },
+        'database': { el: 'sectionDatabase', title: 'Database & Sync' }
       };
-      if (sha) body.sha = sha;
 
-      const res = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
-        method: 'PUT',
-        headers: {
-          'Authorization': 'Bearer ' + token,
-          'Accept': 'application/vnd.github.v3+json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
+      const target = map[section] || map['articles'];
+      document.getElementById(target.el).style.display = 'block';
+      document.getElementById('pageTitle').textContent = target.title;
+      const navLink = document.querySelector(`.admin-menu a[href="#${section}"]`);
+      if (navLink) navLink.classList.add('active');
+    }
+
+    function auditContentRealtime() {
+      const text = [
+        document.getElementById('artTitle').value,
+        document.getElementById('artDeck').value,
+        document.getElementById('artContent').value
+      ].join(' ').toLowerCase();
+
+      const foundBanned = [];
+      BANNED_WORDS.forEach(word => {
+        const regex = new RegExp('\\b' + word + '\\b', 'i');
+        if (regex.test(text)) foundBanned.push(word);
       });
 
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.message || res.statusText);
-      }
-      return res.json();
-    }
+      const hasEmDash = text.includes('—');
+      const box = document.getElementById('qualityAuditBox');
+      const msg = document.getElementById('qualityAuditMsg');
 
-    // =========================================================================
-    // WordPress-Style Post Publishing Suite Engine
-    // =========================================================================
-    let wpTags = [];
-    let wpActiveTab = 'visual';
-
-    // Tag Management
-    function renderTags() {
-      const container = document.getElementById('wpTagChips');
-      if (!container) return;
-      container.innerHTML = wpTags.map((t, idx) => {
-        return '<span class="wp-tag-pill">' + escapeHtml(t) + ' <span onclick="removeTag(' + idx + ')" style="cursor:pointer; font-weight:bold; margin-left:2px;">&times;</span></span>';
-      }).join('');
-    }
-
-    function handleTagKey(e) {
-      if (e.key === 'Enter' || e.key === ',') {
-        e.preventDefault();
-        const input = document.getElementById('fTagInput');
-        const val = (input.value || '').replace(/,/g, '').trim();
-        if (val && !wpTags.includes(val)) {
-          wpTags.push(val);
-          renderTags();
-        }
-        input.value = '';
+      if (foundBanned.length > 0 || hasEmDash) {
+        box.className = 'quality-audit-box';
+        let errs = [];
+        if (foundBanned.length > 0) errs.push('Banned AI words found: ' + foundBanned.join(', '));
+        if (hasEmDash) errs.push('Forbidden em dash (—) detected! Replace with comma or period.');
+        msg.innerHTML = '<span style="color:#b91c1c;font-weight:700;">' + errs.join(' | ') + '</span>';
+      } else {
+        box.className = 'quality-audit-box clean';
+        msg.textContent = 'Verification Passed: Zero banned words, zero em dashes. High-standard journalistic phrasing.';
       }
     }
 
-    function removeTag(idx) {
-      wpTags.splice(idx, 1);
-      renderTags();
-    }
-
-    // Category Selector
-    function handleCatChange(val) {
-      document.getElementById('fCategory').value = val;
-      const radios = document.querySelectorAll('input[name="wpCategory"]');
-      radios.forEach(r => {
-        r.checked = (r.value === val);
+    function runStandaloneAudit() {
+      const val = document.getElementById('standaloneAuditInput').value;
+      const found = [];
+      BANNED_WORDS.forEach(w => {
+        if (new RegExp('\\b' + w + '\\b', 'i').test(val)) found.push(w);
       });
-    }
+      const hasEmDash = val.includes('—');
+      const res = document.getElementById('standaloneAuditResult');
 
-    function setCategoryRadio(val) {
-      const target = (val || 'news').toLowerCase();
-      document.getElementById('fCategory').value = target;
-      const radios = document.querySelectorAll('input[name="wpCategory"]');
-      radios.forEach(r => {
-        r.checked = (r.value === target);
-      });
-    }
-
-    // Status Pill
-    function updateStatusPill(val) {
-      const pill = document.getElementById('wpStatusPill');
-      if (!pill) return;
-      if (val === 'published') {
-        pill.textContent = 'Published';
-        pill.className = 'wp-status-pill live';
+      if (found.length > 0 || hasEmDash) {
+        res.className = 'quality-audit-box';
+        res.innerHTML = `<strong>⚠️ Violations Detected:</strong><br>Banned AI words: ${found.join(', ') || 'None'}<br>Em dashes: ${hasEmDash ? 'YES (Violates rules)' : 'None'}`;
       } else {
-        pill.textContent = 'Draft';
-        pill.className = 'wp-status-pill';
+        res.className = 'quality-audit-box clean';
+        res.innerHTML = '<strong>✓ Clean Content:</strong> No banned words or em dashes found.';
       }
     }
 
-    // Author Preview Card
-    function updateAuthorCard(authorSlug) {
-      const avatar = document.getElementById('authorAvatar');
-      const name = document.getElementById('authorNameText');
-      const role = document.getElementById('authorRoleText');
-      if (authorSlug === 'julia-vance') {
-        if (avatar) avatar.textContent = 'JV';
-        if (name) name.textContent = 'Julia Vance';
-        if (role) role.textContent = 'Senior Culture, Celebrity & Health Editor';
-      } else {
-        if (avatar) avatar.textContent = 'MR';
-        if (name) name.textContent = 'Marcus Reid';
-        if (role) role.textContent = 'Senior Business & Financial Editor';
-      }
+    function exportDatabase() {
+      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(db, null, 2));
+      const a = document.createElement('a');
+      a.setAttribute('href', dataStr);
+      a.setAttribute('download', 'genalpha_newsroom_db_' + new Date().toISOString().split('T')[0] + '.json');
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
     }
-
-    // Image Preview & Presets
-    function updateImagePreview(url) {
-      const img = document.getElementById('imagePreviewEl');
-      const ph = document.getElementById('imagePlaceholder');
-      if (!img || !ph) return;
-      if (url && url.trim()) {
-        img.src = url.trim();
-        img.style.display = 'block';
-        ph.style.display = 'none';
-        img.onerror = function() {
-          img.style.display = 'none';
-          ph.style.display = 'block';
-          ph.textContent = 'Image Load Error';
-        };
-      } else {
-        img.style.display = 'none';
-        ph.style.display = 'block';
-        ph.textContent = 'No Image Selected';
-      }
-    }
-
-    const STOCK_PRESETS = {
-      tech: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
-      business: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
-      cinema: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1200&q=80',
-      health: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80',
-      gaming: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=1200&q=80',
-      news: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80'
-    };
-
-    function applyStockPreset(type) {
-      const url = STOCK_PRESETS[type] || STOCK_PRESETS.news;
-      const input = document.getElementById('fImage');
-      if (input) {
-        input.value = url;
-        updateImagePreview(url);
-      }
-    }
-
-    function handleLocalImageUpload(e) {
-      const file = e.target.files && e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        const dataUrl = evt.target.result;
-        document.getElementById('fImage').value = dataUrl;
-        updateImagePreview(dataUrl);
-      };
-      reader.readAsDataURL(file);
-    }
-
-    // WYSIWYG Formatting Functions
-    function formatDoc(cmd, value = null) {
-      const visual = document.getElementById('fVisualContent');
-      if (visual) visual.focus();
-      document.execCommand(cmd, false, value);
-      syncFromVisual();
-    }
-
-    function formatHeading(tag) {
-      if (!tag) return;
-      if (tag === 'p') {
-        formatDoc('formatBlock', '<p>');
-      } else {
-        formatDoc('formatBlock', '<' + tag + '>');
-      }
-      document.getElementById('wpHeadingSelect').value = tag;
-    }
-
-    function formatBlockQuote() {
-      formatDoc('formatBlock', '<blockquote>');
-    }
-
-    function promptInsertLink() {
-      const url = prompt('Enter destination URL (e.g. https://...):');
-      if (!url) return;
-      const selText = window.getSelection().toString() || '';
-      const text = prompt('Enter anchor text for link:', selText || 'Click here') || 'Click here';
-      const cleanUrl = url.trim();
-      const html = '<a href="' + cleanUrl + '" target="_blank" rel="noopener noreferrer" style="color:#2563eb; font-weight:600; text-decoration:underline;">' + escapeHtml(text) + '</a>';
-      document.execCommand('insertHTML', false, html);
-      syncFromVisual();
-    }
-
-    function promptInsertImage() {
-      const url = prompt('Enter Image URL (e.g. https://...):');
-      if (!url) return;
-      const alt = prompt('Enter Alt text for image:', 'Illustration') || 'Illustration';
-      const caption = prompt('Optional caption (leave blank to skip):', '') || '';
-      let imgHtml = '<figure style="margin:1.5rem 0;"><img src="' + url.trim() + '" alt="' + escapeHtml(alt) + '" style="width:100%; border-radius:6px; height:auto; display:block;">';
-      if (caption) {
-        imgHtml += '<figcaption style="font-size:0.85rem; color:#64748b; padding-top:0.4rem; text-align:center;">' + escapeHtml(caption) + '</figcaption>';
-      }
-      imgHtml += '</figure><p></p>';
-      document.execCommand('insertHTML', false, imgHtml);
-      syncFromVisual();
-    }
-
-    function promptExternalCitation() {
-      const url = prompt('Enter Authoritative Source URL (e.g. https://www.reuters.com/...):');
-      if (!url) return;
-      const kw = prompt('Enter Exact Keyword / Anchor phrase to link:', 'industry reporting') || 'industry reporting';
-      const label = prompt('Enter Publication / Source Name (e.g. Reuters):', 'Authoritative Source') || 'Authoritative Source';
-      const citeHtml = '<a href="' + url.trim() + '" target="_blank" rel="noopener noreferrer" style="color:#2563eb; font-weight:700; text-decoration:underline;" title="' + escapeHtml(label) + '">' + escapeHtml(kw) + '</a>';
-      document.execCommand('insertHTML', false, citeHtml);
-      syncFromVisual();
-    }
-
-    function insertTakeawaysCallout() {
-      const boxHtml = '<div style="background:#eff6ff; border-left:4px solid #2563eb; padding:1.25rem; border-radius:4px; margin:1.5rem 0;">' +
-        '<h3 style="margin-top:0; font-size:1.1rem; color:#1e3a8a;">💡 Key Takeaways</h3>' +
-        '<ul style="margin:0; padding-left:1.25rem; color:#1e293b;">' +
-        '<li>First key takeaway insight here...</li>' +
-        '<li>Second important finding or data point...</li>' +
-        '<li>Third strategic takeaway...</li>' +
-        '</ul></div><p></p>';
-      document.execCommand('insertHTML', false, boxHtml);
-      syncFromVisual();
-    }
-
-    // Visual vs Text Tab Switcher
-    function switchWpEditorTab(tab) {
-      wpActiveTab = tab;
-      const visualEl = document.getElementById('fVisualContent');
-      const textEl = document.getElementById('fContent');
-      const vBtn = document.getElementById('tabVisualBtn');
-      const tBtn = document.getElementById('tabTextBtn');
-
-      if (tab === 'text') {
-        textEl.value = visualEl.innerHTML;
-        visualEl.style.display = 'none';
-        textEl.style.display = 'block';
-        vBtn.classList.remove('active');
-        tBtn.classList.add('active');
-      } else {
-        visualEl.innerHTML = textEl.value;
-        textEl.style.display = 'none';
-        visualEl.style.display = 'block';
-        tBtn.classList.remove('active');
-        vBtn.classList.add('active');
-      }
-      updateMetrics();
-    }
-
-    function syncFromVisual() {
-      const visualEl = document.getElementById('fVisualContent');
-      const textEl = document.getElementById('fContent');
-      if (visualEl && textEl && wpActiveTab === 'visual') {
-        textEl.value = visualEl.innerHTML;
-      }
-      updateMetrics();
-    }
-
-    function syncFromText() {
-      const visualEl = document.getElementById('fVisualContent');
-      const textEl = document.getElementById('fContent');
-      if (visualEl && textEl && wpActiveTab === 'text') {
-        visualEl.innerHTML = textEl.value;
-      }
-      updateMetrics();
-    }
-
-    // Word Count & Reading Time
-    function updateMetrics() {
-      const visualEl = document.getElementById('fVisualContent');
-      const text = visualEl ? visualEl.innerText || '' : '';
-      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-      const mins = Math.max(1, Math.ceil(words / 220));
-
-      const wcEl = document.getElementById('wpWordCount');
-      const rtEl = document.getElementById('wpReadTime');
-      if (wcEl) wcEl.textContent = words + ' words';
-      if (rtEl) rtEl.textContent = mins + ' min read';
-    }
-
-    // Title & Slug Handling
-    let slugManuallySet = false;
-
-    function handleTitleInput(val) {
-      if (!slugManuallySet) {
-        autoGenerateSlug();
-      }
-      updateSerpPreview();
-    }
-
-    function handleSlugManualInput(val) {
-      slugManuallySet = true;
-      const clean = generateSlug(val);
-      document.getElementById('fSlug').value = clean;
-      updateSerpPreview();
-    }
-
-    function autoGenerateSlug() {
-      const title = document.getElementById('fTitle').value || '';
-      const slug = generateSlug(title);
-      document.getElementById('fSlug').value = slug;
-      slugManuallySet = false;
-      updateSerpPreview();
-    }
-
-    // SERP Preview & SEO Gauges
-    function updateSerpPreview() {
-      const title = document.getElementById('fTitle').value.trim() || 'Your Article Title Will Appear Here';
-      const seoTitle = document.getElementById('fSeoTitle').value.trim() || title;
-      const slug = document.getElementById('fSlug').value.trim() || 'article-slug';
-      const excerpt = document.getElementById('fExcerpt').value.trim() || 'A brief 1-2 sentence compelling summary of the article for search engines and cards.';
-
-      document.getElementById('serpTitle').textContent = seoTitle;
-      document.getElementById('serpSlug').textContent = slug;
-      document.getElementById('serpDesc').textContent = excerpt;
-
-      // Counters
-      const titleLen = seoTitle.length;
-      document.getElementById('seoTitleCounter').textContent = titleLen + ' / 60 chars';
-      const titleBar = document.getElementById('seoTitleBar');
-      if (titleBar) {
-        const pct = Math.min(100, Math.round((titleLen / 60) * 100));
-        titleBar.style.width = pct + '%';
-        titleBar.className = 'wp-char-bar' + (titleLen >= 45 && titleLen <= 65 ? ' good' : (titleLen > 65 ? ' too-long' : ''));
-      }
-
-      const excLen = excerpt.length;
-      document.getElementById('excerptCounter').textContent = excLen + ' / 155 chars';
-      const excBar = document.getElementById('excerptBar');
-      if (excBar) {
-        const pct = Math.min(100, Math.round((excLen / 155) * 100));
-        excBar.style.width = pct + '%';
-        excBar.className = 'wp-char-bar' + (excLen >= 120 && excLen <= 160 ? ' good' : (excLen > 160 ? ' too-long' : ''));
-      }
-    }
-
-    // FAQ Accordion Rows
-    function addFaqRow(q = '', a = '') {
-      const container = document.getElementById('faqListContainer');
-      if (!container) return;
-      const id = 'faq_' + Date.now() + '_' + Math.floor(Math.random()*1000);
-      const row = document.createElement('div');
-      row.className = 'wp-faq-item';
-      row.id = id;
-      row.innerHTML = 
-        '<button type="button" class="wp-faq-remove" onclick="removeFaqRow(\'' + id + '\')">&times;</button>' +
-        '<div class="form-group" style="margin-bottom:0.5rem; padding-right:1.5rem;">' +
-          '<label style="font-size:0.8rem; font-weight:700;">Question:</label>' +
-          '<input type="text" class="faq-q-input" value="' + escapeHtml(q) + '" placeholder="e.g. How does this technology impact costs?" style="padding:0.35rem 0.5rem; font-size:0.88rem;">' +
-        '</div>' +
-        '<div class="form-group">' +
-          '<label style="font-size:0.8rem; font-weight:700;">Answer:</label>' +
-          '<textarea class="faq-a-input" rows="2" placeholder="Factual and concise explanation..." style="padding:0.35rem 0.5rem; font-size:0.88rem;">' + escapeHtml(a) + '</textarea>' +
-        '</div>';
-      container.appendChild(row);
-    }
-
-    function removeFaqRow(id) {
-      const el = document.getElementById(id);
-      if (el) el.remove();
-    }
-
-    function getFaqs() {
-      const container = document.getElementById('faqListContainer');
-      if (!container) return [];
-      const rows = container.querySelectorAll('.wp-faq-item');
-      const faqs = [];
-      rows.forEach(r => {
-        const q = (r.querySelector('.faq-q-input')?.value || '').trim();
-        const a = (r.querySelector('.faq-a-input')?.value || '').trim();
-        if (q && a) {
-          faqs.push({ question: q, answer: a });
-        }
-      });
-      return faqs;
-    }
-
-    // Live Preview
-    function toggleWpPreview() {
-      const overlay = document.getElementById('wpPreviewOverlay');
-      if (!overlay) return;
-      if (overlay.classList.contains('active')) {
-        overlay.classList.remove('active');
-      } else {
-        const previewHtml = generatePreviewMarkup();
-        document.getElementById('wpPreviewContainer').innerHTML = previewHtml;
-        overlay.classList.add('active');
-      }
-    }
-
-    function generatePreviewMarkup() {
-      const title = document.getElementById('fTitle').value || 'Article Title';
-      const category = (document.getElementById('fCategory').value || 'NEWS').toUpperCase();
-      const authorSlug = document.getElementById('fAuthor').value;
-      const authorName = authorSlug === 'julia-vance' ? 'Julia Vance' : 'Marcus Reid';
-      const pubDate = document.getElementById('fPubDate').value || new Date().toISOString().split('T')[0];
-      const imageUrl = document.getElementById('fImage').value || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80';
-      const visualContent = document.getElementById('fVisualContent').innerHTML || '<p>No content written yet.</p>';
-      
-      const t1 = document.getElementById('fTakeaway1').value.trim();
-      const t2 = document.getElementById('fTakeaway2').value.trim();
-      const t3 = document.getElementById('fTakeaway3').value.trim();
-      let takeawaysHtml = '';
-      if (t1 || t2 || t3) {
-        takeawaysHtml = '<div style="background:#eff6ff; border-left:4px solid #2563eb; padding:1.25rem; border-radius:6px; margin-bottom:2rem;">' +
-          '<h3 style="margin:0 0 0.5rem 0; font-size:1.1rem; color:#1e3a8a;">💡 Key Takeaways</h3>' +
-          '<ul style="margin:0; padding-left:1.25rem; color:#1e293b; line-height:1.7;">' +
-          (t1 ? '<li>' + escapeHtml(t1) + '</li>' : '') +
-          (t2 ? '<li>' + escapeHtml(t2) + '</li>' : '') +
-          (t3 ? '<li>' + escapeHtml(t3) + '</li>' : '') +
-          '</ul></div>';
-      }
-
-      const faqs = getFaqs();
-      let faqsHtml = '';
-      if (faqs.length > 0) {
-        faqsHtml = '<section style="margin-top:3rem; border-top:1px solid #e2e8f0; padding-top:2rem;">' +
-          '<h2 style="font-size:1.5rem; font-weight:800; margin-bottom:1.25rem;">Frequently Asked Questions</h2>' +
-          faqs.map(f => {
-            return '<details style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:0.85rem 1.25rem; margin-bottom:0.75rem;">' +
-              '<summary style="font-weight:700; cursor:pointer; font-size:1.05rem;">' + escapeHtml(f.question) + '</summary>' +
-              '<p style="margin-top:0.6rem; margin-bottom:0; color:#475569; line-height:1.7;">' + escapeHtml(f.answer) + '</p>' +
-              '</details>';
-          }).join('') + '</section>';
-      }
-
-      return '<div style="max-width:820px; margin:0 auto; font-family:inherit;">' +
-        '<div style="margin-bottom:1.5rem;">' +
-          '<span style="background:#eff6ff; color:#2563eb; font-weight:700; font-size:0.75rem; padding:0.25rem 0.6rem; border-radius:4px; text-transform:uppercase;">' + category + ' &bull; Editorial</span>' +
-          '<h1 style="font-size:2.25rem; font-weight:800; line-height:1.25; margin:0.85rem 0; color:#0f172a;">' + escapeHtml(title) + '</h1>' +
-          '<div style="color:#64748b; font-size:0.92rem;">By <strong>' + authorName + '</strong> &bull; ' + pubDate + '</div>' +
-        '</div>' +
-        '<div style="aspect-ratio:16/9; overflow:hidden; border-radius:8px; margin-bottom:2rem; background:#f1f5f9;">' +
-          '<img src="' + imageUrl + '" style="width:100%; height:100%; object-fit:cover;">' +
-        '</div>' +
-        takeawaysHtml +
-        '<div class="article-body" style="font-size:1.1rem; line-height:1.8; color:#1e293b;">' + visualContent + '</div>' +
-        faqsHtml +
-      '</div>';
-    }
-
-    // Save Draft Locally
-    function saveDraftLocally() {
-      const draft = {
-        title: document.getElementById('fTitle').value,
-        slug: document.getElementById('fSlug').value,
-        category: document.getElementById('fCategory').value,
-        author: document.getElementById('fAuthor').value,
-        image: document.getElementById('fImage').value,
-        imageAlt: document.getElementById('fImageAlt').value,
-        excerpt: document.getElementById('fExcerpt').value,
-        seoTitle: document.getElementById('fSeoTitle').value,
-        focusKeyword: document.getElementById('fFocusKeyword').value,
-        bodyContent: document.getElementById('fContent').value,
-        tags: wpTags,
-        t1: document.getElementById('fTakeaway1').value,
-        t2: document.getElementById('fTakeaway2').value,
-        t3: document.getElementById('fTakeaway3').value,
-        faqs: getFaqs(),
-        savedAt: new Date().toLocaleString()
-      };
-      localStorage.setItem('gam_wp_draft', JSON.stringify(draft));
-      showToast('Draft saved to browser storage (' + draft.savedAt + ')');
-    }
-
-    // Modal Opening & Editing
-    function openCreateModal() {
-      document.getElementById('modalTitle').textContent = 'Add New Post';
-      document.getElementById('editArticleSlug').value = '';
-      document.getElementById('articleForm').reset();
-      
-      document.getElementById('fTitle').value = '';
-      document.getElementById('fSlug').value = '';
-      document.getElementById('fExcerpt').value = '';
-      document.getElementById('fSeoTitle').value = '';
-      document.getElementById('fFocusKeyword').value = '';
-      document.getElementById('fImage').value = '';
-      document.getElementById('fImageAlt').value = '';
-      document.getElementById('fTakeaway1').value = '';
-      document.getElementById('fTakeaway2').value = '';
-      document.getElementById('fTakeaway3').value = '';
-      
-      document.getElementById('fVisualContent').innerHTML = '';
-      document.getElementById('fContent').value = '';
-      
-      const today = new Date().toISOString().split('T')[0];
-      document.getElementById('fPubDate').value = today;
-
-      wpTags = [];
-      renderTags();
-      setCategoryRadio('news');
-      updateAuthorCard('marcus-reid');
-      updateImagePreview('');
-      updateStatusPill('draft');
-      switchWpEditorTab('visual');
-
-      // Clear & add sample FAQ
-      const faqCont = document.getElementById('faqListContainer');
-      faqCont.innerHTML = '';
-      addFaqRow('What is the main takeaway from this development?', 'Summary answer highlighting the key impact.');
-      addFaqRow('When will these changes take effect?', 'Timeline and practical milestones.');
-
-      // Check if draft exists
-      const saved = localStorage.getItem('gam_wp_draft');
-      if (saved) {
-        try {
-          const d = JSON.parse(saved);
-          if (confirm('A saved draft from ' + (d.savedAt || 'earlier') + ' was found. Do you want to restore it?')) {
-            document.getElementById('fTitle').value = d.title || '';
-            document.getElementById('fSlug').value = d.slug || '';
-            setCategoryRadio(d.category || 'news');
-            document.getElementById('fAuthor').value = d.author || 'marcus-reid';
-            document.getElementById('fImage').value = d.image || '';
-            document.getElementById('fImageAlt').value = d.imageAlt || '';
-            document.getElementById('fExcerpt').value = d.excerpt || '';
-            document.getElementById('fSeoTitle').value = d.seoTitle || '';
-            document.getElementById('fFocusKeyword').value = d.focusKeyword || '';
-            document.getElementById('fVisualContent').innerHTML = d.bodyContent || '';
-            document.getElementById('fContent').value = d.bodyContent || '';
-            document.getElementById('fTakeaway1').value = d.t1 || '';
-            document.getElementById('fTakeaway2').value = d.t2 || '';
-            document.getElementById('fTakeaway3').value = d.t3 || '';
-            wpTags = d.tags || [];
-            renderTags();
-            updateImagePreview(d.image || '');
-            updateAuthorCard(d.author || 'marcus-reid');
-            if (Array.isArray(d.faqs) && d.faqs.length > 0) {
-              faqCont.innerHTML = '';
-              d.faqs.forEach(f => addFaqRow(f.question, f.answer));
-            }
-          }
-        } catch(e) {}
-      }
-
-      slugManuallySet = false;
-      updateSerpPreview();
-      updateMetrics();
-
-      document.getElementById('saveArticleBtn').textContent = '🚀 Publish to Site';
-      document.getElementById('articleModal').classList.add('active');
-    }
-
-    async function openEditModal(slug) {
-      const art = allArticles.find(a => a.slug === slug);
-      if (!art) return;
-
-      document.getElementById('modalTitle').textContent = 'Edit Post: ' + art.title;
-      document.getElementById('editArticleSlug').value = art.slug;
-      document.getElementById('fTitle').value = art.title;
-      document.getElementById('fSlug').value = art.slug;
-      slugManuallySet = true;
-
-      setCategoryRadio(art.category || 'news');
-      const auth = (art.authorSlug || (art.category === 'celebrity' || art.category === 'health' ? 'julia-vance' : 'marcus-reid'));
-      document.getElementById('fAuthor').value = auth;
-      updateAuthorCard(auth);
-
-      const img = art.image || ('./assets/images/' + art.slug + '.jpg');
-      document.getElementById('fImage').value = img;
-      updateImagePreview(img);
-
-      document.getElementById('fExcerpt').value = art.excerpt || '';
-      document.getElementById('fPubDate').value = art.date || new Date().toISOString().split('T')[0];
-      
-      updateStatusPill('published');
-      document.getElementById('saveArticleBtn').textContent = '💾 Update Live Post';
-      document.getElementById('articleModal').classList.add('active');
-
-      const faqCont = document.getElementById('faqListContainer');
-      faqCont.innerHTML = '';
-
-      try {
-        let res = await fetch('./' + slug + '.html');
-        if (!res.ok) res = await fetch('./articles/' + slug + '.html');
-        if (res.ok) {
-          const html = await res.text();
-          
-          // Extract body text inside article-body
-          const startTag = '<div class="article-body"';
-          const startIdx = html.indexOf(startTag);
-          if (startIdx !== -1) {
-            const contentStart = html.indexOf('>', startIdx) + 1;
-            const endIdx = html.indexOf('</div>', contentStart);
-            let bodyHtml = (endIdx !== -1) ? html.slice(contentStart, endIdx).trim() : html.slice(contentStart).trim();
-            document.getElementById('fVisualContent').innerHTML = bodyHtml;
-            document.getElementById('fContent').value = bodyHtml;
-          } else {
-            document.getElementById('fVisualContent').innerHTML = html;
-            document.getElementById('fContent').value = html;
-          }
-
-          // Extract FAQs if present
-          const faqMatches = [...html.matchAll(/<summary[^>]*>([\s\S]*?)<\/summary>[\s\S]*?<p[^>]*>([\s\S]*?)<\/p>/gi)];
-          if (faqMatches.length > 0) {
-            faqMatches.forEach(m => {
-              addFaqRow(m[1].replace(/<[^>]+>/g, '').trim(), m[2].replace(/<[^>]+>/g, '').trim());
-            });
-          } else {
-            addFaqRow('What is the key takeaway of this article?', 'Key finding and implications.');
-          }
-        }
-      } catch (e) {
-        document.getElementById('fVisualContent').innerHTML = '<p>Write your article content here...</p>';
-        document.getElementById('fContent').value = '<p>Write your article content here...</p>';
-      }
-
-      switchWpEditorTab('visual');
-      updateSerpPreview();
-      updateMetrics();
-    }
-
-    function closeArticleModal() {
-      document.getElementById('articleModal').classList.remove('active');
-    }
-
-    // Save Article Handler (Direct GitHub API)
-    async function handleSaveArticle(e) {
-      e.preventDefault();
-      const token = getGhToken();
-      const repo = getGhRepo();
-
-      const existingSlug = document.getElementById('editArticleSlug').value;
-      const title = document.getElementById('fTitle').value.trim();
-      const rawSlug = document.getElementById('fSlug').value.trim() || generateSlug(title);
-      const slug = existingSlug || rawSlug;
-      const category = document.getElementById('fCategory').value;
-      const authorSlug = document.getElementById('fAuthor').value;
-      const authorName = authorSlug === 'marcus-reid' ? 'Marcus Reid' : 'Julia Vance';
-      const imageUrl = document.getElementById('fImage').value.trim();
-      const imageAlt = document.getElementById('fImageAlt').value.trim() || title;
-      const excerpt = document.getElementById('fExcerpt').value.trim();
-      
-      // Get body from whichever tab was active or updated
-      const bodyContent = (wpActiveTab === 'visual') 
-        ? document.getElementById('fVisualContent').innerHTML.trim()
-        : document.getElementById('fContent').value.trim();
-
-      const faqs = getFaqs();
-      const t1 = document.getElementById('fTakeaway1').value.trim();
-      const t2 = document.getElementById('fTakeaway2').value.trim();
-      const t3 = document.getElementById('fTakeaway3').value.trim();
-      const takeaways = [t1, t2, t3].filter(Boolean);
-      const pubDate = document.getElementById('fPubDate').value || new Date().toISOString().split('T')[0];
-
-      const filename = 'articles/' + slug + '.html';
-
-      // Build production-grade canonical HTML
-      const fullHtml = buildArticleHtml({
-        title, slug, category, authorName, authorSlug, imageUrl, imageAlt, excerpt, bodyContent, faqs, takeaways, pubDate, tags: wpTags
-      });
-
-      if (!token) {
-        // Offer download if token is not connected yet
-        const blob = new Blob([fullHtml], { type: 'text/html' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = slug + '.html';
-        a.click();
-        alert('GitHub Token not configured! Your article HTML has been downloaded locally as ' + slug + '.html.\n\nTo enable 1-click live publishing directly to your website, click "⚙️ GitHub Sync" at the top right and enter your Personal Access Token.');
-        openGhSettingsModal();
-        return;
-      }
-
-      const saveBtn = document.getElementById('saveArticleBtn');
-      const originalText = saveBtn.textContent;
-      saveBtn.disabled = true;
-      saveBtn.textContent = 'Saving to GitHub...';
-
-      try {
-        // 1. Commit article HTML file
-        await ghCommitFile(repo, token, filename, fullHtml, 'Publish post: ' + title);
-        await ghCommitFile(repo, token, slug + '.html', fullHtml, 'Mirror post to root: ' + title);
-
-        // 2. Update data/articles.json
-        const updatedList = [...allArticles];
-        const existingIdx = updatedList.findIndex(a => a.slug === slug);
-        const newEntry = {
-          slug, file: slug + '.html', url: '/' + slug, title, category, excerpt,
-          image: imageUrl, date: pubDate,
-          publishedAt: new Date().toISOString()
-        };
-        if (existingIdx !== -1) {
-          updatedList[existingIdx] = newEntry;
-        } else {
-          updatedList.unshift(newEntry);
-        }
-        allArticles = updatedList;
-
-        await ghCommitFile(repo, token, 'data/articles.json', JSON.stringify(updatedList, null, 2), 'Update data/articles.json for ' + slug);
-
-        // Clean local draft
-        localStorage.removeItem('gam_wp_draft');
-
-        showToast('Post published successfully! Vercel is auto-deploying.');
-        closeArticleModal();
-        loadArticles();
-      } catch (err) {
-        alert('Error publishing to GitHub: ' + err.message);
-      } finally {
-        saveBtn.disabled = false;
-        saveBtn.textContent = originalText;
-      }
-    }
-
-    // Production-Grade Article HTML Compiler
-    function buildArticleHtml(data) {
-      const H = '\x3c'; // prevents parser interference
-      const C = '\x3e';
-      const isoDate = (data.pubDate ? new Date(data.pubDate) : new Date()).toISOString();
-      const displayDate = new Date(isoDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-      const words = (data.bodyContent || '').replace(/<[^>]+>/g, ' ').trim().split(/\s+/).length;
-      const readTime = Math.max(1, Math.ceil(words / 220)) + ' min read';
-
-      // Build FAQs HTML + Schema
-      let faqsHtml = '';
-      let faqSchemaJson = '';
-      if (Array.isArray(data.faqs) && data.faqs.length > 0) {
-        faqsHtml = '<section class="faq-section" style="margin-top: 3rem; border-top: 1px solid var(--border-color); padding-top: 2rem;">' +
-          '<h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 1.5rem;">Frequently Asked Questions</h2>' +
-          data.faqs.map(f => {
-            return '<details class="faq-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem 1.25rem; margin-bottom: 0.85rem;">' +
-              '<summary style="font-weight: 700; cursor: pointer; font-size: 1.05rem; color: var(--text-main);">' + escapeHtml(f.question) + '</summary>' +
-              '<p style="margin-top: 0.75rem; margin-bottom: 0; color: var(--text-muted); line-height: 1.7;">' + escapeHtml(f.answer) + '</p>' +
-              '</details>';
-          }).join('') +
-          '</section>';
-
-        const faqSchemaObj = {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          "mainEntity": data.faqs.map(f => ({
-            "@type": "Question",
-            "name": f.question,
-            "acceptedAnswer": { "@type": "Answer", "text": f.answer }
-          }))
-        };
-        faqSchemaJson = H + 'script type="application/ld+json"' + C + JSON.stringify(faqSchemaObj) + H + '/script' + C;
-      }
-
-      // Key Takeaways HTML
-      let takeawaysHtml = '';
-      if (Array.isArray(data.takeaways) && data.takeaways.length > 0) {
-        takeawaysHtml = '<div class="key-takeaways" style="background: #eff6ff; border-left: 4px solid var(--primary); padding: 1.25rem 1.5rem; border-radius: var(--radius-sm); margin-bottom: 2rem;">' +
-          '<h3 style="margin: 0 0 0.6rem 0; font-size: 1.15rem; color: #1e3a8a; display: flex; align-items: center; gap: 0.4rem;">💡 Key Takeaways</h3>' +
-          '<ul style="margin: 0; padding-left: 1.25rem; color: var(--text-main); line-height: 1.8;">' +
-          data.takeaways.map(t => '<li>' + escapeHtml(t) + '</li>').join('') +
-          '</ul>' +
-          '</div>';
-      }
-
-      const authorRole = (data.authorSlug === 'julia-vance') 
-        ? 'Senior Culture, Celebrity & Health Editor' 
-        : 'Senior Business & Financial Editor';
-      const authorAvatar = (data.authorSlug === 'julia-vance') ? 'JV' : 'MR';
-
-      const parts = [
-        '<!DOCTYPE html>',
-        '<html lang="en">',
-        '<head>',
-        '  <meta charset="UTF-8">',
-        '  <meta name="viewport" content="width=device-width, initial-scale=1.0">',
-        '  <title>' + escapeHtml(data.title) + ' | GenAlphaMagazines' + H + '/title' + C,
-        '  <meta name="description" content="' + escapeHtml(data.excerpt) + '">',
-        '  <link rel="canonical" href="https://www.genalphamagazines.com/' + data.slug + '">',
-        '  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">',
-        '  <meta property="og:type" content="article">',
-        '  <meta property="og:title" content="' + escapeHtml(data.title) + '">',
-        '  <meta property="og:description" content="' + escapeHtml(data.excerpt) + '">',
-        '  <meta property="og:image" content="' + escapeHtml(data.imageUrl) + '">',
-        '  <meta property="og:url" content="https://www.genalphamagazines.com/' + data.slug + '">',
-        '  <meta property="article:published_time" content="' + isoDate + '">',
-        '  <meta property="article:section" content="' + escapeHtml(data.category) + '">',
-        '    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link rel="icon" type="image/png" sizes="48x48" href="/assets/images/favicon-48x48.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
-  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
-  ',
-        '  <link rel="stylesheet" href="/assets/css/style.min.css?v=final_stable_v1">',
-        '  ' + H + 'script type="application/ld+json"' + C + JSON.stringify({
-             "@context": "https://schema.org",
-             "@type": "Article",
-             "headline": data.title,
-             "description": data.excerpt,
-             "image": [data.imageUrl],
-             "datePublished": isoDate,
-             "author": [{ "@type": "Person", "name": data.authorName }]
-           }) + H + '/script' + C,
-        faqSchemaJson,
-        H + '/head' + C,
-        '<body>',
-        '  <header class="main-header">',
-        '    <div class="container header-inner">',
-        '      <a href="/" class="brand-logo">',
-        '        <div class="brand-text-block">',
-        '          <div class="brand-main-title"><span>GEN' + H + '/span' + C + '<span class="alpha-word">ALPHA' + H + '/span' + C + '<span class="mag-word">MAGAZINES' + H + '/span' + C + H + '/div' + C,
-        '        ' + H + '/div' + C,
-        '      ' + H + '/a' + C,
-        '      <div class="header-actions">',
-        '        <a href="/pages/contact" class="news-tip-btn"><span>✉️</span> News Tip?</a>',
-        '      </div>',
-        '    </div>',
-        '  ' + H + '/header' + C,
-        '  <nav class="main-nav-wrapper">',
-        '    <div class="container">',
-        '      <ul class="main-nav-links">',
-        '        <li><a href="/">Home</a></li>',
-        '        <li><a href="/category-news">News</a></li>',
-        '        <li><a href="/category-business">Business</a></li>',
-        '        <li><a href="/category-celebrity">Celebrity</a></li>',
-        '        <li><a href="/category-entertainment">Entertainment</a></li>',
-        '        <li><a href="/category-games">Games</a></li>',
-        '        <li><a href="/category-health">Health</a></li>',
-        '        <li><a href="/category-technology">Technology</a></li>',
-        '        <li><a href="/category-others">Others</a></li>',
-        '      </ul>',
-        '    </div>',
-        '  ' + H + '/nav' + C,
-        '  <main class="container" style="margin-top: 2rem; margin-bottom: 4rem;">',
-        '    <div class="main-layout">',
-        '      <article class="article-container" style="padding: 0;">',
-        '        <header class="article-header">',
-        '          <span class="article-category-badge">' + data.category.toUpperCase() + ' &bull; Editorial Feature' + H + '/span' + C,
-        '          <h1 class="article-title">' + escapeHtml(data.title) + H + '/h1' + C,
-        '          <div class="article-meta-bar">',
-        '            <div class="author-meta">',
-        '              <div class="author-avatar">' + authorAvatar + H + '/div' + C,
-        '              <div>',
-        '                <div style="font-weight:700; color:var(--text-main);">' + data.authorName + H + '/div' + C,
-        '                <div style="font-size:0.8rem; color:var(--text-muted);">' + authorRole + H + '/div' + C,
-        '              </div>',
-        '            </div>',
-        '            <div style="color:var(--text-muted); font-size:0.88rem;">Published: ' + displayDate + ' &bull; ' + readTime + H + '/div' + C,
-        '          </div>',
-        '        ' + H + '/header' + C,
-        '        <figure class="featured-media" style="margin: 1.5rem 0 2rem 0;">',
-        '          <div style="aspect-ratio: 16/9; overflow: hidden; border-radius: var(--radius-md); background: #f1f5f9;">',
-        '            <img src="' + escapeHtml(data.imageUrl) + '" alt="' + escapeHtml(data.imageAlt) + '" style="width: 100%; height: 100%; object-fit: cover;">',
-        '          </div>',
-        '          <figcaption style="font-size: 0.85rem; color: var(--text-muted); padding: 0.6rem 0.25rem 0; border-bottom: 1px solid var(--border-color);">' + escapeHtml(data.imageAlt) + H + '/figcaption' + C,
-        '        ' + H + '/figure' + C,
-        takeawaysHtml,
-        '        <div class="article-body" style="font-size: 1.1rem; line-height: 1.8; color: var(--text-main);">',
-        '          ' + (data.bodyContent.includes('<p>') ? data.bodyContent : data.bodyContent.split('\n\n').map(p => '<p>' + escapeHtml(p) + H + '/p' + C).join('')),
-        '        </div>',
-        faqsHtml,
-        '        <section class="author-box" style="margin-top: 3.5rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; display: flex; gap: 1.25rem; align-items: center;">',
-        '          <div class="author-avatar" style="width: 54px; height: 54px; font-size: 1.2rem; flex-shrink: 0;">' + authorAvatar + H + '/div' + C,
-        '          <div>',
-        '            <h3 style="margin: 0 0 0.35rem 0; font-size: 1.1rem; color: var(--text-main);">' + data.authorName + H + '/h3' + C,
-        '            <p style="margin: 0; font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">' + authorRole + ' at GenAlphaMagazines covering breaking analysis, market trends, and investigative reporting.' + H + '/p' + C,
-        '          </div>',
-        '        ' + H + '/section' + C,
-        '      ' + H + '/article' + C,
-        '    </div>',
-        '  ' + H + '/main' + C,
-        '  <footer class="main-footer" style="margin-top: 4rem; padding: 2.5rem 0; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-muted);">',
-        '    <p>&copy; 2026 GenAlphaMagazines. All rights reserved. Uncompromising journalism and high-impact editorial analysis.' + H + '/p' + C,
-        '  ' + H + '/footer' + C,
-        H + '/body' + C,
-        H + '/html' + C
-      ];
-
-      return parts.join('\n');
-    }
-
-    function initDashboard() {
-      updateGhBanner();
-      loadArticles();
-    }
-
-    // Initialize on page load
-    window.addEventListener('DOMContentLoaded', checkAuth);
   </script>
 </body>
 </html>

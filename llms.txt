@@ -22,7 +22,12 @@
 - [Others](https://www.genalphamagazines.com/category-others.html): Specialized coverage, emerging topics, multi-disciplinary guides, and diverse general reporting.
 
 ## Published Articles & In-Depth Reports
-- [USDA Loan Map: How to Check Property and Income Eligibility](https://www.genalphamagazines.com/usda-loan-map-eligibility-property-guidelines): Learn how to use the official USDA loan map to check rural property eligibility, household income limits, and zero down payment mortgage guidelines.
+- [Analysis: Why Modular Treaties Are Reshaping International Diplomacy](https://www.genalphamagazines.com/multilateral-diplomacy-future-of-treaty-frameworks): Rather than waiting for unanimous global declarations, pragmatic coalitions are building functional legal accords that deliver concrete results.
+- [Central Banks Coordinate Liquidity Guidance as Sovereign Debt Issuance Expands](https://www.genalphamagazines.com/central-banks-monetary-policy-liquidity-report): Coordinated statements from Frankfurt, Washington, and Tokyo emphasize market stability without compromising baseline inflation targets.
+- [Fusion Milestone: Superconducting Stellarator Holds Plasma Confinement for Twenty-Two Minutes](https://www.genalphamagazines.com/fusion-energy-magnetic-containment-milestone): Researchers in Greifswald record steady magnetic confinement without thermal turbulence, bringing continuous base-load fusion closer to reality.
+- [Global Energy Summit: Forty-Two Nations Finalize Cross-Border Grid Treaty](https://www.genalphamagazines.com/global-energy-summit-grid-decarbonization-agreement): The accord establishes shared transmission standards and sets strategic reserve quotas for industrial copper and neodymium.
+- [Public Health Accord: Seventy-Six Nations Ratify Open Pathogen Sequencing Pact](https://www.genalphamagazines.com/pandemic-surveillance-accord-ratified-by-treaty-states): The treaty mandates open genomic data sharing within forty-eight hours and provides funded laboratory hardware to regional clinics.
+- [Semiconductor Foundries Validate High-NA Lithography for Next-Generation Nodes](https://www.genalphamagazines.com/semiconductor-foundry-alliances-next-gen-nodes): Pilot wafers processed with high-numerical-aperture optics show sharp line resolution and improved thermal efficiency across test dies.
 
 ## Compliance & Legal
 - [Privacy Policy](https://www.genalphamagazines.com/pages/privacy-policy.html): Data protection and privacy practices.

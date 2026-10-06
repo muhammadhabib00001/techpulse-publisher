@@ -1,0 +1,30 @@
+{
+  "siteName": "GenAlpha Magazines",
+  "tagline": "Global Perspectives, Real-Time Journalism",
+  "domain": "https://www.genalphamagazines.com",
+  "primaryLanguage": "en",
+  "activeLanguages": [
+    { "code": "en", "name": "English", "nativeName": "English", "dir": "ltr" },
+    { "code": "es", "name": "Spanish", "nativeName": "Español", "dir": "ltr" },
+    { "code": "de", "name": "German", "nativeName": "Deutsch", "dir": "ltr" },
+    { "code": "fr", "name": "French", "nativeName": "Français", "dir": "ltr" },
+    { "code": "pt", "name": "Portuguese", "nativeName": "Português", "dir": "ltr" },
+    { "code": "ar", "name": "Arabic", "nativeName": "العربية", "dir": "rtl" },
+    { "code": "hi", "name": "Hindi", "nativeName": "हिन्दी", "dir": "ltr" },
+    { "code": "it", "name": "Italian", "nativeName": "Italiano", "dir": "ltr" }
+  ],
+  "description": "Independent international digital newsroom delivering verified reporting, real-time world events, investigative coverage, business analysis, science, and technology across eight languages.",
+  "contactEmail": "newsroom@genalphamagazines.com",
+  "editorialEmail": "editor@genalphamagazines.com",
+  "foundedYear": "2024",
+  "publisher": {
+    "name": "GenAlpha News Media Group",
+    "logo": "https://www.genalphamagazines.com/assets/images/logo.svg"
+  },
+  "breakingAlert": {
+    "enabled": true,
+    "label": "BREAKING",
+    "headline": "Global Energy Summit: Leaders finalize pact on grid decarbonization and raw material supply chains",
+    "url": "/articles/global-energy-summit-grid-decarbonization-agreement"
+  }
+}

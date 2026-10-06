@@ -1,0 +1,66 @@
+[
+  {
+    "id": "elena-vance",
+    "slug": "dr-elena-vance",
+    "name": "Dr. Elena Vance",
+    "role": "Chief Science & Technology Correspondent",
+    "bio": "Dr. Elena Vance covers advanced computing, climate science, and applied physics. With over twelve years in specialized investigative journalism and a doctorate from Oxford, she tracks sovereign tech infrastructure and international scientific treaties.",
+    "avatar": "/assets/images/authors/elena-vance.jpg",
+    "email": "e.vance@genalphamagazines.com",
+    "twitter": "https://x.com/elenavance_sci",
+    "linkedin": "https://linkedin.com/in/elena-vance-phd",
+    "credentials": [
+      "Ph.D. in Computational Sciences, University of Oxford",
+      "Member of the Association of British Science Writers",
+      "Former European Research Council Press Fellow"
+    ]
+  },
+  {
+    "id": "marcus-reid",
+    "slug": "marcus-reid",
+    "name": "Marcus Reid",
+    "role": "Senior Economics & Global Markets Editor",
+    "bio": "Marcus Reid reports on monetary policy, cross-border trade agreements, and energy commodities. Previously an equity research analyst in London and Frankfurt, he brings quantitative precision to macroeconomic coverage.",
+    "avatar": "/assets/images/authors/marcus-reid.jpg",
+    "email": "m.reid@genalphamagazines.com",
+    "twitter": "https://x.com/reid_markets",
+    "linkedin": "https://linkedin.com/in/marcus-reid-markets",
+    "credentials": [
+      "M.Sc. in International Finance, London School of Economics",
+      "14 Years Financial Reporting Experience",
+      "Member of the Society for Advancing Business Editing and Writing"
+    ]
+  },
+  {
+    "id": "julia-vance",
+    "slug": "julia-vance",
+    "name": "Julia Vance",
+    "role": "Diplomatic Affairs & Geopolitics Bureau Chief",
+    "bio": "Julia Vance directs foreign desk coverage across European, Middle Eastern, and Asian security summits. Her work focuses on multilateral institutions, treaty negotiations, and trade corridors.",
+    "avatar": "/assets/images/authors/julia-vance.jpg",
+    "email": "j.vance@genalphamagazines.com",
+    "twitter": "https://x.com/juliavance_world",
+    "linkedin": "https://linkedin.com/in/julia-vance-diplomacy",
+    "credentials": [
+      "M.A. in International Relations, Georgetown University",
+      "Former Foreign Press Correspondent in Geneva",
+      "International Federation of Journalists Member"
+    ]
+  },
+  {
+    "id": "tariq-mansoor",
+    "slug": "tariq-mansoor",
+    "name": "Tariq Mansoor",
+    "role": "Senior Middle East & Energy Correspondent",
+    "bio": "Tariq Mansoor reports from Dubai and Cairo on regional infrastructure, sovereign wealth investments, and maritime trade routes through the Red Sea and Arabian Gulf.",
+    "avatar": "/assets/images/authors/tariq-mansoor.jpg",
+    "email": "t.mansoor@genalphamagazines.com",
+    "twitter": "https://x.com/mansoor_energy",
+    "linkedin": "https://linkedin.com/in/tariq-mansoor-energy",
+    "credentials": [
+      "B.A. in Journalism, American University in Cairo",
+      "10 Years Energy & Trade Coverage in the Gulf",
+      "Arab Reporters for Investigative Journalism Fellow"
+    ]
+  }
+]

@@ -1,15 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
-    <loc>https://www.genalphamagazines.com/usda-loan-map-eligibility-property-guidelines</loc>
+    <loc>https://www.genalphamagazines.com/articles/global-energy-summit-grid-decarbonization-agreement</loc>
     <news:news>
       <news:publication>
-        <news:name>GenAlphaMagazines</news:name>
+        <news:name>GenAlpha Magazines</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-06T13:04:38.839Z</news:publication_date>
-      <news:title>USDA Loan Map: How to Check Property and Income Eligibility</news:title>
+      <news:publication_date>2026-10-06T14:30:00Z</news:publication_date>
+      <news:title>Global Energy Summit: Forty-Two Nations Finalize Cross-Border Grid Treaty</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/articles/central-banks-monetary-policy-liquidity-report</loc>
+    <news:news>
+      <news:publication>
+        <news:name>GenAlpha Magazines</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-06T11:00:00Z</news:publication_date>
+      <news:title>Central Banks Coordinate Liquidity Guidance as Sovereign Debt Issuance Expands</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/articles/semiconductor-foundry-alliances-next-gen-nodes</loc>
+    <news:news>
+      <news:publication>
+        <news:name>GenAlpha Magazines</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-06T09:15:00Z</news:publication_date>
+      <news:title>Semiconductor Foundries Validate High-NA Lithography for Next-Generation Nodes</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/articles/fusion-energy-magnetic-containment-milestone</loc>
+    <news:news>
+      <news:publication>
+        <news:name>GenAlpha Magazines</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-06T08:00:00Z</news:publication_date>
+      <news:title>Fusion Milestone: Superconducting Stellarator Holds Plasma Confinement for Twenty-Two Minutes</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/articles/pandemic-surveillance-accord-ratified-by-treaty-states</loc>
+    <news:news>
+      <news:publication>
+        <news:name>GenAlpha Magazines</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-06T07:30:00Z</news:publication_date>
+      <news:title>Public Health Accord: Seventy-Six Nations Ratify Open Pathogen Sequencing Pact</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/articles/multilateral-diplomacy-future-of-treaty-frameworks</loc>
+    <news:news>
+      <news:publication>
+        <news:name>GenAlpha Magazines</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-06T06:00:00Z</news:publication_date>
+      <news:title>Analysis: Why Modular Treaties Are Reshaping International Diplomacy</news:title>
     </news:news>
   </url>
 </urlset>

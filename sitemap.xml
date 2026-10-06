@@ -61,12 +61,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.genalphamagazines.com/pages/affiliate-disclosure</loc>
-    <lastmod>2026-10-06</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://www.genalphamagazines.com/pages/contact</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>daily</changefreq>
@@ -79,6 +73,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.genalphamagazines.com/pages/corrections</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.genalphamagazines.com/pages/disclaimer</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>daily</changefreq>
@@ -86,6 +86,12 @@
   </url>
   <url>
     <loc>https://www.genalphamagazines.com/pages/editorial-policy</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/pages/fact-checking</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -121,7 +127,43 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.genalphamagazines.com/usda-loan-map-eligibility-property-guidelines</loc>
+    <loc>https://www.genalphamagazines.com/author/tariq-mansoor</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/global-energy-summit-grid-decarbonization-agreement</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/central-banks-monetary-policy-liquidity-report</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/semiconductor-foundry-alliances-next-gen-nodes</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/fusion-energy-magnetic-containment-milestone</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/pandemic-surveillance-accord-ratified-by-treaty-states</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/multilateral-diplomacy-future-of-treaty-frameworks</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>

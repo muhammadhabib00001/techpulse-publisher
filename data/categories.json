@@ -1,0 +1,164 @@
+[
+  {
+    "id": "world",
+    "slug": "world",
+    "name": "World",
+    "description": "Diplomatic developments, regional summits, and international conflict coverage.",
+    "translations": {
+      "en": "World",
+      "es": "Mundo",
+      "de": "Welt",
+      "fr": "Monde",
+      "pt": "Mundo",
+      "ar": "دولي",
+      "hi": "विश्व",
+      "it": "Mondo"
+    },
+    "navOrder": 1,
+    "featured": true
+  },
+  {
+    "id": "politics",
+    "slug": "politics",
+    "name": "Politics",
+    "description": "Legislative debates, executive policy decisions, elections, and civic institutions.",
+    "translations": {
+      "en": "Politics",
+      "es": "Política",
+      "de": "Politik",
+      "fr": "Politique",
+      "pt": "Política",
+      "ar": "سياسة",
+      "hi": "राजनीति",
+      "it": "Politica"
+    },
+    "navOrder": 2,
+    "featured": true
+  },
+  {
+    "id": "business",
+    "slug": "business",
+    "name": "Business & Markets",
+    "description": "Macroeconomic reports, central bank policies, sovereign bond markets, and industrial earnings.",
+    "translations": {
+      "en": "Business",
+      "es": "Negocios",
+      "de": "Wirtschaft",
+      "fr": "Économie",
+      "pt": "Negócios",
+      "ar": "اقتصاد",
+      "hi": "व्यापार",
+      "it": "Economia"
+    },
+    "navOrder": 3,
+    "featured": true
+  },
+  {
+    "id": "technology",
+    "slug": "technology",
+    "name": "Technology",
+    "description": "Semiconductor manufacturing, artificial intelligence research, cybersecurity, and consumer hardware.",
+    "translations": {
+      "en": "Technology",
+      "es": "Tecnología",
+      "de": "Technologie",
+      "fr": "Technologie",
+      "pt": "Tecnologia",
+      "ar": "تكنولوجيا",
+      "hi": "तकनीक",
+      "it": "Tecnologia"
+    },
+    "navOrder": 4,
+    "featured": true
+  },
+  {
+    "id": "science",
+    "slug": "science",
+    "name": "Science & Climate",
+    "description": "Space exploration, renewable energy engineering, biological studies, and climatology.",
+    "translations": {
+      "en": "Science",
+      "es": "Ciencia",
+      "de": "Wissenschaft",
+      "fr": "Sciences",
+      "pt": "Ciência",
+      "ar": "علوم",
+      "hi": "विज्ञान",
+      "it": "Scienza"
+    },
+    "navOrder": 5,
+    "featured": true
+  },
+  {
+    "id": "health",
+    "slug": "health",
+    "name": "Health",
+    "description": "Public health epidemiology, clinical trial results, medical innovations, and global wellness policies.",
+    "translations": {
+      "en": "Health",
+      "es": "Salud",
+      "de": "Gesundheit",
+      "fr": "Santé",
+      "pt": "Saúde",
+      "ar": "صحة",
+      "hi": "स्वास्थ्य",
+      "it": "Salute"
+    },
+    "navOrder": 6,
+    "featured": true
+  },
+  {
+    "id": "sports",
+    "slug": "sports",
+    "name": "Sports",
+    "description": "International tournament results, athletics analysis, league standings, and sports diplomacy.",
+    "translations": {
+      "en": "Sports",
+      "es": "Deportes",
+      "de": "Sport",
+      "fr": "Sports",
+      "pt": "Esportes",
+      "ar": "رياضة",
+      "hi": "खेल",
+      "it": "Sport"
+    },
+    "navOrder": 7,
+    "featured": true
+  },
+  {
+    "id": "entertainment",
+    "slug": "entertainment",
+    "name": "Culture & Arts",
+    "description": "Cinema festivals, literary criticism, visual arts exhibitions, and cultural preservation.",
+    "translations": {
+      "en": "Culture",
+      "es": "Cultura",
+      "de": "Kultur",
+      "fr": "Culture",
+      "pt": "Cultura",
+      "ar": "ثقافة",
+      "hi": "संस्कृति",
+      "it": "Cultura"
+    },
+    "navOrder": 8,
+    "featured": true
+  },
+  {
+    "id": "opinion",
+    "slug": "opinion",
+    "name": "Opinion & Analysis",
+    "description": "Signed columns, editorial perspectives, policy arguments, and analytical essays.",
+    "translations": {
+      "en": "Opinion",
+      "es": "Opinión",
+      "de": "Meinung",
+      "fr": "Opinion",
+      "pt": "Opinião",
+      "ar": "رأي",
+      "hi": "विचार",
+      "it": "Opinioni"
+    },
+    "navOrder": 9,
+    "featured": true
+  }
+]
