@@ -15,7 +15,7 @@ Summary: Learn how Culligan water softeners treat hard water, protect household 
 ### Key Reporting & Editorial Content
 
 #### What Hard Water Does to Household Plumbing and Fixtures
-Hard water is one of the most common plumbing problems in American homes. According to U.S. Geological Survey water hardness data , more than 85 percent of homes in the United States have hard water containing high levels of dissolved calcium and magnesium carbonates.
+Hard water is one of the most common plumbing problems in American homes. According to U.S. Geological Survey , more than 85 percent of homes in the United States have hard water containing high levels of dissolved calcium and magnesium carbonates.
 
 While these minerals do not pose direct health hazards, they create ongoing damage for home infrastructure. As heated hard water flows through copper and PEX pipes, dissolved minerals precipitate into chalky limescale. Over several years, scale builds up inside water heaters, coats dishwashing heating elements, and clogs aerators on kitchen faucets.
 
