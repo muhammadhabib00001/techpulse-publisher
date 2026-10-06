@@ -18,6 +18,28 @@ const crypto = require('crypto');
 const ROOT_DIR = path.resolve(__dirname, '..');
 const articlesDir = path.join(ROOT_DIR, 'articles');
 const { sanitizeAllDashes, sanitizeMarkdownAndSnippets, removeObsoleteBoxes, buildRelatedSectionHtml, ensureRelatedSection, ensureArticleFaqs, standardizeArticleLinks, getAllInternalArticleTargets, ARTICLE_INTERNAL_TARGETS } = require('./sync_articles');
+const { cleanText, detectAiWords } = require('./ai_word_filter');
+
+// Hard sanitize article object to completely eliminate AI slop vocabulary
+function sanitizeArticleDataAiWords(articleData) {
+  if (!articleData) return articleData;
+  if (articleData.title) articleData.title = cleanText(articleData.title);
+  if (articleData.metaDescription) articleData.metaDescription = cleanText(articleData.metaDescription);
+  if (Array.isArray(articleData.sections)) {
+    articleData.sections = articleData.sections.map(sec => ({
+      ...sec,
+      heading: cleanText(sec.heading || ''),
+      contentHtml: cleanText(sec.contentHtml || '')
+    }));
+  }
+  if (Array.isArray(articleData.faqs)) {
+    articleData.faqs = articleData.faqs.map(faq => ({
+      question: cleanText(faq.question || ''),
+      answer: cleanText(faq.answer || '')
+    }));
+  }
+  return articleData;
+}
 
 // Hard sanitize title: NEVER allow "2026" or calendar years in titles or slugs, zero dashes
 function sanitizeTitle(rawTitle) {
@@ -1690,7 +1712,7 @@ function generateDeepFallbackArticle(topic, category, author) {
   const isTravelOrPlace = /travel|visit|gem|island|beach|mexico|hotel|resort|city|tour|trip|destination|vacation|explore|places|flight|airline|lake|mountain|park|river/i.test(cleanTopic);
 
   if (isTravelOrPlace) {
-    return {
+    return sanitizeArticleDataAiWords({
       title,
       slug,
       metaDescription,
@@ -1698,8 +1720,8 @@ function generateDeepFallbackArticle(topic, category, author) {
         {
           id: 'overview',
           heading: '',
-          contentHtml: `<p>${cleanTopic} offers travelers an unforgettable journey into one of the world's most captivating destinations. Beyond standard tourist circuits and crowded landmarks lies a vibrant tapestry of natural wonders, rich cultural traditions, and serene sanctuaries waiting to be discovered.</p>
-          <p>Whether you are planning a comprehensive vacation or seeking off-the-beaten-path day excursions, understanding the geography, regional logistics, and local highlights ensures an enriching and authentic travel experience.</p>
+          contentHtml: `<p>${cleanTopic} offers travelers an unforgettable journey into one of the world's most captivating destinations. Beyond standard tourist circuits and crowded landmarks lies a rich mix of natural wonders, deep cultural traditions, and serene sanctuaries waiting to be discovered.</p>
+          <p>Whether you are planning a thorough vacation or seeking off-the-beaten-path day excursions, understanding the geography, regional logistics, and local highlights ensures an enriching and authentic travel experience.</p>
           <h3>Why ${topicKeyword} Belongs on Your Travel Radar</h3>
           <p>The enduring allure of ${cleanTopic} stems from its balance of scenic beauty, cultural depth, and warm community hospitality. Exploring beyond commercial tourist hubs connects visitors directly with authentic regional experiences.</p>`
         },
@@ -1731,14 +1753,14 @@ function generateDeepFallbackArticle(topic, category, author) {
           heading: 'Responsible Tourism and Environmental Conservation',
           contentHtml: `<p>Protecting delicate ecosystems and supporting resident communities remains a top priority when visiting ${cleanTopic}:</p>
           <h3>Sustainable Travel Practices</h3>
-          <p>Utilizing eco-friendly products, respecting protected natural habitats, and patronizing locally owned independent businesses helps preserve regional treasures for future generations.</p>`
+          <p>Using eco-friendly products, respecting protected natural habitats, and patronizing locally owned independent businesses helps preserve regional treasures for future generations.</p>`
         },
         {
           id: 'final-thoughts',
           heading: 'Final Thoughts',
           contentHtml: `<div style="background: var(--bg-subtle); border-left: 4px solid var(--primary); padding: 1.5rem; border-radius: var(--radius-sm);">
             <p style="margin-top: 0;">${cleanTopic} represents an extraordinary travel experience that rewards curiosity and thoughtful exploration. By venturing beyond the ordinary, travelers discover authentic beauty and unforgettable memories.</p>
-            <p style="margin-bottom: 0;">Plan ahead, pack responsibly, and embrace the vibrant culture and natural charm that make this destination truly special.</p>
+            <p style="margin-bottom: 0;">Plan ahead, pack responsibly, and embrace the local culture and natural charm that make this destination truly special.</p>
           </div>`
         },
         {
@@ -1769,11 +1791,11 @@ function generateDeepFallbackArticle(topic, category, author) {
           answer: `While major hotels accept international credit cards, carrying local cash currency is essential for paying entrance fees at smaller natural reserves, food stalls, and artisan markets.`
         }
       ]
-    };
+    });
   }
 
   if (isCulture) {
-    return {
+    return sanitizeArticleDataAiWords({
       title,
       slug,
       metaDescription,
@@ -1781,32 +1803,32 @@ function generateDeepFallbackArticle(topic, category, author) {
         {
           id: 'overview',
           heading: '',
-          contentHtml: `<p>${cleanTopic} represents a pivotal conversation across contemporary ${category} and popular culture. Whether examining creative achievements, public influence, or shifting industry dynamics, understanding the broader context reveals why this subject resonates so deeply with modern audiences.</p>
-          <p>From mainstream visibility to grassroots artistic movements, the cultural landscape in the United States continues to be shaped by compelling personalities, visionary storytellers, and defining media moments.</p>
+          contentHtml: `<p>${cleanTopic} represents a key conversation across contemporary ${category} and popular culture. Whether examining creative achievements, public influence, or shifting industry dynamics, understanding the broader context reveals why this subject connects so strongly with modern audiences.</p>
+          <p>From mainstream visibility to grassroots artistic movements, the cultural space in the United States continues to be shaped by compelling personalities, visionary storytellers, and defining media moments.</p>
           <h3>Why ${topicKeyword} Captivates Audiences</h3>
-          <p>The cultural resonance surrounding ${cleanTopic} highlights how creative storytelling, personal branding, and audience connection intersect. In an era driven by digital media and global fandom, key cultural figures and milestones leave an enduring imprint on public discourse.</p>`
+          <p>The cultural interest surrounding ${cleanTopic} highlights how creative storytelling, personal branding, and audience connection intersect. In an era driven by digital media and global fandom, key cultural figures and milestones leave an enduring imprint on public discourse.</p>`
         },
         {
           id: 'creative-impact',
           heading: 'Creative Milestones and Public Influence',
-          contentHtml: `<p>A comprehensive assessment of ${cleanTopic} reveals substantial artistic depth and cultural momentum across the entertainment sphere:</p>
+          contentHtml: `<p>A thorough assessment of ${cleanTopic} reveals substantial artistic depth and cultural momentum across the entertainment sphere:</p>
           <h3>Signature Highlights and Defining Contributions</h3>
           <ul style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.9;">
             <li><strong>Artistic Vision:</strong> Delivering memorable performances, creative initiatives, and cultural breakthroughs that shape genre standards.</li>
-            <li><strong>Cross-Platform Influence:</strong> Transitioning seamlessly between traditional cinematic works, musical projects, and digital engagement.</li>
+            <li><strong>Cross-Platform Influence:</strong> Transitioning smoothly between traditional cinematic works, musical projects, and digital engagement.</li>
             <li><strong>Cultural Trailblazing:</strong> Breaking barriers in modern storytelling, advocacy, and diverse representation.</li>
             <li><strong>Commercial Longevity:</strong> Sustaining audience loyalty and critical acclaim through consistent reinvention and authentic expression.</li>
           </ul>
           <h3>Evolution Across Media Platforms</h3>
-          <p>The progression of ${cleanTopic} reflects the dynamic nature of contemporary American entertainment, where cross-disciplinary talent commands both artistic reverence and widespread public admiration.</p>`
+          <p>The progression of ${cleanTopic} reflects the evolving nature of contemporary American entertainment, where cross-disciplinary talent commands both artistic reverence and widespread public admiration.</p>`
         },
         {
           id: 'industry-evolution',
           heading: 'Industry Evolution and Cross-Sector Reach',
           contentHtml: `<p>Modern cultural icons and creative initiatives frequently transcend their initial medium to impact commerce, lifestyle, and social conversation:</p>
           <h3>Commercial and Creative Synergy</h3>
-          <p>From launching entrepreneurial ventures and fashion lines to backing independent theater and community initiatives, contemporary creative forces understand how to leverage cultural visibility into lasting institutions.</p>
-          <h3>Navigating Changing Media Consumption</h3>
+          <p>From launching entrepreneurial ventures and fashion lines to backing independent theater and community initiatives, contemporary creative forces understand how to turn cultural visibility into lasting institutions.</p>
+          <h3>Managing Changing Media Consumption</h3>
           <p>With streaming platforms, social channels, and direct fan engagement reshaping entertainment, maintaining relevance requires innovative approaches to audience communication and authentic storytelling.</p>`
         },
         {
@@ -1823,7 +1845,7 @@ function generateDeepFallbackArticle(topic, category, author) {
           heading: 'Final Thoughts',
           contentHtml: `<div style="background: var(--bg-subtle); border-left: 4px solid var(--primary); padding: 1.5rem; border-radius: var(--radius-sm);">
             <p style="margin-top: 0;">${cleanTopic} marks a captivating dimension of modern American culture and entertainment. By blending creative excellence with widespread cultural connection, it continues to spark inspiration and thoughtful conversation.</p>
-            <p style="margin-bottom: 0;">Stay tuned for ongoing coverage, in-depth profiles, and verified insights as this vibrant cultural story continues to unfold.</p>
+            <p style="margin-bottom: 0;">Stay tuned for ongoing coverage, in-depth profiles, and verified insights as this evolving cultural story continues to unfold.</p>
           </div>`
         },
         {
@@ -1857,7 +1879,7 @@ function generateDeepFallbackArticle(topic, category, author) {
     };
   }
 
-  return {
+  return sanitizeArticleDataAiWords({
     title,
     slug,
     metaDescription,
@@ -1881,7 +1903,7 @@ function generateDeepFallbackArticle(topic, category, author) {
         <ul style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.9;">
           <li><strong>Architecture & Build:</strong> Enhanced durability and premium material efficiency designed for extended longevity.</li>
           <li><strong>Performance Optimization:</strong> Upgraded processing power delivering faster responsiveness and reliable throughput.</li>
-          <li><strong>Ecosystem Integration:</strong> Seamless compatibility with contemporary standards and connected software platforms.</li>
+          <li><strong>Ecosystem Integration:</strong> Smooth compatibility with contemporary standards and connected software platforms.</li>
           <li><strong>User Experience:</strong> Refined interface workflows focused on accessibility, speed, and sustained battery or operational efficiency.</li>
         </ul>
 
@@ -1951,7 +1973,7 @@ function generateDeepFallbackArticle(topic, category, author) {
         answer: `Follow official press releases, authorized distributors, and recognized industry publications for verified news.`
       }
     ]
-  };
+  });
 }
 
 
@@ -1999,7 +2021,7 @@ MASTER SEO CONTENT CREATION REQUIREMENTS:
 
 4. ARTICLE STRUCTURE (6 sections required):
    - Section 1: heading="" - Quick Answer box then 2-3 dense hook paragraphs introducing the topic with primary keyword in first 100 words.
-   - Sections 2-4: H2 heading + 2-3 H3 subheadings inside contentHtml with REAL specific subtopics. CRITICAL: Each of these sections MUST be comprehensive, containing at least 3 to 4 substantial paragraphs with practical examples, real numbers/data, and clear explanations (minimum 350-450 words per section). NEVER return thin, single-sentence sections.
+   - Sections 2-4: H2 heading + 2-3 H3 subheadings inside contentHtml with REAL specific subtopics. CRITICAL: Each of these sections MUST be thorough and deeply researched, containing at least 3 to 4 substantial paragraphs with practical examples, real numbers/data, and clear explanations (minimum 350-450 words per section). NEVER return thin, single-sentence sections.
    - Section 5: id="final-thoughts", heading="Final Thoughts" - key takeaway in <div style="background:var(--bg-subtle);border-left:4px solid var(--primary);padding:1.5rem;border-radius:var(--radius-sm);">...</div>
    - Section 6: id="frequently-asked-questions", heading="Frequently Asked Questions", contentHtml=""
 
@@ -2023,7 +2045,14 @@ MASTER SEO CONTENT CREATION REQUIREMENTS:
 10. FAQ QUALITY (STRICT): Exactly 5 Q&A pairs. Each answer: direct, specific, minimum 35 words, with real data.
     BANNED patterns: "Follow official updates", "Check the website", "It depends on your needs", "Visit the manufacturer"
 
-11. ABSOLUTELY BANNED: generic filler, "Architecture and Build" for non-tech topics, markdown hashes, "Featured Snippet" label, "If you have been looking into", "municipal governance", "civic engagement", "stakeholder trust", em-dash, year "2026" in headings.
+11. ZERO-TOLERANCE BANNED AI VOCABULARY & ROBOTIC CLICHÉS (STRICTLY FORBIDDEN):
+    Never use any of these robotic words or phrases:
+    - Banned words: delve, tapestry, multifaceted, nuanced, landscape (metaphorical), comprehensive, pivotal, crucial, leverage, robust, streamline, utilize, facilitate, endeavor, paramount, elevate, unveil, cultivate, elucidate, dynamic, vibrant, seamless, transformative, testament, beacon, bespoke, holistic, plethora, intricate, interplay, resonate, foster, harness, navigate.
+    - Banned filler & hedging phrases: "It's worth noting that", "It is important to note", "In today's digital age", "In the realm of", "It is important to understand", "This is particularly true", "One might argue that", "It goes without saying", "At the end of the day", "In an era where", "When it comes to", "On the other hand".
+    - Banned academic transitions: "Furthermore", "Moreover", "Additionally", "Consequently", "Nevertheless", "In conclusion", "To summarize", "That being said", "With that in mind", "In light of this".
+    - Banned corporate buzzwords: "Foster innovation", "Drive engagement", "Harness the power of", "Navigate the complexities", "Unlock the potential", "Elevate your", "Empower individuals", "Resonate with audiences", "A testament to", "Shed light on".
+    - BANNED generic filler: "If you have been looking into", "municipal governance", "civic engagement", "stakeholder trust", em-dash, year "2026" in headings.
+    Write with clear, human, direct journalistic sentences.
 
 12. OUTPUT: Valid JSON only - keys: "title", "slug", "metaDescription", "sections", "faqs". No markdown wrapping. No extra text.`
 
@@ -2035,7 +2064,7 @@ AUTHOR: ${author.name} (${author.role})
 SEARCH INTENT: Informational
 TARGET AUDIENCE: Worldwide
 ARTICLE LENGTH: 1,500-2,000 words
-TONE: Professional, trustworthy, informative, neutral, natural, easy to understand
+TONE: Professional, trustworthy, informative, neutral, natural, easy to understand, 100% human voice without AI buzzwords
 ${linkDirective}
 
 MANDATORY MASTER SEO ARTICLE REQUIREMENTS:
@@ -2063,6 +2092,9 @@ SECTION 6 (id="frequently-asked-questions", heading="Frequently Asked Questions"
 FAQS: Exactly 5. Each answer: direct, specific, minimum 35 words, real facts.
 BANNED: "Follow official updates", "Check the website", "It depends", "Visit the manufacturer"
 
+ZERO-TOLERANCE BANNED AI WORDS:
+Strictly avoid: delve, tapestry, multifaceted, nuanced, landscape, comprehensive, pivotal, crucial, leverage, robust, streamline, utilize, facilitate, endeavor, paramount, elevate, unveil, cultivate, elucidate, dynamic, vibrant, seamless, transformative, furthermore, moreover, additionally, in conclusion, to summarize. Write naturally as a human journalist.
+
 OUTPUT: Raw valid JSON only:
 { "title": "...", "slug": "...", "metaDescription": "...", "sections": [...], "faqs": [...] }`
 
@@ -2078,6 +2110,11 @@ OUTPUT: Raw valid JSON only:
   } else {
     console.log(`[FALLBACK] GEMINI_API_KEY not configured, using contextual fallback engine for "${topic}"...`);
     generated = generateDeepFallbackArticle(topic, category, author);
+  }
+
+  // Hard sanitize generated article through AI word filter engine
+  if (generated) {
+    generated = sanitizeArticleDataAiWords(generated);
   }
 
   // Guarantee 100% heading uniqueness across all existing site articles
@@ -2754,10 +2791,10 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
   <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
   </noscript>
   <link rel="stylesheet" href="/assets/css/style.min.css?v=final_stable_v1">
   <link rel="preload" as="image" href="/assets/images/${articleData.slug}.jpg" fetchpriority="high">
@@ -2875,6 +2912,13 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
     <div class="main-layout">
       <article class="article-container" style="padding: 0;">
         <header class="article-header">
+          <nav class="breadcrumbs" aria-label="Breadcrumb Navigation" style="margin-bottom: 1.25rem;">
+            <a href="/">Home</a>
+            <span class="separator">/</span>
+            <a href="/category-${category}">${category.charAt(0).toUpperCase() + category.slice(1)}</a>
+            <span class="separator">/</span>
+            <span class="current">${cleanTitle}</span>
+          </nav>
           <span class="article-category-badge">${category.toUpperCase()} &bull; Editorial Feature</span>
           <h1 class="article-title">${cleanTitle}</h1>
           
@@ -2958,7 +3002,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
           </div>
         </a>
         <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6;">
-          GenAlphaMagazines is an independent community newsmagazine providing comprehensive coverage of regional affairs, local business innovation, arts, culture, and thoughtful opinion pieces.
+          GenAlphaMagazines is an independent community newsmagazine providing thorough coverage of regional affairs, local business innovation, arts, culture, and thoughtful opinion pieces.
         </p>
       </div>
       <div class="footer-col">
@@ -3007,7 +3051,8 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
     .replace(/(<h[1-6][^>]*>[^<]*(?:Frequently Asked Questions|FAQ)[^<]*<\/h[1-6]>\s*){2,}/gi, '$1');
   fullRawHtml = ensureRelatedSection(fullRawHtml, articleData.slug, articlesDir);
 
-  return standardizeArticleLinks(fullRawHtml, articleData.slug, category, externalLink);
+  const standardized = standardizeArticleLinks(fullRawHtml, articleData.slug, category, externalLink);
+  return cleanText(standardized);
 }
 
 function updateSiteIndex(articleData, author, category, heroImage) {

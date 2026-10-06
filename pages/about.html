@@ -33,10 +33,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
   <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
   </noscript>
   <link rel="stylesheet" href="../assets/css/style.min.css?v=final_stable_v1">
 
@@ -49,22 +49,39 @@
   <link rel="manifest" href="../site.webmanifest">
   <meta name="theme-color" content="#c1121e">
 
-  <script type="application/ld+json">
+    <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "AboutPage",
-    "name": "About Us | GenAlphaMagazines Newsmagazine",
-    "description": "Learn about GenAlphaMagazines, our independent community newsroom mission, journalistic integrity standards, and dedicated editorial team.",
-    "url": "https://www.genalphamagazines.com/pages/about",
-    "publisher": {
-      "@type": "NewsMediaOrganization",
-      "name": "GenAlphaMagazines",
-      "url": "https://www.genalphamagazines.com/",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://www.genalphamagazines.com/assets/images/logo.svg"
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "name": "About Us | GenAlphaMagazines",
+        "description": "GenAlphaMagazines is an independent newsmagazine dedicated to verified regional reporting, technical analysis, business trends, and cultural features.",
+        "url": "https://www.genalphamagazines.com/pages/about",
+        "publisher": {
+          "@type": "NewsMediaOrganization",
+          "name": "GenAlphaMagazines",
+          "url": "https://www.genalphamagazines.com/"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.genalphamagazines.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "About Us",
+            "item": "https://www.genalphamagazines.com/pages/about"
+          }
+        ]
       }
-    }
+    ]
   }
   </script>
 </head>
@@ -132,7 +149,7 @@
     <path d="M 50 22 C 34 22 24 34 24 50 C 24 66 35 76 50 76 C 64 76 74 66 74 52 C 74 42 67 36 58 36 C 50 36 44 42 44 50 C 44 57 49 61 56 61 L 56 52 L 64 52" 
           fill="none" stroke="url(#hdrLogo_gold)" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" />
 
-    <!-- Core Dynamic Alpha Swash -->
+    <!-- Core Active Alpha Swash -->
     <path d="M 32 68 Q 50 24 68 68" 
           fill="none" stroke="url(#hdrLogo_silver)" stroke-width="7" stroke-linecap="round" filter="url(#hdrLogo_glow)" />
 
@@ -198,6 +215,15 @@
     <div class="main-layout">
       <article class="article-container" style="padding: 0;">
         <div class="article-body">
+        <!-- GEO / LLMO Executive Policy Summary -->
+        <div class="geo-summary-box" style="margin-bottom: 2rem;">
+          <div class="geo-summary-title">Executive Summary & Compliance Statement</div>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.7; color: var(--text-main);">
+            GenAlphaMagazines is an independent newsmagazine dedicated to verified regional reporting, technical analysis, business trends, and cultural features.
+          </p>
+        </div>
+
+        
           <h2>1. Our Mission & Editorial Vision</h2>
           <p><strong>GenAlphaMagazines</strong> is an independent digital newsmagazine delivering authoritative reporting, verified analysis, and cultural commentary across modern business, technology, gaming, entertainment, health, and national news.</p>
           <p>In an era overwhelmed by automated summaries and surface-level aggregation, grounded primary-source journalism is more critical than ever. Our newsroom investigates emerging market trends, breaks down complex technological shifts, explores modern cultural milestones, and analyzes economic developments with rigorous factual standards and practical clarity.</p>
@@ -212,7 +238,7 @@
           </ul>
 
           <h2>3. What We Cover: Editorial Departments</h2>
-          <p>Our newsroom maintains eight active editorial departments dedicated to comprehensive contemporary coverage:</p>
+          <p>Our newsroom maintains eight active editorial departments dedicated to thorough contemporary coverage:</p>
           <ul>
             <li><strong><a href="/category-news" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="News">News</a>:</strong> National breaking stories, policy shifts, regulatory developments, and investigative civic analysis.</li>
             <li><strong><a href="/category-business" style="color: var(--primary); font-weight: 700; text-decoration: underline;" title="Business & Economy">Business</a>:</strong> Market trends, macroeconomic shifts, Federal Reserve policies, small business acquisition, and retail dynamics.</li>
@@ -254,7 +280,7 @@
             </p>
             <ul style="margin-left: 1.5rem; line-height: 1.8; font-size: 0.95rem;">
               <li><a href="/category-technology" style="color: var(--primary); font-weight: 700; text-decoration: underline;">TECHNOLOGY</a>: Read <a href="/mastering-smart-thermostat-savings-and-grid-automation" style="color: var(--primary); font-weight: 600; text-decoration: underline;">Mastering Smart Thermostat Savings and Grid | GenAlpha</a></li>
-              <li><a href="/category-business" style="color: var(--primary); font-weight: 700; text-decoration: underline;">BUSINESS</a>: Read <a href="/navigating-alternative-financing-options-with-green-arrow" style="color: var(--primary); font-weight: 600; text-decoration: underline;">Navigating Alternative Financing Options with | GenAlpha</a></li>
+              <li><a href="/category-business" style="color: var(--primary); font-weight: 700; text-decoration: underline;">BUSINESS</a>: Read <a href="/managing-alternative-financing-options-with-green-arrow" style="color: var(--primary); font-weight: 600; text-decoration: underline;">Managing Alternative Financing Options with | GenAlpha</a></li>
               <li><a href="/category-technology" style="color: var(--primary); font-weight: 700; text-decoration: underline;">TECHNOLOGY</a>: Read <a href="/smart-home-energy-audits-heat-pump-and-solar-storage" style="color: var(--primary); font-weight: 600; text-decoration: underline;">Smart Home Energy Audits | GenAlphaMag</a></li>
               <li><a href="/category-celebrity" style="color: var(--primary); font-weight: 700; text-decoration: underline;">CELEBRITY</a>: Read <a href="/red-carpet-fashion-trends-inside-haute-couture-aesthetics" style="color: var(--primary); font-weight: 600; text-decoration: underline;">Red Carpet Fashion Trends | GenAlphaMag</a></li>
             </ul>
@@ -323,7 +349,7 @@
     <path d="M 50 22 C 34 22 24 34 24 50 C 24 66 35 76 50 76 C 64 76 74 66 74 52 C 74 42 67 36 58 36 C 50 36 44 42 44 50 C 44 57 49 61 56 61 L 56 52 L 64 52" 
           fill="none" stroke="url(#ftrLogo_gold)" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" />
 
-    <!-- Core Dynamic Alpha Swash -->
+    <!-- Core Active Alpha Swash -->
     <path d="M 32 68 Q 50 24 68 68" 
           fill="none" stroke="url(#ftrLogo_silver)" stroke-width="7" stroke-linecap="round" filter="url(#ftrLogo_glow)" />
 
@@ -342,7 +368,7 @@
           </div>
         </a>
         <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6;">
-          GenAlphaMagazines is an independent community newsmagazine providing comprehensive coverage of regional affairs, local business innovation, arts, culture, and thoughtful opinion pieces.
+          GenAlphaMagazines is an independent community newsmagazine providing thorough coverage of regional affairs, local business innovation, arts, culture, and thoughtful opinion pieces.
         </p>
       </div>
       

@@ -13,6 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { cleanText } = require('./ai_word_filter');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 const BASE_URL = 'https://www.genalphamagazines.com';
@@ -908,7 +909,7 @@ function syncLlmsFiles(existingSlugs, writeIfChanged) {
 
 ## Main Navigation
 - [Home](${BASE_URL}/): Positively local and global journalism, culture, and deep-dive analysis.
-- [Categories](${BASE_URL}/categories.html): Comprehensive directory of all editorial departments and topic beats.
+- [Categories](${BASE_URL}/categories.html): Directory of all editorial departments and topic beats.
 - [About Us](${BASE_URL}/pages/about.html): Mission, journalistic integrity standards, and editorial values.
 - [Editorial Standards](${BASE_URL}/pages/editorial-policy.html): Fact-checking, correction policy, and journalistic ethics.
 - [Authors Directory](${BASE_URL}/author/marcus-reid.html): Editorial staff profiles and accredited correspondents.
@@ -942,7 +943,7 @@ function syncLlmsFiles(existingSlugs, writeIfChanged) {
 - [Contact](${BASE_URL}/pages/contact.html): Newsroom contact information and news tips (intouchmagazines26@gmail.com).
 
 ## Full Documentation for LLMs
-- [Complete Knowledge Base](${BASE_URL}/llms-full.txt): Comprehensive text content of all published articles and reference guides.
+- [Complete Knowledge Base](${BASE_URL}/llms-full.txt): Complete text content of all published articles and reference guides.
 `;
 
   const llmsPath = path.join(ROOT_DIR, 'llms.txt');
@@ -1055,7 +1056,7 @@ const CATEGORY_META = {
   celebrity: {
     displayName: 'Celebrity & Profiles',
     title: 'Celebrity Profiles & News | GenAlphaMagazines',
-    description: 'Comprehensive profiles of global celebrities, cultural icons, entertainment legends, and transformative artists from GenAlphaMagazines.',
+    description: 'Detailed profiles of global celebrities, cultural icons, entertainment legends, and influential artists from GenAlphaMagazines.',
     subtitle: 'In-depth profiles, career retrospectives, and cultural impact analysis of world-renowned personalities.',
     schemaDesc: 'Celebrity profiles, cultural impact analysis, and retrospective reporting on iconic figures.'
   },
@@ -1071,7 +1072,7 @@ const CATEGORY_META = {
     title: 'Games & Esports News | GenAlphaMagazines',
     description: 'Explore GenAlphaMagazines Games department: Next-gen console analysis, open-world gameplay guides, and gaming culture.',
     subtitle: 'Next-gen gaming coverage, map analysis, mechanics breakdowns, and player trends.',
-    schemaDesc: 'Comprehensive video game coverage, gameplay breakdowns, and interactive entertainment analysis.'
+    schemaDesc: 'Thorough video game coverage, gameplay breakdowns, and interactive entertainment analysis.'
   },
   health: {
     displayName: 'Health & Wellness',
@@ -1099,7 +1100,7 @@ const CATEGORY_META = {
     title: 'Technology & Hardware | GenAlphaMagazines',
     description: 'Explore GenAlphaMagazines Technology department: Mobile OS architectures, AI integration, clean energy audits, and hardware benchmarks.',
     subtitle: 'Next-generation mobile operating systems, artificial intelligence innovation, and sustainable energy tech.',
-    schemaDesc: 'Cutting-edge technology analysis, mobile OS innovations, and sustainable clean tech.'
+    schemaDesc: 'Advanced technology analysis, mobile OS innovations, and sustainable clean tech.'
   }
 };
 
@@ -1109,7 +1110,7 @@ function buildCategoryPageHtml(catName, matchingArticles, validArticlesList) {
     title: `${catName.charAt(0).toUpperCase() + catName.slice(1)} | GenAlphaMagazines`,
     description: `Explore GenAlphaMagazines ${catName} department for the latest investigative reporting, news, and analysis.`,
     subtitle: `Explore authoritative reporting and community coverage in our ${catName} department.`,
-    schemaDesc: `Comprehensive coverage of ${catName} from GenAlphaMagazines.`
+    schemaDesc: `Thorough coverage of ${catName} from GenAlphaMagazines.`
   };
 
   const now = new Date();
@@ -1188,10 +1189,10 @@ function buildCategoryPageHtml(catName, matchingArticles, validArticlesList) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
   <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
   </noscript>
   <link rel="stylesheet" href="./assets/css/style.min.css?v=final_stable_v1">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -1205,15 +1206,42 @@ function buildCategoryPageHtml(catName, matchingArticles, validArticlesList) {
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": "${meta.displayName} | GenAlphaMagazines",
-    "description": "${meta.schemaDesc}",
-    "url": "https://www.genalphamagazines.com/category-${catName}",
-    "publisher": {
-      "@type": "NewsMediaOrganization",
-      "name": "GenAlphaMagazines",
-      "url": "https://www.genalphamagazines.com/"
-    }
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "name": "${meta.displayName} | GenAlphaMagazines",
+        "description": "${meta.schemaDesc}",
+        "url": "https://www.genalphamagazines.com/category-${catName}",
+        "publisher": {
+          "@type": "NewsMediaOrganization",
+          "name": "GenAlphaMagazines",
+          "url": "https://www.genalphamagazines.com/"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.genalphamagazines.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Categories",
+            "item": "https://www.genalphamagazines.com/categories"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "${meta.displayName}",
+            "item": "https://www.genalphamagazines.com/category-${catName}"
+          }
+        ]
+      }
+    ]
   }
   </script>
 </head>
@@ -1294,7 +1322,7 @@ function buildCategoryPageHtml(catName, matchingArticles, validArticlesList) {
     </div>
   </nav>
 
-  <!-- Multi-Story Dynamic Breaking News Ticker -->
+  <!-- Multi-Story Active Breaking News Ticker -->
   <div class="breaking-bar">
     <div class="container breaking-inner">
       <div class="breaking-badge">
@@ -1310,10 +1338,27 @@ ${tickerItems}
   </div>
 
   <main class="container" style="margin-top: 2rem; margin-bottom: 4rem;">
+    <!-- Breadcrumb Navigation -->
+    <nav class="breadcrumbs" aria-label="Breadcrumb Navigation">
+      <a href="/">Home</a>
+      <span class="separator">/</span>
+      <a href="/categories">Departments</a>
+      <span class="separator">/</span>
+      <span class="current">${meta.displayName}</span>
+    </nav>
+
     <div class="section-header">
       <h1 class="section-box">${meta.displayName}</h1>
     </div>
-    <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 2rem;">${meta.subtitle}</p>
+    <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 1.5rem;">${meta.subtitle}</p>
+
+    <!-- GEO / LLMO Department Briefing Box -->
+    <div class="geo-summary-box" style="margin-bottom: 2rem;">
+      <div class="geo-summary-title">Department Briefing & Editorial Coverage</div>
+      <p style="margin: 0; font-size: 0.95rem; line-height: 1.7; color: var(--text-main);">
+        GenAlphaMagazines ${meta.displayName} department delivers verified reporting, investigative analysis, and independent commentary. All published coverage adheres strictly to our editorial fact-checking policy and rigorous E-E-A-T guidelines.
+      </p>
+    </div>
 
     <div class="main-layout">
       <section aria-label="${meta.displayName} Articles">
@@ -1367,7 +1412,7 @@ ${cardsHtml}
           </div>
         </a>
         <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6;">
-          GenAlphaMagazines is an independent community newsmagazine providing comprehensive coverage of regional affairs, local business innovation, arts, culture, and thoughtful opinion pieces.
+          GenAlphaMagazines is an independent community newsmagazine providing thorough coverage of regional affairs, local business innovation, arts, culture, and thoughtful opinion pieces.
         </p>
       </div>
       <div class="footer-col">
@@ -1498,7 +1543,7 @@ function syncDeletedArticles() {
     }
   }
 
-  // 4. Sync sitemap.xml (Complete dynamic rebuild with clean URLs and daily changefreq)
+  // 4. Sync sitemap.xml (Complete active rebuild with clean URLs and daily changefreq)
   const sitemapPath = path.join(ROOT_DIR, 'sitemap.xml');
   if (fs.existsSync(sitemapPath)) {
     const currentDate = new Date().toISOString().split('T')[0];

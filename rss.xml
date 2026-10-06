@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>GenAlphaMagazines</title>
-    <link>https://www.genalphamagazines.com</link>
-    <description>Positively Local, Supporting Regional Community</description>
+    <title>GenAlphaMagazines - Positively Local Community News</title>
+    <link>https://www.genalphamagazines.com/</link>
+    <description>Positively local community news, regional arts, small business profiles, lifestyle guides, and thoughtful columnist perspectives.</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 06 Oct 2026 11:23:38 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 06 Oct 2026 12:06:01 GMT</lastBuildDate>
+    <atom:link href="https://www.genalphamagazines.com/rss.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

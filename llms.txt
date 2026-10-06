@@ -4,7 +4,7 @@
 
 ## Main Navigation
 - [Home](https://www.genalphamagazines.com/): Positively local and global journalism, culture, and deep-dive analysis.
-- [Categories](https://www.genalphamagazines.com/categories.html): Comprehensive directory of all editorial departments and topic beats.
+- [Categories](https://www.genalphamagazines.com/categories.html): Directory of all editorial departments and topic beats.
 - [About Us](https://www.genalphamagazines.com/pages/about.html): Mission, journalistic integrity standards, and editorial values.
 - [Editorial Standards](https://www.genalphamagazines.com/pages/editorial-policy.html): Fact-checking, correction policy, and journalistic ethics.
 - [Authors Directory](https://www.genalphamagazines.com/author/marcus-reid.html): Editorial staff profiles and accredited correspondents.
@@ -32,4 +32,4 @@
 - [Contact](https://www.genalphamagazines.com/pages/contact.html): Newsroom contact information and news tips (intouchmagazines26@gmail.com).
 
 ## Full Documentation for LLMs
-- [Complete Knowledge Base](https://www.genalphamagazines.com/llms-full.txt): Comprehensive text content of all published articles and reference guides.
+- [Complete Knowledge Base](https://www.genalphamagazines.com/llms-full.txt): Complete text content of all published articles and reference guides.
