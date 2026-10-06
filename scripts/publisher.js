@@ -1876,7 +1876,7 @@ function generateDeepFallbackArticle(topic, category, author) {
           answer: `Follow reputable entertainment publications, verified cultural archives, and official statements for authoritative information.`
         }
       ]
-    };
+    });
   }
 
   return sanitizeArticleDataAiWords({
@@ -3908,6 +3908,25 @@ async function main() {
   let rootHtml = fullHtml.replace(new RegExp(`\\.\\./assets/images/${generatedArticle.slug}-2\\.jpg`, 'g'), `./assets/images/${generatedArticle.slug}-2.jpg`);
   fs.writeFileSync(rootOutputPath, rootHtml, 'utf8');
   console.log(`[SUCCESS] Article mirrored to root: ${rootOutputPath}`);
+
+  // Remove any stale redirect rule for this active slug from vercel.json
+  try {
+    const vercelPath = path.join(ROOT_DIR, 'vercel.json');
+    if (fs.existsSync(vercelPath)) {
+      const vConfig = JSON.parse(fs.readFileSync(vercelPath, 'utf8'));
+      if (Array.isArray(vConfig.redirects)) {
+        const origLen = vConfig.redirects.length;
+        vConfig.redirects = vConfig.redirects.filter(r => 
+          r.source !== `/${generatedArticle.slug}` && 
+          r.source !== `/${generatedArticle.slug}.html`
+        );
+        if (vConfig.redirects.length !== origLen) {
+          fs.writeFileSync(vercelPath, JSON.stringify(vConfig, null, 2), 'utf8');
+          console.log(`[INFO] Removed redirect for active slug /${generatedArticle.slug} from vercel.json`);
+        }
+      }
+    }
+  } catch (e) {}
 
   // Record into published topics tracking ledger
   try {
