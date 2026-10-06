@@ -62,58 +62,13 @@
       "permanent": true
     },
     {
-      "source": "/articles/cristiano-ronaldo-career-legacy-and-records-in-2026",
-      "destination": "/cristiano-ronaldo-career-legacy-and-records",
+      "source": "/category-health",
+      "destination": "/",
       "permanent": true
     },
     {
-      "source": "/articles/cristiano-ronaldo-career-legacy-and-records-in-2026.html",
-      "destination": "/cristiano-ronaldo-career-legacy-and-records",
-      "permanent": true
-    },
-    {
-      "source": "/cristiano-ronaldo-career-legacy-and-records-in-2026",
-      "destination": "/cristiano-ronaldo-career-legacy-and-records",
-      "permanent": true
-    },
-    {
-      "source": "/preventing-bathroom-drainage-failures-in-modern-homes",
-      "destination": "/mastering-bathroom-drainage-systems-for-every-home",
-      "permanent": true
-    },
-    {
-      "source": "/preventing-bathroom-drainage-failures-in-modern-homes.html",
-      "destination": "/mastering-bathroom-drainage-systems-for-every-home",
-      "permanent": true
-    },
-    {
-      "source": "/wi-fi-7-mesh-upgrades-real-latency-gains-and-hardware",
-      "destination": "/upgrading-to-wi-fi-7-mesh-network-coverage-real-latency",
-      "permanent": true
-    },
-    {
-      "source": "/wi-fi-7-mesh-upgrades-real-latency-gains-and-hardware.html",
-      "destination": "/upgrading-to-wi-fi-7-mesh-network-coverage-real-latency",
-      "permanent": true
-    },
-    {
-      "source": "/zone-2-cardio-training-mitochondrial-health-endurance",
-      "destination": "/zone-2-cardio-training-for-exceptional-heart-longevity",
-      "permanent": true
-    },
-    {
-      "source": "/zone-2-cardio-training-mitochondrial-health-endurance.html",
-      "destination": "/zone-2-cardio-training-for-exceptional-heart-longevity",
-      "permanent": true
-    },
-    {
-      "source": "/how-to-buy-run-business-market-analysis",
-      "destination": "/category-business",
-      "permanent": true
-    },
-    {
-      "source": "/how-to-buy-run-business-market-analysis.html",
-      "destination": "/category-business",
+      "source": "/category-health.html",
+      "destination": "/",
       "permanent": true
     },
     {
@@ -147,18 +102,1078 @@
       "permanent": true
     },
     {
-      "source": "/articles/:slug",
-      "destination": "/:slug",
+      "source": "/articles/:path*",
+      "destination": "/",
       "permanent": true
     },
     {
-      "source": "/articles/:slug.html",
-      "destination": "/:slug",
+      "source": "/25-american-movies-defining-visual-storytelling-today",
+      "destination": "/",
       "permanent": true
     },
     {
-      "source": "/:slug.html",
-      "destination": "/:slug",
+      "source": "/25-american-movies-defining-visual-storytelling-today.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/25-famous-celebrity-in-usa-career-influence-and-cultur",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/25-famous-celebrity-in-usa-career-influence-and-cultur.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/athlete-s-foot-symptoms-complete-guide-to-tinea-pedis",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/athlete-s-foot-symptoms-complete-guide-to-tinea-pedis.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/buzzard-versus-vulture-understanding-the-key-differences",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/buzzard-versus-vulture-understanding-the-key-differences.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/bypass-student-web-filters-safely-on-school-laptops",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/bypass-student-web-filters-safely-on-school-laptops.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/chelsea-handler-shuts-down-epstein-flight-rumors",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/chelsea-handler-shuts-down-epstein-flight-rumors.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/cinematic-masterpieces-unforgettable-films-centering-women",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/cinematic-masterpieces-unforgettable-films-centering-women.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/common-travel-problems-and-solutions-a-complete-guide",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/common-travel-problems-and-solutions-a-complete-guide.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/cristiano-ronaldo-career-legacy-and-records",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/cristiano-ronaldo-career-legacy-and-records.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/current-age-of-the-pontiff-revealed-career-and-impact",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/current-age-of-the-pontiff-revealed-career-and-impact.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/decoding-precision-dosage-calculations-and-clinical-math",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/decoding-precision-dosage-calculations-and-clinical-math.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/diet-coke-owala-insights-and-overview",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/diet-coke-owala-insights-and-overview.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/dr-melaxin-stick-viral-skincare-phenomenon-explained",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/dr-melaxin-stick-viral-skincare-phenomenon-explained.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/espn-plus-cost-insights-and-overview",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/espn-plus-cost-insights-and-overview.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/estimate-your-monthly-vehicle-payments-instantly-online",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/estimate-your-monthly-vehicle-payments-instantly-online.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/exploring-heavy-duty-kitchen-gear-with-a-cast-iron-juicer",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/exploring-heavy-duty-kitchen-gear-with-a-cast-iron-juicer.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/exploring-the-luxurious-upgrades-inside-the-latest-lexus-suv",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/exploring-the-luxurious-upgrades-inside-the-latest-lexus-suv.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/fomc-meeting-sept-2026-interest-rates-and-market-outlook",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/fomc-meeting-sept-2026-interest-rates-and-market-outlook.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/footwear-adjustments-for-ankle-stability-and-arch-support",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/footwear-adjustments-for-ankle-stability-and-arch-support.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/grassroots-indie-film-distribution-how-regional-festival",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/grassroots-indie-film-distribution-how-regional-festival.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/gta-6-release-date-map-and-gameplay-guide",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/gta-6-release-date-map-and-gameplay-guide.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/gta-6-vice-city-map-comparison-setting-scale-landmarks",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/gta-6-vice-city-map-comparison-setting-scale-landmarks.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/heart-problems-evidence-based-insights-and-expert-guidance",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/heart-problems-evidence-based-insights-and-expert-guidance.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-ai-is-reshaping-main-street-business-operations",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-ai-is-reshaping-main-street-business-operations.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-endbugflow-software-optimizes-developer-workflows",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-endbugflow-software-optimizes-developer-workflows.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-generation-alpha-is-redefining-the-digital-world",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-generation-alpha-is-redefining-the-digital-world.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-high-interest-rates-are-reshaping-the-us-economy",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-high-interest-rates-are-reshaping-the-us-economy.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-linux-market-share-is-challenging-windows-dominance",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-linux-market-share-is-challenging-windows-dominance.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-sci-fi-television-transformed-modern-screen-narrative",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-sci-fi-television-transformed-modern-screen-narrative.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-the-slow-living-movement-cures-tech-fatigue-fast",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-the-slow-living-movement-cures-tech-fatigue-fast.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-find-the-best-flower-girl-dress-on-a-budget",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-find-the-best-flower-girl-dress-on-a-budget.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-find-volume-using-density-and-mass-in-seconds",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-find-volume-using-density-and-mass-in-seconds.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-force-kill-stubborn-linux-processes-with-pkill-9",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-force-kill-stubborn-linux-processes-with-pkill-9.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-handle-flight-delays-and-travel-disruptions",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-handle-flight-delays-and-travel-disruptions.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-lose-weight-and-build-healthy-habits-that-last",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-lose-weight-and-build-healthy-habits-that-last.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-transfer-a-rose-tattoo-stencil-for-flawless-art",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-transfer-a-rose-tattoo-stencil-for-flawless-art.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-yodayo-redefines-the-creative-ai-anime-art-sphere",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-yodayo-redefines-the-creative-ai-anime-art-sphere.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/in-depth-analysis-of-gdtj45-builder-software-tools",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/in-depth-analysis-of-gdtj45-builder-software-tools.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/inside-apple-s-ios-27-architecture-and-ai-innovations",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/inside-apple-s-ios-27-architecture-and-ai-innovations.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/inside-the-business-empire-of-elon-musk-today",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/inside-the-business-empire-of-elon-musk-today.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/key-health-issues-affecting-women-symptoms-and-solutions",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/key-health-issues-affecting-women-symptoms-and-solutions.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/kia-carnival-hybrid-reinvents-the-modern-family-minivan",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/kia-carnival-hybrid-reinvents-the-modern-family-minivan.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/latest-updates-in-global-film-and-tv-industry-news-today",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/latest-updates-in-global-film-and-tv-industry-news-today.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/lebron-james-the-evolution-of-nba-royalty-on-and-off-court",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/lebron-james-the-evolution-of-nba-royalty-on-and-off-court.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/local-playwrights-guide-independent-theater-spotlight",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/local-playwrights-guide-independent-theater-spotlight.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/main-street-business-revitalization-guide-for-2026",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/main-street-business-revitalization-guide-for-2026.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/master-black-box-theater-budgeting-and-audience-growth",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/master-black-box-theater-budgeting-and-audience-growth.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/master-debugging-keyboard-shortcuts-to-save-hours-daily",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/master-debugging-keyboard-shortcuts-to-save-hours-daily.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/mastering-bathroom-drainage-systems-for-every-home",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/mastering-bathroom-drainage-systems-for-every-home.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/mastering-fasting-schedules-and-metabolic-science",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/mastering-fasting-schedules-and-metabolic-science.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/mastering-llc-formation-state-steps-rules-tax-setup",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/mastering-llc-formation-state-steps-rules-tax-setup.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/mastering-meta-champions-for-higher-elo-rank-ups",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/mastering-meta-champions-for-higher-elo-rank-ups.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/mastering-oral-care-with-every-single-brushing-session",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/mastering-oral-care-with-every-single-brushing-session.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/mastering-salesforce-sfcompile-errors-for-clean-code",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/mastering-salesforce-sfcompile-errors-for-clean-code.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/mastering-smart-thermostat-savings-and-grid-automation",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/mastering-smart-thermostat-savings-and-grid-automation.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/maximizing-loyalty-points-at-online-gambling-sites",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/maximizing-loyalty-points-at-online-gambling-sites.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/modern-bathroom-upgrades-spa-luxury-meets-smart-tech",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/modern-bathroom-upgrades-spa-luxury-meets-smart-tech.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/mountain-ridge-high-school-campus-life-student-activities",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/mountain-ridge-high-school-campus-life-student-activities.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/natural-ways-to-lower-blood-pressure-insights-and-guidance",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/natural-ways-to-lower-blood-pressure-insights-and-guidance.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/navigating-alternative-financing-options-with-green-arrow",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/navigating-alternative-financing-options-with-green-arrow.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/navigating-your-initial-real-estate-purchase-successfully",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/navigating-your-initial-real-estate-purchase-successfully.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/optimizing-handheld-pc-gaming-best-settings-frame-limits",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/optimizing-handheld-pc-gaming-best-settings-frame-limits.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/piper-rockelle-digital-presence-and-content-evolution",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/piper-rockelle-digital-presence-and-content-evolution.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/protecting-parental-rights-through-shared-custody-agreements",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/protecting-parental-rights-through-shared-custody-agreements.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/rd-congo-vs-uzbekistan-prediction-and-football-analysis",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/rd-congo-vs-uzbekistan-prediction-and-football-analysis.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/red-carpet-fashion-trends-inside-haute-couture-aesthetics",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/red-carpet-fashion-trends-inside-haute-couture-aesthetics.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/red-spotted-purple-butterfly-mimicry-habits-explained",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/red-spotted-purple-butterfly-mimicry-habits-explained.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/safe-dosage-practices-for-administering-zyrtec-to-dogs",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/safe-dosage-practices-for-administering-zyrtec-to-dogs.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/sba-loan-requirements-timelines-rates-and-down-payments",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/sba-loan-requirements-timelines-rates-and-down-payments.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/smart-home-energy-audits-heat-pump-and-solar-storage",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/smart-home-energy-audits-heat-pump-and-solar-storage.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/social-security-cola-payouts-and-benefit-adjustments",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/social-security-cola-payouts-and-benefit-adjustments.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/solar-battery-storage-guide-costs-types-and-savings",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/solar-battery-storage-guide-costs-types-and-savings.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/streamline-your-code-with-a-reliable-sed-regex-tester",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/streamline-your-code-with-a-reliable-sed-regex-tester.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/student-loan-forgiveness-rules-and-application-updates",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/student-loan-forgiveness-rules-and-application-updates.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/tarot-card-meanings-journey-across-troubled-waters-explained",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/tarot-card-meanings-journey-across-troubled-waters-explained.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/test-your-knowledge-with-these-fun-general-trivia-questions",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/test-your-knowledge-with-these-fun-general-trivia-questions.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/the-evolving-hr-manager-strategy-tech-and-culture",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/the-evolving-hr-manager-strategy-tech-and-culture.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/the-kitchen-as-canvas-designing-creative-culinary-spaces",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/the-kitchen-as-canvas-designing-creative-culinary-spaces.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/the-secrets-behind-red-golden-retriever-coat-genetics",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/the-secrets-behind-red-golden-retriever-coat-genetics.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/the-untold-story-behind-phil-robertson-secret-daughter",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/the-untold-story-behind-phil-robertson-secret-daughter.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/the-vinyl-record-resurgence-turntable-setups-pressing",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/the-vinyl-record-resurgence-turntable-setups-pressing.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/top-7-phone-features-and-specs",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/top-7-phone-features-and-specs.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/top-german-celebrities-shaping-global-culture-today",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/top-german-celebrities-shaping-global-culture-today.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/tracking-the-birth-date-and-timeline-of-youngboy-never",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/tracking-the-birth-date-and-timeline-of-youngboy-never.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/trump-crypto-policy-guide-2026-regulations-and-impact",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/trump-crypto-policy-guide-2026-regulations-and-impact.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/uncover-the-best-hidden-gems-in-riviera-maya-mexico",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/uncover-the-best-hidden-gems-in-riviera-maya-mexico.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/understanding-newborn-length-and-growth-standards",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/understanding-newborn-length-and-growth-standards.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/understanding-the-physics-behind-askew-gravity-phenomena",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/understanding-the-physics-behind-askew-gravity-phenomena.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/understanding-vector-versus-raster-image-formats-explained",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/understanding-vector-versus-raster-image-formats-explained.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/unplugging-daily-finding-peace-in-a-fast-world",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/unplugging-daily-finding-peace-in-a-fast-world.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/unveiling-the-massive-fortune-of-michael-jordan-today",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/unveiling-the-massive-fortune-of-michael-jordan-today.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/unveiling-the-most-anticipated-celebrity-memoirs-today",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/unveiling-the-most-anticipated-celebrity-memoirs-today.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/upgrading-to-wi-fi-7-mesh-network-coverage-real-latency",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/upgrading-to-wi-fi-7-mesh-network-coverage-real-latency.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/us-army-modernization-strategy-tech-and-troop-structure",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/us-army-modernization-strategy-tech-and-troop-structure.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/us-interest-rates-yields-inflation-and-borrowing-strategy",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/us-interest-rates-yields-inflation-and-borrowing-strategy.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/waterfront-heritage-festival-2026-record-artisan-lineup",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/waterfront-heritage-festival-2026-record-artisan-lineup.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/what-are-the-most-popular-games-dominating-players-today",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/what-are-the-most-popular-games-dominating-players-today.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/what-does-rsv-stand-for-and-how-to-protect-your-family",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/what-does-rsv-stand-for-and-how-to-protect-your-family.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/who-is-the-most-famous-person-in-the-world-right-now",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/who-is-the-most-famous-person-in-the-world-right-now.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/why-following-world-news-matters-in-a-connected-era",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/why-following-world-news-matters-in-a-connected-era.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/why-golden-apple-buffet-is-the-ultimate-family-feast",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/why-golden-apple-buffet-is-the-ultimate-family-feast.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/why-is-my-ear-bleeding-medical-causes-and-what-to-do",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/why-is-my-ear-bleeding-medical-causes-and-what-to-do.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/why-sexy-actors-control-the-modern-box-office-today",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/why-sexy-actors-control-the-modern-box-office-today.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/why-top-performers-turn-down-massive-hollywood-roles",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/why-top-performers-turn-down-massive-hollywood-roles.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/why-unique-table-shapes-shape-modern-game-rooms",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/why-unique-table-shapes-shape-modern-game-rooms.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/why-whole-foods-matter-for-your-daily-nutrition-goals",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/why-whole-foods-matter-for-your-daily-nutrition-goals.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/zone-2-cardio-training-for-exceptional-heart-longevity",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/zone-2-cardio-training-for-exceptional-heart-longevity.html",
+      "destination": "/",
       "permanent": true
     }
   ],

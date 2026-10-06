@@ -1120,9 +1120,12 @@ function buildCategoryPageHtml(catName, matchingArticles, validArticlesList) {
     day: 'numeric'
   });
 
-  const tickerItems = (validArticlesList || []).filter(art => !art.noindex).slice(0, 10).map(art => 
+  let tickerItems = (validArticlesList || []).filter(art => !art.noindex).slice(0, 10).map(art => 
     `          <a href="/${art.slug}" class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> ${escapeHtml(art.title)}</a>`
   ).join('\n');
+  if (!tickerItems) {
+    tickerItems = '          <span class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> GenAlphaMagazines: Independent news, community journalism, and cultural features.</span>';
+  }
 
   let cardsHtml = '';
   const indexableMatching = (matchingArticles || []).filter(art => !art.noindex);
@@ -1658,9 +1661,12 @@ ${sideArticles.map(art => {
       const trackContentStart = updated.indexOf('>', tickerTrackStart) + 1;
       const trackEnd = updated.indexOf('</div>', trackContentStart);
       if (trackEnd !== -1) {
-        const tickerItems = validArticlesList.filter(art => !art.noindex).slice(0, 10).map(art => 
+        let tickerItems = validArticlesList.filter(art => !art.noindex).slice(0, 10).map(art => 
           `          <a href="/${art.slug}" class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> ${escapeHtml(art.title)}</a>`
         ).join('\n');
+        if (!tickerItems) {
+          tickerItems = '          <span class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> GenAlphaMagazines: Independent news, community journalism, and cultural features.</span>';
+        }
         updated = updated.slice(0, trackContentStart) + '\n' + tickerItems + '\n        ' + updated.slice(trackEnd);
       }
     }
@@ -1769,9 +1775,12 @@ ${sideArticles.map(art => {
       const trackContentStart = updated.indexOf('>', catTickerStart) + 1;
       const trackEnd = updated.indexOf('</div>', trackContentStart);
       if (trackEnd !== -1) {
-        const tickerItems = validArticlesList.filter(art => !art.noindex).slice(0, 10).map(art => 
+        let tickerItems = validArticlesList.filter(art => !art.noindex).slice(0, 10).map(art => 
           `          <a href="/${art.slug}" class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> ${escapeHtml(art.title)}</a>`
         ).join('\n');
+        if (!tickerItems) {
+          tickerItems = '          <span class="breaking-ticker-item"><span class="ticker-bullet">&bull;</span> GenAlphaMagazines: Complete topic directory and department index.</span>';
+        }
         updated = updated.slice(0, trackContentStart) + '\n' + tickerItems + '\n        ' + updated.slice(trackEnd);
       }
     }
