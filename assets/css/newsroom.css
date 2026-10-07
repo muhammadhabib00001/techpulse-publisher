@@ -1051,6 +1051,9 @@ main {
   height: 72px;
   border-radius: 50%;
   object-fit: cover;
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .author-bio-name {

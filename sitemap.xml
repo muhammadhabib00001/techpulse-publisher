@@ -310,4 +310,56 @@
     <xhtml:link rel="alternate" hreflang="hi" href="https://www.genalphamagazines.com/hi/pages/about"/>
     <xhtml:link rel="alternate" hreflang="it" href="https://www.genalphamagazines.com/it/pages/about"/>
   </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/author/dr-elena-vance</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.genalphamagazines.com/author/dr-elena-vance"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.genalphamagazines.com/es/author/dr-elena-vance"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.genalphamagazines.com/de/author/dr-elena-vance"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.genalphamagazines.com/fr/author/dr-elena-vance"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.genalphamagazines.com/pt/author/dr-elena-vance"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.genalphamagazines.com/ar/author/dr-elena-vance"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://www.genalphamagazines.com/hi/author/dr-elena-vance"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.genalphamagazines.com/it/author/dr-elena-vance"/>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/author/marcus-reid</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.genalphamagazines.com/author/marcus-reid"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.genalphamagazines.com/es/author/marcus-reid"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.genalphamagazines.com/de/author/marcus-reid"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.genalphamagazines.com/fr/author/marcus-reid"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.genalphamagazines.com/pt/author/marcus-reid"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.genalphamagazines.com/ar/author/marcus-reid"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://www.genalphamagazines.com/hi/author/marcus-reid"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.genalphamagazines.com/it/author/marcus-reid"/>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/author/julia-vance</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.genalphamagazines.com/author/julia-vance"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.genalphamagazines.com/es/author/julia-vance"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.genalphamagazines.com/de/author/julia-vance"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.genalphamagazines.com/fr/author/julia-vance"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.genalphamagazines.com/pt/author/julia-vance"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.genalphamagazines.com/ar/author/julia-vance"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://www.genalphamagazines.com/hi/author/julia-vance"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.genalphamagazines.com/it/author/julia-vance"/>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/author/tariq-mansoor</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.genalphamagazines.com/author/tariq-mansoor"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.genalphamagazines.com/es/author/tariq-mansoor"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.genalphamagazines.com/de/author/tariq-mansoor"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.genalphamagazines.com/fr/author/tariq-mansoor"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.genalphamagazines.com/pt/author/tariq-mansoor"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.genalphamagazines.com/ar/author/tariq-mansoor"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://www.genalphamagazines.com/hi/author/tariq-mansoor"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.genalphamagazines.com/it/author/tariq-mansoor"/>
+  </url>
 </urlset>

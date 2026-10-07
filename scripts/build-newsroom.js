@@ -763,49 +763,55 @@ ${getHreflangTags(relPath)}
 
 // 4. Build Author Pages
 function buildAuthors() {
-  console.log('Building author credential profile pages...');
+  console.log('Building author credential profile pages across all 8 languages...');
 
   authors.forEach(author => {
     const authorArticles = articles.filter(a => a.author_id === author.id && a.status === 'published');
     const relPath = `author/${author.slug}`;
-    const pageUrl = `${DOMAIN}/${relPath}`;
 
-    let articlesHTML = '';
-    authorArticles.forEach(item => {
-      const trans = getArticleTrans(item, 'en');
-      articlesHTML += `
+    LANGUAGES.forEach(lang => {
+      const code = lang.code;
+      const prefix = code === 'en' ? '' : `/${code}`;
+      const pageUrl = `${DOMAIN}${prefix}/${relPath}`;
+
+      let articlesHTML = '';
+      authorArticles.forEach(item => {
+        const trans = getArticleTrans(item, code);
+        const artUrl = `${prefix}/articles/${item.slug}`;
+        articlesHTML += `
         <article class="feed-card">
           <div class="card-media">
             <img src="${item.featured_image}" alt="${escapeHTML(trans.title)}" loading="lazy" />
           </div>
           <div class="feed-content">
-            <h3 class="feed-title"><a href="/articles/${item.slug}">${escapeHTML(trans.title)}</a></h3>
+            <h3 class="feed-title"><a href="${artUrl}">${escapeHTML(trans.title)}</a></h3>
             <p class="feed-deck">${escapeHTML(trans.deck)}</p>
             <div class="card-meta">
-              <span>${new Date(item.published_at).toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+              <span>${new Date(item.published_at).toLocaleDateString(code, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
             </div>
           </div>
         </article>
       `;
-    });
+      });
 
-    const fullHTML = `<!DOCTYPE html>
-<html lang="en">
+      const fullHTML = `<!DOCTYPE html>
+<html lang="${code}" dir="${lang.dir}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHTML(author.name)} · Staff Correspondent · ${escapeHTML(siteSettings.siteName)}</title>
   <meta name="description" content="${escapeHTML(author.bio)}">
   <link rel="canonical" href="${pageUrl}">
+${getHreflangTags(relPath)}
   <link rel="stylesheet" href="/assets/css/newsroom.css">
 </head>
 <body>
-  ${renderHeader('en')}
+  ${renderHeader(code)}
 
   <main id="main-content">
     <div class="container" style="max-width:960px;">
       <div class="author-bio-card" style="margin-top:0;">
-        <img src="${author.avatar || '/assets/images/author-placeholder.jpg'}" alt="${escapeHTML(author.name)}" style="width:96px;height:96px;" />
+        <img src="${author.avatar || '/assets/images/author-placeholder.jpg'}" alt="${escapeHTML(author.name)}" style="width:96px;height:96px;border-radius:50%;object-fit:cover;flex-shrink:0;" />
         <div>
           <h1 style="font-family:var(--font-headline);font-size:2rem;margin-bottom:0.25rem;">${escapeHTML(author.name)}</h1>
           <p class="author-bio-role">${escapeHTML(author.role)}</p>
@@ -829,12 +835,18 @@ function buildAuthors() {
     </div>
   </main>
 
-  ${renderFooter('en')}
+  ${renderFooter(code)}
 </body>
 </html>`;
 
-    ensureDir(path.join(ROOT_DIR, 'author'));
-    fs.writeFileSync(path.join(ROOT_DIR, 'author', `${author.slug}.html`), fullHTML, 'utf8');
+      if (code === 'en') {
+        ensureDir(path.join(ROOT_DIR, 'author'));
+        fs.writeFileSync(path.join(ROOT_DIR, 'author', `${author.slug}.html`), fullHTML, 'utf8');
+      } else {
+        ensureDir(path.join(ROOT_DIR, code, 'author'));
+        fs.writeFileSync(path.join(ROOT_DIR, code, 'author', `${author.slug}.html`), fullHTML, 'utf8');
+      }
+    });
   });
 }
 
@@ -880,6 +892,16 @@ function buildSitemapsAndFeeds() {
     LANGUAGES.forEach(l => {
       const pUrl = l.code === 'en' ? `${DOMAIN}/pages/${slug}` : `${DOMAIN}/${l.code}/pages/${slug}`;
       sitemapXML += `    <xhtml:link rel="alternate" hreflang="${l.code}" href="${pUrl}"/>\n`;
+    });
+    sitemapXML += `  </url>\n`;
+  });
+
+  // Author Profile Pages
+  authors.forEach(author => {
+    sitemapXML += `  <url>\n    <loc>${DOMAIN}/author/${author.slug}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n`;
+    LANGUAGES.forEach(l => {
+      const aUrl = l.code === 'en' ? `${DOMAIN}/author/${author.slug}` : `${DOMAIN}/${l.code}/author/${author.slug}`;
+      sitemapXML += `    <xhtml:link rel="alternate" hreflang="${l.code}" href="${aUrl}"/>\n`;
     });
     sitemapXML += `  </url>\n`;
   });
