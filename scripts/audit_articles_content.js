@@ -4,17 +4,8 @@ const path = require('path');
 const articlesPath = path.join(__dirname, '../data/articles.json');
 const articles = JSON.parse(fs.readFileSync(articlesPath, 'utf8'));
 
-const TARGET_SLUGS = [
-  'himalayan-bird-changes-song-due-to-noise-pollution',
-  'the-phenomenon-of-ghost-music-mystery-and-persona',
-  'global-energy-summit-grid-decarbonization-agreement',
-  'global-semiconductor-lithography-and-advanced-packaging',
-  'central-banks-monetary-policy-liquidity-report',
-  'multilateral-diplomacy-future-of-treaty-frameworks',
-  'semiconductor-foundry-alliances-next-gen-nodes',
-  'fusion-energy-magnetic-containment-milestone',
-  'pandemic-surveillance-accord-ratified-by-treaty-states'
-];
+// Dynamically target every single article published in articles.json to ensure 100% policy enforcement
+const TARGET_SLUGS = articles.map(a => a.slug);
 
 const LANGUAGES = ['en', 'es', 'de', 'fr', 'pt', 'ar', 'hi', 'it'];
 

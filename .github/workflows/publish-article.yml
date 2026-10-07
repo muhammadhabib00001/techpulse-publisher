@@ -79,6 +79,8 @@ jobs:
         run: |
           node scripts/enforce_faq_format.js
           node scripts/sync_articles.js
+          node scripts/build-newsroom.js
+          node scripts/audit-newsroom.js
 
       - name: Commit and Push New Article & Updated Feeds
         run: |

@@ -103,9 +103,19 @@ scanDir(path.join(ROOT_DIR, 'ar'));
 scanDir(path.join(ROOT_DIR, 'hi'));
 scanDir(path.join(ROOT_DIR, 'it'));
 
-if (totalViolations === 0) {
-  console.log('\n✅ AUDIT PASSED 100%! Zero banned words and zero em dashes detected across all files.');
-} else {
+if (totalViolations > 0) {
   console.error(`\n❌ AUDIT FAILED with ${totalViolations} violations.`);
   process.exit(1);
 }
+
+// Enforce strict article guidelines (800+ words, 3 FAQs, LLMO/SEO metadata across all 8 languages)
+console.log('\nRunning Strict Editorial & Multilingual Content Audit (800+ words, 3 FAQs)...');
+const { execSync } = require('child_process');
+try {
+  execSync('node ' + path.join(__dirname, 'audit_articles_content.js'), { stdio: 'inherit' });
+  console.log('\n✅ AUDIT PASSED 100%! All articles meet 800+ words, 3 FAQs, 0 em dashes, and 0 banned words.');
+} catch (e) {
+  console.error('\n❌ AUDIT FAILED: Article content rules not satisfied.');
+  process.exit(1);
+}
+
