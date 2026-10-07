@@ -10,7 +10,10 @@ const TARGET_SLUGS = [
   'global-energy-summit-grid-decarbonization-agreement',
   'global-semiconductor-lithography-and-advanced-packaging',
   'central-banks-monetary-policy-liquidity-report',
-  'multilateral-diplomacy-future-of-treaty-frameworks'
+  'multilateral-diplomacy-future-of-treaty-frameworks',
+  'semiconductor-foundry-alliances-next-gen-nodes',
+  'fusion-energy-magnetic-containment-milestone',
+  'pandemic-surveillance-accord-ratified-by-treaty-states'
 ];
 
 const LANGUAGES = ['en', 'es', 'de', 'fr', 'pt', 'ar', 'hi', 'it'];

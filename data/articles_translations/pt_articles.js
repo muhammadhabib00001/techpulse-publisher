@@ -305,8 +305,171 @@ module.exports = {
         answer: "A exigência de concordância unânime em conferências mundiais gera frequente paralisia diplomática ou resulta em acordos excessivamente vagos, sem ferramentas eficazes de cumprimento. Os pactos modulares permitem que grupos de nações alinhadas avancem com rapidez e adotem regras práticas."
       },
       {
-        question: "Quais são os principais questionamentos ou riscos levantados sobre os acordos modulares?",
-        answer: "Críticos ressaltam que pactos modulares podem fragmentar a ordem jurídica global, criando regras técnicas incompatíveis entre diferentes blocos e gerando risco de exclusão para economias em desenvolvimento que não participam da elaboração inicial das normas."
+        question: "Quais sao os principais questionamentos ou riscos levantados sobre os acordos modulares?",
+        answer: "Criticos ressaltam que pactos modulares podem fragmentar a ordem juridica global, criando regras tecnicas incompativeis entre diferentes blocos e gerando risco de exclusao para economias em desenvolvimento que nao participam da elaboracao inicial das normas."
+      }
+    ]
+  },
+
+  "semiconductor-foundry-alliances-next-gen-nodes": {
+    title: "Aliancas de Fundicoes de Semicondutores Validam Litografia High-NA para Nos de Proxima Geracao",
+    deck: "Wafers piloto processados com optica de alta abertura numerica e distribuicao de energia pela face traseira demonstram tolerancia termica aprimorada e fidelidade de linha sub-dois nanometros em testes comerciais.",
+    content: `
+      <p>A fabricacao avancada de semicondutores atingiu um marco operacional decisivo esta semana, quando os principais consorcios internacionais de producao na Europa, leste da Asia e Estados Unidos divulgaram dados unificados de verificacao de rendimento e confiabilidade gerados por scanners litograficos de ultravioleta extremo de alta abertura numerica (EUV High-NA) de segunda geracao. As avaliacoes abrangentes em campo confirmam que ferramentas comerciais operando com abertura numerica de 0,55 conseguem imprimir com precisao estruturas criticas de circuitos ate oito nanometros em uma unica exposicao optica, superando as etapas de padronizacao multipla que antes restringiam a produtividade fabril e elevavam os custos de fabricacao de wafers.</p>
+
+      <h2>Resolucao Optica e Geometria de Exposicao Unica</h2>
+      <p>A transicao de scanners convencionais de 0,33 NA para sistemas High-NA de 0,55 NA representa o avanco mais substancial na fisica optica do setor de semicondutores nos ultimos dez anos. Nos sistemas tradicionais de ultravioleta extremo, atingir passos de linha inferiores a vinte e quatro nanometros exigia tecnicas complexas de padronizacao dupla, dividindo uma unica camada de circuito em multiplas exposicoes litograficas e etapas de corrosao quimica. Esse processo provocava acentuada rugosidade nas bordas das trilhas, aumentava erros de alinhamento por sobreposicao e encarecia os lotes de producao com maior descarte de wafers.</p>
+
+      <p>Ao adotar projecao optica anamorfica, na qual a ampliacao varia entre os eixos horizontal e vertical, as maquinas High-NA dobram a resolucao optica mantendo intacta a integridade estrutural das fotomascaras. Lotes piloto iniciais processados em instalacoes experimentais avancadas registraram uma queda de trinta e quatro por cento nos desvios de posicionamento de borda. Essa precisao em unica exposicao permite a gravacao limpa de comportas para transistores de efeito de campo complementares (CFET), modelo projetado para suceder os transistores de nanofolhas empilhadas abaixo do patamar de 1,4 nanometro.</p>
+
+      <p>Especialistas em litografia apontaram que dispensar as fases de padronizacao multipla gera vantagens economicas expressivas para plantas industriais de grande capacidade. Cada mascara fotolitografica eliminada poupa dezenas de etapas de deposicao de filmes, aplicacao de resina, tratamento termico e polimento quimico-mecanico, reduzindo o tempo total de fabricacao de um wafer de ultima geracao em ate vinte e um dias e diminuindo sensivelmente o consumo de agua desmineralizada nas salas limpas.</p>
+
+      <h2>Arquitetura de Alimentacao Traseira e Reducao de Resistencias Parasitas</h2>
+      <p>Em paralelo as conquistas na litografia optica, aliancas tecnicas integraram com sucesso redes de alimentacao de energia pela face traseira (BSPDN) diretamente na linha piloto de processamento de wafers. Nas arquiteturas classicas, as vias de distribuicao eletrica e as linhas de transmissao de sinais disputam espaco nas camadas metalicas superiores do silicio. Com a miniaturizacao dos transistores, condutores de energia mais estreitos sofrem com forte resistencia parasita e quedas de tensao (quedas IR), limitando o rendimento energetico e gerando pontos concentrados de calor.</p>
+
+      <p>A distribuicao de energia pela parte de tras dissocia por completo o trafego de sinais da alimentacao eletrica. Ao adelgacar a lamina de silicio para menos de dez micrometros e perfurar vias verticais submicrometricas (nTSVs) a partir do fundo do substrato, os engenheiros conectam barramentos eletricos diretamente aos terminais de fonte e dreno dos transistores. Medicoes realizadas em wafers de teste sob alto estresse operacional mostraram reducao de dezesseis por cento na queda de tensao e elevacao de dezoito por cento nas frequencias de comutacao, abrindo margem termica consideravel para computacao de alta intensidade.</p>
+
+      <p>A retirada dos trilhos de forca da parte frontal desocupa as camadas condutoras densas exclusivamente para conexoes logicas de sinal. Projetistas de semicondutores calculam um ganho de ate vinte por cento na densidade de integracao de celulas padrao, capacitando as fundicoes a acomodar bilhoes de comportas logicas extras na mesma area fisica sem provocar congestionamentos de interconexao ou atrasos de transmissao.</p>
+
+      <h2>Padroes Modulares de Chiplets e Pontes Avancadas de Conexao</h2>
+      <p>Diante do declinio no rendimento de producao de matrizes monoliticas que ultrapassam oitocentos milimetros quadrados, a coalizao fabril formalizou especificacoes tecnicas conjuntas para empacotamento modular de multiplas matrizes. Fundamentada em protocolos abertos, a nova norma regulamenta o espacamento de micro-saliencias de contato, passos de fusao hibrida cobre-cobre e regras uniformes de sinalizacao de baixa voltagem.</p>
+
+      <p>Esse padrao interoperavel permite que blocos distintos de processamento, como nucleos computacionais de alto desempenho fabricados em 1,4 nm, controladores de memoria produzidos em 5 nm e modulos de memoria de alta largura de banda, troquem dados atraves de camadas intermediarias de silicio com latencia abaixo de um nanossegundo. Ensaios de estresse termico estendidos por cinco mil horas continuas nao indicaram qualquer descolamento nas interfaces soldadas de cobre, comprovando durabilidade comercial para aplicacoes criticas em data centers e sistemas veiculares.</p>
+
+      <p>O regulamento define ainda interfaces de testes que autorizam equipamentos robotizados a inspecionar cada componente individual antes da soldagem definitiva. Essa triagem previne a perda de conjuntos complexos devido a chips danificados, garantindo margens comerciais estaveis aos fabricantes em processos de integracao avancada.</p>
+
+      <h2>Cadeia de Suprimentos Global e Protocolos de Metrologia</h2>
+      <p>O avanco fabril decorre da coordenacao estrita entre fabricantes de maquinario, empresas quimicas e centros de pesquisa metrologica. A litografia High-NA exige resinas fotossensiveis de pelicula ultrafina inteiramente novas, visto que formulas organicas classicas colapsam quando submetidas a linhas de oito nanometros. As empresas consorciadas adotaram resinas a base de oxidos metalicos (MOR), que apresentam maior absorcao fotonica no espectro ultravioleta extremo e reacao quimica mais uniforme.</p>
+
+      <p>Simultaneamente, orgaos internacionais de metrologia instituiram procedimentos de inspecao padronizados, aliando analise actinica de mascaras a feixes de eletrons de alta velocidade para detectar falhas cristalinas em escala atomica antes do encapsulamento final. Essas vistorias compartilhadas asseguram que componentes originados em plantas distintas apresentem parametros identicos de resposta fisica e eletrica, amortecendo vulnerabilidades na cadeia global de suprimentos.</p>
+
+      <h2>Cronograma de Producao Comercial e Repercussao Industrial</h2>
+      <p>Com indices de rendimento em testes que superaram as metas preliminares, as fundicoes parceiras anunciaram a intencao de dar a partida na producao de risco em nos abaixo de dois nanometros nos proximos doze meses. O fornecimento em larga escala de circuitos para infraestruturas de computacao em nuvem, plataformas roboticas e aceleradores fisicos locais ganhara escala a partir do final de 2027.</p>
+
+      <p>A validacao conjunta da litografia High-NA e da alimentacao eletrica traseira traca uma rota segura para o desenvolvimento da capacidade computacional ao longo da proxima decada. Ao solucionar barreiras fisicas em resolucao optica, controle termico e ligacao de multiplos blocos de silicio, os fabricantes asseguram que a densidade de processamento continue evoluindo sem impor demandas energeticas desmedidas aos sistemas elétricos.</p>
+    `,
+    faqs: [
+      {
+        question: "O que caracteriza a litografia EUV High-NA e por que ela e relevante?",
+        answer: "A litografia EUV High-NA utiliza sistema optico com abertura de 0,55 para gravar circuitos de ate oito nanometros em uma unica exposicao, eliminando etapas adicionais de gravura e viabilizando a fabricacao de chips abaixo de dois nanometros."
+      },
+      {
+        question: "De que maneira a alimentacao pela parte traseira eleva o desempenho do chip?",
+        answer: "O metodo transfere as linhas eletricas para baixo da lamina de silicio, desimpedindo as camadas superiores, diminuindo a resistencia parasita e reduzindo perdas de tensao, o que eleva a taxa de comutacao dos transistores."
+      },
+      {
+        question: "Quando os circuitos fabricados com High-NA comecarao a ser produzidos em massa?",
+        answer: "As principais fundicoes pretendem iniciar testes de risco nos proximos doze meses, com entrega de volumes comerciais para servidores e dispositivos de grande porte programada para o fim de 2027."
+      }
+    ]
+  },
+
+  "fusion-energy-magnetic-containment-milestone": {
+    title: "Marco na Energia de Fusao: Stellarator Supercondutor Mantem Confinamento Estavel",
+    deck: "Pesquisadores da instalacao experimental de Greifswald registram confinamento continuo de plasma por vinte e dois minutos, comprovando dispersao termica uniforme e producao sustentada de tritio.",
+    content: `
+      <p>Fisicos de plasma e engenheiros nucleares que atuam no stellarator modular de pesquisa em Greifswald, na Alemanha, documentaram uma conquista historica ao sustentar o confinamento estavel de plasma de hidrogenio em altissima temperatura por vinte e dois minutos consecutivos. O teste em laboratorio ultrapassa todas as marcas anteriores de duracao para reatores magneticos continuos e comprova experimentalmente que configuracoes magneticas helicoidais conseguem suprimir as turbulencias que inviabilizavam a operacao permanente de fusao nuclear.</p>
+
+      <h2>Topologia Magnetica e Controle de Turbulencia</h2>
+      <p>Diferentemente dos reatores tokamak, que induzem correntes eletricas de grande magnitude no interior do proprio plasma para torcer as linhas de confinamento, os stellarators estruturam gaiolas magneticas tridimensionais exclusivamente a partir de bobinas supercondutoras nao planares dispostas no exterior da camara. Em periodos anteriores, o desafio geometrico de conceber esses enrolamentos assimetricos impedia que os stellarators igualassem os parametros de densidade e aquecimento obtidos pelos tokamaks tradicionais.</p>
+
+      <p>A superacao desse obstaculo em Greifswald adveio de rotinas de computacao avancada que calcularam o contorno espacial exato das bobinas para conter o transporte neoclassico, fenômeno responsavel pelo escape precoce de particulas energeticas da armadilha magnetica. Ao longo dos vinte e dois minutos do ensaio, instrumentos diagnosticos registraram estabilidade excepcional nas camadas de borda. O nucleo do plasma ultrapassou sessenta milhoes de graus Celsius sem apresentar as instabilidades magnetohidrodinamicas que frequentemente encerram as descargas em tokamaks.</p>
+
+      <p>Analises por interferometria a laser confirmaram que a densidade do gas ionizado se manteve homogenea ao longo do eixo magnetico durante todo o periodo. Como dispensam correntes induzidas no proprio plasma, os stellarators evitam colapsos repentinos que costumam avariar os revestimentos internos de outros reatores, viabilizando uma operacao muito mais segura para a geracao eletrica comercial.</p>
+
+      <h2>Bobinas Supercondutoras e Confiabilidade Criogenica</h2>
+      <p>A sustentacao do confinamento por tempo prolongado foi viabilizada pelo desempenho de bobinas supercondutoras de alta temperatura (HTS) construidas com fitas de oxido de bario, cobre e terras raras (REBCO). Esses condutores de ultima geracao transportam corrente sem qualquer resistencia sob temperaturas de hidrogenio liquido, mantendo campos magneticos superiores a quinze teslas de forma continua com baixa demanda de refrigeracao criogenica.</p>
+
+      <p>Dispositivos de controle termico indicaram que os cinquenta aneis magneticos assimetricos mantiveram estabilidade absoluta de temperatura durante toda a descarga. Circuitos selados de helio liquido absorveram o bombardeio de radiacao e neutrons emitidos pelo nucleo aquecido de hidrogenio, atestando que enrolamentos supercondutores modernos suportam o regime severo de operacao energetica sem perdas no estado supercondutor.</p>
+
+      <p>Sensores mecanicos fixados nas estruturas de contencao nao registraram deformacoes estruturais mensuraveis, a despeito de forcas eletromagneticas equivalentes a milhares de toneladas. Essa solidez comprova que os suportes modulares toleram regimes de funcionamento continuado sem requisitar paralizacoes frequentes para reajuste fisico.</p>
+
+      <h2>Comportamento da Exaustao e Resistencia do Divertor de Tungstenio</h2>
+      <p>Um dos entraves de engenharia mais complexos na fusao termonuclear reside na integridade do divertor, conjunto de placas de exaustao encarregado de dissipar a energia termica da borda do plasma sem sofrer fusao ou injetar impurezas de volta ao vaso de reacao. Durante os testes em Greifswald, placas refrigeradas a agua e revestidas com tungstenio de alta pureza toleraram fluxos de calor medios de nove megawatts por metro quadrado.</p>
+
+      <p>A equipe obteve esse equilibrio ao introduzir doses micrometricas de gas neon na periferia do plasma. Esse procedimento gerou uma camada de resfriamento radiante que dispersou mais de oitenta por cento do calor residual uniformemente pelas paredes da camara sob a forma de luz ultravioleta branda, impedindo o desgaste excessivo dos pontos focais do divertor. Vistorias a laser realizadas apos a descarga atestaram desgaste superficial irrelevante e nenhuma fissura no revestimento de tungstenio, demonstrando a adequacao da peca para geracao continua de energia.</p>
+
+      <h2>Comprovacao da Producao de Tritio em Manto</h2>
+      <p>Alem da estabilidade magnetica e do controle de calor, o experimento validou o desempenho de blocos de blindagem projetados para produzir tritio. Visto que reatores comerciais operarao a base da fusao de deuterio e tritio, e as fontes naturais deste ultimo elemento sao raras, cada instalacao precisara sintetizar seu proprio combustivel ao absorver neutrons livres em camadas estruturadas com litio.</p>
+
+      <p>Detectores instalados atras de modulos experimentais de metal liquido a base de chumbo e litio mediram indices de captura neutronica concordantes com simulacoes numericas com diferenca inferior a dois por cento. Esse rendimento indica que mantos para stellarators podem atingir coeficientes de reproducao de tritio acima de 1,15, assegurando autossuficiencia de combustivel para usinas eletricas conectadas a rede sem compra externa de insumos radioativos.</p>
+
+      <p>Pesquisadores tambem monitoraram a remocao de residuos de helio durante o ensaio. Em regime permanente, as particulas alfa geradas pela reacao transferem energia ao meio antes de decair para helio neutro. Os dutos do divertor extrairam esse gas residual continuamente sem reduzir a densidade do combustivel central, sanando uma dificuldade historica na operacao prolongada de reatores.</p>
+
+      <h2>Plano de Desenvolvimento para Usinas Piloto de Base</h2>
+      <p>Animado com a estabilidade demonstrada, o consorcio cientifico informou que adaptara o complexo de Greifswald para rodadas de ensaio com duracao de oitenta minutos no inicio de 2027. Simultaneamente, entidades governamentais e investidores privados iniciaram os projetos conceituais de uma estacao piloto de demonstracao conectada a rede publica, estimada em quatrocentos megawatts de potencia eletrica util.</p>
+
+      <p>Especialistas em energia observam que, ao contrario de fontes renovaveis de geracao oscilante, a fusao nuclear magnetica oferece fornecimento estavel de base sem emissoes diretas de gases estufa e com baixa demanda de descarte de rejeitos radioativos. A estrutura modular dos stellarators tambem permite que bobinas e carcasas sejam construidas em unidades industriais regionais e montadas diretamente no local de instalacao.</p>
+
+      <p>A operacao estavel por vinte e dois minutos consolida uma etapa indispensavel na jornada da fusao nuclear controlada. Ao comprovar que desenhos magneticos precisos mantem plasmas calmos, homogeneos e estaveis por longos periodos, o projeto do stellarator abre um caminho viavel para o suprimento de energia limpa e abundante para a matriz energetica global.</p>
+    `,
+    faqs: [
+      {
+        question: "De que maneira o stellarator difere do reator tokamak tradicional?",
+        answer: "O stellarator estrutura seu campo magnetico de confinamento exclusivamente com bobinas supercondutoras externas com desenho helicoidal, dispensando as intensas correntes eletricas internas que geram instabilidade nos tokamaks."
+      },
+      {
+        question: "Que marca de tempo e temperatura foi alcancada nas instalacoes de Greifswald?",
+        answer: "A unidade operou com plasma contido por vinte e dois minutos ininterruptos, conservando temperaturas centrais acima de sessenta milhoes de graus Celsius e mantendo controle termico sobre placas de tungstenio."
+      },
+      {
+        question: "Por qual razao a producao interna de tritio e fundamental na fusao?",
+        answer: "Como as reservas naturais de tritio sao escassas, os complexos de fusao precisam produzir o proprio insumo ao captar neutrons em barreiras revestidas de litio, viabilizando um ciclo fechado e sustentavel."
+      }
+    ]
+  },
+
+  "pandemic-surveillance-accord-ratified-by-treaty-states": {
+    title: "Tratado de Saude Global: Setenta e Seis Paises Ratificam Acordo de Sequenciamento Aberto de Patogenos",
+    deck: "Pacto internacional de monitoramento biologico determina compartilhamento de dados genomicos em ate quarenta e oito horas, suporte financeiro conjunto para laboratorios e cotas garantidas de medicamentos.",
+    content: `
+      <p>Representantes diplomaticos e gestores de saude publica de setenta e seis paises formalizaram nesta terca-feira o deposito de seus termos de adesao na sede da Organizacao Mundial da Saude, em Genebra, oficializando a vigencia do Acordo Internacional de Vigilancia Genomica de Patogenos. O documento multilateral firma prazos compulsórios para o fornecimento de sequenciamento biologico de agentes infecciosos emergentes, solucionando controversias historicas sobre direitos autorais, custodia de dados e equidade na distribuicao de suprimentos medicos.</p>
+
+      <h2>Protocolo de Notificacao Genomica em Quarenta e Oito Horas</h2>
+      <p>Pelos termos centrais do tratado, centros nacionais de controle e laboratorios de analise credenciados ficam obrigados a disponibilizar o mapa genetico completo de novos patogenos respiratorios, virais ou transmitidos por vetores em plataformas globais de acesso publico em ate quarenta e oito horas apos o isolamento laboratorial confirmado. A regra encerra modelos antigos de participacao voluntaria, que costumavam acumular semanas de atraso na troca de dados durante surtos sanitarios regionais.</p>
+
+      <p>O regulamento estabelece padroes digitais compartilhados para metadados de amostras, exigindo o registro da data de coleta, coordenadas do local, grau de gravidade clinica e indices de resistencia a tratamentos existentes. Ao instituir o repasse instantaneo de sequencias sem embargos editoriais, a convencao permite que imunologistas, desenvolvedores de vacinas e fabricantes de testes avaliem mutacoes e calculem riscos de contaminacao em tempo real.</p>
+
+      <p>Comissoes cientificas independentes ficarao a cargo de fiscalizar as insercoes nos repositorios, conduzindo checagens filogeneticas automaticas para acusar inconsistencias tecnicas e catalogar novos agrupamentos geneticos. Quando forem notados aumentos atipicos na velocidade de transmissao, o sistema mundial emitira avisos a ministerios da saude de territorios vizinhos, deflagrando protocolos preventivos antes da dispersao comunitaria.</p>
+
+      <p>Estimativas de simulacoes epidemiologicas mostram que detectar uma nova linhagem patogenica com antecedencia de duas semanas pode conter mais de quarenta por cento do total de infeccoes no estagio inicial de uma crise global. Com isso, o protocolo de envio rapido consolida uma rede integrada de protecao mundial, substituindo avisos burocraticos desconexos por registros cientificos precisos e consultaveis por qualquer autoridade de saude.</p>
+
+      <h2>Financiamento de Equipamentos e Centros Regionais de Diagnostico</h2>
+      <p>Para assegurar que nacoes em desenvolvimento e economias de renda baixa consigam honrar as exigencias de rapidez analitica, a convencao cria um Fundo Internacional Permanente de Infraestrutura Biologica. Financiada por repasses anuais de paises industrializados signatarios e entidades filantropicas, a iniciativa tem a atribuicao de instalar plataformas automatizadas de sequenciamento de alto rendimento em trinta e dois laboratorios de referencia na Africa, America Latina e Sudeste Asiatico.</p>
+
+      <p>Alem da montagem dos aparelhos, o programa prove recursos perenes para conservacao de reagentes em cadeias refrigeradas, geradores eletricos sem interrupcao e treinamento em bioinformatica para cientistas dessas regioes. Ao fixar capacidade analitica avancada nos proprios locais onde os focos infecciosos se originam, o acordo ameniza a dependencia de centros distantes no exterior e acelera o reconhecimento local de ameacas.</p>
+
+      <p>Pesquisadores de campo ressaltam que a autonomia diagnostica em nivel regional e basica para o combate agil a epidemias. Quando equipes locais conseguem traduzir material biologico bruto em arvores evolutivas catalogadas em seu proprio espaco, condutas terapeuticas e sanitarias podem ser ordenadas em poucos dias, contornando a demora de semanas para liberacao alfandegaria de remessas internacionais.</p>
+
+      <p>O fundo engloba tambem a implantacao de bancos biologicos regionais para arquivar cepas em ambientes de nitrogenio liquido sob criterios estritos de biosseguranca internacional. Essa base permite que equipes criadoras de testes comprovem a eficacia de seus kits com amostras de campo legitimas sem enfrentar entraves diplomaticos durante situacoes de emergencia ativa.</p>
+
+      <h2>Acesso Universal e Reservas Vinculadas de Terapias</h2>
+      <p>O ponto mais sensivel das conversas diplomaticas logrou conciliar a integracao dos dados cientificos e o fornecimento compulsorio de tratamentos essenciais. Em crises passadas, administracoes de rendimento menor demonstravam relutancia compreensivel em ceder amostras biológicas sem contrapartidas, temendo que vacinas e compostos produzidos com esses registros fossem concentrados por nacoes de alta renda durante crises globais.</p>
+
+      <p>O Acordo de Genebra resolve essa desigualdade por meio de compromissos formais de partilha de resultados. Fabricantes farmaceuticos privados que empregarem mapeamentos geneticos retirados da rede aberta para produzir vacinas, anticorpos monoclonais ou testes de diagnostico molecular terao que reservar contratualmente vinte por cento de seus lotes iniciais de entrega para fundos publicos globais ao custo estrito de producao. Paises membros que violarem os repasses acordados terao seus incentivos de mercado e bolsas internacionais de fomento cancelados sem aviso previo.</p>
+
+      <h2>Seguranca Digital e Normatizacao de Pesquisas de Duplo Uso</h2>
+      <p>Reconhecendo as implicacoes de biosseguranca atreladas a circulacao de sequencias de patogenos de alto risco, a convencao estabelece controles digitais rigorosos para empresas produtoras de sintese genetica. Encomendas enviadas a laboratorios de sintese de DNA passarao por verificacoes automaticas cruzadas com um catalogo mundial que lista substancias, toxinas e microrganismos de periculosidade controlada.</p>
+
+      <p>Cientistas que demandarem sintetizacao de material referente a virus de impacto severo precisarao apresentar registro institucional valido e autorizacoes governamentais de biosseguranca antes de qualquer inicio de producao ou envio de oligonucleotideos. Vistorias tecnicas externas periciarao as empresas do setor semestralmente para averiguar o cumprimento dos mecanismos digitais de triagem.</p>
+
+      <h2>Novo Paradigma na Cooperacao de Saude Internacional</h2>
+      <p>A confirmacao e implementacao do Acordo de Vigilancia de Patogenos constituem uma transformacao historica nas diretrizes de gestao da saude coletiva. Ao substituir acoes voluntarias esparsas por regras vinculantes, infraestrutura dividida e distribuicao justa de recursos preventivos, o texto confere a sociedade global um dispositivo solido de resposta a futuras crises infecciosas.</p>
+
+      <p>No momento em que o grupo inicial de setenta e seis signatarios poe as regras em execucao, diretores de saude enfatizam que o combate a patogenos e uma tarefa coletiva inadiavel. Microorganismos nao respeitam limites geograficos ou divisoes politicas, e e atraves da partilha de dados e da equidade nos cuidados que a comunidade global garante uma estrutura de protecao confiavel e abrangente.</p>
+    `,
+    faqs: [
+      {
+        question: "Quais sao as determinacoes principais do Acordo de Vigilancia Genomica de Patogenos?",
+        answer: "O documento exige que os Estados-membros realizem o mapeamento genetico e enviem os dados de novos microrganismos a cadastros mundiais abertos em ate quarenta e oito horas, incluindo metadados detalhados."
+      },
+      {
+        question: "De que forma o tratado assegura o fornecimento equilibrado de vacinas e remedios?",
+        answer: "Companhias que desenharem tratamentos usando as informacoes do repositorio devem destinar vinte por cento do primeiro lote fabril para distribuicao internacional a preco de custo para nacoes em desenvolvimento."
+      },
+      {
+        question: "Que assistencia tecnica e concedida aos paises de renda mais baixa?",
+        answer: "A convencao mantem um fundo conjunto que destina sequenciadores modernos automatizados, insumos quimicos refrigerados e capacitacao em bioinformatica para trinta e dois centros laboratoriais estrategicos."
       }
     ]
   }

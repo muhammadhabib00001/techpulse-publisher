@@ -112,5 +112,168 @@ module.exports = {
         "answer": "Les observateurs soulignent le risque de fragmentation des normes juridiques mondiales et la création de règles concurrentes susceptibles d'écarter les pays en développement des grands circuits technologiques et économiques."
       }
     ]
+  },
+
+  "semiconductor-foundry-alliances-next-gen-nodes": {
+    title: "Les Fonderies de Semi-conducteurs Valident la Lithographie High-NA pour les Noeuds de Prochaine Generation",
+    deck: "Des plaquettes pilotes traitees avec une optique a haute ouverture numerique et une distribution d'energie par la face arriere demontrent une tolerance thermique accrue et une fidelite de ligne inferieure a deux nanometres lors d'essais commerciaux.",
+    content: `
+      <p>La fabrication avancee de semi-conducteurs a franchi une etape operationnelle decisive cette semaine alors que les principaux consortiums internationaux de production en Europe, en Asie de l'Est et aux Etats-Unis ont publie des donnees unifiees de verification du rendement et de la fiabilite issues des scanners de lithographie aux ultraviolets extremes a haute ouverture numerique (EUV High-NA) de deuxieme generation. Les evaluations completes sur le terrain confirment que les equipements commerciaux fonctionnant avec une ouverture numerique de 0,55 peuvent imprimer de maniere fiable des caracteristiques critiques de composants jusqu'a huit nanometres en une seule exposition optique, eliminant ainsi les iterations de gravure multiple qui limitaient auparavant le debit operationnel et augmentaient les couts de fabrication des plaquettes de silicium.</p>
+
+      <h2>Resolution Optique et Geometrie a Exposition Unique</h2>
+      <p>La transition des scanners conventionnels a 0,33 NA vers les systemes High-NA a 0,55 NA constitue le tournant le plus significatif en physique optique dans l'industrie des puces au cours de la derniere decennie. Avec les systemes EUV traditionnels, obtenir des pas de ligne inferieurs a vingt-quatre nanometres necessitait des methodes complexes de double motif, divisant une seule couche de circuit en plusieurs expositions lithographiques et cycles de gravure chimique. Cette methode introduisait une rugosite importante sur les bords des lignes, multipliait les erreurs d'alignement de superposition et augmentait le taux de rejet des plaquettes lors des series de production de masse.</p>
+
+      <p>En employant une projection optique anamorphique, ou le grossissement differe selon les axes horizontal et vertical, les outils High-NA doublent la resolution optique tout en preservant l'integrite structurelle des photomasques. Les premiers essais pilotes realises sur des bancs de test de fonderie de pointe ont revele une baisse de trente-quatre pour cent des erreurs de placement des bords. Cette precision d'exposition unique permet une definition nette des grilles pour les transistors a effet de champ complementaires (CFET), l'architecture appelee a succeder aux transistors a nanofeuilles entourees sous le seuil du noeud de 1,4 nanometre.</p>
+
+      <p>Les specialistes de la lithographie ont souligne que l'elimination des cycles de gravure multiple procure egalement des gains economiques considerables pour les usines de fabrication a grand volume. Chaque etape de photomasque evitee supprime des dizaines de phases de depot, d'application de resine, de recuit et de polissage mecano-chimique, raccourcissant le cycle de fabrication total d'une plaquette de pointe jusqu'a vingt et un jours tout en reduisant la consommation d'eau demineralisee en salle blanche.</p>
+
+      <h2>Architecture d'Alimentation par la Face Arriere et Reduction Parasite</h2>
+      <p>Parallelement aux progres de la lithographie optique, les consortiums d'ingenierie ont integre avec succes des reseaux d'alimentation par la face arriere (BSPDN) directement dans le flux des plaquettes pilotes. Dans les architectures traditionnelles, les lignes d'alimentation electrique et les cables de transmission des signaux se disputent l'espace de routage sur les couches metalliques superieures de la plaquette. A mesure que les transistors retrecissent, les pistes d'alimentation plus fines subissent une forte resistance parasite et des chutes de tension (chute IR), diminuant l'efficacite energetique et creant des zones de surchauffe localisees.</p>
+
+      <p>L'alimentation par la face arriere dissocie totalement le routage des signaux de la distribution electrique. En amincissant la plaquette a moins de dix micrometres et en gravant des nano-vias traversant le silicium (nTSV) sous-micrometriques depuis la face inferieure, les ingenieurs connectent les rails d'alimentation directement aux bornes de source et de drain des transistors sous le substrat. Les mesures de metrologie issues de plaquettes soumises a de fortes contraintes ont revele une diminution de seize pour cent de la chute de tension et une augmentation de dix-huit pour cent des vitesses de commutation des transistors, offrant une marge thermique substantielle pour les charges de calcul a haute intensite.</p>
+
+      <p>De plus, retirer les rails d'alimentation de la face avant libere les couches metalliques denses exclusivement pour les signaux logiques d'interconnexion. Les concepteurs de processeurs signalent un gain de densite logique pouvant atteindre vingt pour cent sur les cellules standard, permettant aux fonderies d'implanter des milliards de portes fonctionnelles supplementaires sur la meme surface de silicium sans encombrement de cablage ni latence de signal.</p>
+
+      <h2>Standards de Chiplets Modulaires et Ponts d'Interconnexion Avances</h2>
+      <p>Constatant que les matrices de silicium monolithiques depassant huit cents millimetres carres souffrent de rendements decroissants, l'alliance des fonderies a valide des specifications physiques communes d'interconnexion pour l'assemblage multi-puces. En s'appuyant sur des normes ouvertes, le nouveau cadre harmonise l'espacement des micro-bosses, les pas de liaison hybride cuivre-cuivre et les protocoles de transmission a basse tension standardises.</p>
+
+      <p>Cette interface ouverte permet a des puces heterogenes, telles que des coeurs de calcul haute performance graves sur des noeuds de pointe de 1,4 nm, des controleurs de memoire fabriques sur des procedes matures de 5 nm et des piles de memoire a large bande passante, d'echanger des donnees via des interposeurs en silicium avec une latence inferieure a la nanoseconde. Les tests de cyclage thermique menes sur cinq mille heures de fonctionnement n'ont montre aucune delamination mecanique le long des interfaces de soudure en cuivre, confirmant la viabilite commerciale pour les centres de donnees et les applications automobiles exigeantes.</p>
+
+      <p>La norme definit egalement des protocoles de test deterministes permettant aux equipements automatiques d'analyser chaque puce individuelle avant l'assemblage final. Cette verification preventive garantit que les composants defectueux ne gachent pas des modules multi-puces onereux, assurant aux industriels des marges previsibles lors de la production de boitiers complexes.</p>
+
+      <h2>Chaine d'Approvisionnement et Protocoles Internationaux de Metrologie</h2>
+      <p>Cette avancee industrielle reflete une cooperation etroite entre fabricants d'equipements specialises, fournisseurs de produits chimiques et laboratoires de recherche independants en metrologie. La lithographie High-NA exige des formulations de resines photosensibles a couches minces entierement renouvelees, car les resines chimiques organiques conventionnelles s'effondrent lors du trace de lignes de huit nanometres. Les membres du consortium ont deploye des resines a base d'oxydes metalliques (MOR), offrant une meilleure absorption des photons ultraviolets extremes et une plus grande selectivite de gravure chimique.</p>
+
+      <p>Dans le meme temps, les instituts mondiaux de metrologie ont etabli des protocoles d'inspection normalises combinant l'analyse actinique des defauts de motifs et l'inspection par faisceau d'electrons a haute vitesse pour detecter les dislocations cristallines atomiques avant l'encapsulation. Ces controles qualite harmonises assurent que les plaquettes produites dans differents sites industriels repondent a des criteres physiques et electriques identiques, reduisant ainsi les risques de rupture d'approvisionnement regional.</p>
+
+      <h2>Calendrier de Deploiement Commercial et Portee Industrielle</h2>
+      <p>Grace a des rendements pilotes depassant les objectifs initiaux, les fabricants de semi-conducteurs ont confirme leur intention de lancer la production de pre-serie sur les noeuds inferieurs a deux nanometres d'ici les douze prochains mois. La fabrication en grand volume de processeurs destines aux centres de donnees geants, a la robotique autonome et aux accelerateurs materiels locaux debutera dans les usines partenaires a partir de la fin de l'annee 2027.</p>
+
+      <p>La validation conjointe de la lithographie High-NA et de l'alimentation par la face arriere dresse une feuille de route solide pour la performance des processeurs au cours de la decennie a venir. En surmontant des defis physiques majeurs lies a la resolution optique, a la dissipation thermique et a l'integration multi-puces, les fonderies garantissent que la puissance de calcul continuera de progresser sans imposer une consommation d'energie deraisonnable.</p>
+    `,
+    faqs: [
+      {
+        question: "Qu'est-ce que la lithographie EUV High-NA et quel est son interet principal ?",
+        answer: "La lithographie EUV High-NA utilise une optique a ouverture numerique de 0,55 pour graver des circuits jusqu'a huit nanometres en une seule exposition, supprimant les etapes couteuses de gravure multiple et ouvrant la voie aux puces sous la barre des deux nanometres."
+      },
+      {
+        question: "De quelle maniere l'alimentation par la face arriere ameliore-t-elle les circuits ?",
+        answer: "Elle achemine l'electricite sous la plaquette de silicium plutot qu'a travers les pistes superieures de signal, ce qui diminue la resistance interne et les chutes de tension tout en ameliorant les frequences de commutation et l'efficacite thermique."
+      },
+      {
+        question: "A quelle date les processeurs graves en High-NA seront-ils produits a grande echelle ?",
+        answer: "Les fonderies prevoient de demarrer la production de risque d'ici un an, avant d'engager la fabrication commerciale de masse pour les serveurs et le materiel grand public des la fin de 2027."
+      }
+    ]
+  },
+
+  "fusion-energy-magnetic-containment-milestone": {
+    title: "Etape Majeure dans l'Energie de Fusion : Le Stellarator Supraconducteur Maintient un Confinement Stable",
+    deck: "Les equipes de recherche de l'installation de Greifswald enregistrent un confinement continu de plasma stable durant vingt-deux minutes, prouvant une dispersion thermique constante et la production verifiee de tritium.",
+    content: `
+      <p>Les physiciens des plasmas et les ingenieurs nucleaires en poste sur le stellarator modulaire de recherche a Greifswald, en Allemagne, ont annonce cette semaine une reussite experimentale historique en maintenant un confinement de plasma d'hydrogene a haute temperature pendant vingt-deux minutes consecutives. Cet essai depasse tous les records de duree etablis par des dispositifs de fusion magnetique sans impulsions et demontre concretement que les configurations magnetiques complexes du stellarator permettent d'eliminer les turbulences qui bloquaient jusqu'ici l'exploitation de la fusion en continu.</p>
+
+      <h2>Topologie Magnetique et Suppression des Turbulences</h2>
+      <p>A l'oppose des reacteurs de type tokamak, qui ont besoin d'injecter de forts courants electriques au sein meme du plasma pour courber les lignes du champ magnetique de confinement, les stellarators creent une cage magnetique tridimensionnelle uniquement a l'aide de bobines magnetiques supraconductrices non planes disposees a l'exterieur. Au cours des decennies precedentes, la complexite geometrique de ces bobines asymetriques empechait les stellarators d'egaler la densite et la temperature de plasma obtenues par les tokamaks classiques.</p>
+
+      <p>Le resultat obtenu a Greifswald provient d'un travail d'optimisation pousse sur supercalculateurs, qui a permis de determiner la forme exacte des bobines tridimensionnelles afin de minimiser le transport neoclassique, c'est-a-dire l'echappement naturel des particules energetiques hors de la bouteille magnetique. Tout au long de l'essai de vingt-deux minutes, les capteurs de diagnostic ont mesure un comportement remarquablement stable de la couche limite. Le coeur du plasma a franchi la barre des soixante millions de degres Celsius sans connaitre aucune des perturbations magnetohydrodynamiques qui interrompent regulierement les tirs de tokamaks.</p>
+
+      <p>Les mesures d'interferometrie laser ont confirme que la densite du plasma est restee uniforme le long de l'axe magnetique sur toute la duree de la decharge. En fonctionnant sans courants induits dans le plasma, les stellarators eliminent le risque de rupture brutale de courant qui deteriore frequemment les parois internes des reacteurs traditionnels, offrant un cadre d'exploitation beaucoup plus sur pour les futures centrales electriques.</p>
+
+      <h2>Bobines Supraconductrices et Controle Cryogenique</h2>
+      <p>La capacite a maintenir ce confinement sur une longue periode repose sur les performances des bobines supraconductrices a haute temperature (HTS) concues a partir de rubans d'oxyde de baryum, de cuivre et de terres rares (REBCO). Ces conducteurs de nouvelle generation transportent le courant electrique sans aucune resistance a des temperatures proches de l'hydrogene liquide, permettant de maintenir des champs magnetiques superieurs a quinze teslas en continu avec une consommation d'energie de refroidissement minimale.</p>
+
+      <p>Les systemes de surveillance cryogenique ont indique que la charge thermique sur les cinquante anneaux magnetiques non plans est restee parfaitement stable pendant l'operation prolongee. Les circuits fermes de circulation d'helium ont absorbe sans difficulte l'afflux de neutrons et le rayonnement thermique emis par le plasma d'hydrogene surchauffe, confirmant que ces ensembles magnetiques modernes resistent aux contraintes mecaniques et thermiques d'une production d'energie de fusion sans risque de perte de supraconductivite.</p>
+
+      <p>Les capteurs de contrainte mecanique places dans la structure des aimants n'ont detecte aucune deformation microscopique, en depit de forces electromagnetiques equivalentes a plusieurs milliers de tonnes. Cette tenue structurelle valide le choix de supports modulaires capables de supporter des cycles de fonctionnement continus sans necessiter d'arrets frequents pour realignement.</p>
+
+      <h2>Gestion des Echappements et Tenue du Diverteur en Tungstene</h2>
+      <p>L'un des defis d'ingenierie les plus ardus pour la fusion commerciale concerne la resistance du diverteur, ces plaques d'echappement qui doivent absorber le flux thermique constant issu de la peripherie du plasma sans fondre ni renvoyer de particules polluantes dans la chambre de reaction. Lors de l'essai mene a Greifswald, les plaques cibles refroidies a l'eau et composees de tungstene de haute purete ont supporte des flux thermiques continus avoisinant neuf megawatts par metre carre.</p>
+
+      <p>Les scientifiques ont stabilise ce processus par l'injection controlee de gaz d'impuretes. En diffusant de tres faibles quantites de neon a la bordure du plasma, ils ont cree une enveloppe protectrice rayonnante qui dissipe plus de quatre-vingts pour cent de l'energie thermique vers les parois sous forme de rayonnement ultraviolet doux avant qu'elle n'atteigne les plaques d'impact. Les analyses optiques post-decharge ont montre une erosion de surface infime et aucune fissure sur les tuiles de protection en tungstene, prouvant la durabilite du dispositif d'echappement en regime permanent.</p>
+
+      <h2>Validation des Modules de Regeneration du Tritium</h2>
+      <p>En complement du confinement magnetique et de l'extraction thermique, l'experience a permis de valider le comportement neutronique de modules de regeneration du tritium. Les reacteurs commerciaux fonctionnant sur la reaction deuterium-tritium, et les reserves mondiales de tritium naturel etant tres limitees, chaque centrale devra fabriquer son propre combustible en capturant les neutrons de fusion dans des couvertures protectrices composees de lithium.</p>
+
+      <p>Des detecteurs places derriere des modules de test contenant un melange liquide de plomb et de lithium ont mesure des taux de capture de neutrons conformes aux simulations numeriques a deux pour cent pres. Ce taux eleve demontre que les concepts de couvertures pour stellarators peuvent depasser un ratio de regeneration de 1,15, assurant l'autonomie complete en combustible pour des installations de production d'electricite connectees au reseau sans apport exterieur de matiere fissile.</p>
+
+      <p>Les ingenieurs en science des materiaux ont egalement suivi l'evacuation des cendres d'helium au fil de la reaction. Dans un regime de fusion continu, les particules alpha issues de la reaction cedent leur energie au milieu avant de se transformer en helium neutre. Les conduits magnetiques du diverteur ont evacue ces residus thermiques de facon reguliere sans affaiblir la densite du combustible au coeur, resolvant ainsi un probleme d'exploitation recurrent pour les reacteurs en regime continu.</p>
+
+      <h2>Perspective Industrielle vers des Centrales Pilotes de Base</h2>
+      <p>Fort de cette demonstration concluante en regime stable, le consortium international a programme de nouveaux essais d'une duree de quatre-vingts minutes sur l'installation de Greifswald au debut de l'annee 2027. Parallelement, des acteurs publics et des investisseurs prives ont entame la phase d'ingenierie preliminaire d'un demonstrateur commercial raccorde au reseau d'une puissance electrique nette de quatre cents megawatts.</p>
+
+      <p>Les planificateurs du secteur de l'energie rappellent que, contrairement aux sources d'energie renouvelables intermittentes, la fusion magnetique offre une alimentation electrique de base continue, sans emission directe de gaz a effet de serre et avec des exigences reduites pour le stockage a long terme de materiaux radioactifs. La modularite des stellarators contemporains permet en outre de prefabriquer les bobines et les caissons sous vide dans des unites industrielles dediees avant de les acheminer sur site.</p>
+
+      <p>Cette etape de vingt-deux minutes constitue une avancee fondamentale pour l'ingenierie de la fusion. En prouvant que des geometries magnetiques elaborees permettent de maitriser un plasma docile, stable et propre sur de longues durees, le programme du stellarator ouvre une trajectoire credible vers une production d'electricite propre et inepuisable pour alimenter les reseaux electriques mondiaux.</p>
+    `,
+    faqs: [
+      {
+        question: "En quoi un stellarator se distingue-t-il d'un reacteur tokamak usuel ?",
+        answer: "Le stellarator genere l'ensemble de son champ magnetique torsade grace a des bobines supraconductrices externes aux formes sur mesure, ce qui evite les courants internes violents et les instabilites brutales constatees dans les tokamaks."
+      },
+      {
+        question: "Quelles conditions de duree et de temperature ont ete atteintes a Greifswald ?",
+        answer: "L'installation a maintenu un plasma stable durant vingt-deux minutes sans interruption, avec des temperatures centrales de plus de soixante millions de degres et une evacuation thermique maitrisee sur les tuiles en tungstene."
+      },
+      {
+        question: "Pour quelle raison la production locale de tritium est-elle indispensable ?",
+        answer: "Le tritium naturel etant exceptionnellement rare, les centrales commerciales doivent fabriquer leur propre combustible sur place en captant les neutrons dans des parois tapissees de lithium pour garantir un cycle ferme et autosuffisant."
+      }
+    ]
+  },
+
+  "pandemic-surveillance-accord-ratified-by-treaty-states": {
+    title: "Traite Sanitaire Mondial : Soixante-Seize Pays Ratifient l'Accord de Sequencage Ouvert des Agents Pathogenes",
+    deck: "Le pacte international de surveillance epidemiologique impose la communication des donnees genomiques sous quarante-huit heures, le financement partage d'equipements de laboratoire et la constitution de stocks garantis de traitements.",
+    content: `
+      <p>Les representants diplomatiques et les responsables de sante publique de soixante-seize pays ont depose ce mardi leurs instruments officiels d'adhesion au siege de l'Organisation mondiale de la sante a Geneve, enterinant l'entree en vigueur de l'Accord international sur la surveillance genomique des agents pathogenes. Ce traite multilateral historique fixe des echeances juridiquement contraignantes pour le partage des sequences biologiques liees aux maladies infectieuses emergentes, tranchant des annees de debats sur la propriete intellectuelle, la souverainete des donnees et l'acces equitable aux traitements medicaux.</p>
+
+      <h2>Le Protocole de Declaration Genomique en Quarante-Huit Heures</h2>
+      <p>Au coeur des clauses du traite, les instituts nationaux de recherche et les laboratoires d'analyse accredites s'engagent a televerser la sequence genomique integrale de tout nouvel agent pathogene respiratoire, viral ou vectoriel sur des plateformes publiques internationales dans un delai maximal de quarante-huit heures apres son isolement confirme en laboratoire. Cette exigence stricte remplace les anciens dispositifs declaratifs fondes sur le volontariat, qui occasionnaient souvent des retards de plusieurs semaines lors de flambees epidemiques locales.</p>
+
+      <p>Le protocole technique standardise la saisie des metadonnees associees aux echantillons, imposant d'indiquer la date de collecte, la localisation geographique, la gravite des symptomes observes et les marqueurs de resistance aux molecules existantes. En rendant obligatoire la publication immediate des donnees sans periode d'embargo, l'accord garantit que les epidemiologistes, les developpeurs de vaccins et les concepteurs de tests diagnostiques a travers le monde puissent etudier les mutations genetiques et estimer les risques de propagation sans attendre.</p>
+
+      <p>Des comites scientifiques impartiaux assureront le suivi des bases de donnees et piloteront des analyses phylogenetiques automatisees afin de deceler les anomalies de sequencage et de reperer les nouveaux regroupements genetiques. En cas de dynamique de contagion inhabituelle, le dispositif mondial emettra des notifications directes aupres des ministeres de la sante des pays limitrophes, declenchant des mesures de prevention avant l'extension de la transmission locale.</p>
+
+      <p>Les etudes de modelisation montrent qu'identifier un nouveau variant ne serait-ce que deux semaines plus tot permet de diminuer le nombre total d'infections de plus de quarante pour cent pendant une crise epidemique naissante. Ce protocole rapide agit donc comme un systeme d'alerte mondial coherent, substituant aux communications officielles disparates un ensemble de donnees numeriques verifiees et directement accessibles a l'ensemble des services sanitaires.</p>
+
+      <h2>Financement des Equipements de Laboratoire et des Centres Regionaux</h2>
+      <p>Pour donner aux pays en developpement et aux economies les plus modestes les moyens de tenir ces delais d'analyse, l'accord institue un Fonds international permanent pour les infrastructures biologiques. Alimente par des contributions regulieres versees par les pays industrialises signataires et des fondations caritatives, ce fonds a pour mandat d'installer du materiel de sequencage a haut debit automatise dans trente-deux centres de reference repartis en Afrique, en Amerique latine et en Asie du Sud-Est.</p>
+
+      <p>Au-dela de la fourniture des appareils d'analyse, le programme garantit l'approvisionnement regulier en reactifs sous chaine du froid, la mise en place d'alimentations electriques de secours et l'organisation de cycles de formation en bio-informatique pour les chercheurs locaux. En ancrant des competences solides en biologie moleculaire au plus pres des foyers d'apparition des maladies, l'initiative diminue la dependance envers les laboratoires etrangers et consolide les capacites d'alerte sur place.</p>
+
+      <p>Les epidemiologistes de terrain rappellent que l'autonomie diagnostique locale est indispensable a une reaction efficace. Lorsque les specialistes nationaux parviennent a convertir un prelevement clinique en arbres genetiques documentes sur leur propre territoire, les interventions sanitaires peuvent etre deployees en quelques jours au lieu d'attendre les permis d'exportation d'echantillons pendant des semaines.</p>
+
+      <p>Le dispositif inclut par ailleurs le financement de biobanques regionales, destinees a inventorier et conserver les souches isolees dans des cuves d'azote liquide selon les normes de biosecurite les plus exigeantes. Ces infrastructures permettent aux concepteurs d'analyses de tester la fiabilite de leurs outils sur des souches reelles sans avoir a franchir d'interminables obstacles administratifs en periode de crise declaree.</p>
+
+      <h2>Acces Equitable et Reserves Garanties de Traitements Medicaux</h2>
+      <p>La negociation la plus delicate du traite est parvenue a equilibrer le libre partage des donnees scientifiques et l'acces garanti aux traitements vitaux. Par le passe, les pays a revenus faibles ou intermediaires hesitaient legitimement a transmettre leurs echantillons biologiques alors que les vaccins et medicaments elabores a partir de ces memes donnees etaient ensuite monopolises par les nations les plus fortunees en temps de crise.</p>
+
+      <p>L'accord de Geneve regle directement ce desequilibre par l'instauration d'un mecanisme obligatoire de partage des retombees. Les laboratoires pharmaceutiques commerciaux qui concoivent des vaccins, des anticorps ou des tests diagnostiques a partir des sequences du registre public devront reserver contractuellement vingt pour cent de leurs premiers lots de fabrication pour alimenter les centrales d'achat sanitaires mondiales a prix coutant. Tout Etat signataire qui manquerait a ses obligations de repartition des produits de sante s'exposerait a la suspension de ses avantages commerciaux et de ses subventions internationales de recherche medicale.</p>
+
+      <h2>Biosecurite Numerique et Encadrement des Recherches Sensibles</h2>
+      <p>Face aux risques de detournement lies a la dissemination de sequences genetiques de germes dangereux, le traite impose des controles de biosecurite numerique a l'ensemble des acteurs publics et prives de synthese d'ADN. Toute commande de synthese soumise a une entreprise specialisee fera l'objet d'un filtrage automatique croise avec un registre mondial recensant les agents hautement pathogenes et les toxines surveillees.</p>
+
+      <p>Les chercheurs souhaitant commander des elements genetiques de synthese correspondant a des virus a fort impact devront justifier de leur affiliation institutionnelle et presenter les autorisations gouvernementales de securite biologique requises avant tout lancement de production et expedition. Des audits techniques independants inspecteront les installations de synthese deux fois par an pour s'assurer du respect des protocoles de controle numerique.</p>
+
+      <h2>Un Standard Renouvele de Cooperation Sanitaire Internationale</h2>
+      <p>La ratification et l'entree en vigueur de cet accord de surveillance constituent une avancee determinante dans la gestion collective de la sante publique. En remplacant des demarches de collaboration ponctuelles par des engagements formels, des ressources materielles partagees et des regles d'acces equitables, le texte dote la communaute internationale d'un outil de protection robuste face aux futures menaces sanitaires.</p>
+
+      <p>Alors que les soixante-seize premiers pays amorcent l'application du texte, les autorites medicales rappellent que la veille microbiologique represente une responsabilite commune. Les agents infectieux ignorent les frontieres et les divergences politiques, et c'est par la transparence scientifique et la solidarite d'acces que le monde batit un dispositif de defense sanitaire plus sur et efficace pour tous.</p>
+    `,
+    faqs: [
+      {
+        question: "Que prevoit l'Accord international sur la surveillance genomique des agents pathogenes ?",
+        answer: "Le texte contraint les pays signataires a sequencer et publier les donnees des nouveaux germes infectieux sur des registres ouverts sous quarante-huit heures, accompagnees de metadonnees epidemiologiques completes."
+      },
+      {
+        question: "Comment le traite assure-t-il une repartition equitable des vaccins et traitements ?",
+        answer: "Les industriels creant des produits de sante a partir de ces donnees devront reserver vingt pour cent de leur production initiale aux pays en developpement au prix de revient via des centrales d'achat internationales."
+      },
+      {
+        question: "Quel appui est apporte aux infrastructures des pays a revenus modestes ?",
+        answer: "Un fonds dedie finance l'installation de sequenceurs a haut debit automatises, la fourniture de reactifs et la formation de specialistes dans trente-deux laboratoires de reference regionaux."
+      }
+    ]
   }
 };
