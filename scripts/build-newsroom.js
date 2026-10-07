@@ -946,59 +946,43 @@ function buildPages() {
   console.log('Building editorial trust and policy pages...');
   ensureDir(path.join(ROOT_DIR, 'pages'));
 
-  const staticPages = [
-    {
-      file: 'editorial-policy.html',
-      title: 'Editorial Standards & Verification Policy',
-      content: `<h1>Editorial Standards &amp; Verification Policy</h1><p>GenAlpha Magazines operates according to strict standards of factual accuracy, source verification, and independent editorial judgment. Our reporting is produced and fact-checked by experienced journalists before publication.</p><h2>Source Attribution</h2><p>We require corroboration from primary documentation, on-the-record statements, or multiple independent sources before publishing claims of fact. When anonymous sources are consulted, the senior editor must review the source's access and credentials.</p><h2>Conflicts of Interest</h2><p>Staff writers and contributors are prohibited from holding financial interests or accepting compensation from entities they cover.</p>`
-    },
-    {
-      file: 'fact-checking.html',
-      title: 'Fact-Checking Code & Methodology',
-      content: `<h1>Fact-Checking Code &amp; Methodology</h1><p>Every claim, figure, and quote published on GenAlpha Magazines undergoes verification against authoritative primary records. Our fact-checking team operates independently of commercial interests.</p><h2>Correction Workflow</h2><p>If an error of fact occurs, we issue an explicit correction note at the top or bottom of the article identifying the original wording and the corrected information.</p>`
-    },
-    {
-      file: 'corrections.html',
-      title: 'Corrections & Clarifications Policy',
-      content: `<h1>Corrections &amp; Clarifications</h1><p>We are committed to correcting errors promptly and transparently. Readers can report potential errors directly to our editorial desk at <a href="mailto:editor@genalphamagazines.com">editor@genalphamagazines.com</a>.</p>`
-    },
-    {
-      file: 'about.html',
-      title: 'About GenAlpha Magazines Newsroom',
-      content: `<h1>About GenAlpha Magazines</h1><p>GenAlpha Magazines is an international digital news organization providing continuous, verified news coverage across eight languages. We maintain bureaus and correspondents in key diplomatic and financial centers.</p>`
-    },
-    {
-      file: 'privacy-policy.html',
-      title: 'Privacy Policy',
-      content: `<h1>Privacy Policy</h1><p>This privacy policy explains how GenAlpha Magazines collects, uses, and safeguards information when you visit our website. We do not sell personal data to third parties.</p>`
-    },
-    {
-      file: 'terms.html',
-      title: 'Terms of Service',
-      content: `<h1>Terms of Service</h1><p>By accessing GenAlpha Magazines, you agree to comply with our terms of service and applicable international copyright laws.</p>`
-    },
-    {
-      file: 'contact.html',
-      title: 'Newsroom Directory & Bureau Contacts',
-      content: `<h1>Newsroom Directory &amp; Bureau Contacts</h1><p>General Inquiries: <a href="mailto:newsroom@genalphamagazines.com">newsroom@genalphamagazines.com</a></p><p>Press Releases: <a href="mailto:press@genalphamagazines.com">press@genalphamagazines.com</a></p>`
-    }
-  ];
+  const staticPages = require('../data/static_pages_content.js');
 
   staticPages.forEach(p => {
+    const pageUrl = `${DOMAIN}/pages/${p.file.replace('.html', '')}`;
+    const pageDesc = p.deck || siteSettings.description;
+
     const fullHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHTML(p.title)} · ${escapeHTML(siteSettings.siteName)}</title>
-  <link rel="canonical" href="${DOMAIN}/pages/${p.file.replace('.html', '')}">
+  <meta name="description" content="${escapeHTML(pageDesc)}">
+  <link rel="canonical" href="${pageUrl}">
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="${escapeHTML(siteSettings.siteName)}">
+  <meta property="og:title" content="${escapeHTML(p.title)}">
+  <meta property="og:description" content="${escapeHTML(pageDesc)}">
+  <meta property="og:url" content="${pageUrl}">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="${escapeHTML(p.title)}">
+  <meta name="twitter:description" content="${escapeHTML(pageDesc)}">
+
   <link rel="stylesheet" href="/assets/css/newsroom.css">
 </head>
 <body>
   ${renderHeader('en')}
 
   <main id="main-content">
-    <div class="container article-container" style="max-width:760px;">
+    <div class="container article-container" style="max-width:820px;padding:2rem 1rem;">
+      <nav class="article-breadcrumbs" aria-label="Breadcrumb" style="margin-bottom:1.5rem;">
+        <a href="/">Home</a> &gt; <span>${escapeHTML(p.title)}</span>
+      </nav>
       <div class="article-body">
         ${p.content}
       </div>
