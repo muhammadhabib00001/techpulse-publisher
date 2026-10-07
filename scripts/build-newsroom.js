@@ -88,21 +88,21 @@ function renderHeader(currentLangCode, activeNavSlug = '') {
 
   return `
     <!-- Skip to Content -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <a href="#main-content" class="skip-link">${escapeHTML(t.skipToContent || 'Skip to main content')}</a>
 
     <!-- Top Utility Bar -->
     <aside class="top-utility-bar">
       <div class="container top-utility-inner">
         <div class="utility-left">
-          <span id="liveClock" class="utility-date">Loading date...</span>
+          <span id="liveClock" class="utility-date">${escapeHTML(t.loadingDate || 'Loading date...')}</span>
           <span class="utility-edition">${escapeHTML(t.edition || siteSettings.edition)}</span>
         </div>
         <div class="utility-right">
-          <button type="button" class="lang-selector-btn" data-open-modal="langModal" aria-label="Change edition / language">
+          <button type="button" class="lang-selector-btn" data-open-modal="langModal" aria-label="${escapeHTML(t.switchLanguage || 'Change edition')}">
             🌐 ${escapeHTML(LANGUAGES.find(l => l.code === currentLangCode)?.nativeName || 'English')}
           </button>
           <button type="button" id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle dark mode">
-            🌓 Mode
+            🌓 ${escapeHTML(t.modeToggle || 'Mode')}
           </button>
         </div>
       </div>
@@ -114,7 +114,7 @@ function renderHeader(currentLangCode, activeNavSlug = '') {
     <header class="masthead">
       <div class="container masthead-inner">
         <div class="masthead-side-left">
-          <button type="button" class="search-trigger-btn" data-open-modal="searchModal" aria-label="Search articles">
+          <button type="button" class="search-trigger-btn" data-open-modal="searchModal" aria-label="${escapeHTML(t.search || 'Search')}">
             🔍 <span>${escapeHTML(t.search || 'Search')}</span>
           </button>
         </div>
@@ -123,7 +123,7 @@ function renderHeader(currentLangCode, activeNavSlug = '') {
           <p class="site-tagline">${escapeHTML(t.tagline || siteSettings.tagline)}</p>
         </div>
         <div class="masthead-side-right">
-          <a href="#newsletter-signup" class="btn-newsletter-top" data-open-modal="newsletterModal">The Global Briefing</a>
+          <a href="#newsletter-signup" class="btn-newsletter-top" data-open-modal="newsletterModal">${escapeHTML(t.topBriefingBtn || 'The Global Briefing')}</a>
         </div>
       </div>
     </header>
@@ -164,7 +164,7 @@ function renderFooter(currentLangCode) {
             <h3>${escapeHTML(siteSettings.siteName)}</h3>
             <p>${escapeHTML(siteSettings.description)}</p>
             <p style="font-size:0.8125rem;color:var(--text-muted);">
-              Editorial Offices: Geneva · London · New York · Tokyo · Singapore
+              ${escapeHTML(t.editorialOffices || 'Editorial Offices: Geneva · London · New York · Tokyo · Singapore')}
             </p>
           </div>
           <div class="footer-col">
@@ -175,26 +175,26 @@ function renderFooter(currentLangCode) {
             <h4>${escapeHTML(t.editorialPolicy || 'Standards')}</h4>
             <ul>
               <li><a href="${prefix}/pages/editorial-policy">${escapeHTML(t.editorialPolicy || 'Editorial Policy')}</a></li>
-              <li><a href="${prefix}/pages/fact-checking">Fact Checking Code</a></li>
+              <li><a href="${prefix}/pages/fact-checking">${escapeHTML(t.factChecking || 'Fact Checking Code')}</a></li>
               <li><a href="${prefix}/pages/corrections">${escapeHTML(t.corrections || 'Corrections')}</a></li>
-              <li><a href="${prefix}/pages/about">Newsroom Team</a></li>
+              <li><a href="${prefix}/pages/about">${escapeHTML(t.aboutUs || 'Newsroom Team')}</a></li>
             </ul>
           </div>
           <div class="footer-col">
-            <h4>Legal &amp; Trust</h4>
+            <h4>${escapeHTML(t.legalAndTrust || 'Legal & Trust')}</h4>
             <ul>
               <li><a href="${prefix}/pages/privacy-policy">${escapeHTML(t.privacyPolicy || 'Privacy Policy')}</a></li>
               <li><a href="${prefix}/pages/terms">${escapeHTML(t.termsOfService || 'Terms of Service')}</a></li>
               <li><a href="${prefix}/pages/contact">${escapeHTML(t.contactUs || 'Contact Bureau')}</a></li>
-              <li><a href="/sitemap.xml">XML Sitemap</a></li>
-              <li><a href="/rss.xml">RSS Feed</a></li>
+              <li><a href="/sitemap.xml">${escapeHTML(t.xmlSitemap || 'XML Sitemap')}</a></li>
+              <li><a href="/rss.xml">${escapeHTML(t.rssFeed || 'RSS Feed')}</a></li>
             </ul>
           </div>
         </div>
 
         <div class="footer-bottom">
           <div class="footer-editions">
-            <span style="font-weight:700;margin-right:0.5rem;">Editions:</span>
+            <span style="font-weight:700;margin-right:0.5rem;">${escapeHTML(t.editionsLabel || 'Editions:')}</span>
             ${editionsLinks}
           </div>
           <p>&copy; ${new Date().getFullYear()} ${escapeHTML(siteSettings.siteName)}. ${escapeHTML(t.allRightsReserved)}</p>
@@ -203,21 +203,21 @@ function renderFooter(currentLangCode) {
     </footer>
 
     <!-- Search Modal -->
-    <div id="searchModal" class="newsroom-modal" role="dialog" aria-modal="true" aria-label="Search articles">
+    <div id="searchModal" class="newsroom-modal" role="dialog" aria-modal="true" aria-label="${escapeHTML(t.search || 'Search')}">
       <div class="modal-content">
-        <button type="button" class="modal-close-btn" data-close-modal aria-label="Close search">&times;</button>
-        <h3 style="font-family:var(--font-headline);margin-bottom:1rem;">Search Newsroom Archive</h3>
+        <button type="button" class="modal-close-btn" data-close-modal aria-label="${escapeHTML(t.close || 'Close')}">&times;</button>
+        <h3 style="font-family:var(--font-headline);margin-bottom:1rem;">${escapeHTML(t.searchArchive || 'Search Newsroom Archive')}</h3>
         <input type="text" id="liveSearchInput" placeholder="${escapeHTML(t.searchPlaceholder || 'Search headlines, topics...')}" style="width:100%;padding:0.75rem 1rem;font-size:1rem;border:1px solid var(--border-light);border-radius:4px;background:var(--bg-primary);color:var(--text-primary);" />
         <div id="searchResultsContainer"></div>
       </div>
     </div>
 
     <!-- Language Switcher Modal -->
-    <div id="langModal" class="newsroom-modal" role="dialog" aria-modal="true" aria-label="Select edition">
+    <div id="langModal" class="newsroom-modal" role="dialog" aria-modal="true" aria-label="${escapeHTML(t.switchLanguage || 'Select edition')}">
       <div class="modal-content">
-        <button type="button" class="modal-close-btn" data-close-modal aria-label="Close language selector">&times;</button>
+        <button type="button" class="modal-close-btn" data-close-modal aria-label="${escapeHTML(t.close || 'Close')}">&times;</button>
         <h3 style="font-family:var(--font-headline);margin-bottom:0.5rem;">${escapeHTML(t.switchLanguage || 'Select Edition')}</h3>
-        <p style="font-size:0.875rem;color:var(--text-muted);">Choose your preferred language and regional news coverage.</p>
+        <p style="font-size:0.875rem;color:var(--text-muted);">${escapeHTML(t.chooseLanguageDesc || 'Choose your preferred language and regional news coverage.')}</p>
         <div class="language-grid">
           ${LANGUAGES.map(l => `
             <a href="${l.code === 'en' ? '/' : `/${l.code}/`}" class="language-card ${l.code === currentLangCode ? 'active' : ''}">
@@ -230,9 +230,9 @@ function renderFooter(currentLangCode) {
     </div>
 
     <!-- Newsletter Modal -->
-    <div id="newsletterModal" class="newsroom-modal" role="dialog" aria-modal="true" aria-label="Newsletter Subscription">
+    <div id="newsletterModal" class="newsroom-modal" role="dialog" aria-modal="true" aria-label="${escapeHTML(t.newsletterModalTitle || 'Newsletter Subscription')}">
       <div class="modal-content" style="text-align:center;">
-        <button type="button" class="modal-close-btn" data-close-modal aria-label="Close newsletter">&times;</button>
+        <button type="button" class="modal-close-btn" data-close-modal aria-label="${escapeHTML(t.close || 'Close')}">&times;</button>
         <h3 style="font-family:var(--font-headline);font-size:1.75rem;margin-bottom:0.5rem;">${escapeHTML(t.newsletterHeading || 'The Global Briefing')}</h3>
         <p style="font-size:0.9375rem;color:var(--text-secondary);margin-bottom:1.5rem;">${escapeHTML(t.newsletterDesc)}</p>
         <form class="newsletter-form" style="display:flex;flex-direction:column;gap:0.75rem;">
@@ -430,7 +430,7 @@ ${getHreflangTags('')}
         <section class="feed-section">
           <div class="section-title-wrap">
             <h2 class="section-heading">${escapeHTML(t.latestNews || 'Latest Reports')}</h2>
-            <span style="font-size:0.8125rem;color:var(--text-muted);font-weight:600;">Real-Time Feed</span>
+            <span style="font-size:0.8125rem;color:var(--text-muted);font-weight:600;">${escapeHTML(t.realTimeFeed || 'Real-Time Feed')}</span>
           </div>
           <div class="feed-list">
             ${latestFeedHTML}
@@ -446,9 +446,9 @@ ${getHreflangTags('')}
           </div>
 
           <div class="sidebar-box" style="text-align:center;">
-            <h4 style="font-family:var(--font-headline);font-size:1.15rem;margin-bottom:0.5rem;">Independent Reporting</h4>
-            <p style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:1rem;">Verified fact-checking, zero undisclosed sponsors, and real-time coverage across 8 global editions.</p>
-            <a href="${prefix}/pages/editorial-policy" style="display:inline-block;padding:0.4rem 0.85rem;border:1px solid var(--border-light);border-radius:3px;font-size:0.8125rem;font-weight:700;text-decoration:none;color:var(--text-primary);">Read Editorial Code</a>
+            <h4 style="font-family:var(--font-headline);font-size:1.15rem;margin-bottom:0.5rem;">${escapeHTML(t.independentReporting || 'Independent Reporting')}</h4>
+            <p style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:1rem;">${escapeHTML(t.independentReportingDesc || 'Verified fact-checking, zero undisclosed sponsors, and real-time coverage across 8 global editions.')}</p>
+            <a href="${prefix}/pages/editorial-policy" style="display:inline-block;padding:0.4rem 0.85rem;border:1px solid var(--border-light);border-radius:3px;font-size:0.8125rem;font-weight:700;text-decoration:none;color:var(--text-primary);">${escapeHTML(t.readEditorialCode || 'Read Editorial Code')}</a>
           </div>
         </aside>
       </div>
@@ -522,6 +522,35 @@ function buildArticles() {
             </ul>
           </div>
         `;
+      }
+
+      // FAQs Section & Schema
+      let faqsHTML = '';
+      let faqSchema = null;
+      if (trans.faqs && trans.faqs.length > 0) {
+        faqsHTML = `
+          <section class="article-faq-section" style="margin-top:2.5rem;border-top:2px solid var(--border-light);padding-top:1.5rem;">
+            <h3 style="font-family:var(--font-headline);font-size:1.5rem;margin-bottom:1.25rem;">${escapeHTML(t.faqHeading || 'Frequently Asked Questions')}</h3>
+            ${trans.faqs.map(f => `
+              <div class="faq-card" style="margin-bottom:1.25rem;padding:1.25rem;background:var(--bg-secondary);border:1px solid var(--border-light);border-radius:4px;">
+                <h4 style="font-family:var(--font-headline);font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;color:var(--text-primary);">${escapeHTML(f.question)}</h4>
+                <p style="font-size:0.95rem;line-height:1.6;color:var(--text-secondary);margin:0;">${escapeHTML(f.answer)}</p>
+              </div>
+            `).join('')}
+          </section>
+        `;
+        faqSchema = {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": trans.faqs.map(f => ({
+            "@type": "Question",
+            "name": f.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": f.answer
+            }
+          }))
+        };
       }
 
       // Related articles HTML
@@ -600,6 +629,10 @@ ${getHreflangTags(relPath)}
   <script type="application/ld+json">
     ${JSON.stringify(jsonLd, null, 2)}
   </script>
+  ${faqSchema ? `
+  <script type="application/ld+json">
+    ${JSON.stringify(faqSchema, null, 2)}
+  </script>` : ''}
 </head>
 <body>
   ${renderHeader(code, category.slug)}
@@ -628,7 +661,7 @@ ${getHreflangTags(relPath)}
           <img src="${art.featured_image}" alt="${escapeHTML(trans.title)}" />
           <figcaption class="image-caption-bar">
             <span>${escapeHTML(art.image_caption || '')}</span>
-            <span>Credit: ${escapeHTML(art.image_credit || 'News Wire')}</span>
+            <span>${art.image_credit ? `${escapeHTML(t.bylinePrefix || 'Credit')}: ${escapeHTML(art.image_credit)}` : escapeHTML(t.editorialCredit || 'Credit: Editorial Staff')}</span>
           </figcaption>
         </figure>
       </header>
@@ -638,6 +671,8 @@ ${getHreflangTags(relPath)}
       <div class="article-body">
         ${trans.content}
       </div>
+
+      ${faqsHTML}
 
       ${sourcesHTML}
 
@@ -694,7 +729,7 @@ function buildCategories() {
 
       let articlesHTML = '';
       if (catArticles.length === 0) {
-        articlesHTML = `<p class="text-muted" style="padding:2rem 0;">No active dispatches filed in this section today.</p>`;
+        articlesHTML = `<p class="text-muted" style="padding:2rem 0;">${escapeHTML(t.noResultsFound || 'No active dispatches filed in this section today.')}</p>`;
       } else {
         catArticles.forEach(item => {
           const trans = getArticleTrans(item, code);
@@ -735,7 +770,7 @@ ${getHreflangTags(relPath)}
   <main id="main-content">
     <div class="container" style="max-width:960px;">
       <div style="border-bottom:3px double var(--text-primary);padding-bottom:1.5rem;margin-bottom:2rem;">
-        <span style="font-size:0.75rem;text-transform:uppercase;color:var(--brand-red);font-weight:800;letter-spacing:0.1em;">Section Bureau</span>
+        <span style="font-size:0.75rem;text-transform:uppercase;color:var(--brand-red);font-weight:800;letter-spacing:0.1em;">${escapeHTML(t.sectionBureau || 'Section Bureau')}</span>
         <h1 style="font-family:var(--font-headline);font-size:2.5rem;margin:0.25rem 0;">${escapeHTML(catName)}</h1>
         <p style="font-size:1.1rem;color:var(--text-secondary);">${escapeHTML(cat.description)}</p>
       </div>
@@ -771,6 +806,7 @@ function buildAuthors() {
 
     LANGUAGES.forEach(lang => {
       const code = lang.code;
+      const t = translations[code] || translations['en'];
       const prefix = code === 'en' ? '' : `/${code}`;
       const pageUrl = `${DOMAIN}${prefix}/${relPath}`;
 
@@ -819,14 +855,14 @@ ${getHreflangTags(relPath)}
           <div style="margin-top:1rem;display:flex;gap:1rem;font-size:0.8125rem;">
             ${author.twitter ? `<a href="${author.twitter}" target="_blank" rel="noopener noreferrer">Twitter / X</a>` : ''}
             ${author.linkedin ? `<a href="${author.linkedin}" target="_blank" rel="noopener noreferrer">LinkedIn</a>` : ''}
-            <a href="mailto:${author.email}">Contact Desk</a>
+            <a href="mailto:${author.email}">${escapeHTML(t.contactDesk || 'Contact Desk')}</a>
           </div>
         </div>
       </div>
 
       <div style="margin:2.5rem 0;">
         <h2 style="font-family:var(--font-headline);font-size:1.5rem;margin-bottom:1.5rem;border-bottom:2px solid var(--text-primary);padding-bottom:0.5rem;">
-          Published Reporting (${authorArticles.length})
+          ${escapeHTML(t.publishedReporting || 'Published Reporting')} (${authorArticles.length})
         </h2>
         <div class="feed-list">
           ${articlesHTML}

@@ -70,6 +70,7 @@
   }
 }
   </script>
+  
 </head>
 <body>
   
@@ -84,7 +85,7 @@
           <span class="utility-edition">Global Edition</span>
         </div>
         <div class="utility-right">
-          <button type="button" class="lang-selector-btn" data-open-modal="langModal" aria-label="Change edition / language">
+          <button type="button" class="lang-selector-btn" data-open-modal="langModal" aria-label="Select Language / Edition">
             🌐 English
           </button>
           <button type="button" id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle dark mode">
@@ -107,7 +108,7 @@
     <header class="masthead">
       <div class="container masthead-inner">
         <div class="masthead-side-left">
-          <button type="button" class="search-trigger-btn" data-open-modal="searchModal" aria-label="Search articles">
+          <button type="button" class="search-trigger-btn" data-open-modal="searchModal" aria-label="Search">
             🔍 <span>Search</span>
           </button>
         </div>
@@ -155,7 +156,7 @@
           <img src="https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=1200&q=80" alt="Public Health Accord: Seventy-Six Nations Ratify Open Pathogen Sequencing Pact" />
           <figcaption class="image-caption-bar">
             <span>Laboratory analysts process pathogen sequencing data in an accredited public health reference facility.</span>
-            <span>Credit: World Health Archive</span>
+            <span>By: World Health Archive</span>
           </figcaption>
         </figure>
       </header>
@@ -172,6 +173,8 @@
       <div class="article-body">
         <p>Diplomats and public health directors deposited official instruments of ratification at the United Nations offices in Geneva on Tuesday, formally bringing into force the International Pathogen Data Exchange Treaty.</p><h2>Forty-Eight Hour Sequencing Mandate</h2><p>Under the treaty provisions, accredited national laboratories must publish genetic sequence data for novel respiratory and vector-borne pathogens within forty-eight hours of laboratory confirmation. The requirement replaces voluntary reporting mechanisms that previously led to information lags during regional outbreaks.</p><p>To guarantee that lower-income states can comply with reporting timelines, an international hardware fund supported by sovereign contributions will install automated sequencing platforms in twenty-five regional hub laboratories across Latin America, Africa, and Southeast Asia.</p><h2>Equitable Countermeasure Access</h2><p>The agreement also links data sharing to countermeasure guarantees. Manufacturers that use open-access genetic sequences to develop vaccines, diagnostic tests, or monoclonal antibodies must reserve a minimum percentage of early production runs for distribution through international health procurement mechanisms at cost.</p>
       </div>
+
+      
 
       
           <div class="sources-box">
@@ -200,13 +203,13 @@
         <div>
           <div style="border-bottom:1px solid var(--border-light);padding-bottom:1rem;margin-bottom:1rem;">
             <a href="/articles/himalayan-bird-changes-song-due-to-noise-pollution" style="font-family:var(--font-headline);font-size:1.15rem;font-weight:700;color:var(--text-primary);text-decoration:none;">
-              Himalayan Bird Changes Song Due to Noise Pollution
+              Himalayan Bird Alters Vocal Frequencies to Overcome Escalating Noise Pollution
             </a>
           </div>
         
           <div style="border-bottom:1px solid var(--border-light);padding-bottom:1rem;margin-bottom:1rem;">
             <a href="/articles/the-phenomenon-of-ghost-music-mystery-and-persona" style="font-family:var(--font-headline);font-size:1.15rem;font-weight:700;color:var(--text-primary);text-decoration:none;">
-              The Phenomenon of Ghost: Music, Mystery, and Persona
+              The Architecture of Ghost: Theatrical Lore, Anonymity, and the Revival of Arena Rock
             </a>
           </div>
         </div>
@@ -261,9 +264,9 @@
     </footer>
 
     <!-- Search Modal -->
-    <div id="searchModal" class="newsroom-modal" role="dialog" aria-modal="true" aria-label="Search articles">
+    <div id="searchModal" class="newsroom-modal" role="dialog" aria-modal="true" aria-label="Search">
       <div class="modal-content">
-        <button type="button" class="modal-close-btn" data-close-modal aria-label="Close search">&times;</button>
+        <button type="button" class="modal-close-btn" data-close-modal aria-label="Close">&times;</button>
         <h3 style="font-family:var(--font-headline);margin-bottom:1rem;">Search Newsroom Archive</h3>
         <input type="text" id="liveSearchInput" placeholder="Search articles, topics, reporters..." style="width:100%;padding:0.75rem 1rem;font-size:1rem;border:1px solid var(--border-light);border-radius:4px;background:var(--bg-primary);color:var(--text-primary);" />
         <div id="searchResultsContainer"></div>
@@ -271,9 +274,9 @@
     </div>
 
     <!-- Language Switcher Modal -->
-    <div id="langModal" class="newsroom-modal" role="dialog" aria-modal="true" aria-label="Select edition">
+    <div id="langModal" class="newsroom-modal" role="dialog" aria-modal="true" aria-label="Select Language / Edition">
       <div class="modal-content">
-        <button type="button" class="modal-close-btn" data-close-modal aria-label="Close language selector">&times;</button>
+        <button type="button" class="modal-close-btn" data-close-modal aria-label="Close">&times;</button>
         <h3 style="font-family:var(--font-headline);margin-bottom:0.5rem;">Select Language / Edition</h3>
         <p style="font-size:0.875rem;color:var(--text-muted);">Choose your preferred language and regional news coverage.</p>
         <div class="language-grid">
@@ -325,7 +328,7 @@
     <!-- Newsletter Modal -->
     <div id="newsletterModal" class="newsroom-modal" role="dialog" aria-modal="true" aria-label="Newsletter Subscription">
       <div class="modal-content" style="text-align:center;">
-        <button type="button" class="modal-close-btn" data-close-modal aria-label="Close newsletter">&times;</button>
+        <button type="button" class="modal-close-btn" data-close-modal aria-label="Close">&times;</button>
         <h3 style="font-family:var(--font-headline);font-size:1.75rem;margin-bottom:0.5rem;">The Global Briefing</h3>
         <p style="font-size:0.9375rem;color:var(--text-secondary);margin-bottom:1.5rem;">Get verified news analysis, market movements, and diplomatic reports delivered directly to your inbox every morning.</p>
         <form class="newsletter-form" style="display:flex;flex-direction:column;gap:0.75rem;">

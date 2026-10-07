@@ -70,6 +70,7 @@
   }
 }
   </script>
+  
 </head>
 <body>
   
@@ -84,7 +85,7 @@
           <span class="utility-edition">Global Edition</span>
         </div>
         <div class="utility-right">
-          <button type="button" class="lang-selector-btn" data-open-modal="langModal" aria-label="Change edition / language">
+          <button type="button" class="lang-selector-btn" data-open-modal="langModal" aria-label="Select Language / Edition">
             🌐 English
           </button>
           <button type="button" id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle dark mode">
@@ -107,7 +108,7 @@
     <header class="masthead">
       <div class="container masthead-inner">
         <div class="masthead-side-left">
-          <button type="button" class="search-trigger-btn" data-open-modal="searchModal" aria-label="Search articles">
+          <button type="button" class="search-trigger-btn" data-open-modal="searchModal" aria-label="Search">
             🔍 <span>Search</span>
           </button>
         </div>
@@ -155,7 +156,7 @@
           <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" alt="Semiconductor Foundries Validate High-NA Lithography for Next-Generation Nodes" />
           <figcaption class="image-caption-bar">
             <span>Engineers inspect extreme ultraviolet photolithography mirrors inside a cleanroom research facility.</span>
-            <span>Credit: Global Semiconductor Archive</span>
+            <span>By: Global Semiconductor Archive</span>
           </figcaption>
         </figure>
       </header>
@@ -172,6 +173,8 @@
       <div class="article-body">
         <p>Advanced semiconductor manufacturing reached a critical operational milestone this month as leading fabrication facilities in Europe, East Asia, and the United States reported preliminary test yields from high-numerical-aperture extreme ultraviolet (high-NA EUV) lithography scanners.</p><h2>Resolution Gains and Backside Power</h2><p>The new lithographic systems allow optical engineers to print circuit features down to eight nanometers in a single exposure, avoiding the complex multi-patterning steps that previously lowered fabrication throughput and drove up production costs.</p><p>Alongside enhanced optical resolution, engineering teams successfully validated backside power delivery networks. By routing power delivery lines beneath the silicon substrate rather than on top of signal wires, the design reduces electrical crosstalk and allows processors to operate at higher clock speeds with diminished thermal buildup.</p><h2>Standardized Chiplet Interconnects</h2><p>In parallel with silicon fabrication advances, an international coalition of device makers agreed on common physical interfaces for modular multi-die packaging. The open standard enables logic chips from different foundry sources to communicate across ultra-short copper bridges with latency measured in sub-nanosecond intervals.</p><p>Hardware analysts view this standardization as an important step toward stabilizing component costs for high-performance enterprise servers, autonomous transport platforms, and industrial automation controllers.</p>
       </div>
+
+      
 
       
           <div class="sources-box">
@@ -200,13 +203,13 @@
         <div>
           <div style="border-bottom:1px solid var(--border-light);padding-bottom:1rem;margin-bottom:1rem;">
             <a href="/articles/himalayan-bird-changes-song-due-to-noise-pollution" style="font-family:var(--font-headline);font-size:1.15rem;font-weight:700;color:var(--text-primary);text-decoration:none;">
-              Himalayan Bird Changes Song Due to Noise Pollution
+              Himalayan Bird Alters Vocal Frequencies to Overcome Escalating Noise Pollution
             </a>
           </div>
         
           <div style="border-bottom:1px solid var(--border-light);padding-bottom:1rem;margin-bottom:1rem;">
             <a href="/articles/the-phenomenon-of-ghost-music-mystery-and-persona" style="font-family:var(--font-headline);font-size:1.15rem;font-weight:700;color:var(--text-primary);text-decoration:none;">
-              The Phenomenon of Ghost: Music, Mystery, and Persona
+              The Architecture of Ghost: Theatrical Lore, Anonymity, and the Revival of Arena Rock
             </a>
           </div>
         </div>
@@ -261,9 +264,9 @@
     </footer>
 
     <!-- Search Modal -->
-    <div id="searchModal" class="newsroom-modal" role="dialog" aria-modal="true" aria-label="Search articles">
+    <div id="searchModal" class="newsroom-modal" role="dialog" aria-modal="true" aria-label="Search">
       <div class="modal-content">
-        <button type="button" class="modal-close-btn" data-close-modal aria-label="Close search">&times;</button>
+        <button type="button" class="modal-close-btn" data-close-modal aria-label="Close">&times;</button>
         <h3 style="font-family:var(--font-headline);margin-bottom:1rem;">Search Newsroom Archive</h3>
         <input type="text" id="liveSearchInput" placeholder="Search articles, topics, reporters..." style="width:100%;padding:0.75rem 1rem;font-size:1rem;border:1px solid var(--border-light);border-radius:4px;background:var(--bg-primary);color:var(--text-primary);" />
         <div id="searchResultsContainer"></div>
@@ -271,9 +274,9 @@
     </div>
 
     <!-- Language Switcher Modal -->
-    <div id="langModal" class="newsroom-modal" role="dialog" aria-modal="true" aria-label="Select edition">
+    <div id="langModal" class="newsroom-modal" role="dialog" aria-modal="true" aria-label="Select Language / Edition">
       <div class="modal-content">
-        <button type="button" class="modal-close-btn" data-close-modal aria-label="Close language selector">&times;</button>
+        <button type="button" class="modal-close-btn" data-close-modal aria-label="Close">&times;</button>
         <h3 style="font-family:var(--font-headline);margin-bottom:0.5rem;">Select Language / Edition</h3>
         <p style="font-size:0.875rem;color:var(--text-muted);">Choose your preferred language and regional news coverage.</p>
         <div class="language-grid">
@@ -325,7 +328,7 @@
     <!-- Newsletter Modal -->
     <div id="newsletterModal" class="newsroom-modal" role="dialog" aria-modal="true" aria-label="Newsletter Subscription">
       <div class="modal-content" style="text-align:center;">
-        <button type="button" class="modal-close-btn" data-close-modal aria-label="Close newsletter">&times;</button>
+        <button type="button" class="modal-close-btn" data-close-modal aria-label="Close">&times;</button>
         <h3 style="font-family:var(--font-headline);font-size:1.75rem;margin-bottom:0.5rem;">The Global Briefing</h3>
         <p style="font-size:0.9375rem;color:var(--text-secondary);margin-bottom:1.5rem;">Get verified news analysis, market movements, and diplomatic reports delivered directly to your inbox every morning.</p>
         <form class="newsletter-form" style="display:flex;flex-direction:column;gap:0.75rem;">
