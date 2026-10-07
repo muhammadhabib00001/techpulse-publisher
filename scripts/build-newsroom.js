@@ -29,6 +29,22 @@ function ensureDir(dirPath) {
   }
 }
 
+// Safely retrieve localized article translation
+function getArticleTrans(item, code) {
+  if (item && item.translations) {
+    return item.translations[code] || item.translations['en'] || {
+      title: item.title || item.slug || '',
+      deck: item.excerpt || item.deck || item.title || '',
+      content: item.content || ''
+    };
+  }
+  return {
+    title: (item && item.title) || (item && item.slug) || '',
+    deck: (item && (item.excerpt || item.deck || item.title)) || '',
+    content: (item && item.content) || ''
+  };
+}
+
 // Generate Hreflang Tags for a given relative path across all languages
 function getHreflangTags(relPath) {
   // relPath is e.g. "" (for home), "articles/foo" or "categories/bar"
@@ -249,7 +265,7 @@ function buildHomepages() {
     const latestFeed = published.slice(0, 5);
 
     // Hero Lead Article Data
-    const heroTrans = heroArticle.translations[code] || heroArticle.translations['en'];
+    const heroTrans = getArticleTrans(heroArticle, code);
     const heroAuthor = authors.find(au => au.id === heroArticle.author_id) || authors[0];
     const heroCat = categories.find(c => c.id === heroArticle.category_id) || categories[0];
     const heroCatName = (heroCat.translations && heroCat.translations[code]) || heroCat.name;
@@ -257,7 +273,7 @@ function buildHomepages() {
     // Secondary articles HTML
     let secondaryHTML = '';
     secondaryArticles.forEach(sec => {
-      const sTrans = sec.translations[code] || sec.translations['en'];
+      const sTrans = getArticleTrans(sec, code);
       const sCat = categories.find(c => c.id === sec.category_id) || categories[0];
       const sCatName = (sCat.translations && sCat.translations[code]) || sCat.name;
       secondaryHTML += `
@@ -279,7 +295,7 @@ function buildHomepages() {
     let opinionHTML = '';
     const opItem = opinionArticles[0] || published[published.length - 1];
     if (opItem) {
-      const opTrans = opItem.translations[code] || opItem.translations['en'];
+      const opTrans = getArticleTrans(opItem, code);
       const opAuthor = authors.find(au => au.id === opItem.author_id) || authors[0];
       opinionHTML = `
         <div class="opinion-item">
@@ -295,7 +311,7 @@ function buildHomepages() {
     // Latest Feed HTML
     let latestFeedHTML = '';
     latestFeed.forEach(item => {
-      const iTrans = item.translations[code] || item.translations['en'];
+      const iTrans = getArticleTrans(item, code);
       const iCat = categories.find(c => c.id === item.category_id) || categories[0];
       const iCatName = (iCat.translations && iCat.translations[code]) || iCat.name;
       latestFeedHTML += `
@@ -319,7 +335,7 @@ function buildHomepages() {
     // Trending Sidebar HTML
     let trendingHTML = '';
     published.slice(0, 5).forEach((tr, idx) => {
-      const trTrans = tr.translations[code] || tr.translations['en'];
+      const trTrans = getArticleTrans(tr, code);
       trendingHTML += `
         <li class="trending-item">
           <span class="trending-number">${idx + 1}</span>
@@ -476,7 +492,7 @@ function buildArticles() {
     LANGUAGES.forEach(lang => {
       const code = lang.code;
       const t = translations[code] || translations['en'];
-      const trans = art.translations[code] || art.translations['en'];
+      const trans = getArticleTrans(art, code);
       const catName = (category.translations && category.translations[code]) || category.name;
       const prefix = code === 'en' ? '' : `/${code}`;
       const relPath = `articles/${art.slug}`;
@@ -512,7 +528,7 @@ function buildArticles() {
       const related = articles.filter(a => a.id !== art.id).slice(0, 2);
       let relatedHTML = '';
       related.forEach(r => {
-        const rTrans = r.translations[code] || r.translations['en'];
+        const rTrans = getArticleTrans(r, code);
         relatedHTML += `
           <div style="border-bottom:1px solid var(--border-light);padding-bottom:1rem;margin-bottom:1rem;">
             <a href="${prefix}/articles/${r.slug}" style="font-family:var(--font-headline);font-size:1.15rem;font-weight:700;color:var(--text-primary);text-decoration:none;">
@@ -681,7 +697,7 @@ function buildCategories() {
         articlesHTML = `<p class="text-muted" style="padding:2rem 0;">No active dispatches filed in this section today.</p>`;
       } else {
         catArticles.forEach(item => {
-          const trans = item.translations[code] || item.translations['en'];
+          const trans = getArticleTrans(item, code);
           articlesHTML += `
             <article class="feed-card">
               <div class="card-media">
@@ -756,7 +772,7 @@ function buildAuthors() {
 
     let articlesHTML = '';
     authorArticles.forEach(item => {
-      const trans = item.translations['en'];
+      const trans = getArticleTrans(item, 'en');
       articlesHTML += `
         <article class="feed-card">
           <div class="card-media">
@@ -883,7 +899,8 @@ function buildSitemapsAndFeeds() {
     newsSitemapXML += `        <news:language>en</news:language>\n`;
     newsSitemapXML += `      </news:publication>\n`;
     newsSitemapXML += `      <news:publication_date>${art.published_at}</news:publication_date>\n`;
-    newsSitemapXML += `      <news:title>${escapeHTML(art.translations['en'].title)}</news:title>\n`;
+    const itemTitle = (art.translations && art.translations['en'] && art.translations['en'].title) || art.title || art.slug;
+    newsSitemapXML += `      <news:title>${escapeHTML(itemTitle)}</news:title>\n`;
     newsSitemapXML += `    </news:news>\n`;
     newsSitemapXML += `  </url>\n`;
   });
@@ -900,10 +917,12 @@ function buildSitemapsAndFeeds() {
   rssXML += `    <language>en-us</language>\n`;
   rssXML += `    <atom:link href="${DOMAIN}/rss.xml" rel="self" type="application/rss+xml"/>\n`;
   articles.filter(a => a.status === 'published').forEach(art => {
+    const itemTitle = (art.translations && art.translations['en'] && art.translations['en'].title) || art.title || art.slug;
+    const itemDeck = (art.translations && art.translations['en'] && art.translations['en'].deck) || art.excerpt || art.title || '';
     rssXML += `    <item>\n`;
-    rssXML += `      <title>${escapeHTML(art.translations['en'].title)}</title>\n`;
+    rssXML += `      <title>${escapeHTML(itemTitle)}</title>\n`;
     rssXML += `      <link>${DOMAIN}/articles/${art.slug}</link>\n`;
-    rssXML += `      <description>${escapeHTML(art.translations['en'].deck)}</description>\n`;
+    rssXML += `      <description>${escapeHTML(itemDeck)}</description>\n`;
     rssXML += `      <pubDate>${new Date(art.published_at).toUTCString()}</pubDate>\n`;
     rssXML += `      <guid>${DOMAIN}/articles/${art.slug}</guid>\n`;
     rssXML += `    </item>\n`;
@@ -947,7 +966,9 @@ GenAlpha Magazines publishes verified international news, diplomatic development
   });
   llmsTxt += `\n## Recent Dispatches\n`;
   articles.filter(a => a.status === 'published').forEach(art => {
-    llmsTxt += `- [${art.translations['en'].title}](${DOMAIN}/articles/${art.slug}): ${art.translations['en'].deck}\n`;
+    const itemTitle = (art.translations && art.translations['en'] && art.translations['en'].title) || art.title || art.slug;
+    const itemDeck = (art.translations && art.translations['en'] && art.translations['en'].deck) || art.excerpt || art.title || '';
+    llmsTxt += `- [${itemTitle}](${DOMAIN}/articles/${art.slug}): ${itemDeck}\n`;
   });
   fs.writeFileSync(path.join(ROOT_DIR, 'llms.txt'), llmsTxt, 'utf8');
 }

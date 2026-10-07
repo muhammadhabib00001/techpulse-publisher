@@ -48,6 +48,30 @@
     ]
   },
   {
+    "seedTopic": "Facturation électronique obligatoire pour les entreprises, comment ça marche ?",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Facturation électronique obligatoire pour les entreprises, comment ça marche ?",
+      "que signifie Facturation électronique obligatoire pour les entreprises, comment ça marche ?",
+      "quelles consequences Facturation électronique obligatoire pour les entreprises, comment ça marche ?",
+      "explique Facturation électronique obligatoire pour les entreprises, comment ça marche ?",
+      "ce qu il faut savoir sur Facturation électronique obligatoire pour les entreprises, comment ça marche ?"
+    ]
+  },
+  {
+    "seedTopic": "EN DIRECT, guerre en Ukraine : deux morts à Kiev dans une attaque de missiles russes",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi EN DIRECT, guerre en Ukraine : deux morts à Kiev dans une attaque de missiles russes",
+      "que signifie EN DIRECT, guerre en Ukraine : deux morts à Kiev dans une attaque de missiles russes",
+      "quelles consequences EN DIRECT, guerre en Ukraine : deux morts à Kiev dans une attaque de missiles russes",
+      "explique EN DIRECT, guerre en Ukraine : deux morts à Kiev dans une attaque de missiles russes",
+      "ce qu il faut savoir sur EN DIRECT, guerre en Ukraine : deux morts à Kiev dans une attaque de missiles russes"
+    ]
+  },
+  {
     "seedTopic": "Christa Pike, dont l’exécution avait échoué aux Etats-Unis, est « contre toute attente, consciente et peut parler », selon ses avocats",
     "category": "news",
     "lang": "fr",
@@ -72,18 +96,6 @@
     ]
   },
   {
-    "seedTopic": "EN DIRECT, guerre en Ukraine : deux morts à Kiev dans une attaque de missiles russes",
-    "category": "news",
-    "lang": "fr",
-    "searchIntents": [
-      "pourquoi EN DIRECT, guerre en Ukraine : deux morts à Kiev dans une attaque de missiles russes",
-      "que signifie EN DIRECT, guerre en Ukraine : deux morts à Kiev dans une attaque de missiles russes",
-      "quelles consequences EN DIRECT, guerre en Ukraine : deux morts à Kiev dans une attaque de missiles russes",
-      "explique EN DIRECT, guerre en Ukraine : deux morts à Kiev dans une attaque de missiles russes",
-      "ce qu il faut savoir sur EN DIRECT, guerre en Ukraine : deux morts à Kiev dans une attaque de missiles russes"
-    ]
-  },
-  {
     "seedTopic": "L’Arabie saoudite, le Pakistan et la Turquie posent le premier acte de leur accord de défense mutuelle face aux houthistes",
     "category": "news",
     "lang": "fr",
@@ -93,6 +105,18 @@
       "quelles consequences L’Arabie saoudite, le Pakistan et la Turquie posent le premier acte de leur accord de défense mutuelle face aux houthistes",
       "explique L’Arabie saoudite, le Pakistan et la Turquie posent le premier acte de leur accord de défense mutuelle face aux houthistes",
       "ce qu il faut savoir sur L’Arabie saoudite, le Pakistan et la Turquie posent le premier acte de leur accord de défense mutuelle face aux houthistes"
+    ]
+  },
+  {
+    "seedTopic": "En Cisjordanie occupée, un photojournaliste de l’Agence France-Presse roué de coups par des colons israéliens",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi En Cisjordanie occupée, un photojournaliste de l’Agence France-Presse roué de coups par des colons israéliens",
+      "que signifie En Cisjordanie occupée, un photojournaliste de l’Agence France-Presse roué de coups par des colons israéliens",
+      "quelles consequences En Cisjordanie occupée, un photojournaliste de l’Agence France-Presse roué de coups par des colons israéliens",
+      "explique En Cisjordanie occupée, un photojournaliste de l’Agence France-Presse roué de coups par des colons israéliens",
+      "ce qu il faut savoir sur En Cisjordanie occupée, un photojournaliste de l’Agence France-Presse roué de coups par des colons israéliens"
     ]
   },
   {
@@ -108,15 +132,15 @@
     ]
   },
   {
-    "seedTopic": "Maros Sefcovic, le commissaire européen au commerce, veut contrer l’envolée des exportations chinoises vers l’Europe",
+    "seedTopic": "Maros Sefcovic, le commissaire européen au commerce, veut contrer l’envolée des exportations de vers l’Europe",
     "category": "news",
     "lang": "fr",
     "searchIntents": [
-      "pourquoi Maros Sefcovic, le commissaire européen au commerce, veut contrer l’envolée des exportations chinoises vers l’Europe",
-      "que signifie Maros Sefcovic, le commissaire européen au commerce, veut contrer l’envolée des exportations chinoises vers l’Europe",
-      "quelles consequences Maros Sefcovic, le commissaire européen au commerce, veut contrer l’envolée des exportations chinoises vers l’Europe",
-      "explique Maros Sefcovic, le commissaire européen au commerce, veut contrer l’envolée des exportations chinoises vers l’Europe",
-      "ce qu il faut savoir sur Maros Sefcovic, le commissaire européen au commerce, veut contrer l’envolée des exportations chinoises vers l’Europe"
+      "pourquoi Maros Sefcovic, le commissaire européen au commerce, veut contrer l’envolée des exportations de vers l’Europe",
+      "que signifie Maros Sefcovic, le commissaire européen au commerce, veut contrer l’envolée des exportations de vers l’Europe",
+      "quelles consequences Maros Sefcovic, le commissaire européen au commerce, veut contrer l’envolée des exportations de vers l’Europe",
+      "explique Maros Sefcovic, le commissaire européen au commerce, veut contrer l’envolée des exportations de vers l’Europe",
+      "ce qu il faut savoir sur Maros Sefcovic, le commissaire européen au commerce, veut contrer l’envolée des exportations de vers l’Europe"
     ]
   },
   {
@@ -144,15 +168,15 @@
     ]
   },
   {
-    "seedTopic": "En Cisjordanie occupée, un photojournaliste de l’Agence France-Presse roué de coups par des colons israéliens",
+    "seedTopic": "Juste après avoir fusionné Paramount et Warner, David Ellison promet des licenciements pour financer son empire construit par endettement",
     "category": "news",
     "lang": "fr",
     "searchIntents": [
-      "pourquoi En Cisjordanie occupée, un photojournaliste de l’Agence France-Presse roué de coups par des colons israéliens",
-      "que signifie En Cisjordanie occupée, un photojournaliste de l’Agence France-Presse roué de coups par des colons israéliens",
-      "quelles consequences En Cisjordanie occupée, un photojournaliste de l’Agence France-Presse roué de coups par des colons israéliens",
-      "explique En Cisjordanie occupée, un photojournaliste de l’Agence France-Presse roué de coups par des colons israéliens",
-      "ce qu il faut savoir sur En Cisjordanie occupée, un photojournaliste de l’Agence France-Presse roué de coups par des colons israéliens"
+      "pourquoi Juste après avoir fusionné Paramount et Warner, David Ellison promet des licenciements pour financer son empire construit par endettement",
+      "que signifie Juste après avoir fusionné Paramount et Warner, David Ellison promet des licenciements pour financer son empire construit par endettement",
+      "quelles consequences Juste après avoir fusionné Paramount et Warner, David Ellison promet des licenciements pour financer son empire construit par endettement",
+      "explique Juste après avoir fusionné Paramount et Warner, David Ellison promet des licenciements pour financer son empire construit par endettement",
+      "ce qu il faut savoir sur Juste après avoir fusionné Paramount et Warner, David Ellison promet des licenciements pour financer son empire construit par endettement"
     ]
   },
   {
@@ -165,30 +189,6 @@
       "quelles consequences Le prêtre Jean-Bernard Plessy, ancien directeur des Chartreux à Lyon, mis en examen pour viol aggravé",
       "explique Le prêtre Jean-Bernard Plessy, ancien directeur des Chartreux à Lyon, mis en examen pour viol aggravé",
       "ce qu il faut savoir sur Le prêtre Jean-Bernard Plessy, ancien directeur des Chartreux à Lyon, mis en examen pour viol aggravé"
-    ]
-  },
-  {
-    "seedTopic": "En Thaïlande, la jeunesse brandit la mémoire du massacre de 1976 dans son combat pour la démocratie",
-    "category": "news",
-    "lang": "fr",
-    "searchIntents": [
-      "pourquoi En Thaïlande, la jeunesse brandit la mémoire du massacre de 1976 dans son combat pour la démocratie",
-      "que signifie En Thaïlande, la jeunesse brandit la mémoire du massacre de 1976 dans son combat pour la démocratie",
-      "quelles consequences En Thaïlande, la jeunesse brandit la mémoire du massacre de 1976 dans son combat pour la démocratie",
-      "explique En Thaïlande, la jeunesse brandit la mémoire du massacre de 1976 dans son combat pour la démocratie",
-      "ce qu il faut savoir sur En Thaïlande, la jeunesse brandit la mémoire du massacre de 1976 dans son combat pour la démocratie"
-    ]
-  },
-  {
-    "seedTopic": "Juste après avoir fusionné Paramount et Warner, David Ellison promet des licenciements pour financer son empire construit par endettement",
-    "category": "news",
-    "lang": "fr",
-    "searchIntents": [
-      "pourquoi Juste après avoir fusionné Paramount et Warner, David Ellison promet des licenciements pour financer son empire construit par endettement",
-      "que signifie Juste après avoir fusionné Paramount et Warner, David Ellison promet des licenciements pour financer son empire construit par endettement",
-      "quelles consequences Juste après avoir fusionné Paramount et Warner, David Ellison promet des licenciements pour financer son empire construit par endettement",
-      "explique Juste après avoir fusionné Paramount et Warner, David Ellison promet des licenciements pour financer son empire construit par endettement",
-      "ce qu il faut savoir sur Juste après avoir fusionné Paramount et Warner, David Ellison promet des licenciements pour financer son empire construit par endettement"
     ]
   },
   {
@@ -417,6 +417,18 @@
       "quelles consequences Les films au cinéma cette semaine : faut-il voir The Social Reckoning, Ni vue, ni connue ou L’Espèce explosive ?",
       "explique Les films au cinéma cette semaine : faut-il voir The Social Reckoning, Ni vue, ni connue ou L’Espèce explosive ?",
       "ce qu il faut savoir sur Les films au cinéma cette semaine : faut-il voir The Social Reckoning, Ni vue, ni connue ou L’Espèce explosive ?"
+    ]
+  },
+  {
+    "seedTopic": "Lionel Messi buteur et passeur pour son dernier match avec l'Argentine",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Lionel Messi buteur et passeur pour son dernier match avec l'Argentine",
+      "que signifie Lionel Messi buteur et passeur pour son dernier match avec l'Argentine",
+      "quelles consequences Lionel Messi buteur et passeur pour son dernier match avec l'Argentine",
+      "explique Lionel Messi buteur et passeur pour son dernier match avec l'Argentine",
+      "ce qu il faut savoir sur Lionel Messi buteur et passeur pour son dernier match avec l'Argentine"
     ]
   },
   {
@@ -693,18 +705,6 @@
       "quelles consequences RDC : nouveau scandale pour la FIFA ?",
       "explique RDC : nouveau scandale pour la FIFA ?",
       "ce qu il faut savoir sur RDC : nouveau scandale pour la FIFA ?"
-    ]
-  },
-  {
-    "seedTopic": "Les blocus lycéens en France instrumentalisés par des comptes d'extrême droite étrangers",
-    "category": "news",
-    "lang": "fr",
-    "searchIntents": [
-      "pourquoi Les blocus lycéens en France instrumentalisés par des comptes d'extrême droite étrangers",
-      "que signifie Les blocus lycéens en France instrumentalisés par des comptes d'extrême droite étrangers",
-      "quelles consequences Les blocus lycéens en France instrumentalisés par des comptes d'extrême droite étrangers",
-      "explique Les blocus lycéens en France instrumentalisés par des comptes d'extrême droite étrangers",
-      "ce qu il faut savoir sur Les blocus lycéens en France instrumentalisés par des comptes d'extrême droite étrangers"
     ]
   }
 ]

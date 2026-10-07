@@ -469,7 +469,7 @@ Rules:
 - STRICT COMPLIANCE: Absolutely NO medical diagnosis, diseases, health cures, loan rates, or financial advice (zero YMYL)
 - Respond ONLY with the JSON object`;
 
-  const sheetModels = ['gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-flash-latest', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+  const sheetModels = ['gemini-3.8-flash', 'gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-flash-latest', 'gemini-2.0-flash', 'gemini-1.5-flash'];
   for (let k = 0; k < GEMINI_API_KEYS.length; k++) {
     const key = GEMINI_API_KEYS[(currentKeyIndex + k) % GEMINI_API_KEYS.length];
     const keyNum = ((currentKeyIndex + k) % GEMINI_API_KEYS.length) + 1;
@@ -682,6 +682,7 @@ Requirements:
 ["Topic Title One", "Topic Title Two", "Topic Title Three", "Topic Title Four", "Topic Title Five"]`;
 
   const models = [
+    'gemini-3.8-flash',
     'gemini-flash-lite-latest',
     'gemini-2.5-flash',
     'gemini-flash-latest',
@@ -1464,6 +1465,7 @@ async function callGoogleAIStudio(keysOrPrompt, prompt, systemInstruction, topic
   }
 
   const modelsToTry = [
+    'gemini-3.8-flash',
     'gemini-flash-lite-latest',
     'gemini-2.5-flash',
     'gemini-flash-latest',
@@ -2146,6 +2148,7 @@ async function fetchExternalLink(topic, category, usedUrls) {
     '{"url":"https://...","anchorKeyword":"the exact 2-4 word keyword from the topic or article to link (e.g. smartphone hardware, Apple Inc, electric vehicles)","label":"Short descriptive title","domain":"domain.com"}';
 
   const models = [
+    'gemini-3.8-flash',
     'gemini-flash-lite-latest',
     'gemini-2.5-flash',
     'gemini-flash-latest',
@@ -3959,15 +3962,38 @@ async function main() {
     } catch (e) {
       articlesList = [];
     }
+    const nowIso = new Date().toISOString();
     const newArticleRecord = {
+      id: generatedArticle.slug,
       slug: generatedArticle.slug,
       file: `${generatedArticle.slug}.html`,
       title: generatedArticle.title,
       category: cat.toLowerCase(),
+      category_id: cat.toLowerCase(),
+      author_id: (topicData && topicData.author && topicData.author.slug) ? topicData.author.slug : 'dr-elena-vance',
+      published_at: nowIso,
+      updated_at: nowIso,
+      reading_time: 6,
+      status: 'published',
+      is_breaking: false,
+      is_featured: false,
+      is_editors_pick: true,
+      featured_image: heroImage.localPath ? ('/' + heroImage.localPath.replace(/^\.?\/?/, '')) : (heroImage.indexUrl || `/assets/images/${generatedArticle.slug}.jpg`),
+      image: heroImage.localPath ? ('/' + heroImage.localPath.replace(/^\.?\/?/, '')) : (heroImage.indexUrl || `./assets/images/${generatedArticle.slug}.jpg`),
+      image_caption: generatedArticle.title,
+      image_credit: 'Editorial Staff',
+      tags: [cat, 'Analysis', 'Special Report'],
       excerpt: generatedArticle.metaDescription || generatedArticle.title,
-      image: heroImage.indexUrl || `./assets/images/${generatedArticle.slug}.jpg`,
-      date: new Date().toISOString().split('T')[0],
-      publishedAt: new Date().toISOString()
+      deck: generatedArticle.metaDescription || generatedArticle.title,
+      date: nowIso.split('T')[0],
+      publishedAt: nowIso,
+      translations: {
+        en: {
+          title: generatedArticle.title,
+          deck: generatedArticle.metaDescription || generatedArticle.title,
+          content: generatedArticle.contentHtml || ''
+        }
+      }
     };
     articlesList.unshift(newArticleRecord);
     fs.writeFileSync(articlesJsonFile, JSON.stringify(articlesList, null, 2), 'utf8');

@@ -1,6 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://www.genalphamagazines.com/articles/himalayan-bird-changes-song-due-to-noise-pollution</loc>
+    <news:news>
+      <news:publication>
+        <news:name>GenAlpha Magazines</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-07T07:09:15.558Z</news:publication_date>
+      <news:title>Himalayan Bird Changes Song Due to Noise Pollution</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/articles/the-phenomenon-of-ghost-music-mystery-and-persona</loc>
+    <news:news>
+      <news:publication>
+        <news:name>GenAlpha Magazines</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-07T07:06:46.515Z</news:publication_date>
+      <news:title>The Phenomenon of Ghost: Music, Mystery, and Persona</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/articles/global-semiconductor-lithography-and-advanced-packaging</loc>
+    <news:news>
+      <news:publication>
+        <news:name>GenAlpha Magazines</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-07T06:56:54.866Z</news:publication_date>
+      <news:title>Global Semiconductor Lithography and Advanced Packaging</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://www.genalphamagazines.com/articles/global-energy-summit-grid-decarbonization-agreement</loc>
     <news:news>
       <news:publication>

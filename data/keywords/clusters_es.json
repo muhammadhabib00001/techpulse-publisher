@@ -286,16 +286,16 @@
     ]
   },
   {
-    "seedTopic": "Caos en Rodalies: se suspende el servicio de trenes en Cataluña por el plante de los maquinistas tras el temporal",
+    "seedTopic": "Caos en Rodalies: Renfe avisa que el servicio “no funciona” y lo achaca al plante de los maquinistas tras el temporal",
     "category": "news",
     "lang": "es",
     "searchIntents": [
-      "por que Caos en Rodalies: se suspende el servicio de trenes en Cataluña por el plante de los maquinistas tras el temporal",
-      "que significa Caos en Rodalies: se suspende el servicio de trenes en Cataluña por el plante de los maquinistas tras el temporal",
-      "como afecta Caos en Rodalies: se suspende el servicio de trenes en Cataluña por el plante de los maquinistas tras el temporal",
-      "explicado Caos en Rodalies: se suspende el servicio de trenes en Cataluña por el plante de los maquinistas tras el temporal",
-      "claves de Caos en Rodalies: se suspende el servicio de trenes en Cataluña por el plante de los maquinistas tras el temporal",
-      "consecuencias de Caos en Rodalies: se suspende el servicio de trenes en Cataluña por el plante de los maquinistas tras el temporal"
+      "por que Caos en Rodalies: Renfe avisa que el servicio “no funciona” y lo achaca al plante de los maquinistas tras el temporal",
+      "que significa Caos en Rodalies: Renfe avisa que el servicio “no funciona” y lo achaca al plante de los maquinistas tras el temporal",
+      "como afecta Caos en Rodalies: Renfe avisa que el servicio “no funciona” y lo achaca al plante de los maquinistas tras el temporal",
+      "explicado Caos en Rodalies: Renfe avisa que el servicio “no funciona” y lo achaca al plante de los maquinistas tras el temporal",
+      "claves de Caos en Rodalies: Renfe avisa que el servicio “no funciona” y lo achaca al plante de los maquinistas tras el temporal",
+      "consecuencias de Caos en Rodalies: Renfe avisa que el servicio “no funciona” y lo achaca al plante de los maquinistas tras el temporal"
     ]
   },
   {
@@ -400,6 +400,19 @@
       "explicado Messi se despide de la selección argentina ovacionado por una multitud: “Es el día más triste de mi carrera”",
       "claves de Messi se despide de la selección argentina ovacionado por una multitud: “Es el día más triste de mi carrera”",
       "consecuencias de Messi se despide de la selección argentina ovacionado por una multitud: “Es el día más triste de mi carrera”"
+    ]
+  },
+  {
+    "seedTopic": "‘El Pulso’ de ‘Hoy por Hoy’, en directo, en EL PAÍS",
+    "category": "news",
+    "lang": "es",
+    "searchIntents": [
+      "por que ‘El Pulso’ de ‘Hoy por Hoy’, en directo, en EL PAÍS",
+      "que significa ‘El Pulso’ de ‘Hoy por Hoy’, en directo, en EL PAÍS",
+      "como afecta ‘El Pulso’ de ‘Hoy por Hoy’, en directo, en EL PAÍS",
+      "explicado ‘El Pulso’ de ‘Hoy por Hoy’, en directo, en EL PAÍS",
+      "claves de ‘El Pulso’ de ‘Hoy por Hoy’, en directo, en EL PAÍS",
+      "consecuencias de ‘El Pulso’ de ‘Hoy por Hoy’, en directo, en EL PAÍS"
     ]
   },
   {

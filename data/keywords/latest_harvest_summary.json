@@ -147,8 +147,8 @@
     ]
   },
   "es": {
-    "totalCompetitorHeadlines": 175,
-    "generatedKeywordClusters": 174,
+    "totalCompetitorHeadlines": 176,
+    "generatedKeywordClusters": 175,
     "sampleClusters": [
       {
         "seedTopic": "Junts busca exprimir el regreso de Puigdemont para impactar en la campaña electoral",
@@ -270,15 +270,86 @@
         ]
       },
       {
-        "seedTopic": "Christa Pike, dont l’exécution avait échoué aux Etats-Unis, est « contre toute attente, consciente et peut parler », selon ses avocats",
+        "seedTopic": "Facturation électronique obligatoire pour les entreprises, comment ça marche ?",
         "category": "news",
         "lang": "fr",
         "searchIntents": [
-          "pourquoi Christa Pike, dont l’exécution avait échoué aux Etats-Unis, est « contre toute attente, consciente et peut parler », selon ses avocats",
-          "que signifie Christa Pike, dont l’exécution avait échoué aux Etats-Unis, est « contre toute attente, consciente et peut parler », selon ses avocats",
-          "quelles consequences Christa Pike, dont l’exécution avait échoué aux Etats-Unis, est « contre toute attente, consciente et peut parler », selon ses avocats",
-          "explique Christa Pike, dont l’exécution avait échoué aux Etats-Unis, est « contre toute attente, consciente et peut parler », selon ses avocats",
-          "ce qu il faut savoir sur Christa Pike, dont l’exécution avait échoué aux Etats-Unis, est « contre toute attente, consciente et peut parler », selon ses avocats"
+          "pourquoi Facturation électronique obligatoire pour les entreprises, comment ça marche ?",
+          "que signifie Facturation électronique obligatoire pour les entreprises, comment ça marche ?",
+          "quelles consequences Facturation électronique obligatoire pour les entreprises, comment ça marche ?",
+          "explique Facturation électronique obligatoire pour les entreprises, comment ça marche ?",
+          "ce qu il faut savoir sur Facturation électronique obligatoire pour les entreprises, comment ça marche ?"
+        ]
+      }
+    ]
+  },
+  "pt": {
+    "totalCompetitorHeadlines": 50,
+    "generatedKeywordClusters": 50,
+    "sampleClusters": [
+      {
+        "seedTopic": "07h As explicações de Cristiano Ronaldo",
+        "category": "news",
+        "lang": "pt",
+        "searchIntents": [
+          "por que 07h As explicações de Cristiano Ronaldo",
+          "o que significa 07h As explicações de Cristiano Ronaldo",
+          "como afeta 07h As explicações de Cristiano Ronaldo",
+          "explicado 07h As explicações de Cristiano Ronaldo",
+          "impactos de 07h As explicações de Cristiano Ronaldo",
+          "entenda 07h As explicações de Cristiano Ronaldo"
+        ]
+      },
+      {
+        "seedTopic": "Carlos Padrão desdramatiza tensão entre Jesus e Ronaldo",
+        "category": "news",
+        "lang": "pt",
+        "searchIntents": [
+          "por que Carlos Padrão desdramatiza tensão entre Jesus e Ronaldo",
+          "o que significa Carlos Padrão desdramatiza tensão entre Jesus e Ronaldo",
+          "como afeta Carlos Padrão desdramatiza tensão entre Jesus e Ronaldo",
+          "explicado Carlos Padrão desdramatiza tensão entre Jesus e Ronaldo",
+          "impactos de Carlos Padrão desdramatiza tensão entre Jesus e Ronaldo",
+          "entenda Carlos Padrão desdramatiza tensão entre Jesus e Ronaldo"
+        ]
+      },
+      {
+        "seedTopic": "Cristiano Ronaldo quebra o silêncio, pede desculpas e deixa futuro em aberto",
+        "category": "news",
+        "lang": "pt",
+        "searchIntents": [
+          "por que Cristiano Ronaldo quebra o silêncio, pede desculpas e deixa futuro em aberto",
+          "o que significa Cristiano Ronaldo quebra o silêncio, pede desculpas e deixa futuro em aberto",
+          "como afeta Cristiano Ronaldo quebra o silêncio, pede desculpas e deixa futuro em aberto",
+          "explicado Cristiano Ronaldo quebra o silêncio, pede desculpas e deixa futuro em aberto",
+          "impactos de Cristiano Ronaldo quebra o silêncio, pede desculpas e deixa futuro em aberto",
+          "entenda Cristiano Ronaldo quebra o silêncio, pede desculpas e deixa futuro em aberto"
+        ]
+      },
+      {
+        "seedTopic": "Homenagem às vítimas do 7 de outubro no Parlamento Europeu",
+        "category": "news",
+        "lang": "pt",
+        "searchIntents": [
+          "por que Homenagem às vítimas do 7 de outubro no Parlamento Europeu",
+          "o que significa Homenagem às vítimas do 7 de outubro no Parlamento Europeu",
+          "como afeta Homenagem às vítimas do 7 de outubro no Parlamento Europeu",
+          "explicado Homenagem às vítimas do 7 de outubro no Parlamento Europeu",
+          "impactos de Homenagem às vítimas do 7 de outubro no Parlamento Europeu",
+          "entenda Homenagem às vítimas do 7 de outubro no Parlamento Europeu"
+        ]
+      },
+      {
+        "seedTopic": "Seul coloca 15 satélites em órbita com recurso ao foguetão sul-coreano Nuri",
+        "category": "news",
+        "lang": "pt",
+        "searchIntents": [
+          "por que Seul coloca 15 satélites em órbita com recurso ao foguetão sul-coreano Nuri",
+          "o que significa Seul coloca 15 satélites em órbita com recurso ao foguetão sul-coreano Nuri",
+          "como afeta Seul coloca 15 satélites em órbita com recurso ao foguetão sul-coreano Nuri",
+          "explicado Seul coloca 15 satélites em órbita com recurso ao foguetão sul-coreano Nuri",
+          "impactos de Seul coloca 15 satélites em órbita com recurso ao foguetão sul-coreano Nuri",
+          "entenda Seul coloca 15 satélites em órbita com recurso ao foguetão sul-coreano Nuri"
         ]
       }
     ]
@@ -287,6 +358,58 @@
     "totalCompetitorHeadlines": 25,
     "generatedKeywordClusters": 25,
     "sampleClusters": [
+      {
+        "seedTopic": "رسائل مؤثرة في وداع ميسي",
+        "category": "news",
+        "lang": "ar",
+        "searchIntents": [
+          "لماذا رسائل مؤثرة في وداع ميسي",
+          "ماذا يعني رسائل مؤثرة في وداع ميسي",
+          "تداعيات رسائل مؤثرة في وداع ميسي",
+          "شرح رسائل مؤثرة في وداع ميسي",
+          "ما هي اسباب رسائل مؤثرة في وداع ميسي",
+          "تاثير رسائل مؤثرة في وداع ميسي"
+        ]
+      },
+      {
+        "seedTopic": "أنفاق وتهريب وحرب هجينة.. مخاوف من &quot;سبتة&quot; جديدة على حدود أوروبا الشرقية",
+        "category": "news",
+        "lang": "ar",
+        "searchIntents": [
+          "لماذا أنفاق وتهريب وحرب هجينة.. مخاوف من &quot;سبتة&quot; جديدة على حدود أوروبا الشرقية",
+          "ماذا يعني أنفاق وتهريب وحرب هجينة.. مخاوف من &quot;سبتة&quot; جديدة على حدود أوروبا الشرقية",
+          "تداعيات أنفاق وتهريب وحرب هجينة.. مخاوف من &quot;سبتة&quot; جديدة على حدود أوروبا الشرقية",
+          "شرح أنفاق وتهريب وحرب هجينة.. مخاوف من &quot;سبتة&quot; جديدة على حدود أوروبا الشرقية",
+          "ما هي اسباب أنفاق وتهريب وحرب هجينة.. مخاوف من &quot;سبتة&quot; جديدة على حدود أوروبا الشرقية",
+          "تاثير أنفاق وتهريب وحرب هجينة.. مخاوف من &quot;سبتة&quot; جديدة على حدود أوروبا الشرقية"
+        ]
+      },
+      {
+        "seedTopic": "من الركام إلى البسطة.. &quot;سوق الاثنين&quot; يعيد الحياة إلى النبطية جنوبي لبنان؟",
+        "category": "news",
+        "lang": "ar",
+        "searchIntents": [
+          "لماذا من الركام إلى البسطة.. &quot;سوق الاثنين&quot; يعيد الحياة إلى النبطية جنوبي لبنان؟",
+          "ماذا يعني من الركام إلى البسطة.. &quot;سوق الاثنين&quot; يعيد الحياة إلى النبطية جنوبي لبنان؟",
+          "تداعيات من الركام إلى البسطة.. &quot;سوق الاثنين&quot; يعيد الحياة إلى النبطية جنوبي لبنان؟",
+          "شرح من الركام إلى البسطة.. &quot;سوق الاثنين&quot; يعيد الحياة إلى النبطية جنوبي لبنان؟",
+          "ما هي اسباب من الركام إلى البسطة.. &quot;سوق الاثنين&quot; يعيد الحياة إلى النبطية جنوبي لبنان؟",
+          "تاثير من الركام إلى البسطة.. &quot;سوق الاثنين&quot; يعيد الحياة إلى النبطية جنوبي لبنان؟"
+        ]
+      },
+      {
+        "seedTopic": "شهيدان في غارة إسرائيلية والاحتلال ينسف منازل بأحياء شرقي مدينة غزة",
+        "category": "news",
+        "lang": "ar",
+        "searchIntents": [
+          "لماذا شهيدان في غارة إسرائيلية والاحتلال ينسف منازل بأحياء شرقي مدينة غزة",
+          "ماذا يعني شهيدان في غارة إسرائيلية والاحتلال ينسف منازل بأحياء شرقي مدينة غزة",
+          "تداعيات شهيدان في غارة إسرائيلية والاحتلال ينسف منازل بأحياء شرقي مدينة غزة",
+          "شرح شهيدان في غارة إسرائيلية والاحتلال ينسف منازل بأحياء شرقي مدينة غزة",
+          "ما هي اسباب شهيدان في غارة إسرائيلية والاحتلال ينسف منازل بأحياء شرقي مدينة غزة",
+          "تاثير شهيدان في غارة إسرائيلية والاحتلال ينسف منازل بأحياء شرقي مدينة غزة"
+        ]
+      },
       {
         "seedTopic": "إبستين والديزل.. الجمهوريون يواجهون الانتخابات على جبهتين",
         "category": "news",
@@ -299,64 +422,149 @@
           "ما هي اسباب إبستين والديزل.. الجمهوريون يواجهون الانتخابات على جبهتين",
           "تاثير إبستين والديزل.. الجمهوريون يواجهون الانتخابات على جبهتين"
         ]
-      },
-      {
-        "seedTopic": "&quot;هذا أكثر يوم حزين في مسيرتي&quot;.. ميسي ينطق كلمات الوداع الأخيرة",
-        "category": "news",
-        "lang": "ar",
-        "searchIntents": [
-          "لماذا &quot;هذا أكثر يوم حزين في مسيرتي&quot;.. ميسي ينطق كلمات الوداع الأخيرة",
-          "ماذا يعني &quot;هذا أكثر يوم حزين في مسيرتي&quot;.. ميسي ينطق كلمات الوداع الأخيرة",
-          "تداعيات &quot;هذا أكثر يوم حزين في مسيرتي&quot;.. ميسي ينطق كلمات الوداع الأخيرة",
-          "شرح &quot;هذا أكثر يوم حزين في مسيرتي&quot;.. ميسي ينطق كلمات الوداع الأخيرة",
-          "ما هي اسباب &quot;هذا أكثر يوم حزين في مسيرتي&quot;.. ميسي ينطق كلمات الوداع الأخيرة",
-          "تاثير &quot;هذا أكثر يوم حزين في مسيرتي&quot;.. ميسي ينطق كلمات الوداع الأخيرة"
-        ]
-      },
-      {
-        "seedTopic": "أرقام تروي حكاية أسطورة.. حصيلة ميسي الأخيرة بقميص الأرجنتين",
-        "category": "news",
-        "lang": "ar",
-        "searchIntents": [
-          "لماذا أرقام تروي حكاية أسطورة.. حصيلة ميسي الأخيرة بقميص الأرجنتين",
-          "ماذا يعني أرقام تروي حكاية أسطورة.. حصيلة ميسي الأخيرة بقميص الأرجنتين",
-          "تداعيات أرقام تروي حكاية أسطورة.. حصيلة ميسي الأخيرة بقميص الأرجنتين",
-          "شرح أرقام تروي حكاية أسطورة.. حصيلة ميسي الأخيرة بقميص الأرجنتين",
-          "ما هي اسباب أرقام تروي حكاية أسطورة.. حصيلة ميسي الأخيرة بقميص الأرجنتين",
-          "تاثير أرقام تروي حكاية أسطورة.. حصيلة ميسي الأخيرة بقميص الأرجنتين"
-        ]
-      },
-      {
-        "seedTopic": "فلسطين مباشر.. شهيدان في غزة وتصعيد إسرائيلي متواصل في الضفة",
-        "category": "news",
-        "lang": "ar",
-        "searchIntents": [
-          "لماذا فلسطين مباشر.. شهيدان في غزة وتصعيد إسرائيلي متواصل في الضفة",
-          "ماذا يعني فلسطين مباشر.. شهيدان في غزة وتصعيد إسرائيلي متواصل في الضفة",
-          "تداعيات فلسطين مباشر.. شهيدان في غزة وتصعيد إسرائيلي متواصل في الضفة",
-          "شرح فلسطين مباشر.. شهيدان في غزة وتصعيد إسرائيلي متواصل في الضفة",
-          "ما هي اسباب فلسطين مباشر.. شهيدان في غزة وتصعيد إسرائيلي متواصل في الضفة",
-          "تاثير فلسطين مباشر.. شهيدان في غزة وتصعيد إسرائيلي متواصل في الضفة"
-        ]
-      },
-      {
-        "seedTopic": "سجينة أمريكية تستعيد وعيها بعد حقنتي إعدام",
-        "category": "news",
-        "lang": "ar",
-        "searchIntents": [
-          "لماذا سجينة أمريكية تستعيد وعيها بعد حقنتي إعدام",
-          "ماذا يعني سجينة أمريكية تستعيد وعيها بعد حقنتي إعدام",
-          "تداعيات سجينة أمريكية تستعيد وعيها بعد حقنتي إعدام",
-          "شرح سجينة أمريكية تستعيد وعيها بعد حقنتي إعدام",
-          "ما هي اسباب سجينة أمريكية تستعيد وعيها بعد حقنتي إعدام",
-          "تاثير سجينة أمريكية تستعيد وعيها بعد حقنتي إعدام"
-        ]
       }
     ]
   },
   "hi": {
-    "totalCompetitorHeadlines": 0,
-    "generatedKeywordClusters": 0,
-    "sampleClusters": []
+    "totalCompetitorHeadlines": 35,
+    "generatedKeywordClusters": 35,
+    "sampleClusters": [
+      {
+        "seedTopic": "जेन ज़ी और विपक्ष के आंदोलन: भारत में विरोध की भाषा इतनी तेज़ी से क्यों बदली?",
+        "category": "news",
+        "lang": "hi",
+        "searchIntents": [
+          "kyun जेन ज़ी और विपक्ष के आंदोलन: भारत में विरोध की भाषा इतनी तेज़ी से क्यों बदली?",
+          "kya hai जेन ज़ी और विपक्ष के आंदोलन: भारत में विरोध की भाषा इतनी तेज़ी से क्यों बदली?",
+          "kaise prabhavit karega जेन ज़ी और विपक्ष के आंदोलन: भारत में विरोध की भाषा इतनी तेज़ी से क्यों बदली?",
+          "visleshan जेन ज़ी और विपक्ष के आंदोलन: भारत में विरोध की भाषा इतनी तेज़ी से क्यों बदली?",
+          "mukhya bindu जेन ज़ी और विपक्ष के आंदोलन: भारत में विरोध की भाषा इतनी तेज़ी से क्यों बदली?",
+          "karan aur prabhav जेन ज़ी और विपक्ष के आंदोलन: भारत में विरोध की भाषा इतनी तेज़ी से क्यों बदली?"
+        ]
+      },
+      {
+        "seedTopic": "राहुल गांधी के बाद सीजेपी के सौरव दास पहुंचे बेला एस्टेट, ज्ञानेश कुमार पर लगाए ये आरोप",
+        "category": "news",
+        "lang": "hi",
+        "searchIntents": [
+          "kyun राहुल गांधी के बाद सीजेपी के सौरव दास पहुंचे बेला एस्टेट, ज्ञानेश कुमार पर लगाए ये आरोप",
+          "kya hai राहुल गांधी के बाद सीजेपी के सौरव दास पहुंचे बेला एस्टेट, ज्ञानेश कुमार पर लगाए ये आरोप",
+          "kaise prabhavit karega राहुल गांधी के बाद सीजेपी के सौरव दास पहुंचे बेला एस्टेट, ज्ञानेश कुमार पर लगाए ये आरोप",
+          "visleshan राहुल गांधी के बाद सीजेपी के सौरव दास पहुंचे बेला एस्टेट, ज्ञानेश कुमार पर लगाए ये आरोप",
+          "mukhya bindu राहुल गांधी के बाद सीजेपी के सौरव दास पहुंचे बेला एस्टेट, ज्ञानेश कुमार पर लगाए ये आरोप",
+          "karan aur prabhav राहुल गांधी के बाद सीजेपी के सौरव दास पहुंचे बेला एस्टेट, ज्ञानेश कुमार पर लगाए ये आरोप"
+        ]
+      },
+      {
+        "seedTopic": "राहुल की नौ घंटे की रणनीति, पुलिस की सख़्ती और चुनाव आयोग का जवाब, तीनों को कैसे देखा जा रहा है?",
+        "category": "news",
+        "lang": "hi",
+        "searchIntents": [
+          "kyun राहुल की नौ घंटे की रणनीति, पुलिस की सख़्ती और चुनाव आयोग का जवाब, तीनों को कैसे देखा जा रहा है?",
+          "kya hai राहुल की नौ घंटे की रणनीति, पुलिस की सख़्ती और चुनाव आयोग का जवाब, तीनों को कैसे देखा जा रहा है?",
+          "kaise prabhavit karega राहुल की नौ घंटे की रणनीति, पुलिस की सख़्ती और चुनाव आयोग का जवाब, तीनों को कैसे देखा जा रहा है?",
+          "visleshan राहुल की नौ घंटे की रणनीति, पुलिस की सख़्ती और चुनाव आयोग का जवाब, तीनों को कैसे देखा जा रहा है?",
+          "mukhya bindu राहुल की नौ घंटे की रणनीति, पुलिस की सख़्ती और चुनाव आयोग का जवाब, तीनों को कैसे देखा जा रहा है?",
+          "karan aur prabhav राहुल की नौ घंटे की रणनीति, पुलिस की सख़्ती और चुनाव आयोग का जवाब, तीनों को कैसे देखा जा रहा है?"
+        ]
+      },
+      {
+        "seedTopic": "गर्दन झुकाकर बैठते हैं और दर्द रहता है? तो बचाव के लिए करें ये 5 आसान एक्सरसाइज़",
+        "category": "news",
+        "lang": "hi",
+        "searchIntents": [
+          "kyun गर्दन झुकाकर बैठते हैं और दर्द रहता है? तो बचाव के लिए करें ये 5 आसान एक्सरसाइज़",
+          "kya hai गर्दन झुकाकर बैठते हैं और दर्द रहता है? तो बचाव के लिए करें ये 5 आसान एक्सरसाइज़",
+          "kaise prabhavit karega गर्दन झुकाकर बैठते हैं और दर्द रहता है? तो बचाव के लिए करें ये 5 आसान एक्सरसाइज़",
+          "visleshan गर्दन झुकाकर बैठते हैं और दर्द रहता है? तो बचाव के लिए करें ये 5 आसान एक्सरसाइज़",
+          "mukhya bindu गर्दन झुकाकर बैठते हैं और दर्द रहता है? तो बचाव के लिए करें ये 5 आसान एक्सरसाइज़",
+          "karan aur prabhav गर्दन झुकाकर बैठते हैं और दर्द रहता है? तो बचाव के लिए करें ये 5 आसान एक्सरसाइज़"
+        ]
+      },
+      {
+        "seedTopic": "'पाकीज़ा' एक बार फिर पर्दे पर लौट रही, आख़िर इस फ़िल्म को बनने में 15 साल क्यों लगे थे?",
+        "category": "news",
+        "lang": "hi",
+        "searchIntents": [
+          "kyun 'पाकीज़ा' एक बार फिर पर्दे पर लौट रही, आख़िर इस फ़िल्म को बनने में 15 साल क्यों लगे थे?",
+          "kya hai 'पाकीज़ा' एक बार फिर पर्दे पर लौट रही, आख़िर इस फ़िल्म को बनने में 15 साल क्यों लगे थे?",
+          "kaise prabhavit karega 'पाकीज़ा' एक बार फिर पर्दे पर लौट रही, आख़िर इस फ़िल्म को बनने में 15 साल क्यों लगे थे?",
+          "visleshan 'पाकीज़ा' एक बार फिर पर्दे पर लौट रही, आख़िर इस फ़िल्म को बनने में 15 साल क्यों लगे थे?",
+          "mukhya bindu 'पाकीज़ा' एक बार फिर पर्दे पर लौट रही, आख़िर इस फ़िल्म को बनने में 15 साल क्यों लगे थे?",
+          "karan aur prabhav 'पाकीज़ा' एक बार फिर पर्दे पर लौट रही, आख़िर इस फ़िल्म को बनने में 15 साल क्यों लगे थे?"
+        ]
+      }
+    ]
+  },
+  "it": {
+    "totalCompetitorHeadlines": 10,
+    "generatedKeywordClusters": 10,
+    "sampleClusters": [
+      {
+        "seedTopic": "Il gas apre in rialzo sul mercato di Amsterdam (+1,1%)",
+        "category": "news",
+        "lang": "it",
+        "searchIntents": [
+          "perche Il gas apre in rialzo sul mercato di Amsterdam (+1,1%)",
+          "cosa significa Il gas apre in rialzo sul mercato di Amsterdam (+1,1%)",
+          "come influisce Il gas apre in rialzo sul mercato di Amsterdam (+1,1%)",
+          "spiegato Il gas apre in rialzo sul mercato di Amsterdam (+1,1%)",
+          "conseguenze di Il gas apre in rialzo sul mercato di Amsterdam (+1,1%)",
+          "cosa sapere su Il gas apre in rialzo sul mercato di Amsterdam (+1,1%)"
+        ]
+      },
+      {
+        "seedTopic": "Borsa: Asia debole coi tecnologici, il petrolio pesa sui bond",
+        "category": "news",
+        "lang": "it",
+        "searchIntents": [
+          "perche Borsa: Asia debole coi tecnologici, il petrolio pesa sui bond",
+          "cosa significa Borsa: Asia debole coi tecnologici, il petrolio pesa sui bond",
+          "come influisce Borsa: Asia debole coi tecnologici, il petrolio pesa sui bond",
+          "spiegato Borsa: Asia debole coi tecnologici, il petrolio pesa sui bond",
+          "conseguenze di Borsa: Asia debole coi tecnologici, il petrolio pesa sui bond",
+          "cosa sapere su Borsa: Asia debole coi tecnologici, il petrolio pesa sui bond"
+        ]
+      },
+      {
+        "seedTopic": "Calcio, Messi gioca l'ultima partita con l'Argentina: 'Orgoglioso di questi 20 anni'",
+        "category": "news",
+        "lang": "it",
+        "searchIntents": [
+          "perche Calcio, Messi gioca l'ultima partita con l'Argentina: 'Orgoglioso di questi 20 anni'",
+          "cosa significa Calcio, Messi gioca l'ultima partita con l'Argentina: 'Orgoglioso di questi 20 anni'",
+          "come influisce Calcio, Messi gioca l'ultima partita con l'Argentina: 'Orgoglioso di questi 20 anni'",
+          "spiegato Calcio, Messi gioca l'ultima partita con l'Argentina: 'Orgoglioso di questi 20 anni'",
+          "conseguenze di Calcio, Messi gioca l'ultima partita con l'Argentina: 'Orgoglioso di questi 20 anni'",
+          "cosa sapere su Calcio, Messi gioca l'ultima partita con l'Argentina: 'Orgoglioso di questi 20 anni'"
+        ]
+      },
+      {
+        "seedTopic": "Wsj: 'Washington preme su Mosca, serve nota ufficiale sul decesso legato alla peste'",
+        "category": "news",
+        "lang": "it",
+        "searchIntents": [
+          "perche Wsj: 'Washington preme su Mosca, serve nota ufficiale sul decesso legato alla peste'",
+          "cosa significa Wsj: 'Washington preme su Mosca, serve nota ufficiale sul decesso legato alla peste'",
+          "come influisce Wsj: 'Washington preme su Mosca, serve nota ufficiale sul decesso legato alla peste'",
+          "spiegato Wsj: 'Washington preme su Mosca, serve nota ufficiale sul decesso legato alla peste'",
+          "conseguenze di Wsj: 'Washington preme su Mosca, serve nota ufficiale sul decesso legato alla peste'",
+          "cosa sapere su Wsj: 'Washington preme su Mosca, serve nota ufficiale sul decesso legato alla peste'"
+        ]
+      },
+      {
+        "seedTopic": "Borsa: Tokyo, apertura poco mossa (-0,09%)",
+        "category": "news",
+        "lang": "it",
+        "searchIntents": [
+          "perche Borsa: Tokyo, apertura poco mossa (-0,09%)",
+          "cosa significa Borsa: Tokyo, apertura poco mossa (-0,09%)",
+          "come influisce Borsa: Tokyo, apertura poco mossa (-0,09%)",
+          "spiegato Borsa: Tokyo, apertura poco mossa (-0,09%)",
+          "conseguenze di Borsa: Tokyo, apertura poco mossa (-0,09%)",
+          "cosa sapere su Borsa: Tokyo, apertura poco mossa (-0,09%)"
+        ]
+      }
+    ]
   }
 }

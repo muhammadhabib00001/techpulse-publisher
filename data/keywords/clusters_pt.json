@@ -1,0 +1,652 @@
+[
+  {
+    "seedTopic": "07h As explicações de Cristiano Ronaldo",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que 07h As explicações de Cristiano Ronaldo",
+      "o que significa 07h As explicações de Cristiano Ronaldo",
+      "como afeta 07h As explicações de Cristiano Ronaldo",
+      "explicado 07h As explicações de Cristiano Ronaldo",
+      "impactos de 07h As explicações de Cristiano Ronaldo",
+      "entenda 07h As explicações de Cristiano Ronaldo"
+    ]
+  },
+  {
+    "seedTopic": "Carlos Padrão desdramatiza tensão entre Jesus e Ronaldo",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Carlos Padrão desdramatiza tensão entre Jesus e Ronaldo",
+      "o que significa Carlos Padrão desdramatiza tensão entre Jesus e Ronaldo",
+      "como afeta Carlos Padrão desdramatiza tensão entre Jesus e Ronaldo",
+      "explicado Carlos Padrão desdramatiza tensão entre Jesus e Ronaldo",
+      "impactos de Carlos Padrão desdramatiza tensão entre Jesus e Ronaldo",
+      "entenda Carlos Padrão desdramatiza tensão entre Jesus e Ronaldo"
+    ]
+  },
+  {
+    "seedTopic": "Cristiano Ronaldo quebra o silêncio, pede desculpas e deixa futuro em aberto",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Cristiano Ronaldo quebra o silêncio, pede desculpas e deixa futuro em aberto",
+      "o que significa Cristiano Ronaldo quebra o silêncio, pede desculpas e deixa futuro em aberto",
+      "como afeta Cristiano Ronaldo quebra o silêncio, pede desculpas e deixa futuro em aberto",
+      "explicado Cristiano Ronaldo quebra o silêncio, pede desculpas e deixa futuro em aberto",
+      "impactos de Cristiano Ronaldo quebra o silêncio, pede desculpas e deixa futuro em aberto",
+      "entenda Cristiano Ronaldo quebra o silêncio, pede desculpas e deixa futuro em aberto"
+    ]
+  },
+  {
+    "seedTopic": "Homenagem às vítimas do 7 de outubro no Parlamento Europeu",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Homenagem às vítimas do 7 de outubro no Parlamento Europeu",
+      "o que significa Homenagem às vítimas do 7 de outubro no Parlamento Europeu",
+      "como afeta Homenagem às vítimas do 7 de outubro no Parlamento Europeu",
+      "explicado Homenagem às vítimas do 7 de outubro no Parlamento Europeu",
+      "impactos de Homenagem às vítimas do 7 de outubro no Parlamento Europeu",
+      "entenda Homenagem às vítimas do 7 de outubro no Parlamento Europeu"
+    ]
+  },
+  {
+    "seedTopic": "Seul coloca 15 satélites em órbita com recurso ao foguetão sul-coreano Nuri",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Seul coloca 15 satélites em órbita com recurso ao foguetão sul-coreano Nuri",
+      "o que significa Seul coloca 15 satélites em órbita com recurso ao foguetão sul-coreano Nuri",
+      "como afeta Seul coloca 15 satélites em órbita com recurso ao foguetão sul-coreano Nuri",
+      "explicado Seul coloca 15 satélites em órbita com recurso ao foguetão sul-coreano Nuri",
+      "impactos de Seul coloca 15 satélites em órbita com recurso ao foguetão sul-coreano Nuri",
+      "entenda Seul coloca 15 satélites em órbita com recurso ao foguetão sul-coreano Nuri"
+    ]
+  },
+  {
+    "seedTopic": "Maioria reconhece importância da vacinação mas desconhece vacinas recomendadas",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Maioria reconhece importância da vacinação mas desconhece vacinas recomendadas",
+      "o que significa Maioria reconhece importância da vacinação mas desconhece vacinas recomendadas",
+      "como afeta Maioria reconhece importância da vacinação mas desconhece vacinas recomendadas",
+      "explicado Maioria reconhece importância da vacinação mas desconhece vacinas recomendadas",
+      "impactos de Maioria reconhece importância da vacinação mas desconhece vacinas recomendadas",
+      "entenda Maioria reconhece importância da vacinação mas desconhece vacinas recomendadas"
+    ]
+  },
+  {
+    "seedTopic": "Economista Justina Shiroka Pula eleita Presidente do Kosovo",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Economista Justina Shiroka Pula eleita Presidente do Kosovo",
+      "o que significa Economista Justina Shiroka Pula eleita Presidente do Kosovo",
+      "como afeta Economista Justina Shiroka Pula eleita Presidente do Kosovo",
+      "explicado Economista Justina Shiroka Pula eleita Presidente do Kosovo",
+      "impactos de Economista Justina Shiroka Pula eleita Presidente do Kosovo",
+      "entenda Economista Justina Shiroka Pula eleita Presidente do Kosovo"
+    ]
+  },
+  {
+    "seedTopic": "6h Estudo alerta para falta de registo de perturbações mentais em internamento",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que 6h Estudo alerta para falta de registo de perturbações mentais em internamento",
+      "o que significa 6h Estudo alerta para falta de registo de perturbações mentais em internamento",
+      "como afeta 6h Estudo alerta para falta de registo de perturbações mentais em internamento",
+      "explicado 6h Estudo alerta para falta de registo de perturbações mentais em internamento",
+      "impactos de 6h Estudo alerta para falta de registo de perturbações mentais em internamento",
+      "entenda 6h Estudo alerta para falta de registo de perturbações mentais em internamento"
+    ]
+  },
+  {
+    "seedTopic": "Justiça de Taiwan processa dez pessoas por desvio de chips militares dos EUA para a China",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Justiça de Taiwan processa dez pessoas por desvio de chips militares dos EUA para a China",
+      "o que significa Justiça de Taiwan processa dez pessoas por desvio de chips militares dos EUA para a China",
+      "como afeta Justiça de Taiwan processa dez pessoas por desvio de chips militares dos EUA para a China",
+      "explicado Justiça de Taiwan processa dez pessoas por desvio de chips militares dos EUA para a China",
+      "impactos de Justiça de Taiwan processa dez pessoas por desvio de chips militares dos EUA para a China",
+      "entenda Justiça de Taiwan processa dez pessoas por desvio de chips militares dos EUA para a China"
+    ]
+  },
+  {
+    "seedTopic": "China diz estar a cooperar com Rússia face a suspeitas de surto de peste pneumónica na Sibéria",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que China diz estar a cooperar com Rússia face a suspeitas de surto de peste pneumónica na Sibéria",
+      "o que significa China diz estar a cooperar com Rússia face a suspeitas de surto de peste pneumónica na Sibéria",
+      "como afeta China diz estar a cooperar com Rússia face a suspeitas de surto de peste pneumónica na Sibéria",
+      "explicado China diz estar a cooperar com Rússia face a suspeitas de surto de peste pneumónica na Sibéria",
+      "impactos de China diz estar a cooperar com Rússia face a suspeitas de surto de peste pneumónica na Sibéria",
+      "entenda China diz estar a cooperar com Rússia face a suspeitas de surto de peste pneumónica na Sibéria"
+    ]
+  },
+  {
+    "seedTopic": "China pede a França e Alemanha que não incentivem protecionismo na UE",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que China pede a França e Alemanha que não incentivem protecionismo na UE",
+      "o que significa China pede a França e Alemanha que não incentivem protecionismo na UE",
+      "como afeta China pede a França e Alemanha que não incentivem protecionismo na UE",
+      "explicado China pede a França e Alemanha que não incentivem protecionismo na UE",
+      "impactos de China pede a França e Alemanha que não incentivem protecionismo na UE",
+      "entenda China pede a França e Alemanha que não incentivem protecionismo na UE"
+    ]
+  },
+  {
+    "seedTopic": "Austrália abre inquérito sobre utilização de dados recolhidos por óculos inteligentes",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Austrália abre inquérito sobre utilização de dados recolhidos por óculos inteligentes",
+      "o que significa Austrália abre inquérito sobre utilização de dados recolhidos por óculos inteligentes",
+      "como afeta Austrália abre inquérito sobre utilização de dados recolhidos por óculos inteligentes",
+      "explicado Austrália abre inquérito sobre utilização de dados recolhidos por óculos inteligentes",
+      "impactos de Austrália abre inquérito sobre utilização de dados recolhidos por óculos inteligentes",
+      "entenda Austrália abre inquérito sobre utilização de dados recolhidos por óculos inteligentes"
+    ]
+  },
+  {
+    "seedTopic": "Timor-Leste e Rússia querem reforço das relações de cooperação",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Timor-Leste e Rússia querem reforço das relações de cooperação",
+      "o que significa Timor-Leste e Rússia querem reforço das relações de cooperação",
+      "como afeta Timor-Leste e Rússia querem reforço das relações de cooperação",
+      "explicado Timor-Leste e Rússia querem reforço das relações de cooperação",
+      "impactos de Timor-Leste e Rússia querem reforço das relações de cooperação",
+      "entenda Timor-Leste e Rússia querem reforço das relações de cooperação"
+    ]
+  },
+  {
+    "seedTopic": "Observatório do Clima mostra que futuro Congresso será mais hostil ao meio ambiente",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Observatório do Clima mostra que futuro Congresso será mais hostil ao meio ambiente",
+      "o que significa Observatório do Clima mostra que futuro Congresso será mais hostil ao meio ambiente",
+      "como afeta Observatório do Clima mostra que futuro Congresso será mais hostil ao meio ambiente",
+      "explicado Observatório do Clima mostra que futuro Congresso será mais hostil ao meio ambiente",
+      "impactos de Observatório do Clima mostra que futuro Congresso será mais hostil ao meio ambiente",
+      "entenda Observatório do Clima mostra que futuro Congresso será mais hostil ao meio ambiente"
+    ]
+  },
+  {
+    "seedTopic": "5h Cristiano Ronaldo pede desculpa por ter abandonado a seleção",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que 5h Cristiano Ronaldo pede desculpa por ter abandonado a seleção",
+      "o que significa 5h Cristiano Ronaldo pede desculpa por ter abandonado a seleção",
+      "como afeta 5h Cristiano Ronaldo pede desculpa por ter abandonado a seleção",
+      "explicado 5h Cristiano Ronaldo pede desculpa por ter abandonado a seleção",
+      "impactos de 5h Cristiano Ronaldo pede desculpa por ter abandonado a seleção",
+      "entenda 5h Cristiano Ronaldo pede desculpa por ter abandonado a seleção"
+    ]
+  },
+  {
+    "seedTopic": "Flávio Bolsonaro quer usar maioria no Congresso para mudar a Constituição e &quot;redemocratizar&quot; o Brasil",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Flávio Bolsonaro quer usar maioria no Congresso para mudar a Constituição e &quot;redemocratizar&quot; o Brasil",
+      "o que significa Flávio Bolsonaro quer usar maioria no Congresso para mudar a Constituição e &quot;redemocratizar&quot; o Brasil",
+      "como afeta Flávio Bolsonaro quer usar maioria no Congresso para mudar a Constituição e &quot;redemocratizar&quot; o Brasil",
+      "explicado Flávio Bolsonaro quer usar maioria no Congresso para mudar a Constituição e &quot;redemocratizar&quot; o Brasil",
+      "impactos de Flávio Bolsonaro quer usar maioria no Congresso para mudar a Constituição e &quot;redemocratizar&quot; o Brasil",
+      "entenda Flávio Bolsonaro quer usar maioria no Congresso para mudar a Constituição e &quot;redemocratizar&quot; o Brasil"
+    ]
+  },
+  {
+    "seedTopic": "Partidos que comandam ministérios no Governo Lula declaram apoio a Flávio Bolsonaro",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Partidos que comandam ministérios no Governo Lula declaram apoio a Flávio Bolsonaro",
+      "o que significa Partidos que comandam ministérios no Governo Lula declaram apoio a Flávio Bolsonaro",
+      "como afeta Partidos que comandam ministérios no Governo Lula declaram apoio a Flávio Bolsonaro",
+      "explicado Partidos que comandam ministérios no Governo Lula declaram apoio a Flávio Bolsonaro",
+      "impactos de Partidos que comandam ministérios no Governo Lula declaram apoio a Flávio Bolsonaro",
+      "entenda Partidos que comandam ministérios no Governo Lula declaram apoio a Flávio Bolsonaro"
+    ]
+  },
+  {
+    "seedTopic": "Parlamento do Kosovo elege Presidente após longo impasse político",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Parlamento do Kosovo elege Presidente após longo impasse político",
+      "o que significa Parlamento do Kosovo elege Presidente após longo impasse político",
+      "como afeta Parlamento do Kosovo elege Presidente após longo impasse político",
+      "explicado Parlamento do Kosovo elege Presidente após longo impasse político",
+      "impactos de Parlamento do Kosovo elege Presidente após longo impasse político",
+      "entenda Parlamento do Kosovo elege Presidente após longo impasse político"
+    ]
+  },
+  {
+    "seedTopic": "Ícone da era dourada de Hollywood Eva Marie Saint morre aos 102 anos",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Ícone da era dourada de Hollywood Eva Marie Saint morre aos 102 anos",
+      "o que significa Ícone da era dourada de Hollywood Eva Marie Saint morre aos 102 anos",
+      "como afeta Ícone da era dourada de Hollywood Eva Marie Saint morre aos 102 anos",
+      "explicado Ícone da era dourada de Hollywood Eva Marie Saint morre aos 102 anos",
+      "impactos de Ícone da era dourada de Hollywood Eva Marie Saint morre aos 102 anos",
+      "entenda Ícone da era dourada de Hollywood Eva Marie Saint morre aos 102 anos"
+    ]
+  },
+  {
+    "seedTopic": "Reforma eleitoral de Meloni recebe luz verde na primeira votação no Parlamento italiano",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Reforma eleitoral de Meloni recebe luz verde na primeira votação no Parlamento italiano",
+      "o que significa Reforma eleitoral de Meloni recebe luz verde na primeira votação no Parlamento italiano",
+      "como afeta Reforma eleitoral de Meloni recebe luz verde na primeira votação no Parlamento italiano",
+      "explicado Reforma eleitoral de Meloni recebe luz verde na primeira votação no Parlamento italiano",
+      "impactos de Reforma eleitoral de Meloni recebe luz verde na primeira votação no Parlamento italiano",
+      "entenda Reforma eleitoral de Meloni recebe luz verde na primeira votação no Parlamento italiano"
+    ]
+  },
+  {
+    "seedTopic": "4h PS avisa pode mudar voto no OE se houver surpresas do Governo",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que 4h PS avisa pode mudar voto no OE se houver surpresas do Governo",
+      "o que significa 4h PS avisa pode mudar voto no OE se houver surpresas do Governo",
+      "como afeta 4h PS avisa pode mudar voto no OE se houver surpresas do Governo",
+      "explicado 4h PS avisa pode mudar voto no OE se houver surpresas do Governo",
+      "impactos de 4h PS avisa pode mudar voto no OE se houver surpresas do Governo",
+      "entenda 4h PS avisa pode mudar voto no OE se houver surpresas do Governo"
+    ]
+  },
+  {
+    "seedTopic": "3h Lionel Messi despede-se da seleção argentina com último golo no jogo com o Benim",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que 3h Lionel Messi despede-se da seleção argentina com último golo no jogo com o Benim",
+      "o que significa 3h Lionel Messi despede-se da seleção argentina com último golo no jogo com o Benim",
+      "como afeta 3h Lionel Messi despede-se da seleção argentina com último golo no jogo com o Benim",
+      "explicado 3h Lionel Messi despede-se da seleção argentina com último golo no jogo com o Benim",
+      "impactos de 3h Lionel Messi despede-se da seleção argentina com último golo no jogo com o Benim",
+      "entenda 3h Lionel Messi despede-se da seleção argentina com último golo no jogo com o Benim"
+    ]
+  },
+  {
+    "seedTopic": "2h França começa a reabrir escolas depois de novo dia de protestos",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que 2h França começa a reabrir escolas depois de novo dia de protestos",
+      "o que significa 2h França começa a reabrir escolas depois de novo dia de protestos",
+      "como afeta 2h França começa a reabrir escolas depois de novo dia de protestos",
+      "explicado 2h França começa a reabrir escolas depois de novo dia de protestos",
+      "impactos de 2h França começa a reabrir escolas depois de novo dia de protestos",
+      "entenda 2h França começa a reabrir escolas depois de novo dia de protestos"
+    ]
+  },
+  {
+    "seedTopic": "01h Messi despede-se da seleção argentina, em jogo particular com a seleção do Benim",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que 01h Messi despede-se da seleção argentina, em jogo particular com a seleção do Benim",
+      "o que significa 01h Messi despede-se da seleção argentina, em jogo particular com a seleção do Benim",
+      "como afeta 01h Messi despede-se da seleção argentina, em jogo particular com a seleção do Benim",
+      "explicado 01h Messi despede-se da seleção argentina, em jogo particular com a seleção do Benim",
+      "impactos de 01h Messi despede-se da seleção argentina, em jogo particular com a seleção do Benim",
+      "entenda 01h Messi despede-se da seleção argentina, em jogo particular com a seleção do Benim"
+    ]
+  },
+  {
+    "seedTopic": "0h Na última semana, as escolas receberam perto de 400 pedidos de matrícula",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que 0h Na última semana, as escolas receberam perto de 400 pedidos de matrícula",
+      "o que significa 0h Na última semana, as escolas receberam perto de 400 pedidos de matrícula",
+      "como afeta 0h Na última semana, as escolas receberam perto de 400 pedidos de matrícula",
+      "explicado 0h Na última semana, as escolas receberam perto de 400 pedidos de matrícula",
+      "impactos de 0h Na última semana, as escolas receberam perto de 400 pedidos de matrícula",
+      "entenda 0h Na última semana, as escolas receberam perto de 400 pedidos de matrícula"
+    ]
+  },
+  {
+    "seedTopic": "23h Comunicado de Cristiano Ronaldo, o jogador pede desculpa por ter abandonado a seleção",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que 23h Comunicado de Cristiano Ronaldo, o jogador pede desculpa por ter abandonado a seleção",
+      "o que significa 23h Comunicado de Cristiano Ronaldo, o jogador pede desculpa por ter abandonado a seleção",
+      "como afeta 23h Comunicado de Cristiano Ronaldo, o jogador pede desculpa por ter abandonado a seleção",
+      "explicado 23h Comunicado de Cristiano Ronaldo, o jogador pede desculpa por ter abandonado a seleção",
+      "impactos de 23h Comunicado de Cristiano Ronaldo, o jogador pede desculpa por ter abandonado a seleção",
+      "entenda 23h Comunicado de Cristiano Ronaldo, o jogador pede desculpa por ter abandonado a seleção"
+    ]
+  },
+  {
+    "seedTopic": "Wall Street fecha em alta com recordes graças a juros estáveis e IA em alta",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Wall Street fecha em alta com recordes graças a juros estáveis e IA em alta",
+      "o que significa Wall Street fecha em alta com recordes graças a juros estáveis e IA em alta",
+      "como afeta Wall Street fecha em alta com recordes graças a juros estáveis e IA em alta",
+      "explicado Wall Street fecha em alta com recordes graças a juros estáveis e IA em alta",
+      "impactos de Wall Street fecha em alta com recordes graças a juros estáveis e IA em alta",
+      "entenda Wall Street fecha em alta com recordes graças a juros estáveis e IA em alta"
+    ]
+  },
+  {
+    "seedTopic": "Liga Nações: Espanha avança para os quartos com quarta vitória na Croácia",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Liga Nações: Espanha avança para os quartos com quarta vitória na Croácia",
+      "o que significa Liga Nações: Espanha avança para os quartos com quarta vitória na Croácia",
+      "como afeta Liga Nações: Espanha avança para os quartos com quarta vitória na Croácia",
+      "explicado Liga Nações: Espanha avança para os quartos com quarta vitória na Croácia",
+      "impactos de Liga Nações: Espanha avança para os quartos com quarta vitória na Croácia",
+      "entenda Liga Nações: Espanha avança para os quartos com quarta vitória na Croácia"
+    ]
+  },
+  {
+    "seedTopic": "22h Já terminou a reunião de emergência do governo francês para decidir como responder aos protestos estudantis",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que 22h Já terminou a reunião de emergência do governo francês para decidir como responder aos protestos estudantis",
+      "o que significa 22h Já terminou a reunião de emergência do governo francês para decidir como responder aos protestos estudantis",
+      "como afeta 22h Já terminou a reunião de emergência do governo francês para decidir como responder aos protestos estudantis",
+      "explicado 22h Já terminou a reunião de emergência do governo francês para decidir como responder aos protestos estudantis",
+      "impactos de 22h Já terminou a reunião de emergência do governo francês para decidir como responder aos protestos estudantis",
+      "entenda 22h Já terminou a reunião de emergência do governo francês para decidir como responder aos protestos estudantis"
+    ]
+  },
+  {
+    "seedTopic": "Mulher condenada à morte no Tennessee recupera consciência após duas injeções letais",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Mulher condenada à morte no Tennessee recupera consciência após duas injeções letais",
+      "o que significa Mulher condenada à morte no Tennessee recupera consciência após duas injeções letais",
+      "como afeta Mulher condenada à morte no Tennessee recupera consciência após duas injeções letais",
+      "explicado Mulher condenada à morte no Tennessee recupera consciência após duas injeções letais",
+      "impactos de Mulher condenada à morte no Tennessee recupera consciência após duas injeções letais",
+      "entenda Mulher condenada à morte no Tennessee recupera consciência após duas injeções letais"
+    ]
+  },
+  {
+    "seedTopic": "Governo nomeia novos responsáveis para Impostos, empresas e município de Bissau",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Governo nomeia novos responsáveis para Impostos, empresas e município de Bissau",
+      "o que significa Governo nomeia novos responsáveis para Impostos, empresas e município de Bissau",
+      "como afeta Governo nomeia novos responsáveis para Impostos, empresas e município de Bissau",
+      "explicado Governo nomeia novos responsáveis para Impostos, empresas e município de Bissau",
+      "impactos de Governo nomeia novos responsáveis para Impostos, empresas e município de Bissau",
+      "entenda Governo nomeia novos responsáveis para Impostos, empresas e município de Bissau"
+    ]
+  },
+  {
+    "seedTopic": "Guiné-Bissau. Não há condições para eleições a 06 de dezembro diz Simões Pereira",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Guiné-Bissau. Não há condições para eleições a 06 de dezembro diz Simões Pereira",
+      "o que significa Guiné-Bissau. Não há condições para eleições a 06 de dezembro diz Simões Pereira",
+      "como afeta Guiné-Bissau. Não há condições para eleições a 06 de dezembro diz Simões Pereira",
+      "explicado Guiné-Bissau. Não há condições para eleições a 06 de dezembro diz Simões Pereira",
+      "impactos de Guiné-Bissau. Não há condições para eleições a 06 de dezembro diz Simões Pereira",
+      "entenda Guiné-Bissau. Não há condições para eleições a 06 de dezembro diz Simões Pereira"
+    ]
+  },
+  {
+    "seedTopic": "João Costa pede apoio precoce aos alunos e ação para além da escola",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que João Costa pede apoio precoce aos alunos e ação para além da escola",
+      "o que significa João Costa pede apoio precoce aos alunos e ação para além da escola",
+      "como afeta João Costa pede apoio precoce aos alunos e ação para além da escola",
+      "explicado João Costa pede apoio precoce aos alunos e ação para além da escola",
+      "impactos de João Costa pede apoio precoce aos alunos e ação para além da escola",
+      "entenda João Costa pede apoio precoce aos alunos e ação para além da escola"
+    ]
+  },
+  {
+    "seedTopic": "Escolas receberam 380 pedidos de matrícula na última semana diz ministro da Educação",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Escolas receberam 380 pedidos de matrícula na última semana diz ministro da Educação",
+      "o que significa Escolas receberam 380 pedidos de matrícula na última semana diz ministro da Educação",
+      "como afeta Escolas receberam 380 pedidos de matrícula na última semana diz ministro da Educação",
+      "explicado Escolas receberam 380 pedidos de matrícula na última semana diz ministro da Educação",
+      "impactos de Escolas receberam 380 pedidos de matrícula na última semana diz ministro da Educação",
+      "entenda Escolas receberam 380 pedidos de matrícula na última semana diz ministro da Educação"
+    ]
+  },
+  {
+    "seedTopic": "Greve dos tripulantes da easyJet originou o cancelamento de 370 voos diz sindicato",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Greve dos tripulantes da easyJet originou o cancelamento de 370 voos diz sindicato",
+      "o que significa Greve dos tripulantes da easyJet originou o cancelamento de 370 voos diz sindicato",
+      "como afeta Greve dos tripulantes da easyJet originou o cancelamento de 370 voos diz sindicato",
+      "explicado Greve dos tripulantes da easyJet originou o cancelamento de 370 voos diz sindicato",
+      "impactos de Greve dos tripulantes da easyJet originou o cancelamento de 370 voos diz sindicato",
+      "entenda Greve dos tripulantes da easyJet originou o cancelamento de 370 voos diz sindicato"
+    ]
+  },
+  {
+    "seedTopic": "21h Cristiano admite voltar à Seleção, Messi despede-se da Argentina",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que 21h Cristiano admite voltar à Seleção, Messi despede-se da Argentina",
+      "o que significa 21h Cristiano admite voltar à Seleção, Messi despede-se da Argentina",
+      "como afeta 21h Cristiano admite voltar à Seleção, Messi despede-se da Argentina",
+      "explicado 21h Cristiano admite voltar à Seleção, Messi despede-se da Argentina",
+      "impactos de 21h Cristiano admite voltar à Seleção, Messi despede-se da Argentina",
+      "entenda 21h Cristiano admite voltar à Seleção, Messi despede-se da Argentina"
+    ]
+  },
+  {
+    "seedTopic": "Guiné-Bissau. PR de transição exonera ministro do Interior e ministra das Pescas",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Guiné-Bissau. PR de transição exonera ministro do Interior e ministra das Pescas",
+      "o que significa Guiné-Bissau. PR de transição exonera ministro do Interior e ministra das Pescas",
+      "como afeta Guiné-Bissau. PR de transição exonera ministro do Interior e ministra das Pescas",
+      "explicado Guiné-Bissau. PR de transição exonera ministro do Interior e ministra das Pescas",
+      "impactos de Guiné-Bissau. PR de transição exonera ministro do Interior e ministra das Pescas",
+      "entenda Guiné-Bissau. PR de transição exonera ministro do Interior e ministra das Pescas"
+    ]
+  },
+  {
+    "seedTopic": "Profissionais avisam para pressão do turismo de saúde sobre o SNS",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Profissionais avisam para pressão do turismo de saúde sobre o SNS",
+      "o que significa Profissionais avisam para pressão do turismo de saúde sobre o SNS",
+      "como afeta Profissionais avisam para pressão do turismo de saúde sobre o SNS",
+      "explicado Profissionais avisam para pressão do turismo de saúde sobre o SNS",
+      "impactos de Profissionais avisam para pressão do turismo de saúde sobre o SNS",
+      "entenda Profissionais avisam para pressão do turismo de saúde sobre o SNS"
+    ]
+  },
+  {
+    "seedTopic": "Neutrinos dão Nobel da Física a cientista belga",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Neutrinos dão Nobel da Física a cientista belga",
+      "o que significa Neutrinos dão Nobel da Física a cientista belga",
+      "como afeta Neutrinos dão Nobel da Física a cientista belga",
+      "explicado Neutrinos dão Nobel da Física a cientista belga",
+      "impactos de Neutrinos dão Nobel da Física a cientista belga",
+      "entenda Neutrinos dão Nobel da Física a cientista belga"
+    ]
+  },
+  {
+    "seedTopic": "Rússia deixa aviso após Lituânia abrir porta a armamento estrangeiro",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Rússia deixa aviso após Lituânia abrir porta a armamento estrangeiro",
+      "o que significa Rússia deixa aviso após Lituânia abrir porta a armamento estrangeiro",
+      "como afeta Rússia deixa aviso após Lituânia abrir porta a armamento estrangeiro",
+      "explicado Rússia deixa aviso após Lituânia abrir porta a armamento estrangeiro",
+      "impactos de Rússia deixa aviso após Lituânia abrir porta a armamento estrangeiro",
+      "entenda Rússia deixa aviso após Lituânia abrir porta a armamento estrangeiro"
+    ]
+  },
+  {
+    "seedTopic": "Expedição científica na Madeira marcou pela primeira vez espécie de baleia de profundidade",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Expedição científica na Madeira marcou pela primeira vez espécie de baleia de profundidade",
+      "o que significa Expedição científica na Madeira marcou pela primeira vez espécie de baleia de profundidade",
+      "como afeta Expedição científica na Madeira marcou pela primeira vez espécie de baleia de profundidade",
+      "explicado Expedição científica na Madeira marcou pela primeira vez espécie de baleia de profundidade",
+      "impactos de Expedição científica na Madeira marcou pela primeira vez espécie de baleia de profundidade",
+      "entenda Expedição científica na Madeira marcou pela primeira vez espécie de baleia de profundidade"
+    ]
+  },
+  {
+    "seedTopic": "Governo e sindicatos iniciam negociações sobre aumentos salariais",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Governo e sindicatos iniciam negociações sobre aumentos salariais",
+      "o que significa Governo e sindicatos iniciam negociações sobre aumentos salariais",
+      "como afeta Governo e sindicatos iniciam negociações sobre aumentos salariais",
+      "explicado Governo e sindicatos iniciam negociações sobre aumentos salariais",
+      "impactos de Governo e sindicatos iniciam negociações sobre aumentos salariais",
+      "entenda Governo e sindicatos iniciam negociações sobre aumentos salariais"
+    ]
+  },
+  {
+    "seedTopic": "Caso de peste na Rússia. OMS considera que o risco é baixo",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Caso de peste na Rússia. OMS considera que o risco é baixo",
+      "o que significa Caso de peste na Rússia. OMS considera que o risco é baixo",
+      "como afeta Caso de peste na Rússia. OMS considera que o risco é baixo",
+      "explicado Caso de peste na Rússia. OMS considera que o risco é baixo",
+      "impactos de Caso de peste na Rússia. OMS considera que o risco é baixo",
+      "entenda Caso de peste na Rússia. OMS considera que o risco é baixo"
+    ]
+  },
+  {
+    "seedTopic": "Adeus de Messi. Seleção argentina homenageia &quot;o melhor de todos&quot;",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Adeus de Messi. Seleção argentina homenageia &quot;o melhor de todos&quot;",
+      "o que significa Adeus de Messi. Seleção argentina homenageia &quot;o melhor de todos&quot;",
+      "como afeta Adeus de Messi. Seleção argentina homenageia &quot;o melhor de todos&quot;",
+      "explicado Adeus de Messi. Seleção argentina homenageia &quot;o melhor de todos&quot;",
+      "impactos de Adeus de Messi. Seleção argentina homenageia &quot;o melhor de todos&quot;",
+      "entenda Adeus de Messi. Seleção argentina homenageia &quot;o melhor de todos&quot;"
+    ]
+  },
+  {
+    "seedTopic": "Ricardo Carvalho também abandonou a seleção e cumpriu um ano de castigo",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Ricardo Carvalho também abandonou a seleção e cumpriu um ano de castigo",
+      "o que significa Ricardo Carvalho também abandonou a seleção e cumpriu um ano de castigo",
+      "como afeta Ricardo Carvalho também abandonou a seleção e cumpriu um ano de castigo",
+      "explicado Ricardo Carvalho também abandonou a seleção e cumpriu um ano de castigo",
+      "impactos de Ricardo Carvalho também abandonou a seleção e cumpriu um ano de castigo",
+      "entenda Ricardo Carvalho também abandonou a seleção e cumpriu um ano de castigo"
+    ]
+  },
+  {
+    "seedTopic": "Ministro da Educação diz que falta de professores é um problema",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Ministro da Educação diz que falta de professores é um problema",
+      "o que significa Ministro da Educação diz que falta de professores é um problema",
+      "como afeta Ministro da Educação diz que falta de professores é um problema",
+      "explicado Ministro da Educação diz que falta de professores é um problema",
+      "impactos de Ministro da Educação diz que falta de professores é um problema",
+      "entenda Ministro da Educação diz que falta de professores é um problema"
+    ]
+  },
+  {
+    "seedTopic": "Houthis avisam companhias aéreas para não sobrevoarem a Arábia Saudita",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Houthis avisam companhias aéreas para não sobrevoarem a Arábia Saudita",
+      "o que significa Houthis avisam companhias aéreas para não sobrevoarem a Arábia Saudita",
+      "como afeta Houthis avisam companhias aéreas para não sobrevoarem a Arábia Saudita",
+      "explicado Houthis avisam companhias aéreas para não sobrevoarem a Arábia Saudita",
+      "impactos de Houthis avisam companhias aéreas para não sobrevoarem a Arábia Saudita",
+      "entenda Houthis avisam companhias aéreas para não sobrevoarem a Arábia Saudita"
+    ]
+  },
+  {
+    "seedTopic": "Médico detido por suspeitas de violar paciente durante consulta",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Médico detido por suspeitas de violar paciente durante consulta",
+      "o que significa Médico detido por suspeitas de violar paciente durante consulta",
+      "como afeta Médico detido por suspeitas de violar paciente durante consulta",
+      "explicado Médico detido por suspeitas de violar paciente durante consulta",
+      "impactos de Médico detido por suspeitas de violar paciente durante consulta",
+      "entenda Médico detido por suspeitas de violar paciente durante consulta"
+    ]
+  },
+  {
+    "seedTopic": "Primeiro-ministro recusou terminar acordo com Chega na lei das rendas",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Primeiro-ministro recusou terminar acordo com Chega na lei das rendas",
+      "o que significa Primeiro-ministro recusou terminar acordo com Chega na lei das rendas",
+      "como afeta Primeiro-ministro recusou terminar acordo com Chega na lei das rendas",
+      "explicado Primeiro-ministro recusou terminar acordo com Chega na lei das rendas",
+      "impactos de Primeiro-ministro recusou terminar acordo com Chega na lei das rendas",
+      "entenda Primeiro-ministro recusou terminar acordo com Chega na lei das rendas"
+    ]
+  },
+  {
+    "seedTopic": "Avioneta aterrou no meio de herdade em Serpa",
+    "category": "news",
+    "lang": "pt",
+    "searchIntents": [
+      "por que Avioneta aterrou no meio de herdade em Serpa",
+      "o que significa Avioneta aterrou no meio de herdade em Serpa",
+      "como afeta Avioneta aterrou no meio de herdade em Serpa",
+      "explicado Avioneta aterrou no meio de herdade em Serpa",
+      "impactos de Avioneta aterrou no meio de herdade em Serpa",
+      "entenda Avioneta aterrou no meio de herdade em Serpa"
+    ]
+  }
+]

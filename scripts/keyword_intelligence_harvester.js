@@ -38,13 +38,19 @@ const COMPETITOR_FEEDS = {
     'https://www.lefigaro.fr/rss/figaro_actualites.xml',
     'https://www.france24.com/fr/rss'
   ],
+  pt: [
+    'https://www.rtp.pt/noticias/rss',
+    'https://feeds.feedburner.com/publico/rss'
+  ],
   ar: [
     'https://www.aljazeera.net/aljazeerarss/a7c6e2fb-b792-4329-ba7a-1150fb781e0e',
     'https://www.alarabiya.net/.mrss/ar/all.xml'
   ],
   hi: [
-    'https://www.aajtak.in/rssfeeds/?id=home',
-    'https://rss.jagran.com/rss/news/national.xml'
+    'https://feeds.bbci.co.uk/hindi/rss.xml'
+  ],
+  it: [
+    'https://www.ansa.it/sito/notizie/topnews/topnews_rss.xml'
   ]
 };
 
@@ -55,7 +61,9 @@ const INTENT_MODIFIERS = {
   es: ['por que', 'que significa', 'como afecta', 'explicado', 'claves de', 'consecuencias de'],
   fr: ['pourquoi', 'que signifie', 'quelles consequences', 'explique', 'ce qu il faut savoir sur'],
   ar: ['لماذا', 'ماذا يعني', 'تداعيات', 'شرح', 'ما هي اسباب', 'تاثير'],
-  hi: ['kyun', 'kya hai', 'kaise prabhavit karega', 'visleshan', 'mukhya bindu', 'karan aur prabhav']
+  hi: ['kyun', 'kya hai', 'kaise prabhavit karega', 'visleshan', 'mukhya bindu', 'karan aur prabhav'],
+  pt: ['por que', 'o que significa', 'como afeta', 'explicado', 'impactos de', 'entenda'],
+  it: ['perche', 'cosa significa', 'come influisce', 'spiegato', 'conseguenze di', 'cosa sapere su']
 };
 
 // Helper: Fetch text via HTTP/HTTPS

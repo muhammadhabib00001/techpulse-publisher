@@ -1,5 +1,115 @@
 [
   {
+    "id": "himalayan-bird-changes-song-due-to-noise-pollution",
+    "slug": "himalayan-bird-changes-song-due-to-noise-pollution",
+    "file": "himalayan-bird-changes-song-due-to-noise-pollution.html",
+    "title": "Himalayan Bird Changes Song Due to Noise Pollution",
+    "category": "entertainment",
+    "category_id": "entertainment",
+    "author_id": "julia-vance",
+    "published_at": "2026-10-07T07:09:15.558Z",
+    "updated_at": "2026-10-07T07:09:15.558Z",
+    "reading_time": 6,
+    "status": "published",
+    "is_breaking": false,
+    "is_featured": false,
+    "is_editors_pick": true,
+    "featured_image": "./assets/images/himalayan-bird-changes-song-due-to-noise-pollution.jpg",
+    "image": "./assets/images/himalayan-bird-changes-song-due-to-noise-pollution.jpg",
+    "image_caption": "Himalayan Bird Changes Song Due to Noise Pollution",
+    "image_credit": "Editorial Staff",
+    "tags": [
+      "entertainment",
+      "Analysis",
+      "Special Report"
+    ],
+    "excerpt": "Recent studies reveal a striking Himalayan bird is changing its voice due to human activity, research shows, adapting songs to overcome urban noise.",
+    "deck": "Recent studies reveal a striking Himalayan bird is changing its voice due to human activity, research shows, adapting songs to overcome urban noise.",
+    "date": "2026-10-07",
+    "publishedAt": "2026-10-07T07:09:15.558Z",
+    "translations": {
+      "en": {
+        "title": "Himalayan Bird Changes Song Due to Noise Pollution",
+        "deck": "Recent studies reveal a striking Himalayan bird is changing its voice due to human activity, research shows, adapting songs to overcome urban noise.",
+        "content": ""
+      }
+    }
+  },
+  {
+    "id": "the-phenomenon-of-ghost-music-mystery-and-persona",
+    "slug": "the-phenomenon-of-ghost-music-mystery-and-persona",
+    "file": "the-phenomenon-of-ghost-music-mystery-and-persona.html",
+    "title": "The Phenomenon of Ghost: Music, Mystery, and Persona",
+    "category": "celebrity",
+    "category_id": "celebrity",
+    "author_id": "julia-vance",
+    "published_at": "2026-10-07T07:06:46.515Z",
+    "updated_at": "2026-10-07T07:06:46.515Z",
+    "reading_time": 6,
+    "status": "published",
+    "is_breaking": false,
+    "is_featured": false,
+    "is_editors_pick": true,
+    "featured_image": "./assets/images/the-phenomenon-of-ghost-music-mystery-and-persona.jpg",
+    "image": "./assets/images/the-phenomenon-of-ghost-music-mystery-and-persona.jpg",
+    "image_caption": "The Phenomenon of Ghost: Music, Mystery, and Persona",
+    "image_credit": "Editorial Staff",
+    "tags": [
+      "celebrity",
+      "Analysis",
+      "Special Report"
+    ],
+    "excerpt": "Explore the rise of Ghost, the theatrical rock band led by Tobias Forge. Learn about their albums, touring history, and cultural impact in modern music.",
+    "deck": "Explore the rise of Ghost, the theatrical rock band led by Tobias Forge. Learn about their albums, touring history, and cultural impact in modern music.",
+    "date": "2026-10-07",
+    "publishedAt": "2026-10-07T07:06:46.515Z",
+    "translations": {
+      "en": {
+        "title": "The Phenomenon of Ghost: Music, Mystery, and Persona",
+        "deck": "Explore the rise of Ghost, the theatrical rock band led by Tobias Forge. Learn about their albums, touring history, and cultural impact in modern music.",
+        "content": ""
+      }
+    }
+  },
+  {
+    "id": "global-semiconductor-lithography-and-advanced-packaging",
+    "slug": "global-semiconductor-lithography-and-advanced-packaging",
+    "file": "global-semiconductor-lithography-and-advanced-packaging.html",
+    "title": "Global Semiconductor Lithography and Advanced Packaging",
+    "category": "technology",
+    "category_id": "technology",
+    "author_id": "dr-elena-vance",
+    "published_at": "2026-10-07T06:56:54.866Z",
+    "updated_at": "2026-10-07T06:56:54.866Z",
+    "reading_time": 6,
+    "status": "published",
+    "is_breaking": false,
+    "is_featured": false,
+    "is_editors_pick": true,
+    "featured_image": "/assets/images/global-semiconductor-lithography-and-advanced-packaging.jpg",
+    "image": "/assets/images/global-semiconductor-lithography-and-advanced-packaging.jpg",
+    "image_caption": "Advanced extreme ultraviolet lithography and 3D chip architecture packaging line.",
+    "image_credit": "GenAlpha Magazines Technology Desk",
+    "tags": [
+      "Semiconductors",
+      "EUV Lithography",
+      "Advanced Packaging",
+      "Hardware",
+      "Technology"
+    ],
+    "excerpt": "Explore how extreme ultraviolet lithography and 3D chip architectures drive the future of microelectronics, production yields, and manufacturing.",
+    "deck": "Explore how extreme ultraviolet lithography and 3D chip architectures drive the future of microelectronics, production yields, and manufacturing.",
+    "date": "2026-10-07",
+    "publishedAt": "2026-10-07T06:56:54.866Z",
+    "translations": {
+      "en": {
+        "title": "Global Semiconductor Lithography and Advanced Packaging",
+        "deck": "Explore how extreme ultraviolet lithography and 3D chip architectures drive the future of microelectronics, production yields, and manufacturing.",
+        "content": "<p>The semiconductor industry has entered a decisive transition phase as extreme ultraviolet (EUV) lithography and 3D heterogeneous packaging redefine microelectronic scaling limits. As physical feature dimensions approach sub-nanometer atomic thresholds, device fabrication economics have shifted focus toward multi-die modular topologies and high-numerical-aperture optic systems.</p><h2>High-NA EUV Optics and Lithographic Progression</h2><p>Foundries are aggressively deploying 0.55 numerical aperture EUV exposure tools to sustain single-patterning resolution for critical metal layers. The optical systems, engineered with reflective anamorphic mirrors, mitigate the edge-placement error penalties that previously compelled costly and defect-prone multi-patterning runs.</p><h2>Advanced 3D Heterogeneous Packaging Solutions</h2><p>Beyond wafer-level scaling, system-in-package topologies and hybrid copper-to-copper bonding architectures enable tight interconnect densities exceeding 10,000 bonds per square millimeter. By decomposing monolithic monolithic dies into application-optimized chiplets, designers decouple compute cores from memory interfaces, maximizing silicon yield and thermal efficiency.</p>"
+      }
+    }
+  },
+  {
     "id": "global-energy-summit-grid-decarbonization-agreement",
     "slug": "global-energy-summit-grid-decarbonization-agreement",
     "category_id": "world",
