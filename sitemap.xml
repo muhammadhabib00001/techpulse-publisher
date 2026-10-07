@@ -177,4 +177,95 @@
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/pages/privacy-policy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.genalphamagazines.com/pages/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.genalphamagazines.com/es/pages/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.genalphamagazines.com/de/pages/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.genalphamagazines.com/fr/pages/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.genalphamagazines.com/pt/pages/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.genalphamagazines.com/ar/pages/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://www.genalphamagazines.com/hi/pages/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.genalphamagazines.com/it/pages/privacy-policy"/>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/pages/terms</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.genalphamagazines.com/pages/terms"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.genalphamagazines.com/es/pages/terms"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.genalphamagazines.com/de/pages/terms"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.genalphamagazines.com/fr/pages/terms"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.genalphamagazines.com/pt/pages/terms"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.genalphamagazines.com/ar/pages/terms"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://www.genalphamagazines.com/hi/pages/terms"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.genalphamagazines.com/it/pages/terms"/>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/pages/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.genalphamagazines.com/pages/contact"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.genalphamagazines.com/es/pages/contact"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.genalphamagazines.com/de/pages/contact"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.genalphamagazines.com/fr/pages/contact"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.genalphamagazines.com/pt/pages/contact"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.genalphamagazines.com/ar/pages/contact"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://www.genalphamagazines.com/hi/pages/contact"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.genalphamagazines.com/it/pages/contact"/>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/pages/editorial-policy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.genalphamagazines.com/pages/editorial-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.genalphamagazines.com/es/pages/editorial-policy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.genalphamagazines.com/de/pages/editorial-policy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.genalphamagazines.com/fr/pages/editorial-policy"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.genalphamagazines.com/pt/pages/editorial-policy"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.genalphamagazines.com/ar/pages/editorial-policy"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://www.genalphamagazines.com/hi/pages/editorial-policy"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.genalphamagazines.com/it/pages/editorial-policy"/>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/pages/fact-checking</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.genalphamagazines.com/pages/fact-checking"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.genalphamagazines.com/es/pages/fact-checking"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.genalphamagazines.com/de/pages/fact-checking"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.genalphamagazines.com/fr/pages/fact-checking"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.genalphamagazines.com/pt/pages/fact-checking"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.genalphamagazines.com/ar/pages/fact-checking"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://www.genalphamagazines.com/hi/pages/fact-checking"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.genalphamagazines.com/it/pages/fact-checking"/>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/pages/corrections</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.genalphamagazines.com/pages/corrections"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.genalphamagazines.com/es/pages/corrections"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.genalphamagazines.com/de/pages/corrections"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.genalphamagazines.com/fr/pages/corrections"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.genalphamagazines.com/pt/pages/corrections"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.genalphamagazines.com/ar/pages/corrections"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://www.genalphamagazines.com/hi/pages/corrections"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.genalphamagazines.com/it/pages/corrections"/>
+  </url>
+  <url>
+    <loc>https://www.genalphamagazines.com/pages/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.genalphamagazines.com/pages/about"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.genalphamagazines.com/es/pages/about"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.genalphamagazines.com/de/pages/about"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.genalphamagazines.com/fr/pages/about"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.genalphamagazines.com/pt/pages/about"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.genalphamagazines.com/ar/pages/about"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://www.genalphamagazines.com/hi/pages/about"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.genalphamagazines.com/it/pages/about"/>
+  </url>
 </urlset>

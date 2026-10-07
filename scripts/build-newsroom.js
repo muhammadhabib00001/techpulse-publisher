@@ -857,6 +857,17 @@ function buildSitemapsAndFeeds() {
     sitemapXML += `  <url>\n    <loc>${DOMAIN}/categories/${cat.slug}</loc>\n    <changefreq>daily</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
   });
 
+  // Policy & Trust Pages
+  const staticPageSlugs = ['privacy-policy', 'terms', 'contact', 'editorial-policy', 'fact-checking', 'corrections', 'about'];
+  staticPageSlugs.forEach(slug => {
+    sitemapXML += `  <url>\n    <loc>${DOMAIN}/pages/${slug}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n`;
+    LANGUAGES.forEach(l => {
+      const pUrl = l.code === 'en' ? `${DOMAIN}/pages/${slug}` : `${DOMAIN}/${l.code}/pages/${slug}`;
+      sitemapXML += `    <xhtml:link rel="alternate" hreflang="${l.code}" href="${pUrl}"/>\n`;
+    });
+    sitemapXML += `  </url>\n`;
+  });
+
   sitemapXML += `</urlset>\n`;
   fs.writeFileSync(path.join(ROOT_DIR, 'sitemap.xml'), sitemapXML, 'utf8');
 
@@ -943,17 +954,36 @@ GenAlpha Magazines publishes verified international news, diplomatic development
 
 // 6. Build Trust & Compliance Pages
 function buildPages() {
-  console.log('Building editorial trust and policy pages...');
-  ensureDir(path.join(ROOT_DIR, 'pages'));
+  console.log('Building editorial trust and policy pages across all 8 languages...');
+  
+  const enPages = require('../data/static_pages_content.js');
+  const langPagesMap = { en: enPages };
 
-  const staticPages = require('../data/static_pages_content.js');
+  const otherCodes = ['es', 'de', 'fr', 'pt', 'ar', 'hi', 'it'];
+  otherCodes.forEach(code => {
+    const transPath = path.join(ROOT_DIR, 'data', 'pages_translations', `${code}.js`);
+    if (fs.existsSync(transPath)) {
+      langPagesMap[code] = require(transPath);
+    }
+  });
 
-  staticPages.forEach(p => {
-    const pageUrl = `${DOMAIN}/pages/${p.file.replace('.html', '')}`;
-    const pageDesc = p.deck || siteSettings.description;
+  LANGUAGES.forEach(lang => {
+    const code = lang.code;
+    const t = translations[code] || translations['en'];
+    const prefix = code === 'en' ? '' : `/${code}`;
+    const targetDir = code === 'en' ? path.join(ROOT_DIR, 'pages') : path.join(ROOT_DIR, code, 'pages');
+    ensureDir(targetDir);
 
-    const fullHTML = `<!DOCTYPE html>
-<html lang="en">
+    const pagesList = langPagesMap[code] || langPagesMap['en'];
+
+    pagesList.forEach(p => {
+      const relPath = `pages/${p.file.replace('.html', '')}`;
+      const pageUrl = code === 'en' ? `${DOMAIN}/${relPath}` : `${DOMAIN}/${code}/${relPath}`;
+      const pageDesc = p.deck || siteSettings.description;
+      const breadcrumbHome = t.home || 'Home';
+
+      const fullHTML = `<!DOCTYPE html>
+<html lang="${code}" dir="${lang.dir}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -961,6 +991,9 @@ function buildPages() {
   <meta name="description" content="${escapeHTML(pageDesc)}">
   <link rel="canonical" href="${pageUrl}">
   
+  <!-- Hreflang alternates -->
+${getHreflangTags(relPath)}
+
   <!-- Open Graph -->
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="${escapeHTML(siteSettings.siteName)}">
@@ -976,12 +1009,12 @@ function buildPages() {
   <link rel="stylesheet" href="/assets/css/newsroom.css">
 </head>
 <body>
-  ${renderHeader('en')}
+  ${renderHeader(code)}
 
   <main id="main-content">
     <div class="container article-container" style="max-width:820px;padding:2rem 1rem;">
       <nav class="article-breadcrumbs" aria-label="Breadcrumb" style="margin-bottom:1.5rem;">
-        <a href="/">Home</a> &gt; <span>${escapeHTML(p.title)}</span>
+        <a href="${prefix || '/'}">${escapeHTML(breadcrumbHome)}</a> &gt; <span>${escapeHTML(p.title)}</span>
       </nav>
       <div class="article-body">
         ${p.content}
@@ -989,11 +1022,12 @@ function buildPages() {
     </div>
   </main>
 
-  ${renderFooter('en')}
+  ${renderFooter(code)}
 </body>
 </html>`;
 
-    fs.writeFileSync(path.join(ROOT_DIR, 'pages', p.file), fullHTML, 'utf8');
+      fs.writeFileSync(path.join(targetDir, p.file), fullHTML, 'utf8');
+    });
   });
 }
 

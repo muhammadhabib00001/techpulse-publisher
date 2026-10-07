@@ -79,8 +79,8 @@ function scanDir(dir) {
       scanDir(full);
     } else if (entry.isFile()) {
       if (['.html', '.json', '.js', '.txt', '.xml'].includes(path.extname(entry.name))) {
-        // Skip prompt reference files and audit scripts
-        if (entry.name.includes('prompt') || entry.name.includes('audit-newsroom')) continue;
+        // Skip prompt reference files, raw keyword cluster feeds, and audit scripts
+        if (entry.name.includes('prompt') || entry.name.includes('audit-newsroom') || entry.name.includes('clusters_') || full.includes(path.join('data', 'keywords'))) continue;
         const content = fs.readFileSync(full, 'utf8');
         scanText(full, content);
       }

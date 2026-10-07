@@ -1,0 +1,362 @@
+{
+  "en": {
+    "totalCompetitorHeadlines": 149,
+    "generatedKeywordClusters": 149,
+    "sampleClusters": [
+      {
+        "seedTopic": "US death row inmate Christa Pike awake and speaking after failed execution, lawyers say",
+        "category": "news",
+        "lang": "en",
+        "searchIntents": [
+          "why is US death row inmate Christa Pike awake and speaking after failed execution, lawyers say",
+          "what happens if US death row inmate Christa Pike awake and speaking after failed execution, lawyers say",
+          "how does affect US death row inmate Christa Pike awake and speaking after failed execution, lawyers say",
+          "explained US death row inmate Christa Pike awake and speaking after failed execution, lawyers say",
+          "timeline of US death row inmate Christa Pike awake and speaking after failed execution, lawyers say",
+          "future impact of US death row inmate Christa Pike awake and speaking after failed execution, lawyers say",
+          "meaning of US death row inmate Christa Pike awake and speaking after failed execution, lawyers say"
+        ]
+      },
+      {
+        "seedTopic": "Residents of kibbutz destroyed in 7 October Hamas-led attacks grapple with how to rebuild",
+        "category": "news",
+        "lang": "en",
+        "searchIntents": [
+          "why is Residents of kibbutz destroyed in 7 October Hamas-led attacks grapple with how to rebuild",
+          "what happens if Residents of kibbutz destroyed in 7 October Hamas-led attacks grapple with how to rebuild",
+          "how does affect Residents of kibbutz destroyed in 7 October Hamas-led attacks grapple with how to rebuild",
+          "explained Residents of kibbutz destroyed in 7 October Hamas-led attacks grapple with how to rebuild",
+          "timeline of Residents of kibbutz destroyed in 7 October Hamas-led attacks grapple with how to rebuild",
+          "future impact of Residents of kibbutz destroyed in 7 October Hamas-led attacks grapple with how to rebuild",
+          "meaning of Residents of kibbutz destroyed in 7 October Hamas-led attacks grapple with how to rebuild"
+        ]
+      },
+      {
+        "seedTopic": "What is pneumonic plague and how does it spread?",
+        "category": "news",
+        "lang": "en",
+        "searchIntents": [
+          "why is What is pneumonic plague and how does it spread?",
+          "what happens if What is pneumonic plague and how does it spread?",
+          "how does affect What is pneumonic plague and how does it spread?",
+          "explained What is pneumonic plague and how does it spread?",
+          "timeline of What is pneumonic plague and how does it spread?",
+          "future impact of What is pneumonic plague and how does it spread?",
+          "meaning of What is pneumonic plague and how does it spread?"
+        ]
+      },
+      {
+        "seedTopic": "Ex-US spy who stashed gold bars in his home admits to $200m scam",
+        "category": "news",
+        "lang": "en",
+        "searchIntents": [
+          "why is Ex-US spy who stashed gold bars in his home admits to $200m scam",
+          "what happens if Ex-US spy who stashed gold bars in his home admits to $200m scam",
+          "how does affect Ex-US spy who stashed gold bars in his home admits to $200m scam",
+          "explained Ex-US spy who stashed gold bars in his home admits to $200m scam",
+          "timeline of Ex-US spy who stashed gold bars in his home admits to $200m scam",
+          "future impact of Ex-US spy who stashed gold bars in his home admits to $200m scam",
+          "meaning of Ex-US spy who stashed gold bars in his home admits to $200m scam"
+        ]
+      },
+      {
+        "seedTopic": "A beautiful Himalayan bird is changing its voice due to human activity, research shows",
+        "category": "news",
+        "lang": "en",
+        "searchIntents": [
+          "why is A beautiful Himalayan bird is changing its voice due to human activity, research shows",
+          "what happens if A beautiful Himalayan bird is changing its voice due to human activity, research shows",
+          "how does affect A beautiful Himalayan bird is changing its voice due to human activity, research shows",
+          "explained A beautiful Himalayan bird is changing its voice due to human activity, research shows",
+          "timeline of A beautiful Himalayan bird is changing its voice due to human activity, research shows",
+          "future impact of A beautiful Himalayan bird is changing its voice due to human activity, research shows",
+          "meaning of A beautiful Himalayan bird is changing its voice due to human activity, research shows"
+        ]
+      }
+    ]
+  },
+  "de": {
+    "totalCompetitorHeadlines": 109,
+    "generatedKeywordClusters": 106,
+    "sampleClusters": [
+      {
+        "seedTopic": "Friedrich Merz: Mehrheit der Deutschen hält seine Kanzlerschaft für gescheitert",
+        "category": "news",
+        "lang": "de",
+        "searchIntents": [
+          "warum Friedrich Merz: Mehrheit der Deutschen hält seine Kanzlerschaft für gescheitert",
+          "was bedeutet Friedrich Merz: Mehrheit der Deutschen hält seine Kanzlerschaft für gescheitert",
+          "wie wirkt sich aus Friedrich Merz: Mehrheit der Deutschen hält seine Kanzlerschaft für gescheitert",
+          "erklaert Friedrich Merz: Mehrheit der Deutschen hält seine Kanzlerschaft für gescheitert",
+          "folgen fuer Friedrich Merz: Mehrheit der Deutschen hält seine Kanzlerschaft für gescheitert",
+          "hintergruende zu Friedrich Merz: Mehrheit der Deutschen hält seine Kanzlerschaft für gescheitert"
+        ]
+      },
+      {
+        "seedTopic": "Sachsen-Anhalt: Wo kommen die CDU-Stimmen für die AfD her?",
+        "category": "news",
+        "lang": "de",
+        "searchIntents": [
+          "warum Sachsen-Anhalt: Wo kommen die CDU-Stimmen für die AfD her?",
+          "was bedeutet Sachsen-Anhalt: Wo kommen die CDU-Stimmen für die AfD her?",
+          "wie wirkt sich aus Sachsen-Anhalt: Wo kommen die CDU-Stimmen für die AfD her?",
+          "erklaert Sachsen-Anhalt: Wo kommen die CDU-Stimmen für die AfD her?",
+          "folgen fuer Sachsen-Anhalt: Wo kommen die CDU-Stimmen für die AfD her?",
+          "hintergruende zu Sachsen-Anhalt: Wo kommen die CDU-Stimmen für die AfD her?"
+        ]
+      },
+      {
+        "seedTopic": "News: Umfrage sieht Merz gescheitert, Gedenken an Hamas-Opfer vom 7. Oktober, Galeria-Insolvenz",
+        "category": "news",
+        "lang": "de",
+        "searchIntents": [
+          "warum News: Umfrage sieht Merz gescheitert, Gedenken an Hamas-Opfer vom 7. Oktober, Galeria-Insolvenz",
+          "was bedeutet News: Umfrage sieht Merz gescheitert, Gedenken an Hamas-Opfer vom 7. Oktober, Galeria-Insolvenz",
+          "wie wirkt sich aus News: Umfrage sieht Merz gescheitert, Gedenken an Hamas-Opfer vom 7. Oktober, Galeria-Insolvenz",
+          "erklaert News: Umfrage sieht Merz gescheitert, Gedenken an Hamas-Opfer vom 7. Oktober, Galeria-Insolvenz",
+          "folgen fuer News: Umfrage sieht Merz gescheitert, Gedenken an Hamas-Opfer vom 7. Oktober, Galeria-Insolvenz",
+          "hintergruende zu News: Umfrage sieht Merz gescheitert, Gedenken an Hamas-Opfer vom 7. Oktober, Galeria-Insolvenz"
+        ]
+      },
+      {
+        "seedTopic": "August Hanning: Festnahme des Ex-BND-Chefs erschüttert Sicherheitsapparat",
+        "category": "news",
+        "lang": "de",
+        "searchIntents": [
+          "warum August Hanning: Festnahme des Ex-BND-Chefs erschüttert Sicherheitsapparat",
+          "was bedeutet August Hanning: Festnahme des Ex-BND-Chefs erschüttert Sicherheitsapparat",
+          "wie wirkt sich aus August Hanning: Festnahme des Ex-BND-Chefs erschüttert Sicherheitsapparat",
+          "erklaert August Hanning: Festnahme des Ex-BND-Chefs erschüttert Sicherheitsapparat",
+          "folgen fuer August Hanning: Festnahme des Ex-BND-Chefs erschüttert Sicherheitsapparat",
+          "hintergruende zu August Hanning: Festnahme des Ex-BND-Chefs erschüttert Sicherheitsapparat"
+        ]
+      },
+      {
+        "seedTopic": "Tennessee: Christa Pike ist nach missglückter Hinrichtung wieder bei Bewusstsein",
+        "category": "news",
+        "lang": "de",
+        "searchIntents": [
+          "warum Tennessee: Christa Pike ist nach missglückter Hinrichtung wieder bei Bewusstsein",
+          "was bedeutet Tennessee: Christa Pike ist nach missglückter Hinrichtung wieder bei Bewusstsein",
+          "wie wirkt sich aus Tennessee: Christa Pike ist nach missglückter Hinrichtung wieder bei Bewusstsein",
+          "erklaert Tennessee: Christa Pike ist nach missglückter Hinrichtung wieder bei Bewusstsein",
+          "folgen fuer Tennessee: Christa Pike ist nach missglückter Hinrichtung wieder bei Bewusstsein",
+          "hintergruende zu Tennessee: Christa Pike ist nach missglückter Hinrichtung wieder bei Bewusstsein"
+        ]
+      }
+    ]
+  },
+  "es": {
+    "totalCompetitorHeadlines": 175,
+    "generatedKeywordClusters": 174,
+    "sampleClusters": [
+      {
+        "seedTopic": "Junts busca exprimir el regreso de Puigdemont para impactar en la campaña electoral",
+        "category": "news",
+        "lang": "es",
+        "searchIntents": [
+          "por que Junts busca exprimir el regreso de Puigdemont para impactar en la campaña electoral",
+          "que significa Junts busca exprimir el regreso de Puigdemont para impactar en la campaña electoral",
+          "como afecta Junts busca exprimir el regreso de Puigdemont para impactar en la campaña electoral",
+          "explicado Junts busca exprimir el regreso de Puigdemont para impactar en la campaña electoral",
+          "claves de Junts busca exprimir el regreso de Puigdemont para impactar en la campaña electoral",
+          "consecuencias de Junts busca exprimir el regreso de Puigdemont para impactar en la campaña electoral"
+        ]
+      },
+      {
+        "seedTopic": "El mapa político que encontrará Puigdemont cuando regrese a Cataluña",
+        "category": "news",
+        "lang": "es",
+        "searchIntents": [
+          "por que El mapa político que encontrará Puigdemont cuando regrese a Cataluña",
+          "que significa El mapa político que encontrará Puigdemont cuando regrese a Cataluña",
+          "como afecta El mapa político que encontrará Puigdemont cuando regrese a Cataluña",
+          "explicado El mapa político que encontrará Puigdemont cuando regrese a Cataluña",
+          "claves de El mapa político que encontrará Puigdemont cuando regrese a Cataluña",
+          "consecuencias de El mapa político que encontrará Puigdemont cuando regrese a Cataluña"
+        ]
+      },
+      {
+        "seedTopic": "¿Puede volver Puigdemont a España?",
+        "category": "news",
+        "lang": "es",
+        "searchIntents": [
+          "por que ¿Puede volver Puigdemont a España?",
+          "que significa ¿Puede volver Puigdemont a España?",
+          "como afecta ¿Puede volver Puigdemont a España?",
+          "explicado ¿Puede volver Puigdemont a España?",
+          "claves de ¿Puede volver Puigdemont a España?",
+          "consecuencias de ¿Puede volver Puigdemont a España?"
+        ]
+      },
+      {
+        "seedTopic": "Personas, empresas o grandes tenedores: ¿de quiénes son las viviendas en España?",
+        "category": "news",
+        "lang": "es",
+        "searchIntents": [
+          "por que Personas, empresas o grandes tenedores: ¿de quiénes son las viviendas en España?",
+          "que significa Personas, empresas o grandes tenedores: ¿de quiénes son las viviendas en España?",
+          "como afecta Personas, empresas o grandes tenedores: ¿de quiénes son las viviendas en España?",
+          "explicado Personas, empresas o grandes tenedores: ¿de quiénes son las viviendas en España?",
+          "claves de Personas, empresas o grandes tenedores: ¿de quiénes son las viviendas en España?",
+          "consecuencias de Personas, empresas o grandes tenedores: ¿de quiénes son las viviendas en España?"
+        ]
+      },
+      {
+        "seedTopic": "Los sindicatos ultiman la fecha de la huelga general en noviembre entre críticas de la patronal y la derecha",
+        "category": "news",
+        "lang": "es",
+        "searchIntents": [
+          "por que Los sindicatos ultiman la fecha de la huelga general en noviembre entre críticas de la patronal y la derecha",
+          "que significa Los sindicatos ultiman la fecha de la huelga general en noviembre entre críticas de la patronal y la derecha",
+          "como afecta Los sindicatos ultiman la fecha de la huelga general en noviembre entre críticas de la patronal y la derecha",
+          "explicado Los sindicatos ultiman la fecha de la huelga general en noviembre entre críticas de la patronal y la derecha",
+          "claves de Los sindicatos ultiman la fecha de la huelga general en noviembre entre críticas de la patronal y la derecha",
+          "consecuencias de Los sindicatos ultiman la fecha de la huelga general en noviembre entre críticas de la patronal y la derecha"
+        ]
+      }
+    ]
+  },
+  "fr": {
+    "totalCompetitorHeadlines": 60,
+    "generatedKeywordClusters": 59,
+    "sampleClusters": [
+      {
+        "seedTopic": "Mouvement lycéen : la mobilisation s’amplifie et agrège de nombreux soutiens",
+        "category": "news",
+        "lang": "fr",
+        "searchIntents": [
+          "pourquoi Mouvement lycéen : la mobilisation s’amplifie et agrège de nombreux soutiens",
+          "que signifie Mouvement lycéen : la mobilisation s’amplifie et agrège de nombreux soutiens",
+          "quelles consequences Mouvement lycéen : la mobilisation s’amplifie et agrège de nombreux soutiens",
+          "explique Mouvement lycéen : la mobilisation s’amplifie et agrège de nombreux soutiens",
+          "ce qu il faut savoir sur Mouvement lycéen : la mobilisation s’amplifie et agrège de nombreux soutiens"
+        ]
+      },
+      {
+        "seedTopic": "L’affaire des écrits antisémites attribués à Jordan Bardella plombe la séquence budgétaire du RN",
+        "category": "news",
+        "lang": "fr",
+        "searchIntents": [
+          "pourquoi L’affaire des écrits antisémites attribués à Jordan Bardella plombe la séquence budgétaire du RN",
+          "que signifie L’affaire des écrits antisémites attribués à Jordan Bardella plombe la séquence budgétaire du RN",
+          "quelles consequences L’affaire des écrits antisémites attribués à Jordan Bardella plombe la séquence budgétaire du RN",
+          "explique L’affaire des écrits antisémites attribués à Jordan Bardella plombe la séquence budgétaire du RN",
+          "ce qu il faut savoir sur L’affaire des écrits antisémites attribués à Jordan Bardella plombe la séquence budgétaire du RN"
+        ]
+      },
+      {
+        "seedTopic": "7-Octobre, trois ans après : le traumatisme sans fin d’un ex-otage israélien détenu pendant 505 jours par le Hamas",
+        "category": "news",
+        "lang": "fr",
+        "searchIntents": [
+          "pourquoi 7-Octobre, trois ans après : le traumatisme sans fin d’un ex-otage israélien détenu pendant 505 jours par le Hamas",
+          "que signifie 7-Octobre, trois ans après : le traumatisme sans fin d’un ex-otage israélien détenu pendant 505 jours par le Hamas",
+          "quelles consequences 7-Octobre, trois ans après : le traumatisme sans fin d’un ex-otage israélien détenu pendant 505 jours par le Hamas",
+          "explique 7-Octobre, trois ans après : le traumatisme sans fin d’un ex-otage israélien détenu pendant 505 jours par le Hamas",
+          "ce qu il faut savoir sur 7-Octobre, trois ans après : le traumatisme sans fin d’un ex-otage israélien détenu pendant 505 jours par le Hamas"
+        ]
+      },
+      {
+        "seedTopic": "Emmanuel Roman, patron du géant de la finance Pimco : « Les marchés envoient un signal sérieux à la France » sur sa dette, « l’heure est grave »",
+        "category": "news",
+        "lang": "fr",
+        "searchIntents": [
+          "pourquoi Emmanuel Roman, patron du géant de la finance Pimco : « Les marchés envoient un signal sérieux à la France » sur sa dette, « l’heure est grave »",
+          "que signifie Emmanuel Roman, patron du géant de la finance Pimco : « Les marchés envoient un signal sérieux à la France » sur sa dette, « l’heure est grave »",
+          "quelles consequences Emmanuel Roman, patron du géant de la finance Pimco : « Les marchés envoient un signal sérieux à la France » sur sa dette, « l’heure est grave »",
+          "explique Emmanuel Roman, patron du géant de la finance Pimco : « Les marchés envoient un signal sérieux à la France » sur sa dette, « l’heure est grave »",
+          "ce qu il faut savoir sur Emmanuel Roman, patron du géant de la finance Pimco : « Les marchés envoient un signal sérieux à la France » sur sa dette, « l’heure est grave »"
+        ]
+      },
+      {
+        "seedTopic": "Christa Pike, dont l’exécution avait échoué aux Etats-Unis, est « contre toute attente, consciente et peut parler », selon ses avocats",
+        "category": "news",
+        "lang": "fr",
+        "searchIntents": [
+          "pourquoi Christa Pike, dont l’exécution avait échoué aux Etats-Unis, est « contre toute attente, consciente et peut parler », selon ses avocats",
+          "que signifie Christa Pike, dont l’exécution avait échoué aux Etats-Unis, est « contre toute attente, consciente et peut parler », selon ses avocats",
+          "quelles consequences Christa Pike, dont l’exécution avait échoué aux Etats-Unis, est « contre toute attente, consciente et peut parler », selon ses avocats",
+          "explique Christa Pike, dont l’exécution avait échoué aux Etats-Unis, est « contre toute attente, consciente et peut parler », selon ses avocats",
+          "ce qu il faut savoir sur Christa Pike, dont l’exécution avait échoué aux Etats-Unis, est « contre toute attente, consciente et peut parler », selon ses avocats"
+        ]
+      }
+    ]
+  },
+  "ar": {
+    "totalCompetitorHeadlines": 25,
+    "generatedKeywordClusters": 25,
+    "sampleClusters": [
+      {
+        "seedTopic": "إبستين والديزل.. الجمهوريون يواجهون الانتخابات على جبهتين",
+        "category": "news",
+        "lang": "ar",
+        "searchIntents": [
+          "لماذا إبستين والديزل.. الجمهوريون يواجهون الانتخابات على جبهتين",
+          "ماذا يعني إبستين والديزل.. الجمهوريون يواجهون الانتخابات على جبهتين",
+          "تداعيات إبستين والديزل.. الجمهوريون يواجهون الانتخابات على جبهتين",
+          "شرح إبستين والديزل.. الجمهوريون يواجهون الانتخابات على جبهتين",
+          "ما هي اسباب إبستين والديزل.. الجمهوريون يواجهون الانتخابات على جبهتين",
+          "تاثير إبستين والديزل.. الجمهوريون يواجهون الانتخابات على جبهتين"
+        ]
+      },
+      {
+        "seedTopic": "&quot;هذا أكثر يوم حزين في مسيرتي&quot;.. ميسي ينطق كلمات الوداع الأخيرة",
+        "category": "news",
+        "lang": "ar",
+        "searchIntents": [
+          "لماذا &quot;هذا أكثر يوم حزين في مسيرتي&quot;.. ميسي ينطق كلمات الوداع الأخيرة",
+          "ماذا يعني &quot;هذا أكثر يوم حزين في مسيرتي&quot;.. ميسي ينطق كلمات الوداع الأخيرة",
+          "تداعيات &quot;هذا أكثر يوم حزين في مسيرتي&quot;.. ميسي ينطق كلمات الوداع الأخيرة",
+          "شرح &quot;هذا أكثر يوم حزين في مسيرتي&quot;.. ميسي ينطق كلمات الوداع الأخيرة",
+          "ما هي اسباب &quot;هذا أكثر يوم حزين في مسيرتي&quot;.. ميسي ينطق كلمات الوداع الأخيرة",
+          "تاثير &quot;هذا أكثر يوم حزين في مسيرتي&quot;.. ميسي ينطق كلمات الوداع الأخيرة"
+        ]
+      },
+      {
+        "seedTopic": "أرقام تروي حكاية أسطورة.. حصيلة ميسي الأخيرة بقميص الأرجنتين",
+        "category": "news",
+        "lang": "ar",
+        "searchIntents": [
+          "لماذا أرقام تروي حكاية أسطورة.. حصيلة ميسي الأخيرة بقميص الأرجنتين",
+          "ماذا يعني أرقام تروي حكاية أسطورة.. حصيلة ميسي الأخيرة بقميص الأرجنتين",
+          "تداعيات أرقام تروي حكاية أسطورة.. حصيلة ميسي الأخيرة بقميص الأرجنتين",
+          "شرح أرقام تروي حكاية أسطورة.. حصيلة ميسي الأخيرة بقميص الأرجنتين",
+          "ما هي اسباب أرقام تروي حكاية أسطورة.. حصيلة ميسي الأخيرة بقميص الأرجنتين",
+          "تاثير أرقام تروي حكاية أسطورة.. حصيلة ميسي الأخيرة بقميص الأرجنتين"
+        ]
+      },
+      {
+        "seedTopic": "فلسطين مباشر.. شهيدان في غزة وتصعيد إسرائيلي متواصل في الضفة",
+        "category": "news",
+        "lang": "ar",
+        "searchIntents": [
+          "لماذا فلسطين مباشر.. شهيدان في غزة وتصعيد إسرائيلي متواصل في الضفة",
+          "ماذا يعني فلسطين مباشر.. شهيدان في غزة وتصعيد إسرائيلي متواصل في الضفة",
+          "تداعيات فلسطين مباشر.. شهيدان في غزة وتصعيد إسرائيلي متواصل في الضفة",
+          "شرح فلسطين مباشر.. شهيدان في غزة وتصعيد إسرائيلي متواصل في الضفة",
+          "ما هي اسباب فلسطين مباشر.. شهيدان في غزة وتصعيد إسرائيلي متواصل في الضفة",
+          "تاثير فلسطين مباشر.. شهيدان في غزة وتصعيد إسرائيلي متواصل في الضفة"
+        ]
+      },
+      {
+        "seedTopic": "سجينة أمريكية تستعيد وعيها بعد حقنتي إعدام",
+        "category": "news",
+        "lang": "ar",
+        "searchIntents": [
+          "لماذا سجينة أمريكية تستعيد وعيها بعد حقنتي إعدام",
+          "ماذا يعني سجينة أمريكية تستعيد وعيها بعد حقنتي إعدام",
+          "تداعيات سجينة أمريكية تستعيد وعيها بعد حقنتي إعدام",
+          "شرح سجينة أمريكية تستعيد وعيها بعد حقنتي إعدام",
+          "ما هي اسباب سجينة أمريكية تستعيد وعيها بعد حقنتي إعدام",
+          "تاثير سجينة أمريكية تستعيد وعيها بعد حقنتي إعدام"
+        ]
+      }
+    ]
+  },
+  "hi": {
+    "totalCompetitorHeadlines": 0,
+    "generatedKeywordClusters": 0,
+    "sampleClusters": []
+  }
+}

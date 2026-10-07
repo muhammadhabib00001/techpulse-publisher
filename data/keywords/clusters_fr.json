@@ -1,0 +1,710 @@
+[
+  {
+    "seedTopic": "Mouvement lycéen : la mobilisation s’amplifie et agrège de nombreux soutiens",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Mouvement lycéen : la mobilisation s’amplifie et agrège de nombreux soutiens",
+      "que signifie Mouvement lycéen : la mobilisation s’amplifie et agrège de nombreux soutiens",
+      "quelles consequences Mouvement lycéen : la mobilisation s’amplifie et agrège de nombreux soutiens",
+      "explique Mouvement lycéen : la mobilisation s’amplifie et agrège de nombreux soutiens",
+      "ce qu il faut savoir sur Mouvement lycéen : la mobilisation s’amplifie et agrège de nombreux soutiens"
+    ]
+  },
+  {
+    "seedTopic": "L’affaire des écrits antisémites attribués à Jordan Bardella plombe la séquence budgétaire du RN",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi L’affaire des écrits antisémites attribués à Jordan Bardella plombe la séquence budgétaire du RN",
+      "que signifie L’affaire des écrits antisémites attribués à Jordan Bardella plombe la séquence budgétaire du RN",
+      "quelles consequences L’affaire des écrits antisémites attribués à Jordan Bardella plombe la séquence budgétaire du RN",
+      "explique L’affaire des écrits antisémites attribués à Jordan Bardella plombe la séquence budgétaire du RN",
+      "ce qu il faut savoir sur L’affaire des écrits antisémites attribués à Jordan Bardella plombe la séquence budgétaire du RN"
+    ]
+  },
+  {
+    "seedTopic": "7-Octobre, trois ans après : le traumatisme sans fin d’un ex-otage israélien détenu pendant 505 jours par le Hamas",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi 7-Octobre, trois ans après : le traumatisme sans fin d’un ex-otage israélien détenu pendant 505 jours par le Hamas",
+      "que signifie 7-Octobre, trois ans après : le traumatisme sans fin d’un ex-otage israélien détenu pendant 505 jours par le Hamas",
+      "quelles consequences 7-Octobre, trois ans après : le traumatisme sans fin d’un ex-otage israélien détenu pendant 505 jours par le Hamas",
+      "explique 7-Octobre, trois ans après : le traumatisme sans fin d’un ex-otage israélien détenu pendant 505 jours par le Hamas",
+      "ce qu il faut savoir sur 7-Octobre, trois ans après : le traumatisme sans fin d’un ex-otage israélien détenu pendant 505 jours par le Hamas"
+    ]
+  },
+  {
+    "seedTopic": "Emmanuel Roman, patron du géant de la finance Pimco : « Les marchés envoient un signal sérieux à la France » sur sa dette, « l’heure est grave »",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Emmanuel Roman, patron du géant de la finance Pimco : « Les marchés envoient un signal sérieux à la France » sur sa dette, « l’heure est grave »",
+      "que signifie Emmanuel Roman, patron du géant de la finance Pimco : « Les marchés envoient un signal sérieux à la France » sur sa dette, « l’heure est grave »",
+      "quelles consequences Emmanuel Roman, patron du géant de la finance Pimco : « Les marchés envoient un signal sérieux à la France » sur sa dette, « l’heure est grave »",
+      "explique Emmanuel Roman, patron du géant de la finance Pimco : « Les marchés envoient un signal sérieux à la France » sur sa dette, « l’heure est grave »",
+      "ce qu il faut savoir sur Emmanuel Roman, patron du géant de la finance Pimco : « Les marchés envoient un signal sérieux à la France » sur sa dette, « l’heure est grave »"
+    ]
+  },
+  {
+    "seedTopic": "Christa Pike, dont l’exécution avait échoué aux Etats-Unis, est « contre toute attente, consciente et peut parler », selon ses avocats",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Christa Pike, dont l’exécution avait échoué aux Etats-Unis, est « contre toute attente, consciente et peut parler », selon ses avocats",
+      "que signifie Christa Pike, dont l’exécution avait échoué aux Etats-Unis, est « contre toute attente, consciente et peut parler », selon ses avocats",
+      "quelles consequences Christa Pike, dont l’exécution avait échoué aux Etats-Unis, est « contre toute attente, consciente et peut parler », selon ses avocats",
+      "explique Christa Pike, dont l’exécution avait échoué aux Etats-Unis, est « contre toute attente, consciente et peut parler », selon ses avocats",
+      "ce qu il faut savoir sur Christa Pike, dont l’exécution avait échoué aux Etats-Unis, est « contre toute attente, consciente et peut parler », selon ses avocats"
+    ]
+  },
+  {
+    "seedTopic": "Eva Marie Saint, actrice américaine, héroïne de « La Mort aux trousses » d’Hitchcock, est morte à l’âge de 102 ans",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Eva Marie Saint, actrice américaine, héroïne de « La Mort aux trousses » d’Hitchcock, est morte à l’âge de 102 ans",
+      "que signifie Eva Marie Saint, actrice américaine, héroïne de « La Mort aux trousses » d’Hitchcock, est morte à l’âge de 102 ans",
+      "quelles consequences Eva Marie Saint, actrice américaine, héroïne de « La Mort aux trousses » d’Hitchcock, est morte à l’âge de 102 ans",
+      "explique Eva Marie Saint, actrice américaine, héroïne de « La Mort aux trousses » d’Hitchcock, est morte à l’âge de 102 ans",
+      "ce qu il faut savoir sur Eva Marie Saint, actrice américaine, héroïne de « La Mort aux trousses » d’Hitchcock, est morte à l’âge de 102 ans"
+    ]
+  },
+  {
+    "seedTopic": "EN DIRECT, guerre en Ukraine : deux morts à Kiev dans une attaque de missiles russes",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi EN DIRECT, guerre en Ukraine : deux morts à Kiev dans une attaque de missiles russes",
+      "que signifie EN DIRECT, guerre en Ukraine : deux morts à Kiev dans une attaque de missiles russes",
+      "quelles consequences EN DIRECT, guerre en Ukraine : deux morts à Kiev dans une attaque de missiles russes",
+      "explique EN DIRECT, guerre en Ukraine : deux morts à Kiev dans une attaque de missiles russes",
+      "ce qu il faut savoir sur EN DIRECT, guerre en Ukraine : deux morts à Kiev dans une attaque de missiles russes"
+    ]
+  },
+  {
+    "seedTopic": "L’Arabie saoudite, le Pakistan et la Turquie posent le premier acte de leur accord de défense mutuelle face aux houthistes",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi L’Arabie saoudite, le Pakistan et la Turquie posent le premier acte de leur accord de défense mutuelle face aux houthistes",
+      "que signifie L’Arabie saoudite, le Pakistan et la Turquie posent le premier acte de leur accord de défense mutuelle face aux houthistes",
+      "quelles consequences L’Arabie saoudite, le Pakistan et la Turquie posent le premier acte de leur accord de défense mutuelle face aux houthistes",
+      "explique L’Arabie saoudite, le Pakistan et la Turquie posent le premier acte de leur accord de défense mutuelle face aux houthistes",
+      "ce qu il faut savoir sur L’Arabie saoudite, le Pakistan et la Turquie posent le premier acte de leur accord de défense mutuelle face aux houthistes"
+    ]
+  },
+  {
+    "seedTopic": "« Leviticus » : quand le désir queer bascule vers le cinéma d’horreur",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi « Leviticus » : quand le désir queer bascule vers le cinéma d’horreur",
+      "que signifie « Leviticus » : quand le désir queer bascule vers le cinéma d’horreur",
+      "quelles consequences « Leviticus » : quand le désir queer bascule vers le cinéma d’horreur",
+      "explique « Leviticus » : quand le désir queer bascule vers le cinéma d’horreur",
+      "ce qu il faut savoir sur « Leviticus » : quand le désir queer bascule vers le cinéma d’horreur"
+    ]
+  },
+  {
+    "seedTopic": "Maros Sefcovic, le commissaire européen au commerce, veut contrer l’envolée des exportations chinoises vers l’Europe",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Maros Sefcovic, le commissaire européen au commerce, veut contrer l’envolée des exportations chinoises vers l’Europe",
+      "que signifie Maros Sefcovic, le commissaire européen au commerce, veut contrer l’envolée des exportations chinoises vers l’Europe",
+      "quelles consequences Maros Sefcovic, le commissaire européen au commerce, veut contrer l’envolée des exportations chinoises vers l’Europe",
+      "explique Maros Sefcovic, le commissaire européen au commerce, veut contrer l’envolée des exportations chinoises vers l’Europe",
+      "ce qu il faut savoir sur Maros Sefcovic, le commissaire européen au commerce, veut contrer l’envolée des exportations chinoises vers l’Europe"
+    ]
+  },
+  {
+    "seedTopic": "Sept ans de prison ferme requis contre Rémy Daillet, toujours « enfermé dans une distorsion de la réalité dans laquelle il se prend pour le tout »",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Sept ans de prison ferme requis contre Rémy Daillet, toujours « enfermé dans une distorsion de la réalité dans laquelle il se prend pour le tout »",
+      "que signifie Sept ans de prison ferme requis contre Rémy Daillet, toujours « enfermé dans une distorsion de la réalité dans laquelle il se prend pour le tout »",
+      "quelles consequences Sept ans de prison ferme requis contre Rémy Daillet, toujours « enfermé dans une distorsion de la réalité dans laquelle il se prend pour le tout »",
+      "explique Sept ans de prison ferme requis contre Rémy Daillet, toujours « enfermé dans une distorsion de la réalité dans laquelle il se prend pour le tout »",
+      "ce qu il faut savoir sur Sept ans de prison ferme requis contre Rémy Daillet, toujours « enfermé dans une distorsion de la réalité dans laquelle il se prend pour le tout »"
+    ]
+  },
+  {
+    "seedTopic": "Pourquoi les maisons d’édition n’étaient pas préparées à l’IA ?",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Pourquoi les maisons d’édition n’étaient pas préparées à l’IA ?",
+      "que signifie Pourquoi les maisons d’édition n’étaient pas préparées à l’IA ?",
+      "quelles consequences Pourquoi les maisons d’édition n’étaient pas préparées à l’IA ?",
+      "explique Pourquoi les maisons d’édition n’étaient pas préparées à l’IA ?",
+      "ce qu il faut savoir sur Pourquoi les maisons d’édition n’étaient pas préparées à l’IA ?"
+    ]
+  },
+  {
+    "seedTopic": "En Cisjordanie occupée, un photojournaliste de l’Agence France-Presse roué de coups par des colons israéliens",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi En Cisjordanie occupée, un photojournaliste de l’Agence France-Presse roué de coups par des colons israéliens",
+      "que signifie En Cisjordanie occupée, un photojournaliste de l’Agence France-Presse roué de coups par des colons israéliens",
+      "quelles consequences En Cisjordanie occupée, un photojournaliste de l’Agence France-Presse roué de coups par des colons israéliens",
+      "explique En Cisjordanie occupée, un photojournaliste de l’Agence France-Presse roué de coups par des colons israéliens",
+      "ce qu il faut savoir sur En Cisjordanie occupée, un photojournaliste de l’Agence France-Presse roué de coups par des colons israéliens"
+    ]
+  },
+  {
+    "seedTopic": "Le prêtre Jean-Bernard Plessy, ancien directeur des Chartreux à Lyon, mis en examen pour viol aggravé",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Le prêtre Jean-Bernard Plessy, ancien directeur des Chartreux à Lyon, mis en examen pour viol aggravé",
+      "que signifie Le prêtre Jean-Bernard Plessy, ancien directeur des Chartreux à Lyon, mis en examen pour viol aggravé",
+      "quelles consequences Le prêtre Jean-Bernard Plessy, ancien directeur des Chartreux à Lyon, mis en examen pour viol aggravé",
+      "explique Le prêtre Jean-Bernard Plessy, ancien directeur des Chartreux à Lyon, mis en examen pour viol aggravé",
+      "ce qu il faut savoir sur Le prêtre Jean-Bernard Plessy, ancien directeur des Chartreux à Lyon, mis en examen pour viol aggravé"
+    ]
+  },
+  {
+    "seedTopic": "En Thaïlande, la jeunesse brandit la mémoire du massacre de 1976 dans son combat pour la démocratie",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi En Thaïlande, la jeunesse brandit la mémoire du massacre de 1976 dans son combat pour la démocratie",
+      "que signifie En Thaïlande, la jeunesse brandit la mémoire du massacre de 1976 dans son combat pour la démocratie",
+      "quelles consequences En Thaïlande, la jeunesse brandit la mémoire du massacre de 1976 dans son combat pour la démocratie",
+      "explique En Thaïlande, la jeunesse brandit la mémoire du massacre de 1976 dans son combat pour la démocratie",
+      "ce qu il faut savoir sur En Thaïlande, la jeunesse brandit la mémoire du massacre de 1976 dans son combat pour la démocratie"
+    ]
+  },
+  {
+    "seedTopic": "Juste après avoir fusionné Paramount et Warner, David Ellison promet des licenciements pour financer son empire construit par endettement",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Juste après avoir fusionné Paramount et Warner, David Ellison promet des licenciements pour financer son empire construit par endettement",
+      "que signifie Juste après avoir fusionné Paramount et Warner, David Ellison promet des licenciements pour financer son empire construit par endettement",
+      "quelles consequences Juste après avoir fusionné Paramount et Warner, David Ellison promet des licenciements pour financer son empire construit par endettement",
+      "explique Juste après avoir fusionné Paramount et Warner, David Ellison promet des licenciements pour financer son empire construit par endettement",
+      "ce qu il faut savoir sur Juste après avoir fusionné Paramount et Warner, David Ellison promet des licenciements pour financer son empire construit par endettement"
+    ]
+  },
+  {
+    "seedTopic": "Colère des lycéens : Laurent Nuñez et Édouard Geffray auditionnés mercredi à l'Assemblée nationale",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Colère des lycéens : Laurent Nuñez et Édouard Geffray auditionnés mercredi à l'Assemblée nationale",
+      "que signifie Colère des lycéens : Laurent Nuñez et Édouard Geffray auditionnés mercredi à l'Assemblée nationale",
+      "quelles consequences Colère des lycéens : Laurent Nuñez et Édouard Geffray auditionnés mercredi à l'Assemblée nationale",
+      "explique Colère des lycéens : Laurent Nuñez et Édouard Geffray auditionnés mercredi à l'Assemblée nationale",
+      "ce qu il faut savoir sur Colère des lycéens : Laurent Nuñez et Édouard Geffray auditionnés mercredi à l'Assemblée nationale"
+    ]
+  },
+  {
+    "seedTopic": "Mobilisation des lycéens : Sébastien Lecornu annonce une suspension des cours en fin de semaine pour «un temps de démocratie interne»",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Mobilisation des lycéens : Sébastien Lecornu annonce une suspension des cours en fin de semaine pour «un temps de démocratie interne»",
+      "que signifie Mobilisation des lycéens : Sébastien Lecornu annonce une suspension des cours en fin de semaine pour «un temps de démocratie interne»",
+      "quelles consequences Mobilisation des lycéens : Sébastien Lecornu annonce une suspension des cours en fin de semaine pour «un temps de démocratie interne»",
+      "explique Mobilisation des lycéens : Sébastien Lecornu annonce une suspension des cours en fin de semaine pour «un temps de démocratie interne»",
+      "ce qu il faut savoir sur Mobilisation des lycéens : Sébastien Lecornu annonce une suspension des cours en fin de semaine pour «un temps de démocratie interne»"
+    ]
+  },
+  {
+    "seedTopic": "L’éditorial de Vincent Trémolet de Villers : «Crise des lycées, autodestruction ou redressement ?»",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi L’éditorial de Vincent Trémolet de Villers : «Crise des lycées, autodestruction ou redressement ?»",
+      "que signifie L’éditorial de Vincent Trémolet de Villers : «Crise des lycées, autodestruction ou redressement ?»",
+      "quelles consequences L’éditorial de Vincent Trémolet de Villers : «Crise des lycées, autodestruction ou redressement ?»",
+      "explique L’éditorial de Vincent Trémolet de Villers : «Crise des lycées, autodestruction ou redressement ?»",
+      "ce qu il faut savoir sur L’éditorial de Vincent Trémolet de Villers : «Crise des lycées, autodestruction ou redressement ?»"
+    ]
+  },
+  {
+    "seedTopic": "«Chaque fois que j’entends un bruit sourd, je sursaute» : à Créteil, le lycée Saint-Exupéry, berceau de la contestation, reste traumatisé par les violences",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi «Chaque fois que j’entends un bruit sourd, je sursaute» : à Créteil, le lycée Saint-Exupéry, berceau de la contestation, reste traumatisé par les violences",
+      "que signifie «Chaque fois que j’entends un bruit sourd, je sursaute» : à Créteil, le lycée Saint-Exupéry, berceau de la contestation, reste traumatisé par les violences",
+      "quelles consequences «Chaque fois que j’entends un bruit sourd, je sursaute» : à Créteil, le lycée Saint-Exupéry, berceau de la contestation, reste traumatisé par les violences",
+      "explique «Chaque fois que j’entends un bruit sourd, je sursaute» : à Créteil, le lycée Saint-Exupéry, berceau de la contestation, reste traumatisé par les violences",
+      "ce qu il faut savoir sur «Chaque fois que j’entends un bruit sourd, je sursaute» : à Créteil, le lycée Saint-Exupéry, berceau de la contestation, reste traumatisé par les violences"
+    ]
+  },
+  {
+    "seedTopic": "Mobilisation massive des lycéens, nouveaux débordements, gouvernement sous pression… Le récit d’une journée sous haute tension",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Mobilisation massive des lycéens, nouveaux débordements, gouvernement sous pression… Le récit d’une journée sous haute tension",
+      "que signifie Mobilisation massive des lycéens, nouveaux débordements, gouvernement sous pression… Le récit d’une journée sous haute tension",
+      "quelles consequences Mobilisation massive des lycéens, nouveaux débordements, gouvernement sous pression… Le récit d’une journée sous haute tension",
+      "explique Mobilisation massive des lycéens, nouveaux débordements, gouvernement sous pression… Le récit d’une journée sous haute tension",
+      "ce qu il faut savoir sur Mobilisation massive des lycéens, nouveaux débordements, gouvernement sous pression… Le récit d’une journée sous haute tension"
+    ]
+  },
+  {
+    "seedTopic": "Exacerbée par le mouvement lycéen, la violence de rue dépasse un niveau historique en France",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Exacerbée par le mouvement lycéen, la violence de rue dépasse un niveau historique en France",
+      "que signifie Exacerbée par le mouvement lycéen, la violence de rue dépasse un niveau historique en France",
+      "quelles consequences Exacerbée par le mouvement lycéen, la violence de rue dépasse un niveau historique en France",
+      "explique Exacerbée par le mouvement lycéen, la violence de rue dépasse un niveau historique en France",
+      "ce qu il faut savoir sur Exacerbée par le mouvement lycéen, la violence de rue dépasse un niveau historique en France"
+    ]
+  },
+  {
+    "seedTopic": "Petits casseurs, suiveurs ou militants : à Paris et Bobigny, les premiers prévenus interpellés en marge des blocages lycéens devant la justice",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Petits casseurs, suiveurs ou militants : à Paris et Bobigny, les premiers prévenus interpellés en marge des blocages lycéens devant la justice",
+      "que signifie Petits casseurs, suiveurs ou militants : à Paris et Bobigny, les premiers prévenus interpellés en marge des blocages lycéens devant la justice",
+      "quelles consequences Petits casseurs, suiveurs ou militants : à Paris et Bobigny, les premiers prévenus interpellés en marge des blocages lycéens devant la justice",
+      "explique Petits casseurs, suiveurs ou militants : à Paris et Bobigny, les premiers prévenus interpellés en marge des blocages lycéens devant la justice",
+      "ce qu il faut savoir sur Petits casseurs, suiveurs ou militants : à Paris et Bobigny, les premiers prévenus interpellés en marge des blocages lycéens devant la justice"
+    ]
+  },
+  {
+    "seedTopic": "«Arrêtez, reculez, vous arrêtez!» : Bally Bagayoko au cœur des tensions entre lycéens et forces de l’ordre à Paris",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi «Arrêtez, reculez, vous arrêtez!» : Bally Bagayoko au cœur des tensions entre lycéens et forces de l’ordre à Paris",
+      "que signifie «Arrêtez, reculez, vous arrêtez!» : Bally Bagayoko au cœur des tensions entre lycéens et forces de l’ordre à Paris",
+      "quelles consequences «Arrêtez, reculez, vous arrêtez!» : Bally Bagayoko au cœur des tensions entre lycéens et forces de l’ordre à Paris",
+      "explique «Arrêtez, reculez, vous arrêtez!» : Bally Bagayoko au cœur des tensions entre lycéens et forces de l’ordre à Paris",
+      "ce qu il faut savoir sur «Arrêtez, reculez, vous arrêtez!» : Bally Bagayoko au cœur des tensions entre lycéens et forces de l’ordre à Paris"
+    ]
+  },
+  {
+    "seedTopic": "Colère lycéenne : Éric Ciotti demande la «révocation» du maire de Saint-Denis Bally Bagayoko",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Colère lycéenne : Éric Ciotti demande la «révocation» du maire de Saint-Denis Bally Bagayoko",
+      "que signifie Colère lycéenne : Éric Ciotti demande la «révocation» du maire de Saint-Denis Bally Bagayoko",
+      "quelles consequences Colère lycéenne : Éric Ciotti demande la «révocation» du maire de Saint-Denis Bally Bagayoko",
+      "explique Colère lycéenne : Éric Ciotti demande la «révocation» du maire de Saint-Denis Bally Bagayoko",
+      "ce qu il faut savoir sur Colère lycéenne : Éric Ciotti demande la «révocation» du maire de Saint-Denis Bally Bagayoko"
+    ]
+  },
+  {
+    "seedTopic": "«J’ai juste envie d’aller en cours pour avoir un avenir» : une pétition contre les blocus des lycées récolte plus de 22 000 signatures",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi «J’ai juste envie d’aller en cours pour avoir un avenir» : une pétition contre les blocus des lycées récolte plus de 22 000 signatures",
+      "que signifie «J’ai juste envie d’aller en cours pour avoir un avenir» : une pétition contre les blocus des lycées récolte plus de 22 000 signatures",
+      "quelles consequences «J’ai juste envie d’aller en cours pour avoir un avenir» : une pétition contre les blocus des lycées récolte plus de 22 000 signatures",
+      "explique «J’ai juste envie d’aller en cours pour avoir un avenir» : une pétition contre les blocus des lycées récolte plus de 22 000 signatures",
+      "ce qu il faut savoir sur «J’ai juste envie d’aller en cours pour avoir un avenir» : une pétition contre les blocus des lycées récolte plus de 22 000 signatures"
+    ]
+  },
+  {
+    "seedTopic": "Blocus des lycées : les réseaux sociaux dans le collimateur des élus et des forces de l’ordre",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Blocus des lycées : les réseaux sociaux dans le collimateur des élus et des forces de l’ordre",
+      "que signifie Blocus des lycées : les réseaux sociaux dans le collimateur des élus et des forces de l’ordre",
+      "quelles consequences Blocus des lycées : les réseaux sociaux dans le collimateur des élus et des forces de l’ordre",
+      "explique Blocus des lycées : les réseaux sociaux dans le collimateur des élus et des forces de l’ordre",
+      "ce qu il faut savoir sur Blocus des lycées : les réseaux sociaux dans le collimateur des élus et des forces de l’ordre"
+    ]
+  },
+  {
+    "seedTopic": "« Le sort des juifs d’Europe se dégrade à mesure que le continent s’islamise » : l’alerte de 5 personnalités trois ans après le 7 Octobre",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi « Le sort des juifs d’Europe se dégrade à mesure que le continent s’islamise » : l’alerte de 5 personnalités trois ans après le 7 Octobre",
+      "que signifie « Le sort des juifs d’Europe se dégrade à mesure que le continent s’islamise » : l’alerte de 5 personnalités trois ans après le 7 Octobre",
+      "quelles consequences « Le sort des juifs d’Europe se dégrade à mesure que le continent s’islamise » : l’alerte de 5 personnalités trois ans après le 7 Octobre",
+      "explique « Le sort des juifs d’Europe se dégrade à mesure que le continent s’islamise » : l’alerte de 5 personnalités trois ans après le 7 Octobre",
+      "ce qu il faut savoir sur « Le sort des juifs d’Europe se dégrade à mesure que le continent s’islamise » : l’alerte de 5 personnalités trois ans après le 7 Octobre"
+    ]
+  },
+  {
+    "seedTopic": "À Gaza, trois ans après le 7 Octobre, les vivants et les morts restent prisonniers des ruines",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi À Gaza, trois ans après le 7 Octobre, les vivants et les morts restent prisonniers des ruines",
+      "que signifie À Gaza, trois ans après le 7 Octobre, les vivants et les morts restent prisonniers des ruines",
+      "quelles consequences À Gaza, trois ans après le 7 Octobre, les vivants et les morts restent prisonniers des ruines",
+      "explique À Gaza, trois ans après le 7 Octobre, les vivants et les morts restent prisonniers des ruines",
+      "ce qu il faut savoir sur À Gaza, trois ans après le 7 Octobre, les vivants et les morts restent prisonniers des ruines"
+    ]
+  },
+  {
+    "seedTopic": "Les confidences d’Omer Shem Tov, ex-otage du Hamas, au Figaro : « Chaque Israélien a combattu pour moi à sa façon »",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Les confidences d’Omer Shem Tov, ex-otage du Hamas, au Figaro : « Chaque Israélien a combattu pour moi à sa façon »",
+      "que signifie Les confidences d’Omer Shem Tov, ex-otage du Hamas, au Figaro : « Chaque Israélien a combattu pour moi à sa façon »",
+      "quelles consequences Les confidences d’Omer Shem Tov, ex-otage du Hamas, au Figaro : « Chaque Israélien a combattu pour moi à sa façon »",
+      "explique Les confidences d’Omer Shem Tov, ex-otage du Hamas, au Figaro : « Chaque Israélien a combattu pour moi à sa façon »",
+      "ce qu il faut savoir sur Les confidences d’Omer Shem Tov, ex-otage du Hamas, au Figaro : « Chaque Israélien a combattu pour moi à sa façon »"
+    ]
+  },
+  {
+    "seedTopic": "Trois ans après le 7 Octobre, Israël miné par le deuil, la guerre et les divisions",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Trois ans après le 7 Octobre, Israël miné par le deuil, la guerre et les divisions",
+      "que signifie Trois ans après le 7 Octobre, Israël miné par le deuil, la guerre et les divisions",
+      "quelles consequences Trois ans après le 7 Octobre, Israël miné par le deuil, la guerre et les divisions",
+      "explique Trois ans après le 7 Octobre, Israël miné par le deuil, la guerre et les divisions",
+      "ce qu il faut savoir sur Trois ans après le 7 Octobre, Israël miné par le deuil, la guerre et les divisions"
+    ]
+  },
+  {
+    "seedTopic": "Ces villes où les habitants sont de moins en moins riches : le classement de 1000 communes de France",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Ces villes où les habitants sont de moins en moins riches : le classement de 1000 communes de France",
+      "que signifie Ces villes où les habitants sont de moins en moins riches : le classement de 1000 communes de France",
+      "quelles consequences Ces villes où les habitants sont de moins en moins riches : le classement de 1000 communes de France",
+      "explique Ces villes où les habitants sont de moins en moins riches : le classement de 1000 communes de France",
+      "ce qu il faut savoir sur Ces villes où les habitants sont de moins en moins riches : le classement de 1000 communes de France"
+    ]
+  },
+  {
+    "seedTopic": "Lycées, carburants, crise agricole, «situation financière» : Sébastien Lecornu va s’exprimer mercredi soir lors d’une allocution",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Lycées, carburants, crise agricole, «situation financière» : Sébastien Lecornu va s’exprimer mercredi soir lors d’une allocution",
+      "que signifie Lycées, carburants, crise agricole, «situation financière» : Sébastien Lecornu va s’exprimer mercredi soir lors d’une allocution",
+      "quelles consequences Lycées, carburants, crise agricole, «situation financière» : Sébastien Lecornu va s’exprimer mercredi soir lors d’une allocution",
+      "explique Lycées, carburants, crise agricole, «situation financière» : Sébastien Lecornu va s’exprimer mercredi soir lors d’une allocution",
+      "ce qu il faut savoir sur Lycées, carburants, crise agricole, «situation financière» : Sébastien Lecornu va s’exprimer mercredi soir lors d’une allocution"
+    ]
+  },
+  {
+    "seedTopic": "Météo du mercredi 7 octobre : l’été fait ses adieux avec un temps maussade et orageux sur la majeure partie du pays",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Météo du mercredi 7 octobre : l’été fait ses adieux avec un temps maussade et orageux sur la majeure partie du pays",
+      "que signifie Météo du mercredi 7 octobre : l’été fait ses adieux avec un temps maussade et orageux sur la majeure partie du pays",
+      "quelles consequences Météo du mercredi 7 octobre : l’été fait ses adieux avec un temps maussade et orageux sur la majeure partie du pays",
+      "explique Météo du mercredi 7 octobre : l’été fait ses adieux avec un temps maussade et orageux sur la majeure partie du pays",
+      "ce qu il faut savoir sur Météo du mercredi 7 octobre : l’été fait ses adieux avec un temps maussade et orageux sur la majeure partie du pays"
+    ]
+  },
+  {
+    "seedTopic": "Les films au cinéma cette semaine : faut-il voir The Social Reckoning, Ni vue, ni connue ou L’Espèce explosive ?",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Les films au cinéma cette semaine : faut-il voir The Social Reckoning, Ni vue, ni connue ou L’Espèce explosive ?",
+      "que signifie Les films au cinéma cette semaine : faut-il voir The Social Reckoning, Ni vue, ni connue ou L’Espèce explosive ?",
+      "quelles consequences Les films au cinéma cette semaine : faut-il voir The Social Reckoning, Ni vue, ni connue ou L’Espèce explosive ?",
+      "explique Les films au cinéma cette semaine : faut-il voir The Social Reckoning, Ni vue, ni connue ou L’Espèce explosive ?",
+      "ce qu il faut savoir sur Les films au cinéma cette semaine : faut-il voir The Social Reckoning, Ni vue, ni connue ou L’Espèce explosive ?"
+    ]
+  },
+  {
+    "seedTopic": "Une nouvelle attaque de missiles russes sur Kiev fait deux morts",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Une nouvelle attaque de missiles russes sur Kiev fait deux morts",
+      "que signifie Une nouvelle attaque de missiles russes sur Kiev fait deux morts",
+      "quelles consequences Une nouvelle attaque de missiles russes sur Kiev fait deux morts",
+      "explique Une nouvelle attaque de missiles russes sur Kiev fait deux morts",
+      "ce qu il faut savoir sur Une nouvelle attaque de missiles russes sur Kiev fait deux morts"
+    ]
+  },
+  {
+    "seedTopic": "Israël : malgré le 7-Octobre et les critiques, Netanyahu reste le \"capitaine\" dans la tempête",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Israël : malgré le 7-Octobre et les critiques, Netanyahu reste le \"capitaine\" dans la tempête",
+      "que signifie Israël : malgré le 7-Octobre et les critiques, Netanyahu reste le \"capitaine\" dans la tempête",
+      "quelles consequences Israël : malgré le 7-Octobre et les critiques, Netanyahu reste le \"capitaine\" dans la tempête",
+      "explique Israël : malgré le 7-Octobre et les critiques, Netanyahu reste le \"capitaine\" dans la tempête",
+      "ce qu il faut savoir sur Israël : malgré le 7-Octobre et les critiques, Netanyahu reste le \"capitaine\" dans la tempête"
+    ]
+  },
+  {
+    "seedTopic": "Trois ans après le 7-Octobre, Israël \"face à l'abîme\"",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Trois ans après le 7-Octobre, Israël \"face à l'abîme\"",
+      "que signifie Trois ans après le 7-Octobre, Israël \"face à l'abîme\"",
+      "quelles consequences Trois ans après le 7-Octobre, Israël \"face à l'abîme\"",
+      "explique Trois ans après le 7-Octobre, Israël \"face à l'abîme\"",
+      "ce qu il faut savoir sur Trois ans après le 7-Octobre, Israël \"face à l'abîme\""
+    ]
+  },
+  {
+    "seedTopic": "En direct : Israël commémore les trois ans des attaques du 7-Octobre",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi En direct : Israël commémore les trois ans des attaques du 7-Octobre",
+      "que signifie En direct : Israël commémore les trois ans des attaques du 7-Octobre",
+      "quelles consequences En direct : Israël commémore les trois ans des attaques du 7-Octobre",
+      "explique En direct : Israël commémore les trois ans des attaques du 7-Octobre",
+      "ce qu il faut savoir sur En direct : Israël commémore les trois ans des attaques du 7-Octobre"
+    ]
+  },
+  {
+    "seedTopic": "Gratitude et nostalgie en Argentine : Lionel Messi a fait ses adieux à l'Albiceleste",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Gratitude et nostalgie en Argentine : Lionel Messi a fait ses adieux à l'Albiceleste",
+      "que signifie Gratitude et nostalgie en Argentine : Lionel Messi a fait ses adieux à l'Albiceleste",
+      "quelles consequences Gratitude et nostalgie en Argentine : Lionel Messi a fait ses adieux à l'Albiceleste",
+      "explique Gratitude et nostalgie en Argentine : Lionel Messi a fait ses adieux à l'Albiceleste",
+      "ce qu il faut savoir sur Gratitude et nostalgie en Argentine : Lionel Messi a fait ses adieux à l'Albiceleste"
+    ]
+  },
+  {
+    "seedTopic": "Trois ans après, Israël commémore les attaques du 7-Octobre juste avant les élections",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Trois ans après, Israël commémore les attaques du 7-Octobre juste avant les élections",
+      "que signifie Trois ans après, Israël commémore les attaques du 7-Octobre juste avant les élections",
+      "quelles consequences Trois ans après, Israël commémore les attaques du 7-Octobre juste avant les élections",
+      "explique Trois ans après, Israël commémore les attaques du 7-Octobre juste avant les élections",
+      "ce qu il faut savoir sur Trois ans après, Israël commémore les attaques du 7-Octobre juste avant les élections"
+    ]
+  },
+  {
+    "seedTopic": "Haitï : face à la violence des gangs, les élections présidentielle et législative reportées sine die",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Haitï : face à la violence des gangs, les élections présidentielle et législative reportées sine die",
+      "que signifie Haitï : face à la violence des gangs, les élections présidentielle et législative reportées sine die",
+      "quelles consequences Haitï : face à la violence des gangs, les élections présidentielle et législative reportées sine die",
+      "explique Haitï : face à la violence des gangs, les élections présidentielle et législative reportées sine die",
+      "ce qu il faut savoir sur Haitï : face à la violence des gangs, les élections présidentielle et législative reportées sine die"
+    ]
+  },
+  {
+    "seedTopic": "Comment le 7-Octobre a transformé Israël",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Comment le 7-Octobre a transformé Israël",
+      "que signifie Comment le 7-Octobre a transformé Israël",
+      "quelles consequences Comment le 7-Octobre a transformé Israël",
+      "explique Comment le 7-Octobre a transformé Israël",
+      "ce qu il faut savoir sur Comment le 7-Octobre a transformé Israël"
+    ]
+  },
+  {
+    "seedTopic": "États-Unis : après son exécution ratée, Christa Pike a \"repris connaissance et peut parler\"",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi États-Unis : après son exécution ratée, Christa Pike a \"repris connaissance et peut parler\"",
+      "que signifie États-Unis : après son exécution ratée, Christa Pike a \"repris connaissance et peut parler\"",
+      "quelles consequences États-Unis : après son exécution ratée, Christa Pike a \"repris connaissance et peut parler\"",
+      "explique États-Unis : après son exécution ratée, Christa Pike a \"repris connaissance et peut parler\"",
+      "ce qu il faut savoir sur États-Unis : après son exécution ratée, Christa Pike a \"repris connaissance et peut parler\""
+    ]
+  },
+  {
+    "seedTopic": "Le Renseignement allemand dans la tourmente après l'arrestation pour espionnage d'un ancien chef",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Le Renseignement allemand dans la tourmente après l'arrestation pour espionnage d'un ancien chef",
+      "que signifie Le Renseignement allemand dans la tourmente après l'arrestation pour espionnage d'un ancien chef",
+      "quelles consequences Le Renseignement allemand dans la tourmente après l'arrestation pour espionnage d'un ancien chef",
+      "explique Le Renseignement allemand dans la tourmente après l'arrestation pour espionnage d'un ancien chef",
+      "ce qu il faut savoir sur Le Renseignement allemand dans la tourmente après l'arrestation pour espionnage d'un ancien chef"
+    ]
+  },
+  {
+    "seedTopic": "Blocage des lycées en France : l'armée en renfort ?",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Blocage des lycées en France : l'armée en renfort ?",
+      "que signifie Blocage des lycées en France : l'armée en renfort ?",
+      "quelles consequences Blocage des lycées en France : l'armée en renfort ?",
+      "explique Blocage des lycées en France : l'armée en renfort ?",
+      "ce qu il faut savoir sur Blocage des lycées en France : l'armée en renfort ?"
+    ]
+  },
+  {
+    "seedTopic": "Un kenyan venant de République démocratique du Congo décède du virus Ebola",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Un kenyan venant de République démocratique du Congo décède du virus Ebola",
+      "que signifie Un kenyan venant de République démocratique du Congo décède du virus Ebola",
+      "quelles consequences Un kenyan venant de République démocratique du Congo décède du virus Ebola",
+      "explique Un kenyan venant de République démocratique du Congo décède du virus Ebola",
+      "ce qu il faut savoir sur Un kenyan venant de République démocratique du Congo décède du virus Ebola"
+    ]
+  },
+  {
+    "seedTopic": "Manifestation des lycéens : les messages derrière leurs pancartes",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Manifestation des lycéens : les messages derrière leurs pancartes",
+      "que signifie Manifestation des lycéens : les messages derrière leurs pancartes",
+      "quelles consequences Manifestation des lycéens : les messages derrière leurs pancartes",
+      "explique Manifestation des lycéens : les messages derrière leurs pancartes",
+      "ce qu il faut savoir sur Manifestation des lycéens : les messages derrière leurs pancartes"
+    ]
+  },
+  {
+    "seedTopic": "Cristiano Ronaldo s'excuse et ouvre la porte à un retour en sélection portugaise",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Cristiano Ronaldo s'excuse et ouvre la porte à un retour en sélection portugaise",
+      "que signifie Cristiano Ronaldo s'excuse et ouvre la porte à un retour en sélection portugaise",
+      "quelles consequences Cristiano Ronaldo s'excuse et ouvre la porte à un retour en sélection portugaise",
+      "explique Cristiano Ronaldo s'excuse et ouvre la porte à un retour en sélection portugaise",
+      "ce qu il faut savoir sur Cristiano Ronaldo s'excuse et ouvre la porte à un retour en sélection portugaise"
+    ]
+  },
+  {
+    "seedTopic": "Trump fragilise-t-il son camp ?",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Trump fragilise-t-il son camp ?",
+      "que signifie Trump fragilise-t-il son camp ?",
+      "quelles consequences Trump fragilise-t-il son camp ?",
+      "explique Trump fragilise-t-il son camp ?",
+      "ce qu il faut savoir sur Trump fragilise-t-il son camp ?"
+    ]
+  },
+  {
+    "seedTopic": "En Syrie, plus de 2 000 proches de jihadistes toujours aux mains des Kurdes",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi En Syrie, plus de 2 000 proches de jihadistes toujours aux mains des Kurdes",
+      "que signifie En Syrie, plus de 2 000 proches de jihadistes toujours aux mains des Kurdes",
+      "quelles consequences En Syrie, plus de 2 000 proches de jihadistes toujours aux mains des Kurdes",
+      "explique En Syrie, plus de 2 000 proches de jihadistes toujours aux mains des Kurdes",
+      "ce qu il faut savoir sur En Syrie, plus de 2 000 proches de jihadistes toujours aux mains des Kurdes"
+    ]
+  },
+  {
+    "seedTopic": "Santé: les diverses pollutions de l'alimentation en France",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Santé: les diverses pollutions de l'alimentation en France",
+      "que signifie Santé: les diverses pollutions de l'alimentation en France",
+      "quelles consequences Santé: les diverses pollutions de l'alimentation en France",
+      "explique Santé: les diverses pollutions de l'alimentation en France",
+      "ce qu il faut savoir sur Santé: les diverses pollutions de l'alimentation en France"
+    ]
+  },
+  {
+    "seedTopic": "L’avenir de Parcoursup, une question au cœur des revendications lycéennes",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi L’avenir de Parcoursup, une question au cœur des revendications lycéennes",
+      "que signifie L’avenir de Parcoursup, une question au cœur des revendications lycéennes",
+      "quelles consequences L’avenir de Parcoursup, une question au cœur des revendications lycéennes",
+      "explique L’avenir de Parcoursup, une question au cœur des revendications lycéennes",
+      "ce qu il faut savoir sur L’avenir de Parcoursup, une question au cœur des revendications lycéennes"
+    ]
+  },
+  {
+    "seedTopic": "Une pré-COP Climat aux Fidji, pays menacé par la montée des eaux",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Une pré-COP Climat aux Fidji, pays menacé par la montée des eaux",
+      "que signifie Une pré-COP Climat aux Fidji, pays menacé par la montée des eaux",
+      "quelles consequences Une pré-COP Climat aux Fidji, pays menacé par la montée des eaux",
+      "explique Une pré-COP Climat aux Fidji, pays menacé par la montée des eaux",
+      "ce qu il faut savoir sur Une pré-COP Climat aux Fidji, pays menacé par la montée des eaux"
+    ]
+  },
+  {
+    "seedTopic": "La mobilisation lycéenne en France très suivie aux États-Unis",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi La mobilisation lycéenne en France très suivie aux États-Unis",
+      "que signifie La mobilisation lycéenne en France très suivie aux États-Unis",
+      "quelles consequences La mobilisation lycéenne en France très suivie aux États-Unis",
+      "explique La mobilisation lycéenne en France très suivie aux États-Unis",
+      "ce qu il faut savoir sur La mobilisation lycéenne en France très suivie aux États-Unis"
+    ]
+  },
+  {
+    "seedTopic": "Mobilisation étudiante : premiers heurts dans le cortège parisien",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Mobilisation étudiante : premiers heurts dans le cortège parisien",
+      "que signifie Mobilisation étudiante : premiers heurts dans le cortège parisien",
+      "quelles consequences Mobilisation étudiante : premiers heurts dans le cortège parisien",
+      "explique Mobilisation étudiante : premiers heurts dans le cortège parisien",
+      "ce qu il faut savoir sur Mobilisation étudiante : premiers heurts dans le cortège parisien"
+    ]
+  },
+  {
+    "seedTopic": "Russie : un cas de peste en Sibérie ?",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Russie : un cas de peste en Sibérie ?",
+      "que signifie Russie : un cas de peste en Sibérie ?",
+      "quelles consequences Russie : un cas de peste en Sibérie ?",
+      "explique Russie : un cas de peste en Sibérie ?",
+      "ce qu il faut savoir sur Russie : un cas de peste en Sibérie ?"
+    ]
+  },
+  {
+    "seedTopic": "RDC : nouveau scandale pour la FIFA ?",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi RDC : nouveau scandale pour la FIFA ?",
+      "que signifie RDC : nouveau scandale pour la FIFA ?",
+      "quelles consequences RDC : nouveau scandale pour la FIFA ?",
+      "explique RDC : nouveau scandale pour la FIFA ?",
+      "ce qu il faut savoir sur RDC : nouveau scandale pour la FIFA ?"
+    ]
+  },
+  {
+    "seedTopic": "Les blocus lycéens en France instrumentalisés par des comptes d'extrême droite étrangers",
+    "category": "news",
+    "lang": "fr",
+    "searchIntents": [
+      "pourquoi Les blocus lycéens en France instrumentalisés par des comptes d'extrême droite étrangers",
+      "que signifie Les blocus lycéens en France instrumentalisés par des comptes d'extrême droite étrangers",
+      "quelles consequences Les blocus lycéens en France instrumentalisés par des comptes d'extrême droite étrangers",
+      "explique Les blocus lycéens en France instrumentalisés par des comptes d'extrême droite étrangers",
+      "ce qu il faut savoir sur Les blocus lycéens en France instrumentalisés par des comptes d'extrême droite étrangers"
+    ]
+  }
+]
