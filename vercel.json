@@ -3,7 +3,12 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/category-:slug(.*)",
+      "source": "/category-:slug",
+      "destination": "/categories/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/category-:slug.html",
       "destination": "/categories/:slug",
       "permanent": true
     },
@@ -18,7 +23,17 @@
       "permanent": true
     },
     {
+      "source": "/how-culligan-water-softeners-transform-your-home-routine.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/usda-loan-map-eligibility-property-guidelines",
+      "destination": "/categories/business",
+      "permanent": true
+    },
+    {
+      "source": "/usda-loan-map-eligibility-property-guidelines.html",
       "destination": "/categories/business",
       "permanent": true
     }

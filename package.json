@@ -4,7 +4,7 @@
   "description": "Automated SEO & AdSense article publishing pipeline via Vertex AI, Google Drive API & GitHub Actions",
   "main": "scripts/publisher.js",
   "scripts": {
-    "build": "node scripts/build-newsroom.js",
+    "build-site": "node scripts/build-newsroom.js",
     "audit": "node scripts/audit-newsroom.js",
     "publish-article": "node scripts/publisher.js",
     "publish-manual": "node scripts/publish_manual.js",

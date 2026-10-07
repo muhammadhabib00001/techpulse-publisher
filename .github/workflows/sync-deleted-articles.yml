@@ -42,7 +42,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "✅ All articles and feeds are already in sync. No deleted references found."
           else
-            git commit -m "🧹 Auto-sync: Purged deleted article references from homepage & categories [skip ci]"
+            git commit -m "🧹 Auto-sync: Update newsroom feeds and archives"
             SUCCESS=0
             for attempt in 1 2 3 4 5; do
               echo "Push attempt $attempt of 5..."
