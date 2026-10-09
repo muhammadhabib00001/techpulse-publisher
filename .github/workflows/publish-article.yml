@@ -1,8 +1,8 @@
 name: Automated Article Publishing Pipeline (Gemini AI + Google Drive)
 
 on:
-  # schedule:
-  #   - cron: '0 14 * * *'  # PAUSED by user request to prevent auto-publishing new articles
+  schedule:
+    - cron: '0 14 * * *'  # Runs automatically every day at 14:00 UTC (19:00 PKT)
   workflow_dispatch:
     inputs:
       topic:
