@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://www.genalphamagazines.com/articles/uncovering-hidden-easter-eggs-in-ready-player-one</loc>
+    <news:news>
+      <news:publication>
+        <news:name>GenAlpha Magazines</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-22T18:26:14.516Z</news:publication_date>
+      <news:title>Uncovering Hidden Easter Eggs In Ready Player One</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://www.genalphamagazines.com/articles/mythological-origins-of-the-nine-tailed-fox-explained</loc>
     <news:news>
       <news:publication>
