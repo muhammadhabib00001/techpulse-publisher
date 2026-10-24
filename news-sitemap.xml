@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://www.genalphamagazines.com/articles/why-every-tabletop-gamer-needs-a-point-buy-calculator</loc>
+    <news:news>
+      <news:publication>
+        <news:name>GenAlpha Magazines</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-24T17:24:24.046Z</news:publication_date>
+      <news:title>Why Every Tabletop Gamer Needs A Point Buy Calculator</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://www.genalphamagazines.com/articles/understanding-schizophrenia-icd-10-coding-standards</loc>
     <news:news>
       <news:publication>
