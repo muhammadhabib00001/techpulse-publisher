@@ -30,7 +30,7 @@ permissions:
 jobs:
   generate-and-publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -75,7 +75,16 @@ jobs:
             --topic "${{ github.event.inputs.topic || '' }}" \
             --category "${{ github.event.inputs.category || '' }}"
 
+      - name: Translate Articles to All Languages
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEYS || secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEYS: ${{ secrets.GEMINI_API_KEYS || secrets.GEMINI_API_KEY }}
+        run: node scripts/translate_new_articles.js
+
       - name: Enforce Standards & Sync Feeds
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEYS || secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEYS: ${{ secrets.GEMINI_API_KEYS || secrets.GEMINI_API_KEY }}
         run: |
           node scripts/enforce_faq_format.js
           node scripts/sync_articles.js
