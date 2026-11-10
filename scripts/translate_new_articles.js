@@ -229,6 +229,9 @@ async function main() {
   // Submit to IndexNow
   try {
     execSync('node scripts/index_bing.js --all', { stdio: 'inherit', cwd: ROOT_DIR });
+    try {
+      execSync('node scripts/index_article.js --all', { stdio: 'inherit', cwd: ROOT_DIR });
+    } catch(e) {}
   } catch(e) {}
 }
 

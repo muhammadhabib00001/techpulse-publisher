@@ -2763,13 +2763,13 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   <meta name="msvalidate.01" content="25038A8801D42437BBC34723A41AC6C4" />
   <title>${pageTitle}</title>
   <meta name="description" content="${cleanMeta}">
-  <link rel="canonical" href="https://www.genalphamagazines.com/${articleData.slug}">
+  <link rel="canonical" href="https://www.genalphamagazines.com/articles/${articleData.slug}">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta property="og:type" content="article">
   <meta property="og:title" content="${cleanTitle}">
   <meta property="og:description" content="${cleanMeta}">
-  <meta property="og:image" content="https://www.genalphamagazines.com/assets/images/${articleData.slug}.jpg">
-  <meta property="og:url" content="https://www.genalphamagazines.com/${articleData.slug}">
+  <meta property="og:image" content="https://www.genalphamagazines.com/articles/assets/images/${articleData.slug}.jpg">
+  <meta property="og:url" content="https://www.genalphamagazines.com/articles/${articleData.slug}">
   <meta property="article:published_time" content="${currentDate}T08:00:00+00:00">
   <meta property="article:section" content="${category}">
   <!-- Twitter Card Data -->
@@ -2777,7 +2777,7 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
   <meta name="twitter:site" content="@GenAlphaMag">
   <meta name="twitter:title" content="${cleanTitle}">
   <meta name="twitter:description" content="${cleanMeta}">
-  <meta name="twitter:image" content="https://www.genalphamagazines.com/assets/images/${articleData.slug}.jpg">
+  <meta name="twitter:image" content="https://www.genalphamagazines.com/articles/assets/images/${articleData.slug}.jpg">
   
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="48x48" href="/assets/images/favicon-48x48.png">
@@ -2809,33 +2809,33 @@ function renderArticleHtml(articleData, author, category, heroImage, externalLin
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.genalphamagazines.com/" },
-          { "@type": "ListItem", "position": 2, "name": "${category.charAt(0).toUpperCase() + category.slice(1)}", "item": "https://www.genalphamagazines.com/category-${category}" },
-          { "@type": "ListItem", "position": 3, "name": "${articleData.title}", "item": "https://www.genalphamagazines.com/${articleData.slug}" }
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.genalphamagazines.com/articles/" },
+          { "@type": "ListItem", "position": 2, "name": "${category.charAt(0).toUpperCase() + category.slice(1)}", "item": "https://www.genalphamagazines.com/articles/category-${category}" },
+          { "@type": "ListItem", "position": 3, "name": "${articleData.title}", "item": "https://www.genalphamagazines.com/articles/${articleData.slug}" }
         ]
       },
       {
         "@type": "NewsArticle",
-        "@id": "https://www.genalphamagazines.com/${articleData.slug}#article",
+        "@id": "https://www.genalphamagazines.com/articles/${articleData.slug}#article",
         "headline": "${articleData.title}",
         "description": "${articleData.metaDescription}",
         "image": [
-          "https://www.genalphamagazines.com/assets/images/${articleData.slug}.jpg",
-          "https://www.genalphamagazines.com/assets/images/${articleData.slug}-2.jpg"
+          "https://www.genalphamagazines.com/articles/assets/images/${articleData.slug}.jpg",
+          "https://www.genalphamagazines.com/articles/assets/images/${articleData.slug}-2.jpg"
         ],
         "datePublished": "${currentDate}T08:00:00+00:00",
         "dateModified": "${currentDate}T08:00:00+00:00",
-        "mainEntityOfPage": "https://www.genalphamagazines.com/${articleData.slug}",
+        "mainEntityOfPage": "https://www.genalphamagazines.com/articles/${articleData.slug}",
         "author": {
           "@type": "Person",
           "name": "${safeAuthor.name}",
-          "url": "https://www.genalphamagazines.com/author/${safeAuthor.slug}",
+          "url": "https://www.genalphamagazines.com/articles/author/${safeAuthor.slug}",
           "jobTitle": "${safeAuthor.role}"
         },
         "publisher": {
           "@type": "Organization",
           "name": "GenAlphaMagazines",
-          "url": "https://www.genalphamagazines.com/"
+          "url": "https://www.genalphamagazines.com/articles/"
         }
       }${faqSchemaJson}
     ]
@@ -3651,8 +3651,8 @@ function verifyAndEnforceDualImages(filePath, slug, title, category, heroImage =
     const jsonLdSingleImgRegex = /"image":\s*"https:\/\/www\.genalphamagazines\.com\/assets\/images\/([a-z0-9-]+)\.jpg"/i;
     if (jsonLdSingleImgRegex.test(content)) {
       content = content.replace(jsonLdSingleImgRegex, `"image": [
-          "https://www.genalphamagazines.com/assets/images/${slug}.jpg",
-          "https://www.genalphamagazines.com/assets/images/${slug}-2.jpg"
+          "https://www.genalphamagazines.com/articles/assets/images/${slug}.jpg",
+          "https://www.genalphamagazines.com/articles/assets/images/${slug}-2.jpg"
         ]`);
     }
 
@@ -4056,7 +4056,7 @@ async function main() {
   // Instant Google Indexing API ping
   try {
     const { notifyGoogleIndex } = require('./index_article');
-    const articleFullUrl = `https://www.genalphamagazines.com/${generatedArticle.slug}`;
+    const articleFullUrl = `https://www.genalphamagazines.com/articles/${generatedArticle.slug}`;
     console.log(`[INFO] Sending instant Google Indexing API ping for: ${articleFullUrl}`);
     await notifyGoogleIndex(articleFullUrl, 'URL_UPDATED');
   } catch (indexErr) {
@@ -4066,7 +4066,7 @@ async function main() {
   // Instant Bing & IndexNow ping
   try {
     const { notifyBingIndex } = require('./index_bing');
-    const articleFullUrl = `https://www.genalphamagazines.com/${generatedArticle.slug}`;
+    const articleFullUrl = `https://www.genalphamagazines.com/articles/${generatedArticle.slug}`;
     console.log(`[INFO] Sending instant Bing IndexNow ping for: ${articleFullUrl}`);
     await notifyBingIndex(articleFullUrl);
   } catch (bingErr) {
