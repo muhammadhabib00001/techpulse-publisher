@@ -63,7 +63,7 @@ async function notifyGoogleIndex(targetUrl, action = 'URL_UPDATED') {
   let url = targetUrl.trim();
   if (!url.startsWith('http://') && !url.startsWith('https://')) {
     const cleanSlug = url.replace(/^\/?articles\//, '').replace(/\.html$/, '').replace(/^\//, '');
-    url = `${SITE_DOMAIN}/${cleanSlug}`;
+    url = `${SITE_DOMAIN}/articles/${cleanSlug}`;
   }
 
   const credentials = getCredentials();
@@ -141,7 +141,7 @@ Requirements:
     let successCount = 0;
     for (let i = 0; i < files.length; i++) {
       const slug = files[i].replace('.html', '');
-      const url = `${SITE_DOMAIN}/${slug}`;
+      const url = `${SITE_DOMAIN}/articles/${slug}`;
       const ok = await notifyGoogleIndex(url);
       if (ok) successCount++;
       // Sleep 500ms between calls to respect rate limits
